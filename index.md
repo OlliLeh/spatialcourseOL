@@ -1,1 +1,126 @@
-Materials and codes for the course.
+# Applied Spatial Analysis and Research (YH00EM30)
+
+### Learn to analyze, model, and visualize spatial data using modern R-based geospatial tools.
+
+Welcome to **Applied Spatial Analysis and Research (YH00EM30)** — a
+hands‑on course designed for students interested in geospatial
+modelling, spatial data science, and applied statistical research. The
+course focuses on practical skills for working with spatial datasets in
+R and interpreting results in real‑world contexts.  
+This course is based on the official University of Eastern Finland
+course curriculum.
+[1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
+
+------------------------------------------------------------------------
+
+## 📌 Course Overview
+
+This course deepens your methodological skills in handling GIS data,
+spatial statistics, and applied modelling. Methods are demonstrated
+using real datasets from economic and social geography.  
+The teaching includes lectures, demonstrations, and hands‑on practicals.
+
+You will learn to:
+
+- Use spatial statistics software for data preparation and modeling  
+- Understand concepts of spatial data, spatial relationships, and
+  geospatial data structures  
+- Apply regression methods (non-parametric, multivariate, spatial)  
+- Perform data mining and work with large datasets (Paavo, YKR, etc.)  
+- Create meaningful visualizations and interpret spatial
+  models[1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
+
+------------------------------------------------------------------------
+
+## 🎯 Learning Outcomes
+
+After completing this course, you will be able to:
+
+- Prepare and manipulate spatial datasets using R  
+- Implement a range of spatial statistical models  
+- Visualize spatial patterns and model outcomes  
+- Interpret results for evidence-based decision-making  
+- Understand real-world spatial problems through geospatial
+  modelling[1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
+
+------------------------------------------------------------------------
+
+## 👥 Who Is This Course For?
+
+Students with basic experience in spatial data and statistical methods
+who want to strengthen their analytical and geospatial modelling skills.
+Ideal before starting a Master’s thesis in geography, environmental
+policy, or related
+fields.[1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
+
+------------------------------------------------------------------------
+
+## 📅 Course Structure (Weeks)
+
+### **Week 1 — Introduction & Spatial Data Basics**
+
+- Spatial data concepts, R workflows  
+- Introduction to course datasets  
+- **Lecture + Practical + Assignment 1**
+
+### **Week 2 — Data Wrangling with dplyr**
+
+- Efficient manipulation of attribute and spatial data  
+- Joining, filtering, transforming geospatial tables  
+- **Lecture + Practical + Assignment 2**
+
+### **Week 3 — Spatial Data & GIS Methods**
+
+- Reading, transforming, and visualizing spatial objects  
+- CRSs, projections, working with vector & raster data  
+- **Lecture + Practical + Assignment 3**
+
+### **Week 4 — Modelling Spatial Data**
+
+- Regression, nonparametric methods, spatial regression  
+- Model diagnostics & interpretation  
+- **Lecture + Practical + Assignment 4**
+
+(Additional weeks can be added here as the course evolves.)
+
+------------------------------------------------------------------------
+
+## 🗂️ Course Materials in This Website
+
+This website includes:
+
+- **Lectures** — detailed weekly materials  
+- **Assignments** — exercises with data and instructions  
+- **Articles** — extended tutorials and examples  
+- **Reference** — documentation of helper functions used in the course
+
+Use the navigation bar at the top to explore all content.
+
+------------------------------------------------------------------------
+
+## 📚 Recommended Literature
+
+- Brunsdon, C. & Comber, L. (2015). *An Introduction to R for Spatial
+  Analysis and Mapping.*  
+- Bivand, R., Pebesma, E., & Gómez‑Rubio, V. (2008). *Applied Spatial
+  Data Analysis with R.*  
+  [1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
+
+------------------------------------------------------------------------
+
+## 🔗 Official UEF Course Information
+
+For registration, schedules, and formal details, visit the official
+course page:
+
+👉 **[YH00EM30 – Applied Spatial Analysis and
+Research](https://opas.peppi.uef.fi/en/course/YH00EM30/135183?period=2025-2026)**[1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
+
+------------------------------------------------------------------------
+
+## 🧑‍💻 About This Site
+
+This online course website is built with the **pkgdown** framework for
+R.  
+All materials are rendered automatically via GitHub Actions when updates
+are pushed to the repository.
