@@ -1,0 +1,31 @@
+---
+title: "assignment01-data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{assignment01-data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Assignment 01: Working with Spatial Data
+
+In this assignment, you will learn to:
+
+- Load spatial data
+- Inspect coordinate reference systems (CRS)
+- Create simple maps
+- Perform basic transformations
+
+Use the example dataset included in the `mycourse` package.
+
+```{r setup}
+library(spatialcourseOL)
+```
+

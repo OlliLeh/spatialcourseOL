@@ -1,0 +1,19 @@
+---
+title: "lecture02-dplyr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{lecture02-dplyr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(spatialcourseOL)
+```

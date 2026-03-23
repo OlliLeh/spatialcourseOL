@@ -1,0 +1,73 @@
+---
+title: "lecture01-intro"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{lecture01-intro}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Welcome to the course "Appelied Spatial Data Analysis and Research"
+course details: https://opas.peppi.uef.fi/en/course/YH00EM30/135183?period=2025-2026
+
+```{r }
+############################################ AVOIMEN DATAN MALLINTAMINEN: PAAVO
+#install.packages("purrr")
+#install.packages("sf")
+#install.packages("tmap")
+#install.packages("httr")
+#install.packages("data.table")
+#install.packages("ows4R")
+
+#options(pckgType="binary")
+library(dplyr)
+library(purrr)
+library(sf)
+library(httr)
+library(data.table)
+library(ows4R)
+library(ggplot2)
+### download data
+vayla<-"https://geo.stat.fi/geoserver/tilastointialueet/wfs"
+url <-list(hostname ="geo.stat.fi/geoserver/tilastointialueet/wfs",
+           scheme ="https",
+           query =list(service ="WFS",
+                       version ="2.0.0",
+                       typename ="GetCapabilities"))%>%
+  setattr("class","url")
+request <-build_url(url)
+
+vayla_client <- WFSClient$new(vayla, 
+                              serviceVersion = "2.0.0")
+vayla_client$getFeatureTypes(pretty = TRUE) # näyttää mahdollisesti haettavat tiedot
+
+url <-list(hostname ="geo.stat.fi/geoserver/tilastointialueet/wfs",
+           scheme ="https",
+           query =list(service ="WFS",
+                       version ="2.0.0",
+                       request ="GetFeature",
+                       typename ="tilastointialueet:hila5km",
+                       outputFormat ="json"))%>%
+  setattr("class","url")
+request <-build_url(url)
+ruudukko <-st_read(request)
+
+ggplot(ruudukko) + 
+   geom_sf(aes(fill = id), color = NA) 
+
+```
+
+
+
+```{r setup}
+library(spatialcourseOL)
+usethis::use_pkgdown()
+
+```

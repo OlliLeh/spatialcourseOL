@@ -1,0 +1,21 @@
+url: ~
+
+destination: docs
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+
+articles:
+  - title: "Lectures"
+    navbar: Lectures
+    contents:
+      - lecture01-intro
+      - lecture02-dplyr
+
+  - title: "Assignments"
+    navbar: Assignments
+    contents:
+      - assignment01-data
+      - assignment02-data2
+
