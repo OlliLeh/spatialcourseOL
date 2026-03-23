@@ -14,5 +14,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-URL: https://github.com/OlliLeh/spatialcourseOL
+URL: https://github.com/OlliLeh/spatialcourseOL, https://ollileh.github.io/spatialcourseOL/
 BugReports: https://github.com/OlliLeh/spatialcourseOL/issues
