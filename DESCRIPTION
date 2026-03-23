@@ -21,7 +21,7 @@ Imports:
     ggplot2,
     tidyr,
     sf,
-    purr,
+    purrr,
     httr,
     data.table,
     ows4R
