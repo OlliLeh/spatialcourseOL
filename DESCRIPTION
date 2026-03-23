@@ -24,5 +24,6 @@ Imports:
     purrr,
     httr,
     data.table,
-    ows4R
+    ows4R,
+    usethis
     
