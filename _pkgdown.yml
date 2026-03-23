@@ -1,4 +1,16 @@
-url: https://ollileh.github.io/spatialcourseOL/
+
+url: https://ollileh.github.io/spatialcourse0L/
+
 template:
   bootstrap: 5
 
+articles:
+  - title: "Lectures"
+    contents:
+      - lecture01-intro
+      - lecture02-dplyr
+
+  - title: "Assignments"
+    contents:
+      - assignment01-data
+      - assignment02-data2
