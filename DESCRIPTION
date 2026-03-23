@@ -16,3 +16,13 @@ Suggests:
 VignetteBuilder: knitr
 URL: https://github.com/OlliLeh/spatialcourseOL, https://ollileh.github.io/spatialcourseOL/
 BugReports: https://github.com/OlliLeh/spatialcourseOL/issues
+Imports:
+    dplyr,
+    ggplot2,
+    tidyr,
+    sf,
+    purr,
+    httr,
+    data.table,
+    ows4R
+    
