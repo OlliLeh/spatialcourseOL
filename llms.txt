@@ -132,7 +132,8 @@ are pushed to the repository.
 
 ### Lectures
 
-- [lecture01-intro](https://ollileh.github.io/spatialcourse0L/articles/lecture01-intro.md):
+- [lecture01-An Introduction to
+  R](https://ollileh.github.io/spatialcourse0L/articles/lecture01-intro.md):
 - [lecture02-Reading
   data](https://ollileh.github.io/spatialcourse0L/articles/lecture02-dplyr.md):
 

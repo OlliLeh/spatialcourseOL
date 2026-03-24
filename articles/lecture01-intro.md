@@ -1,4 +1,4 @@
-# lecture01-intro
+# lecture01-An Introduction to R
 
 Welcome to the course “Appelied Spatial Data Analysis and Research”
 course details:
