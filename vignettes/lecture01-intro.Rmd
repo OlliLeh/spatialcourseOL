@@ -220,7 +220,7 @@ ggplot(kotka_grid) +
 
 Finally, we save the clipped grid as a shapefile using st_write(). Shapefiles can be opened in GIS software such as QGIS or ArcGIS, making this step useful for further spatial analysis, map production, or sharing results with others.
 
-```{r}
+```{r, eval=FALSE}
 st_write(kotka_grid,
          "define your path here/r1km_kotka.shp")
 ```
