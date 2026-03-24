@@ -1,11 +1,320 @@
 ---
-title: "lecture02-dplyr"
+title: "lecture02-Reading data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{lecture02-dplyr}
+  %\VignetteIndexEntry{lecture02-Reading data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+# Reading data with R
+
+---
+title: "Open Data: Statistics Finland WFS service"
+output: html_document
+---
+
+## 1. Introduction
+
+This example demonstrates how to download, explore, and process open spatial data from the Statistics Finland WFS service.  
+We will:
+
+1. Inspect the WFS service  
+2. Download a 5 km grid dataset  
+3. Visualize the grid using **ggplot2**  
+4. Clip the grid to the municipality of Kotka  
+5. Save the clipped dataset as a shapefile  
+
+This workflow helps you understand how openly available geospatial data can be accessed and integrated into spatial analysis.
+
+---
+
+## 2. Load Required Libraries
+
+In this step, we load the R packages used throughout the analysis. These include tools for spatial data handling (sf), data manipulation (dplyr, purrr), downloading data from web services (httr, ows4R), and visualization (ggplot2). The geofi package is also loaded to access official Finnish municipal boundary data.
+
+```{r}
+library(dplyr)
+library(purrr)
+library(sf)
+library(httr)
+library(data.table)
+library(ows4R)
+library(ggplot2)
+library(geofi)   # for Finnish municipal boundaries
+```
+
+
+## 3. Inspect the WFS Service
+Statistics Finland provides geospatial datasets through a WFS service.
+
+Before downloading any data, we connect to the Statistics Finland Web Feature Service (WFS). Using the WFSClient from the ows4R package, we query the service to list all available datasets. This ensures we know which layers (e.g., grids, municipality borders, zip codes) can be accessed and what their names are.
+```{r}
+vayla <- "https://geo.stat.fi/geoserver/tilastointialueet/wfs"
+
+vayla_client <- WFSClient$new(
+  url = vayla,
+  serviceVersion = "2.0.0"
+)
+
+vayla_client$getFeatureTypes(pretty = TRUE)
+```
+
+## 4. Download the 5 km Grid Dataset
+
+Once we know which dataset we want, we construct a WFS request URL that retrieves the 5 km statistical grid (called hila5km) in GeoJSON format. The st_read() function from sf is then used to download and immediately load the spatial data into R as an sf object.
+
+So, let´s construct a WFS request and load the data directly into an sf object.
+```{r}
+url_grid <- list(
+  hostname = "geo.stat.fi/geoserver/tilastointialueet/wfs",
+  scheme   = "https",
+  query = list(
+    service = "WFS",
+    version = "2.0.0",
+    request = "GetFeature",
+    typename = "tilastointialueet:hila5km",
+    outputFormat = "json"
+  )
+) %>% setattr("class", "url")
+
+grid_url <- build_url(url_grid)
+
+grid_5km <- st_read(grid_url)
+```
+
+## 5. Visualize the Grid
+
+In this step, we create a simple map of the downloaded 5 km grid. The ggplot2 and geom_sf() functions allow us to quickly inspect the geometry and structure of the grid, ensuring the data loaded correctly and looks as expected.
+
+```{r}
+ggplot(grid_5km) +
+  geom_sf(aes(fill = id), color = NA) +
+  labs(title = "Statistics Finland 5 km Grid")
+```
+
+## 6. Clip the Grid to Kotka
+
+To focus the analysis on a specific municipality, we first download Finland’s municipal boundaries using geofi::get_municipalities(). We then compute the centroid of each grid cell and perform a spatial join to determine which grid cells fall inside the municipality of Kotka. This isolates only the portion of the grid that overlaps Kotka’s area.
+
+#### 6.1 Retrieve municipality boundaries with geofi-package
+
+The geofi package provides streamlined access to Finnish administrative and statistical geospatial data through the Statistics Finland WFS API, making it easy for researchers and analysts to obtain harmonized spatial datasets for diverse applications ranging from urban planning to environmental research.  In addition to spatial layers such as municipalities, postal code areas, and population grids, geofi includes annually updated municipality key tables that support regional aggregation and multilingual data handling. 
+
+Study the geofi package website, https://ropengov.github.io/geofi/, carefully, as there will be an exercise based on it this week.
+
+Let´s now download data from the municipalities by using geofi-package
+
+```{r}
+municipalities <- geofi::get_municipalities(year = 2022) %>%
+  select(kunta, kunta_name)
+```
+
+#### 6.2 Generate centroids for each grid cell
+```{r}
+grid_centroids <- st_centroid(grid_5km)
+```
+
+#### 6.3 Select grid cells located in Kotka
+
+```{r}
+kotka <- subset(municipalities, kunta_name == "Kotka")
+
+grid_in_kotka <- st_join(grid_centroids, kotka)
+
+kotka_grid <- subset(grid_in_kotka, kunta_name == "Kotka")
+```
+
+Visualize the results
+```{r}
+ggplot(kotka_grid) +
+  geom_sf(color = "red") +
+  labs(title = "Statistics Finland 5 km Grid in Kotka")
+```
+
+## 7. Export the Result as a Shapefile
+
+Finally, we save the clipped grid as a shapefile using st_write(). Shapefiles can be opened in GIS software such as QGIS or ArcGIS, making this step useful for further spatial analysis, map production, or sharing results with others.
+
+```{r, eval=FALSE}
+st_write(kotka_grid,
+         "define your path here/r1km_kotka.shp")
+```
+
+
+---
+title: "Open Data: Reading Excel Files and Mapping with R"
+output: html_document
+---
+
+# Mapping Municipality Categories
+
+This example demonstrates how to:
+
+Download an Excel file directly from an online source
+Read it into R
+Clean and prepare the data
+Join it with official municipal boundaries
+Visualize the result on a map
+
+## 1. Load Required Libraries
+We begin by loading the packages needed for reading Excel files, cleaning column names, and handling Finnish geospatial data.
+
+```{r}
+library(readxl)
+library(janitor)
+library(geofi)
+library(dplyr)
+library(ggplot2)
+library(sf)
+```
+
+## 2. Download the Excel File from the Web
+We point R to the online file URL, download it into a temporary file, and prepare it for reading.
+
+tempfile() creates a temporary file on your computer
+download.file() saves the file there
+mode = "wb" ensures correct download of binary files (Excel)
+
+```{r}
+url <- "https://media.stat.fi/A7H6ohk0S8qafyCM4bfDaz/DICwBPn5Q8uifsM6dwow"
+
+tmp <- tempfile(fileext = ".xlsx")
+download.file(url, tmp, mode = "wb")
+```
+
+
+## 3. Read the Excel File
+The file contains a header row that is not actual column names, so we skip it using skip = 1.
+We then convert the tibble to a standard data frame.
+
+```{r}
+df <- as.data.frame(read_excel(tmp, skip = 1)) # skip first line
+```
+
+
+## 4. Clean Column Names
+The dataset contains long Finnish variable names with spaces and special characters.
+We use janitor::clean_names() to convert them into clean, machine‑friendly names (snake_case).
+
+```{r}
+df <- df |> clean_names()
+names(df)
+```
+
+## 5. Convert Columns to Appropriate Types
+The municipal code (kunnan_numero) should be numeric.
+We convert it to ensure it can be joined correctly with geofi data.
+
+```{r}
+df$kunnan_numero<-as.numeric(df$kunnan_numero)
+```
+
+## 6. Load Official Finnish Municipal Boundaries
+Using geofi::get_municipalities(), we retrieve the 2025 municipal borders as an sf object.
+We then keep only the municipality ID and name.
+
+```{r}
+municipalities <- geofi::get_municipalities(year = 2025)
+municipalities <- municipalities %>% 
+  select(kunta, kunta_name)
+```
+
+## 7. Join the Excel Data with the Geospatial Layer
+We use right_join() because:
+- df contains new attribute data
+- we want to keep all rows in df
+- we want the resulting object to remain an sf object (right_join preserves class)
+
+```{r}
+municipalities2 <- dplyr::right_join(x = municipalities, y = df, by=c("kunta" = "kunnan_numero"))
+```
+
+## 8. Define Custom Colors for the Map and Create the Map
+
+These colors will represent different municipal groups.
+```{r}
+ccities<-"#FED789" #cities
+crural<-"#023743" #rural
+cdense<-"#72874E" #densely populated
+```
+
+We visualize the municipal groups using ggplot2 and geom_sf().
+
+aes(fill = kuntaryhma) fills polygons by municipal group
+scale_fill_manual() applies our custom color palette
+theme() adjusts legend position and appearance
+
+```{r}
+ggplot(municipalities2) +
+  geom_sf(aes(fill=kuntaryhma),
+          alpha=0.75,colour="white",lwd=0.1) +
+  scale_fill_manual(values = c(ccities, crural, cdense), name = "", guide = guide_legend(direction = "horizontal", label.position = "top", keywidth = 3, keyheight = 0.5)) +
+  theme(legend.position = c(0.16,0.7)) +
+  theme(legend.title=element_text(size=12),legend.text=element_text(size=12)) +
+  guides(fill=guide_legend(title="", nrow=3)) 
+```
+
+## 9. Create an Interactive Leaflet Map
+Before creating an interactive leaflet map, we must ensure that our spatial data uses the correct coordinate reference system (CRS). Leaflet requires data in WGS84 geographic coordinates (EPSG:4326), which use longitude and latitude in degrees. However, our municipalities2 dataset is currently in a projected CRS:
+
+```
+Geometry type: MULTIPOLYGON  
+Bounding box: xmin: 83747.59 ymin: 6637032 xmax: 732907.7 ymax: 7776431  
+Projected CRS: ETRS89 / TM35FIN(E,N)
+```
+
+The TM35FIN system represents coordinates in meters (UTM Zone 35), which is excellent for Finnish spatial analysis, but not compatible with leaflet, which can only display long‑lat coordinates.
+
+To fix this, we use the st_transform() function.
+st_transform() is an sf function that reprojects spatial data into a new coordinate system. In our case, it converts the municipal polygons from TM35FIN into WGS84 (EPSG:4326), making them usable in leaflet.
+
+
+```{r}
+municipalities3 <- sf::st_transform(municipalities2, 4326)
+```
+
+Once transformed, we load the leaflet library and create an interactive map. The color palette for different municipality groups is reused from the ggplot example.
+
+```{r}
+library(leaflet)
+
+# Define a color palette function based on kuntaryhma values
+pal <- colorFactor(
+  palette = c(ccities, crural, cdense),
+  domain  = municipalities2$kuntaryhma
+)
+
+leaflet_map <- leaflet(municipalities3) %>%
+  addProviderTiles("CartoDB.Positron") %>% 
+  addPolygons(
+    fillColor   = ~pal(kuntaryhma),
+    fillOpacity = 0.8,
+    color       = "white",
+    weight      = 1,
+    popup       = ~paste0(
+      "<strong>", kunta_name, "</strong><br>",
+      "Group: ", kuntaryhma
+    ),
+    highlight = highlightOptions(
+      weight = 2,
+      color = "#444444",
+      fillOpacity = 0.9,
+      bringToFront = TRUE
+    )
+  ) %>% 
+  addLegend(
+    pal = pal,
+    values = ~kuntaryhma,
+    title = "Municipality Group",
+    opacity = 1
+  )
+```
+
+```{r}
+leaflet_map
+```
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
