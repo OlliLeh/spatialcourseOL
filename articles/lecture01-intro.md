@@ -108,6 +108,8 @@ blogs can be found at R-bloggers3.
 Over all there quite a big community of R Users and help can be found
 for most of the topics.
 
+### R programming for ABSOLUTE beginners
+
 ``` r
 library(spatialcourseOL)
 usethis::use_pkgdown()
