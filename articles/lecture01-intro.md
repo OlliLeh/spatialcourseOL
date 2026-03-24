@@ -110,8 +110,6 @@ for most of the topics.
 
 ## Reading data
 
-\###Reading data
-
 ## Introduction
 
 This example demonstrates how to download, explore, and process open
@@ -713,7 +711,7 @@ then compute the centroid of each grid cell and perform a spatial join
 to determine which grid cells fall inside the municipality of Kotka.
 This isolates only the portion of the grid that overlaps Kotka’s area.
 
-5.1 Retrieve municipality boundaries with geofi-package
+#### 5.1 Retrieve municipality boundaries with geofi-package
 
 The geofi package provides streamlined access to Finnish administrative
 and statistical geospatial data through the Statistics Finland WFS API,
@@ -737,14 +735,14 @@ municipalities <- geofi::get_municipalities(year = 2022) %>%
 #> Data is licensed under: Attribution 4.0 International (CC BY 4.0)
 ```
 
-5.2 Generate centroids for each grid cell
+#### 5.2 Generate centroids for each grid cell
 
 ``` r
 grid_centroids <- st_centroid(grid_5km)
 #> Warning: st_centroid assumes attributes are constant over geometries
 ```
 
-5.3 Select grid cells located in Kotka
+#### 5.3 Select grid cells located in Kotka
 
 ``` r
 kotka <- subset(municipalities, kunta_name == "Kotka")
@@ -774,6 +772,215 @@ sharing results with others.
 ``` r
 st_write(kotka_grid,
          "define your path here/r1km_kotka.shp")
+```
+
+This example demonstrates how to:
+
+Download an Excel file directly from an online source Read it into R
+Clean and prepare the data Join it with official municipal boundaries
+Visualize the result on a map
+
+### 1. Load Required Libraries
+
+We begin by loading the packages needed for reading Excel files,
+cleaning column names, and handling Finnish geospatial data.
+
+``` r
+library(readxl)
+library(janitor)
+#> 
+#> Attaching package: 'janitor'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     chisq.test, fisher.test
+library(geofi)
+library(dplyr)
+library(ggplot2)
+library(sf)
+```
+
+### 2. Download the Excel File from the Web
+
+We point R to the online file URL, download it into a temporary file,
+and prepare it for reading.
+
+tempfile() creates a temporary file on your computer download.file()
+saves the file there mode = “wb” ensures correct download of binary
+files (Excel)
+
+``` r
+url <- "https://media.stat.fi/A7H6ohk0S8qafyCM4bfDaz/DICwBPn5Q8uifsM6dwow"
+
+tmp <- tempfile(fileext = ".xlsx")
+download.file(url, tmp, mode = "wb")
+```
+
+### 3. Read the Excel File
+
+The file contains a header row that is not actual column names, so we
+skip it using skip = 1. We then convert the tibble to a standard data
+frame.
+
+``` r
+df <- as.data.frame(read_excel(tmp, skip = 1)) # skip first line
+```
+
+### 4. Clean Column Names
+
+The dataset contains long Finnish variable names with spaces and special
+characters. We use janitor::clean_names() to convert them into clean,
+machine‑friendly names (snake_case).
+
+``` r
+df <- df |> clean_names()
+names(df)
+#>  [1] "kunta"                              "kunnan_numero"                     
+#>  [3] "kunnan_nimi_ruotsiksi"              "kunnan_nimi_englanniksi"           
+#>  [5] "maakunnan_koodi"                    "maakunta"                          
+#>  [7] "maakunnan_nimi_ruotsiksi"           "maakunnan_nimi_englanniksi"        
+#>  [9] "hyvinvointialueen_koodi"            "hyvinvointialue"                   
+#> [11] "hyvinvointialueen_nimi_ruotsiksi"   "hyvinvointialueen_nimi_englanniksi"
+#> [13] "avi_koodi"                          "avi"                               
+#> [15] "avi_ruotsiksi"                      "avi_englanniksi"                   
+#> [17] "ely_koodi"                          "ely_keskus"                        
+#> [19] "ely_keskus_ruotsiksi"               "ely_keskus_englanniksi"            
+#> [21] "seutukuntakoodi"                    "seutukunta"                        
+#> [23] "seutukunta_ruotsiksi"               "seutukunta_englanniksi"            
+#> [25] "suuralue_koodi"                     "suuralue"                          
+#> [27] "suuralue_ruotsiksi"                 "suuralue_englanniksi"              
+#> [29] "kuntaryhma_koodi"                   "kuntaryhma"                        
+#> [31] "kuntaryhma_ruotsiksi"               "kuntaryhma_englanniksi"            
+#> [33] "kielisuhde_koodi"                   "kielisuhde"                        
+#> [35] "kielisuhde_ruotsiksi"               "kielisuhde_englanniksi"
+```
+
+### 5. Convert Columns to Appropriate Types
+
+The municipal code (kunnan_numero) should be numeric. We convert it to
+ensure it can be joined correctly with geofi data.
+
+``` r
+df$kunnan_numero<-as.numeric(df$kunnan_numero)
+```
+
+### 6. Load Official Finnish Municipal Boundaries
+
+Using geofi::get_municipalities(), we retrieve the 2025 municipal
+borders as an sf object. We then keep only the municipality ID and name.
+
+``` r
+municipalities <- geofi::get_municipalities(year = 2025)
+#> Requesting response from: http://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2025
+#> Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
+#> Data is licensed under: Attribution 4.0 International (CC BY 4.0)
+municipalities <- municipalities %>% 
+  select(kunta, kunta_name)
+```
+
+### 7. Join the Excel Data with the Geospatial Layer
+
+We use right_join() because: - df contains new attribute data - we want
+to keep all rows in df - we want the resulting object to remain an sf
+object (right_join preserves class)
+
+``` r
+municipalities2 <- dplyr::right_join(x = municipalities, y = df, by=c("kunta" = "kunnan_numero"))
+```
+
+### 8. Define Custom Colors for the Map and Create the Map
+
+These colors will represent different municipal groups.
+
+``` r
+ccities<-"#FED789" #cities
+crural<-"#023743" #rural
+cdense<-"#72874E" #densely populated
+```
+
+We visualize the municipal groups using ggplot2 and geom_sf().
+
+aes(fill = kuntaryhma) fills polygons by municipal group
+scale_fill_manual() applies our custom color palette theme() adjusts
+legend position and appearance
+
+``` r
+ggplot(municipalities2) +
+  geom_sf(aes(fill=kuntaryhma),
+          alpha=0.75,colour="white",lwd=0.1) +
+  scale_fill_manual(values = c(ccities, crural, cdense), name = "", guide = guide_legend(direction = "horizontal", label.position = "top", keywidth = 3, keyheight = 0.5)) +
+  theme(legend.position = c(0.16,0.7)) +
+  theme(legend.title=element_text(size=12),legend.text=element_text(size=12)) +
+  guides(fill=guide_legend(title="", nrow=3)) 
+```
+
+![](lecture01-intro_files/figure-html/unnamed-chunk-23-1.png)
+
+### 9. Create an Interactive Leaflet Map
+
+Before creating an interactive leaflet map, we must ensure that our
+spatial data uses the correct coordinate reference system (CRS). Leaflet
+requires data in WGS84 geographic coordinates (EPSG:4326), which use
+longitude and latitude in degrees. However, our municipalities2 dataset
+is currently in a projected CRS:
+
+    Geometry type: MULTIPOLYGON  
+    Bounding box: xmin: 83747.59 ymin: 6637032 xmax: 732907.7 ymax: 7776431  
+    Projected CRS: ETRS89 / TM35FIN(E,N)
+
+The TM35FIN system represents coordinates in meters (UTM Zone 35), which
+is excellent for Finnish spatial analysis, but not compatible with
+leaflet, which can only display long‑lat coordinates.
+
+To fix this, we use the st_transform() function. st_transform() is an sf
+function that reprojects spatial data into a new coordinate system. In
+our case, it converts the municipal polygons from TM35FIN into WGS84
+(EPSG:4326), making them usable in leaflet.
+
+``` r
+municipalities3 <- sf::st_transform(municipalities2, 4326)
+```
+
+Once transformed, we load the leaflet library and create an interactive
+map. The color palette for different municipality groups is reused from
+the ggplot example.
+
+``` r
+library(leaflet)
+
+# Define a color palette function based on kuntaryhma values
+pal <- colorFactor(
+  palette = c(ccities, crural, cdense),
+  domain  = municipalities2$kuntaryhma
+)
+
+leaflet_map <- leaflet(municipalities3) %>%
+  addProviderTiles("CartoDB.Positron") %>% 
+  addPolygons(
+    fillColor   = ~pal(kuntaryhma),
+    fillOpacity = 0.8,
+    color       = "white",
+    weight      = 1,
+    popup       = ~paste0(
+      "<strong>", kunta_name, "</strong><br>",
+      "Group: ", kuntaryhma
+    ),
+    highlight = highlightOptions(
+      weight = 2,
+      color = "#444444",
+      fillOpacity = 0.9,
+      bringToFront = TRUE
+    )
+  ) %>% 
+  addLegend(
+    pal = pal,
+    values = ~kuntaryhma,
+    title = "Municipality Group",
+    opacity = 1
+  )
+```
+
+``` r
+leaflet_map
 ```
 
 ``` r
