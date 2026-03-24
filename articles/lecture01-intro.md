@@ -4,11 +4,12 @@ Welcome to the course “Appelied Spatial Data Analysis and Research”
 course details:
 <https://opas.peppi.uef.fi/en/course/YH00EM30/135183?period=2025-2026>
 
-1.  What is R?
+## What is R?
 
-1.1 Why should we learn R? R follows a type inference coding structure
-and provides a wide variety of statistical and graphical techniques,
-including;
+### Why should we learn R?
+
+R follows a type inference coding structure and provides a wide variety
+of statistical and graphical techniques, including;
 
 - Linear and non-linear modelling
 - Univariate & Multivariate Statistics
@@ -29,7 +30,7 @@ length(available.packages(repos = "http://cran.us.r-project.org")[, 1])
 #> [1] 23425
 ```
 
-1.2 Installing R and RStudio on Windows
+### Installing R and RStudio on Windows
 
 The latest version of R can be download from the R homepage.
 
@@ -41,7 +42,7 @@ productive user interface for R.
 
 It’s free and open source, and works great on Windows, Mac, and Linux
 
-1.3 RStudio GUI/IDE
+### RStudio GUI/IDE
 
 RStudio GUI is composed of 4 panes which can be rearranged according to
 the requirements.
@@ -52,7 +53,7 @@ will not go into more details.
 Download Rstudio from here
 <https://rstudio.com/products/rstudio/download/#download>
 
-1.4 Installing Packages
+### Installing Packages
 
 The easiest way to install packages is to do it via R console. The
 command install.packages(“package name”) installs R packages directly
@@ -69,55 +70,16 @@ function to get the details.
 install.packages("sf", dependencies = c("Depends", "Suggests"))
 #> Installing package into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
-#> Warning: dependencies 'starsdata', 'rnaturalearthhires', 'Rgraphviz', 'marray',
-#> 'affy', 'Biobase', 'limma', 'BiocVersion', 'BiocStyle', 'glmmADMB',
-#> 'Biostrings', 'qs', 'taxidata', 'sylly.de', 'sylly.es', 'spDataLarge',
-#> 'cmdstanr', 'globaltest', 'vdg', 'graph', 'M3C', 'panelr', 'Iyer517',
-#> 'ComplexHeatmap', 'INLA', 'biomaRt', 'KEGGgraph', 'Rcampdf',
-#> 'tm.lexicon.GeneralInquirer', 'pryr', 'ExactData', 'blavsam', 'iwmm', 'BRugs',
-#> 'slp', 'gurobi', 'mlr3proba', 'rrelaxiv', 'RDCOMClient', 'genefilter', 'sva',
-#> 'NetSwan', 'ALEPlot', 'polars', 'RTCGA.rnaseq' are not available
-#> also installing the dependencies 'Rmosek', 'deconvolveR', 'vardpoor', 'REBayes', 'AlphaSimR', 'convey', 'laeken', 'DTRlearn2', 'naivebayes', 'sparsediscrim', 'OAIHarvester', 'mlr3misc', 'spocc', 'ecospat', 'usdm', 'ashr', 'binda', 'KrigInv', 'GPareto', 'policytree', 'evola', 'lme4breeding', 'geomapdata', 'outliertree', 'archive', 'srvyr', 'polle', 'SurvMetrics', 'discrim', 'RcppHungarian', 'topicmodels', 'mallet', 'lda', 'gistr', 'ulid', 'apcluster', 'LPCM', 'protoclust', 'stream', 'fastVoteR', 'genalg', 'lsa', 'registry', 'synchronicity', 'wrapr', 'rquery', 'rqdatatable', 'cccd', 'coRanking', 'diffusionMap', 'pcaL1', 'maxnet', 'cito', 'ENMeval', 'BayesXsrc', 'MBA', 'shapviz', 'asciicast', 'SGPdata', 'glmertree', 'ncvreg', 'future.batchtools', 'parallelMap', 'truncnorm', 'gdata', 'crossval', 'OpenImageR', 'FD', 'entropy', 'DiceOptim', 'mldr.datasets', 'dtw', 'fdrtool', 'Mcomp', 'fastmatch', 'rainbow', 'mvQuad', 'yulab.utils', 'DIDmultiplegt', 'grf', 'mbest', 'rintrojs', 'enhancer', 'vioplot', 'dr', 'ISLR2', 'GEOmap', 'isotree', 'geodata', 'PCAmixdata', 'tidycensus', 'targeted', 'aorsf', 'visdat', 'finetune', 'tidyclust', 'ccaPP', 'udpipe', 'LDAvis', 'mlflow', 'redux', 'rotor', 'xaringan', 'revealjs', 'ggparty', 'mlr3cluster', 'mlr3fselect', 'mlr3inferr', 'precrec', 'mlr3measures', 'quanteda', 'stopwords', 'bestNormalize', 'smotefamily', 'NMF', 'vtreat', 'dimRed', 'biomod2', 'Boruta', 'carSurv', 'wav', 'prettyunits', 'BatchJobs', 'geojsonio', 'flashClust', 'mvnfast', 'evtree', 'rchallenge', 'ROI', 'WrightMap', 'rbenchmark', 'R2BayesX', 'scalreg', 'adabag', 'AmesHousing', 'ICEbox', 'fastshap', 'NeuralNetTools', 'missForest', 'cocor', 'rhub', 'sfnetworks', 'rmapshaper', 'ramcmc', 'sde', 'sitmo', 'qcc', 'SGP', 'taxize', 'ggstance', 'NHANES', 'xrf', 'neuralnet', 'pre', 'bvls', 'logcondens', 'bartMachine', 'biglasso', 'KernelKnn', 'LogicReg', 'SIS', 'futile.logger', 'ada', 'batchtools', 'brnn', 'bst', 'care', 'ClusterR', 'clusterSim', 'cmaes', 'deepnet', 'elasticnet', 'fda.usc', 'FDboost', 'frbs', 'FSelector', 'FSelectorRcpp', 'GenSA', 'GPfit', 'irace', 'laGP', 'mldr', 'mRMRe', 'praznik', 'refund', 'rFerns', 'rotationForest', 'RRF', 'RSNNS', 'rucrdtw', 'sda', 'sparseLDA', 'stepPlr', 'survAUC', 'tgp', 'tsfeatures', 'wavelets', 'eaf', 'lhs', 'checkmate', 'BBmisc', 'fds', 'zipfR', 'lavaan.mi', 'restriktor', 'mcmcse', 'nimbleQuad', 'scholar', 'CausalQueries', 'DesignLibrary', 'rdrobust', 'rdss', 'influenceR', 'netrankr', 'rngtools', 'doMPI', 'doRedis', 'beepr', 'pbmcapply', 'ntfy', 'skpr', 'VarianceGamma', 'SkewHyperbolic', 'sommer', 'maptiles', 'weights', 'ggExtra', 'gglm', 'esc', 'mschart', 'rvg', 'sortable', 'LDRTools', 'tourr', 'amap', 'fxregime', 'hypergeo', 'tree', 'permute', 'bspec', 'RSEIS', 'signal', 'Gmisc', 'Greg', 'Metrics', 'ROI.plugin.ecos', 'ROI.plugin.alabama', 'ROI.plugin.neos', 'applicable', 'CAST', 'spatialsample', 'tigris', 'stringdist', 'lava', 'censored', 'clustMixType', 'QSARdata', 'tabnet', 'torch', 'workflowsets', 'scs', 'clarabel', 'giscoR', 'gower', 'plot3Drgl', 'yaImpute', 'text2vec', 'mlr3data', 'yardstick', 'distances', 'paradox', 'mlr3tuning', 'mlr3learners', 'lgr', 'pagedown', 'fairml', 'linprog', 'mlr3viz', 'mlr3pipelines', 'bbotk', 'blockCV', 'ggsci', 'ggtext', 'mlr3filters', 'sperrorest', 'twosamples', 'tfevents', 'torchvision', 'BatchExperiments', 'import', 'kimisc', 'knitcitations', 'metap', 'sampling', 'tikzDevice', 'FactoInvestigate', 'shape', 'bs4Dash', 'highcharter', 'rapidoc', 'redoc', 'visNetwork', 'writexl', 'fabricatr', 'randomizr', 'prediction', 'gtExtras', 'fImport', 'wdm', 'cobs', 'mvPot', 'ismev', 'TruncatedNormal', 'TSP', 'kdecopula', 'likert', 'psychomix', 'stablelearner', 'carrier', 'BIFIEsurvey', 'CDM', 'inline', 'MBESS', 'mdmb', 'synthpop', 'TAM', 'mitools', 'VGAMdata', 'RcppZiggurat', 'gamboostLSS', 'hdi', 'shapefiles', 'pdp', 'vip', 'NLP', 'antiword', 'filehash', 'Rpoppler', 'SnowballC', 'rpf', 'snowfall', 'ifaTools', 'tidyLPA', 'umx', 'formatR', 'ggraph', 'bain', 'inlinedocs', 'pbivnorm', 'pbv', 'shinythemes', 'rclipboard', 'snow', 'doSNOW', 'rlecuyer', 'pkgKitten', 'DescTools', 'invgamma', 'ipumsr', 'bssm', 'EnvStats', 'TRAMPR', 'measures', 'logmult', 'gtools', 'agricolae', 'mosaic', 'prefmod', 'rules', 'plotmo', 'som', 'smcfcs', 'casebase', 'grpreg', 'hal9001', 'nnls', 'pROC', 'SuperLearner', 'kmi', 'PASWR', 'VennDiagram', 'maditr', 'repr', 'mlr', 'ParamHelpers', 'smoof', 'akima', 'cmaesr', 'emoa', 'mco', 'fda', 'beeswarm', 'changepoint', 'KFAS', 'MSwM', 'lfda', 'languageR', 'runjags', 'modeest', 'semTools', 'nimble', 'fastverse', 'kit', 'pwr', 'bootES', 'easystats', 'report', 'DeclareDesign', 'ggside', 'tidygraph', 'doRNG', 'future.callr', 'doFuture', 'progressr', 'philentropy', 'transport', 'glba', 'binom', 'LaplacesDemon', 'skellam', 'triangle', 'future.tests', 'DoE.wrapper', 'FrF2.catlg128', 'BsMD', 'mc2d', 'GeneralizedHyperbolic', 'dismo', 'Rmixmod', 'xLLiM', 'mafR', 'elevatr', 'desplot', 'gge', 'lucid', 'nullabor', 'qicharts', 'qtl', 'SpATS', 'tidyterra', 'jtools', 'ez', 'ggResidpanel', 'Gmedian', 'mbend', 'ppcor', 'rmcorr', 'openxlsx2', 'CCP', 'learnr', 'ICSNP', 'moments', 'ICSClust', 'REPPlab', 'geomtextpath', 'shinyBS', 'datawizard', 'ggsignif', 'interactions', 'Rmisc', 'ca', 'circular', 'ff', 'sdPrior', 'glogis', 'scoringRules', 'ggdendro', 'WWGbook', 'bigmemory', 'glm2', 'FMStable', 'libstable4u', 'gfonts', 'networkD3', 'treemap', 'vegan', 'psd', 'pimeta', 'robvis', 'cccp', 'crossnma', 'gemtc', 'forestplot', 'compute.es', 'tfdatasets', 'janeaustenr', 'r2d3', 'keras3', 'Ckmeans.1d.dp', 'float', 'fauxpas', 'webmockr', 'profileModel', 'detectseparation', 'mbrglm', 'visreg', 'waywiser', 'sjmisc', 'sjPlot', 'censReg', 'feisr', 'fungible', 'httptest2', 'lavaSearch2', 'merTools', 'metaplus', 'tune', 'stddiff', 'tableone', 'butcher', 'tailor', 'twang', 'twangContinuous', 'Matching', 'ebal', 'CBPS', 'optweight', 'MatchThem', 'cem', 'sbw', 'eurostat', 'DALEX', 'auditor', 'h2o', 'iml', 'ingredients', 'lime', 'localModel', 'mlr3', 'stacks', 'gk', 'PairedData', 'gld', 'plotfunctions', 'quickmatch', 'RcppProgress', 'highs', 'miesmuschel', 'mlr3batchmark', 'mlr3benchmark', 'mlr3db', 'mlr3fairness', 'mlr3fda', 'mlr3oml', 'mlr3spatial', 'mlr3spatiotempcv', 'mlr3summary', 'mlr3torch', 'rush', 'matrixStats', 'corpcor', 'wrswoR', 'ggarrow', 'RItools', 'betacal', 'coneproj', 'backports', 'dominanceanalysis', 'relaimpo', 'CVST', 'missMDA', 'Factoshiny', 'NormPsy', 'NSM3', 'rootSolve', 'MNP', 'enrichwith', 'osqp', 'misaem', 'GPBayes', 'diagram', 'jsonvalidate', 'modules', 'packrat', 'shinyEffects', 'shinyjqui', 'MPsychoR', 'calibrate', 'cpp11', 'commonmark', 'doconv', 'equatags', 'officedown', 'plumber', 'gganimate', 'estimatr', 'modelsummary', 'pandoc', 'Rdatasets', 'uuid', 'rngWELL', 'animation', 'crop', 'HAC', 'lcopula', 'mev', 'mvnormtest', 'partitions', 'polynom', 'Runuran', 'VineCopula', 'Rmpi', 'libcoin', 'RWeka', 'psychotools', 'psychotree', 'gss', 'furrr', 'haven', 'literanger', 'miceadds', 'pan', 'VGAMextra', 'actuar', 'diptest', 'ellipse', 'SuppDists', 'stabs', 'BayesX', 'gbm', 'kangar00', 'mix', 'tm', 'OpenMx', 'tidySEM', 'faraway', 'directlabels', 'sirt', 'plink', 'mirtCAT', 'scdhlm', 'RcppArmadillo', 'adagio', 'DPQmpfr', 'Bessel', 'round', 'relimp', 'Ecfun', 'wooldridge', 'modeltools', 'ipred', 'varImp', 'gnm', 'gmodels', 'Fahrmeir', 'Sleuth2', 'BradleyTerry2', 'Cubist', 'earth', 'fastICA', 'klaR', 'mda', 'MLmetrics', 'pamr', 'pls', 'RANN', 'spls', 'superpc', 'themis', 'riskRegression', 'etm', 'ssanv', 'Exact', 'BlakerCI', 'cowplot', 'PoissonBinomial', 'revdbayes', 'expss', 'relsurv', 'CVXR', 'mlrMBO', 'tbm', 'DiceKriging', 'ggdist', 'ggfortify', 'loo', 'shinystan', 'BayesFactor', 'bayesQR', 'BH', 'blavaan', 'bridgesampling', 'collapse', 'effectsize', 'modelbased', 'ordbetareg', 'RcppEigen', 'see', 'RODBC', 'projpred', 'priorsense', 'RWiener', 'rtdists', 'extraDistr', 'mnormt', 'arm', 'future.mirai', 'combinat', 'energy', 'pgirmess', 'forward', 'conf.design', 'DoE.base', 'FrF2', 'fitdistrplus', 'maxlike', 'R2OpenBUGS', 'R2WinBUGS', 'jagsUI', 'qgam', 'rcdd', 'Infusion', 'IsoriX', 'blackbox', 'ROI.plugin.glpk', 'rsae', 'multilevel', 'agridat', 'fmesher', 'afex', 'bigutilsr', 'correlation', 'cplm', 'dagitty', 'discovr', 'ggdag', 'GPArotation', 'ICS', 'ICSOutlier', 'ISLR', 'ivreg', 'mclogit', 'multimode', 'nestedLogit', 'psychTools', 'qqplotr', 'rempsyc', 'mvinfluence', 'rrcov', 'archdata', 'qqtest', 'bamlss', 'lqmm', 'rlme', 'lemon', 'ggh4x', 'robustvarComp', 'confintROB', 'fastglm', 'Bergm', 'RSiena', 'ergm.count', 'networkLite', 'stabledist', 'bindrcpp', 'JM', 'joineR', 'oz', 'plot3D', 'stargazer', 'Rcsdp', 'orthopolynom', 'bayesm', 'StanHeaders', 'rjags', 'qpdf', 'devEMF', 'gdtools', 'data.tree', 'prettycode', 'pixmap', 'betapart', 'multitaper', 'meta', 'netmeta', 'bayesmeta', 'NlcOptim', 'robumeta', 'aod', 'C50', 'dials', 'keras', 'kknn', 'LiblineaR', 'sparklyr', 'tensorflow', 'xgboost', 'polycor', 'aws.ec2metadata', 'aws.signature', 'sodium', 'crul', 'R.matlab', 'vwline', 'tth', 'brglm', 'brglm2', 'logistf', 'sdmTMB', 'sjlabelled', 'sjstats', 'aplore3', 'GLMsData', 'insight', 'smd', 'workflows', 'apollo', 'fastDummies', 'gmnl', 'mixl', 'brmsmargins', 'causaldata', 'clarify', 'cjoint', 'cobalt', 'countrycode', 'crch', 'DALEXtra', 'DCchoice', 'dbarts', 'DirichletReg', 'distributional', 'equivalence', 'fmeffects', 'fwb', 'ggokabeito', 'glmx', 'itsadug', 'MatchIt', 'mhurdle', 'missRanger', 'mlr3verse', 'mvgam', 'optmatch', 'probably', 'Rchoice', 'REndo', 'rcmdcheck', 'scam', 'tictoc', 'titanic', 'tsModel', 'altdoc', 'BayesFM', 'cAIC4', 'cgam', 'ClassDiscovery', 'did', 'domir', 'DRR', 'EGAnet', 'factoextra', 'FactoMineR', 'lcmm', 'metaBMA', 'NbClust', 'nFactors', 'PCDimension', 'PMCMRplus', 'PROreg', 'serp', 'sparsepca', 'svylme', 'WeightIt', 'WRS2', 'cardx', 'ggsurvfit', 'janitor', 'purrrlyr', 'FME', 'attachment', 'dockerfiler', 'renv', 'rex', 'shiny.react', 'flexdashboard', 'globals', 'shinydashboardPlus', 'GA', 'Rtsne', 'smacof', 'umap', 'r2d2', 'tclust', 'pdfCluster', 'gridBase', 'bezier', 'ddalpha', 'RcppRoll', 'texPreview', 'r2rtf', 'seasonalview', 'miscTools', 'dlm', 'rdhs', 'sae', 'rpart.plot', 'TTR', 'RMySQL', 'downloader', 'slider', 'brew', 'git2r', 'pingr', 'pkgbuild', 'progress', 'flextable', 'ggiraph', 'heatmaply', 'rsconnect', 'thematic', 'tinytable', 'whoami', 'egg', 'gginnards', 'rbibutils', 'here', 'conflicted', 'spacefillr', 'randtoolbox', 'copula', 'simsalapar', 'partykit', 'inum', 'quantregForest', 'AppliedPredictiveModeling', 'mice', 'rmsb', 'VGAM', 'formula.tools', 'iterators', 'itertools', 'flexmix', 'gamair', 'mboost', 'mclust', 'rmeta', 'wordcloud', 'HSAUR2', 'nonnest2', 'lavaan', 'mirt', 'lmeInfo', 'setRNG', 'BB', 'ucminf', 'minqa', 'lbfgsb3c', 'lbfgs', 'subplex', 'marqLevAlg', 'piecewiseSEM', 'lokern', 'Rmpfr', 'gmp', 'qvcalc', 'glmmML', 'Ecdat', 'party', 'vcdExtra', 'penalized', 'caret', 'doMC', 'multiwayvcov', 'pcse', 'TSA', 'basefun', 'variables', 'prodlim', 'exact2x2', 'exactci', 'bpcp', 'bootstrap', 'gamlss.dist', 'distributions3', 'pec', 'fst', 'splines2', 'flexsurvcure', 'survminer', 'doBy', 'survC1', 'readstata13', 'mstate', 'survPen', 'mets', 'Hmsc', 'abess', 'tramnet', 'bayesplot', 'bayestestR', 'biglm', 'brms', 'compositions', 'mediation', 'multcompView', 'robmixglm', 'rsm', 'emdbook', 'AICcmodavg', 'MCMCpack', 'mgcViz', 'spaMM', 'GLMMadaptive', 'phylolm', 'performance', 'poLCA', 'heplots', 'betareg', 'robustlmm', 'AUC', 'binGroup', 'btergm', 'cmprsk', 'drc', 'epiR', 'ergm', 'glmnetUtils', 'gmm', 'irlba', 'joineRML', 'Kendall', 'ks', 'lm.beta', 'lmodel2', 'lsmeans', 'margins', 'mfx', 'modeldata', 'modeltests', 'muhaz', 'psych', 'rsample', 'speedglm', 'MCMCglmm', 'posterior', 'rstan', 'rstanarm', 'rstantools', 'R2jags', 'TMB', 'ftExtra', 'officer', 'styler', 'expint', 'ade4TkGUI', 'adegraphics', 'adephylo', 'adespatial', 'CircStats', 'splancs', 'waveslim', 'metadat', 'pracma', 'nloptr', 'optimParallel', 'CompQuadForm', 'BiasedUrn', 'clubSandwich', 'wildmeta', 'estmeansd', 'metaBLUE', 'glmulti', 'Amelia', 'calculus', 'clusterGeneration', 'hardhat', 'parallelly', 'parsnip', 'sasr', 'tidymodels', 'RcmdrMisc', 'aplpack', 'nortest', 'readxl', 'sem', 'htmlTable', 'formattable', 'sparkline', 'colourpicker', 'duckplyr', 'shinydashboard', 'gargle', 'jose', 'shinychat', 'vcr', 'irr', 'fortunes', 'miniUI', 'servr', 'R2HTML', 'feather', 'mockr', 'apex', 'ggseqlogo', 'seqinr', 'geometry', 'alphahull', 'gridBezier', 'gggrid', 'evd', 'denstrip', 'sn', 'exams', 'unix', 'slam', 'harrypotter', 'oompaBase', 'palr', 'pals', 'ggeffects', 'ggstats', 'glmtoolbox', 'gtsummary', 'logitr', 'marginaleffects', 'multgee', 'parameters', 'tidycmprsk', 'svyVGAM', 'qreport', 'acepack', 'pcaPP', 'polspline', 'getPass', 'safer', 'htm2txt', 'questionr', 'snakecase', 'rJava', 'statnet.common', 'alluvial', 'babynames', 'ggfittext', 'deSolve', 'diffobj', 'golem', 'rhino', 'shinytest', 'shinyvalidate', 'shinyWidgets', 'seriation', 'gplots', 'dynamicTreeCut', 'pvclust', 'corrplot', 'DendSer', 'fpc', 'circlize', 'recipes', 'ggplot2movies', 'rjson', 'katex', 'tippy', 'botor', 'RPushbullet', 'rsyslog', 'slackr', 'syslognet', 'telegram', 'formatters', 'demography', 'popEpi', 'forecTheta', 'rticles', 'seasonal', 'uroot', 'dfidx', 'crs', 'maxLik', 'hexView', 'pzfx', 'readODS', 'rmatio', 'nanoparquet', 'qs2', 'SUMMER', 'bench', 'bife', 'wkb', 'cmm', 'corrgram', 'ggpcp', 'candisc', 'quantmod', 'ggpubr', 'rgenoud', 'RPESE', 'RobStatTM', 'fBasics', 'adbcdrivermanager', 'clock', 'bitops', 'mathjaxr', 'remotes', 'websocket', 'BiocManager', 'foghorn', 'quarto', 'R.methodsS3', 'R.oo', 'gridExtra', 'ggpp', 'prettydoc', 'ggbeeswarm', 'marquee', 'litedown', 'vembedr', 'RJSONIO', 'colourvalues', 'geojsonsf', 'jsonify', 'sfheaders', 'qrng', 'numDeriv', 'trtf', 'rms', 'ATR', 'openxlsx', 'plyr', 'HSAUR3', 'MEMSS', 'dfoptim', 'gamm4', 'merDeriv', 'mlmRev', 'optimx', 'pbkrtest', 'rr2', 'semEff', 'robust', 'fit.models', 'MPV', 'sfsmisc', 'catdata', 'doParallel', 'foreach', 'skewt', 'sandwich', 'dynlm', 'bdsmatrix', 'kinship2', 'mlt', 'mlbench', 'reformulas', 'SparseGrid', 'alabama', 'latticeExtra', 'ordinalCont', 'mlt.docreg', 'ordinal', 'asht', 'gamlss', 'randomForestSRC', 'tramME', 'geepack', 'ranger', 'eha', 'flexsurv', 'frailtyEM', 'frailtypack', 'gamlss.cens', 'icenReg', 'mpr', 'rstpm2', 'timereg', 'Stat2Data', 'cotram', 'tramvs', 'KONPsurv', 'gamlss.data', 'english', 'pdftools', 'emmeans', 'estimability', 'bbmle', 'pscl', 'DHARMa', 'MuMIn', 'effects', 'dotwhisker', 'broom', 'broom.mixed', 'huxtable', 'blme', 'ade4', 'lmerTest', 'metafor', 'Rsolnp', 'mmrm', 'RBesT', 'Rcmdr', 'RcmdrPlugin.HH', 'microplot', 'kableExtra', 'DiagrammeR', 'DiagrammeRsvg', 'dm', 'ellmer', 'forcats', 'pixarfilms', 'reprex', 'bookdown', 'cyclocomp', 'patrick', 'tufte', 'RCurl', 'secretbase', 'sysfonts', 'showtextdb', 'R.devices', 'ascii', 'R.utils', 'tidyverse', 'gee', 'expm', 'phangorn', 'orientlib', 'misc3d', 'plotrix', 'alphashape3d', 'js', 'manipulateWidget', 'V8', 'xdvir', 'scatterplot3d', 'spam64', 'truncdist', 'showimage', 'brotli', 'tkrplot', 'rpanel', 'lars', 'Deriv', 'Ryacas', 'Rglpk', 'Rsymphony', 'paletteer', 'airports', 'broom.helpers', 'Hmisc', 'intergraph', 'labelled', 'network', 'scagnostics', 'sna', 'ggalluvial', 'shinytest2', 'listviewer', 'dendextend', 'IRdisplay', 'plotlyGeoAssets', 'palmerpenguins', 'rversions', 'ggridges', 'trajectories', 'sftrack', 'gridGraphics', 'gt', 'gclus', 'waldo', 'reactable', 'fontcm', 'sylly', 'sylly.en', 'logger', 'descr', 'tables', 'reshape', 'memisc', 'Epi', 'forecast', 'SparseM', 'logspline', 'nor1mix', 'Formula', 'conquer', 'fGarch', 'ineq', 'longmemo', 'mlogit', 'np', 'ROCR', 'rugarch', 'sampleSelection', 'systemfit', 'truncreg', 'vars', 'carData', 'alr4', 'leaps', 'MatrixModels', 'rio', 'survey', 'tweedie', 'msm', 'pglm', 'splm', 'cubature', 'alpaca', 'adehabitatMA', 'spData', 'spatialreg', 'dbscan', 'RSpectra', 'rgeoda', 'mipfp', 'Guerry', 'codingMatrices', 'fontquiver', 'PerformanceAnalytics', 'fTrading', 'tinysnapshot', 'shinyAce', 'shinydisconnect', 'tesseract', 'distro', 'duckdb', 'lubridate', 'pkgload', 'httpuv', 'testit', 'devtools', 'roxygen2', 'ggrepel', 'rnaturalearthdata', 'nanonext', 'promises', 'leaflet', 'yyjsonr', 'htmlwidgets', 'googleway', 'spatialwidget', 'mvtnorm', 'TH.data', 'lme4', 'robustbase', 'coin', 'xtable', 'lmtest', 'coxme', 'SimComp', 'ISwR', 'tram', 'fixest', 'glmmTMB', 'DoseFinding', 'HH', 'asd', 'gsDesign', 'bibtex', 'constructive', 'debugme', 'lintr', 'mockery', 'coro', 'dygraphs', 'markdown', 'mirai', 'reactlog', 'showtext', 'watcher', 'RhpcBLASctl', 'R.rsp', 'listenv', 'Lahman', 'nycflights13', 'RMariaDB', 'ape', 'igraphdata', 'rgl', 'vdiffr', 'dichromat', 'geoR', 'spam', 'chromote', 'repurrrsive', 'spelling', 'webfakes', 'polyclip', 'sm', 'nleqslv', 'glmnet', 'fftw', 'interp', 'gam', 'png', 'lpSolve', 'quadprog', 'relations', 'ozmaps', 'GGally', 'plotly', 'crosstalk', 'concaveman', 'sftime', 'patchwork', 'chemometrics', 'latex2exp', 'reshape2', 'extrafont', 'pander', 'quantreg', 'AER', 'car', 'statmod', 'urca', 'pder', 'texreg', 'lfe', 'adehabitatLT', 'cshapes', 'googleVis', 'ISOcodes', 'spdep', 'nanotime', 'timeDate', 'hexbin', 'svglite', 'timeSeries', 'tseries', 'chron', 'coda', 'mondate', 'stinepack', 'strucchange', 'tinyplot', 'tis', 'gapminder', 'kernlab', 'vcd', 'shinyjs', 'jpeg', 'rcartocolor', 'scico', 'wesanderson', 'magick', 'webp', 'arrow', 'reticulate', 'DT', 'box', 'geosphere', 'mapproj', 'mapdata', 'rnaturalearth', 'later', 'leaflet.extras2', 'leafsync', 'mapdeck', 'plainview', 'poorman', 'tinytest', 'webshot', 'webshot2', 'multcomp', 'RUnit', 'connectcreds', 'DBItest', 'paws.common', 'shiny', 'future', 'future.apply', 'dbplyr', 'ncdf4', 'igraph', 'rasterVis', 'gstat', 'fields', 'exactextractr', 'decor', 'rvest', 'deldir', 'spatstat.data', 'spatstat.univar', 'spatstat.explore', 'spatstat.model', 'fftwtools', 'gsl', 'goftest', 'locfit', 'abind', 'Cairo', 'CFtime', 'OpenStreetMap', 'RNetCDF', 'clue', 'cubble', 'cubelyr', 'FNN', 'ggforce', 'ggthemes', 'ncdfCF', 'ncdfgeom', 'ncmeta', 'plm', 'randomForest', 'spacetime', 'tsibble', 'viridis', 'xts', 'zoo', 'diffviewer', 'otel', 'otelsdk', 'av', 'transformr', 'colorspace', 'gifski', 'widgetframe', 'lobstr', 'rsvg', 'blob', 'nanoarrow', 'covr', 'lwgeom', 'maps', 'mapview', 'microbenchmark', 'odbc', 'pbapply', 'pool', 'raster', 'RPostgres', 'RPostgreSQL', 'RSQLite', 'sp', 'spatstat', 'spatstat.geom', 'spatstat.random', 'spatstat.linnet', 'spatstat.utils', 'stars', 'testthat', 'tmap'
-#> Warning in download.file(urls, destfiles, "libcurl", mode = "wb", ...): cannot
-#> open URL 'https://cran.rstudio.com/src/contrib/safer_0.2.2.tar.gz': HTTP status
-#> was '502 Bad Gateway'
-#> Warning in download.file(urls, destfiles, "libcurl", mode = "wb", ...): some
-#> files were not downloaded
-#> Warning in download.packages(pkgs, destdir = tmpd, available = available, :
-#> download of package 'safer' failed
-#> Warning in install.packages("sf", dependencies = c("Depends", "Suggests")):
-#> installation of package 'Rmpi' had non-zero exit status
-#> Warning in install.packages("sf", dependencies = c("Depends", "Suggests")):
-#> installation of package 'tkrplot' had non-zero exit status
-#> Warning in install.packages("sf", dependencies = c("Depends", "Suggests")):
-#> installation of package 'metap' had non-zero exit status
-#> Warning in install.packages("sf", dependencies = c("Depends", "Suggests")):
-#> installation of package 'DCchoice' had non-zero exit status
-#> Warning in install.packages("sf", dependencies = c("Depends", "Suggests")):
-#> installation of package 'ClassDiscovery' had non-zero exit status
-#> Warning in install.packages("sf", dependencies = c("Depends", "Suggests")):
-#> installation of package 'doMPI' had non-zero exit status
-#> Warning in install.packages("sf", dependencies = c("Depends", "Suggests")):
-#> installation of package 'PCDimension' had non-zero exit status
-#> Warning in install.packages("sf", dependencies = c("Depends", "Suggests")):
-#> installation of package 'NMF' had non-zero exit status
-#> Warning in install.packages("sf", dependencies = c("Depends", "Suggests")):
-#> installation of package 'xLLiM' had non-zero exit status
-#> Warning in install.packages("sf", dependencies = c("Depends", "Suggests")):
-#> installation of package 'ENMeval' had non-zero exit status
-#> Warning in install.packages("sf", dependencies = c("Depends", "Suggests")):
-#> installation of package 'rmsb' had non-zero exit status
 ```
 
 ``` r
 install.packages(c("reshape2", "foreign", "ggplot2", "stargazer"), dependencies = TRUE)
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
-#> also installing the dependencies 'munsell', 'profvis'
 # to be updated
 ```
 
-1.5 Getting Help
+### Getting Help
 
 As R is constantly evolving and new functions/packages are introduced
 every day it is good to know sources of help. The most basic help one
@@ -146,16 +108,36 @@ blogs can be found at R-bloggers3.
 Over all there quite a big community of R Users and help can be found
 for most of the topics.
 
-``` r
-############################################ AVOIMEN DATAN MALLINTAMINEN: PAAVO
-#install.packages("purrr")
-#install.packages("sf")
-#install.packages("tmap")
-#install.packages("httr")
-#install.packages("data.table")
-#install.packages("ows4R")
+## Reading data
 
-#options(pckgType="binary")
+\###Reading data
+
+## Introduction
+
+This example demonstrates how to download, explore, and process open
+spatial data from the Statistics Finland WFS service.  
+We will:
+
+1.  Inspect the WFS service  
+2.  Download a 5 km grid dataset  
+3.  Visualize the grid using **ggplot2**  
+4.  Clip the grid to the municipality of Kotka  
+5.  Save the clipped dataset as a shapefile
+
+This workflow helps you understand how openly available geospatial data
+can be accessed and integrated into spatial analysis.
+
+------------------------------------------------------------------------
+
+## 1. Load Required Libraries
+
+In this step, we load the R packages used throughout the analysis. These
+include tools for spatial data handling (sf), data manipulation (dplyr,
+purrr), downloading data from web services (httr, ows4R), and
+visualization (ggplot2). The geofi package is also loaded to access
+official Finnish municipal boundary data.
+
+``` r
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -183,19 +165,37 @@ library(ows4R)
 #> Loading ISO 19115-3 XML schemas...
 #> Loading ISO 19139 codelists...
 library(ggplot2)
-### download data
-vayla<-"https://geo.stat.fi/geoserver/tilastointialueet/wfs"
-url <-list(hostname ="geo.stat.fi/geoserver/tilastointialueet/wfs",
-           scheme ="https",
-           query =list(service ="WFS",
-                       version ="2.0.0",
-                       typename ="GetCapabilities"))%>%
-  setattr("class","url")
-request <-build_url(url)
+library(geofi)   # for Finnish municipal boundaries
+#> 
+#> geofi R package: tools for open GIS data for Finland.
+#> Part of rOpenGov <ropengov.org>.
+#> 
+#> **************
+#> Changes in version 1.1.0:
+#> - Object `municipality_central_localities` is depracated and replaced with function `municipality_central_localities()`. More at https://github.com/rOpenGov/geofi/blob/master/NEWS.md
+#> - New functions for interacting with both National Land Survey and Statistics Finland OCG API-services. See three new vignettes for examples.
+#> **************
+```
 
-vayla_client <- WFSClient$new(vayla, 
-                              serviceVersion = "2.0.0")
-vayla_client$getFeatureTypes(pretty = TRUE) # näyttää mahdollisesti haettavat tiedot
+## 2. Inspect the WFS Service
+
+Statistics Finland provides geospatial datasets through a WFS service.
+
+Before downloading any data, we connect to the Statistics Finland Web
+Feature Service (WFS). Using the WFSClient from the ows4R package, we
+query the service to list all available datasets. This ensures we know
+which layers (e.g., grids, municipality borders, zip codes) can be
+accessed and what their names are.
+
+``` r
+vayla <- "https://geo.stat.fi/geoserver/tilastointialueet/wfs"
+
+vayla_client <- WFSClient$new(
+  url = vayla,
+  serviceVersion = "2.0.0"
+)
+
+vayla_client$getFeatureTypes(pretty = TRUE)
 #>                                              name
 #> 1                      tilastointialueet:avi1000k
 #> 2                      tilastointialueet:avi4500k
@@ -652,17 +652,34 @@ vayla_client$getFeatureTypes(pretty = TRUE) # näyttää mahdollisesti haettavat
 #> 225        Vaalipiirit 2025 (1:4 500 000)
 #> 226        Vaalipiirit 2026 (1:1 000 000)
 #> 227        Vaalipiirit 2026 (1:4 500 000)
+```
 
-url <-list(hostname ="geo.stat.fi/geoserver/tilastointialueet/wfs",
-           scheme ="https",
-           query =list(service ="WFS",
-                       version ="2.0.0",
-                       request ="GetFeature",
-                       typename ="tilastointialueet:hila5km",
-                       outputFormat ="json"))%>%
-  setattr("class","url")
-request <-build_url(url)
-ruudukko <-st_read(request)
+### 3. Download the 5 km Grid Dataset
+
+Once we know which dataset we want, we construct a WFS request URL that
+retrieves the 5 km statistical grid (called hila5km) in GeoJSON format.
+The st_read() function from sf is then used to download and immediately
+load the spatial data into R as an sf object.
+
+So, let´s construct a WFS request and load the data directly into an sf
+object.
+
+``` r
+url_grid <- list(
+  hostname = "geo.stat.fi/geoserver/tilastointialueet/wfs",
+  scheme   = "https",
+  query = list(
+    service = "WFS",
+    version = "2.0.0",
+    request = "GetFeature",
+    typename = "tilastointialueet:hila5km",
+    outputFormat = "json"
+  )
+) %>% setattr("class", "url")
+
+grid_url <- build_url(url_grid)
+
+grid_5km <- st_read(grid_url)
 #> Reading layer `OGRGeoJSON' from data source 
 #>   `https://geo.stat.fi/geoserver/tilastointialueet/wfs/?service=WFS&version=2.0.0&request=GetFeature&typename=tilastointialueet%3Ahila5km&outputFormat=json' 
 #>   using driver `GeoJSON'
@@ -671,12 +688,93 @@ ruudukko <-st_read(request)
 #> Dimension:     XY
 #> Bounding box:  xmin: 60000 ymin: 6605000 xmax: 735000 ymax: 7780000
 #> Projected CRS: ETRS89 / TM35FIN(E,N)
-
-ggplot(ruudukko) + 
-   geom_sf(aes(fill = id), color = NA) 
 ```
 
-![](lecture01-intro_files/figure-html/unnamed-chunk-6-1.png)
+### 4. Visualize the Grid
+
+In this step, we create a simple map of the downloaded 5 km grid. The
+ggplot2 and geom_sf() functions allow us to quickly inspect the geometry
+and structure of the grid, ensuring the data loaded correctly and looks
+as expected.
+
+``` r
+ggplot(grid_5km) +
+  geom_sf(aes(fill = id), color = NA) +
+  labs(title = "Statistics Finland 5 km Grid")
+```
+
+![](lecture01-intro_files/figure-html/unnamed-chunk-9-1.png)
+
+### 5. Clip the Grid to Kotka
+
+To focus the analysis on a specific municipality, we first download
+Finland’s municipal boundaries using geofi::get_municipalities(). We
+then compute the centroid of each grid cell and perform a spatial join
+to determine which grid cells fall inside the municipality of Kotka.
+This isolates only the portion of the grid that overlaps Kotka’s area.
+
+5.1 Retrieve municipality boundaries with geofi-package
+
+The geofi package provides streamlined access to Finnish administrative
+and statistical geospatial data through the Statistics Finland WFS API,
+making it easy for researchers and analysts to obtain harmonized spatial
+datasets for diverse applications ranging from urban planning to
+environmental research. In addition to spatial layers such as
+municipalities, postal code areas, and population grids, geofi includes
+annually updated municipality key tables that support regional
+aggregation and multilingual data handling.
+
+Study the geofi package website, <https://ropengov.github.io/geofi/>,
+carefully, as there will be an exercise based on it this week.
+
+Let´s now download data from the municipalities by using geofi-package
+
+``` r
+municipalities <- geofi::get_municipalities(year = 2022) %>%
+  select(kunta, kunta_name)
+#> Requesting response from: http://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2022
+#> Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
+#> Data is licensed under: Attribution 4.0 International (CC BY 4.0)
+```
+
+5.2 Generate centroids for each grid cell
+
+``` r
+grid_centroids <- st_centroid(grid_5km)
+#> Warning: st_centroid assumes attributes are constant over geometries
+```
+
+5.3 Select grid cells located in Kotka
+
+``` r
+kotka <- subset(municipalities, kunta_name == "Kotka")
+
+grid_in_kotka <- st_join(grid_centroids, kotka)
+
+kotka_grid <- subset(grid_in_kotka, kunta_name == "Kotka")
+```
+
+Visualize the results
+
+``` r
+ggplot(kotka_grid) +
+  geom_sf(color = "red") +
+  labs(title = "Statistics Finland 5 km Grid in Kotka")
+```
+
+![](lecture01-intro_files/figure-html/unnamed-chunk-13-1.png)
+
+### 6. Export the Result as a Shapefile
+
+Finally, we save the clipped grid as a shapefile using st_write().
+Shapefiles can be opened in GIS software such as QGIS or ArcGIS, making
+this step useful for further spatial analysis, map production, or
+sharing results with others.
+
+``` r
+st_write(kotka_grid,
+         "define your path here/r1km_kotka.shp")
+```
 
 ``` r
 library(spatialcourseOL)

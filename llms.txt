@@ -9,7 +9,6 @@ course focuses on practical skills for working with spatial datasets in
 R and interpreting results in real‑world contexts.  
 This course is based on the official University of Eastern Finland
 course curriculum.
-[1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
 
 ------------------------------------------------------------------------
 
@@ -27,8 +26,7 @@ You will learn to:
   geospatial data structures  
 - Apply regression methods (non-parametric, multivariate, spatial)  
 - Perform data mining and work with large datasets (Paavo, YKR, etc.)  
-- Create meaningful visualizations and interpret spatial
-  models[1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
+- Create meaningful visualizations and interpret spatial models
 
 ------------------------------------------------------------------------
 
@@ -40,8 +38,7 @@ After completing this course, you will be able to:
 - Implement a range of spatial statistical models  
 - Visualize spatial patterns and model outcomes  
 - Interpret results for evidence-based decision-making  
-- Understand real-world spatial problems through geospatial
-  modelling[1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
+- Understand real-world spatial problems through geospatial modelling
 
 ------------------------------------------------------------------------
 
@@ -50,8 +47,7 @@ After completing this course, you will be able to:
 Students with basic experience in spatial data and statistical methods
 who want to strengthen their analytical and geospatial modelling skills.
 Ideal before starting a Master’s thesis in geography, environmental
-policy, or related
-fields.[1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
+policy, or related fields.
 
 ------------------------------------------------------------------------
 
@@ -75,7 +71,13 @@ fields.[1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskf
 - CRSs, projections, working with vector & raster data  
 - **Lecture + Practical + Assignment 3**
 
-### **Week 4 — Modelling Spatial Data**
+### **Week 4 — Geospatial modelling II**
+
+- Regression, nonparametric methods, spatial regression  
+- Model diagnostics & interpretation  
+- **Lecture + Practical + Assignment 4**
+
+### **Week 5 — Geospatial modelling II**
 
 - Regression, nonparametric methods, spatial regression  
 - Model diagnostics & interpretation  
@@ -103,8 +105,7 @@ Use the navigation bar at the top to explore all content.
 - Brunsdon, C. & Comber, L. (2015). *An Introduction to R for Spatial
   Analysis and Mapping.*  
 - Bivand, R., Pebesma, E., & Gómez‑Rubio, V. (2008). *Applied Spatial
-  Data Analysis with R.*  
-  [1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
+  Data Analysis with R.*
 
 ------------------------------------------------------------------------
 
@@ -114,7 +115,7 @@ For registration, schedules, and formal details, visit the official
 course page:
 
 👉 **[YH00EM30 – Applied Spatial Analysis and
-Research](https://opas.peppi.uef.fi/en/course/YH00EM30/135183?period=2025-2026)**[1](https://skillsmp.com/skills/chelch5-scafforge-libraryunverified-taskfiles-skillstosort-agentalmanacskills-build-pkgdown-site-skill-md)
+Research](https://opas.peppi.uef.fi/en/course/YH00EM30/135183?period=2025-2026)**
 
 ------------------------------------------------------------------------
 
