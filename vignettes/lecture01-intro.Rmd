@@ -88,6 +88,17 @@ Other than these various good R related blogs are on the internet which can be r
 
 Over all there quite a big community of R Users and help can be found for most of the topics.
 
+### R programming for ABSOLUTE beginners
+
+
+<iframe width="560" height="315"
+        src="https://www.youtube.com/embed/FY8BISK5DpM"
+        frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+</iframe>
+
+
 
 ```{r setup}
 library(spatialcourseOL)
