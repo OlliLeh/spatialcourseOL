@@ -26,5 +26,8 @@ Imports:
     data.table,
     ows4R,
     usethis,
-    geofi
+    geofi,
+    janitor,
+    leaflet,
+    readxl
     
