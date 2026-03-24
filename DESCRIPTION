@@ -25,5 +25,6 @@ Imports:
     httr,
     data.table,
     ows4R,
-    usethis
+    usethis,
+    geofi
     
