@@ -219,7 +219,7 @@ The first line sets up a numeric vector of length 12 with the name Fibonacci. Th
 
 To see all types, type in 
 ```{r}
-> Fibonacci
+Fibonacci
 ```
 
 Example:
