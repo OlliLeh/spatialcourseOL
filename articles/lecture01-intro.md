@@ -256,6 +256,168 @@ packages), object-oriented (organized as a collection of functions which
 do specific calculations without having external side-effects), among
 other possibilities.
 
+#### The for ( ) loop
+
+The for ( ) statement allows one to specify that a certain operation
+should be repeated a fixed number of times.
+
+Syntax for (names in vector) {commands}
+
+This sets a variable called name equal to each of the elements of vector
+in sequence. For each value, whatever commands are listed within the
+curly braces will be performed. The curly braces serve to group the
+commands so that they are treated by R as a single command. If there is
+only one command to execute, the braces are not needed.
+
+Example: The Fibonacci sequence is a famous sequence in mathematics. The
+first two elements are defined as 1,1\]. Subsequent elements are defined
+as the sum of the preceding two elements. For example, the third element
+is 2, the fourth element is 3, the fifth element is 5, and so on.
+
+To obtain first 12 Fibonacci numbers in R, we can use
+
+``` r
+Fibonacci <- numeric(12)
+Fibonacci[1] <- Fibonacci[2] <- 1
+for (i in 3:12) Fibonacci[i] <- Fibonacci[i-2]+Fibonacci[i-1]
+```
+
+Understanding the code: The first line sets up a numeric vector of
+length 12 with the name Fibonacci. This vector consists of 12 zeroes.
+The second line updates the first two elements of Fibonacci to the
+value 1. The third line updates the third element, fourth element, and
+so on according to the rule defining the Fibonacci sequence. In
+particular, Fibonacci\[3\] is assigned the value of Fibonacci\[1\] +
+Fibonacci\[2\], i.e. 2. Fibonacci\[4\] is then assigned the latest value
+of Fibonacci\[2\] + Fibonacci\[3\] , giving it the value 3. The for ( )
+loop updates the third through 12th element of the sequence in this way.
+
+To see all types, type in
+
+``` r
+Fibonacci
+#>  [1]   1   1   2   3   5   8  13  21  34  55  89 144
+```
+
+Example: Suppose a car dealer promotes two options for the purchase of a
+new 20 000€ car. The first option is for the customer to pay up front
+and receive a 1 000€ rebate. The second option is “0%-interest
+financing” where the customer makes 20 monthly payments of 1 000€
+beginning in one month’s time.
+
+Because of option 1, the effective price of the car is really 19 000€,
+so the dealer is really charging some interest rate i for option 2. We
+can calculate this value using the formula for the present value of an
+annuity:
+
+$$19000 = 1000 \cdot \frac{1 - (1 + i)^{- 20}}{i}$$
+
+By multiplying both sides of this equation by i and dividing by 19000,
+we get the form of a fixed-point problem
+
+$$i = \frac{1 - (1 + i)^{- 20}}{19}$$
+
+By taking an initial guess for i and plugging it into the right-hand
+side of this equation, we can get an “updated” value for I on the left.
+For example, if we start with i=0.006, then our update is
+
+$$i = \frac{1 - (1 + 0.006)^{- 20}}{19} = 0.00593$$
+
+By plugging this updated value into the right-hand side of the equation
+again, we get a new update:
+
+$$i = \frac{1 - (1 + 0.00593)^{- 20}}{19} = 0.00586$$
+
+This kind of fixed-point iteration usually requires many iterations
+before we can be confident that we have the solution to the fixed-point
+equation. Here is R code to work out the solution after 1 000
+iterations.
+
+``` r
+i <- 0.006
+for (j in 1:1000){
+ i <- (1-(1+i)^(-20))/19
+ }
+i
+#> [1] 0.004935593
+```
+
+Example: Let’s create a vector containing number 1-10:
+
+``` r
+samples <- c(rep(1:10))
+samples
+#>  [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+Go through the samples one by one and print them out:
+
+``` r
+for (thissample in samples)
+ {
+   print(thissample)
+ }
+#> [1] 1
+#> [1] 2
+#> [1] 3
+#> [1] 4
+#> [1] 5
+#> [1] 6
+#> [1] 7
+#> [1] 8
+#> [1] 9
+#> [1] 10
+```
+
+Let’s do something inside the for loop:
+
+``` r
+for (thissample in samples)
+ {
+    str <- paste(thissample,"is current sample",sep=" ")
+    print(str)
+ }
+#> [1] "1 is current sample"
+#> [1] "2 is current sample"
+#> [1] "3 is current sample"
+#> [1] "4 is current sample"
+#> [1] "5 is current sample"
+#> [1] "6 is current sample"
+#> [1] "7 is current sample"
+#> [1] "8 is current sample"
+#> [1] "9 is current sample"
+#> [1] "10 is current sample"
+```
+
+Let’s terminate the loop when the sample is 3:
+
+``` r
+for (thissample in samples)
+ {
+    if (thissample == 3) break
+    str <- paste(thissample,"is current sample",sep=" ")
+    print(str)
+ }
+#> [1] "1 is current sample"
+#> [1] "2 is current sample"
+```
+
+Let’s ignore when the sample number is even:
+
+``` r
+for (thissample in samples)
+ {
+    if (thissample %% 2 == 0) next
+    str <- paste(thissample,"is current sample",sep=" ")
+    print(str)
+ }
+#> [1] "1 is current sample"
+#> [1] "3 is current sample"
+#> [1] "5 is current sample"
+#> [1] "7 is current sample"
+#> [1] "9 is current sample"
+```
+
 #### The if ( ) statement
 
 The if ( ) statement allows us to control which statements are executed,
@@ -316,7 +478,7 @@ Or if we
 corplot(c(2,5,7),c(5,6,8),T)
 ```
 
-![](lecture01-intro_files/figure-html/unnamed-chunk-20-1.png)
+![](lecture01-intro_files/figure-html/unnamed-chunk-28-1.png)
 
     #> [1] 0.953821
 
@@ -362,9 +524,16 @@ Understanding the code: The purpose of the function is to provide all
 prime numbers up to the given value n. The basic idea of the program is
 contained in the lines:
 
-sieve \<- seq(2,n) + primes \<- c() + for (i in seq(2,n)) { + if
-(any(sieve == i)) { + primes \<- c(primes,i) + sieve \<- c(sieve\[(sieve
-%% i) != 0\], i) + } + }
+``` r
+sieve <- seq(2,n)
+      primes <- c()
+      for (i in seq(2,n)) {
+          if (any(sieve == i)) {
+              primes <- c(primes,i)
+              sieve <- c(sieve[(sieve %% i) != 0], i)
+          }
+      }
+```
 
 The sieve object holds all the candidates for testing. Initially, all
 integers from 2 through n are stored in this vector. The primes object
@@ -384,7 +553,9 @@ these elements and save all other elements, we can negate this using !
 (sieve %% i == 0) or sieve %% i != 0. Then we can eliminate all
 multiples of i from the sieve vector using
 
-sieve \<- sieve\[(sieve %% i) != 0\]
+``` r
+sieve <- sieve[(sieve %% i) != 0]
+```
 
 Note that this eliminates i as well, but we have already saved it in
 primes.
@@ -651,7 +822,7 @@ Draw a histogram from sampled differences
 hist(diff.means)
 ```
 
-![](lecture01-intro_files/figure-html/unnamed-chunk-30-1.png)
+![](lecture01-intro_files/figure-html/unnamed-chunk-40-1.png)
 
 Let’s calculate the p-value for observed difference:
 
@@ -677,32 +848,57 @@ lcb;ucb
 #> [1] 0.1528891
 ```
 
-Let’s create a t-test and wilcoxon test and compare results between
-tests:
+#### Compare Permutation Test with other tests
+
+Let’s create a t-test and a Wilcoxon test and compare the results
+between these approaches. Here we simply define a numeric vector y2
+containing ten observations.
 
 ``` r
 y2=c(9.65, 5.09, 8.80, 7.42, 6.68, 8.79, 9.36, 9.64, 9.02, 8.86)
 ```
+
+We print out the values just to confirm that the vector was created
+correctly.
 
 ``` r
 y2
 #>  [1] 9.65 5.09 8.80 7.42 6.68 8.79 9.36 9.64 9.02 8.86
 ```
 
-First modify data and then create a data frame:
+Preparing the data: Next, we create a grouping variable and combine it
+with the response values. This allows us to perform two‑sample tests.
 
 ``` r
 group<-c(1,1,1,1,1,2,2,2,2,2)
+```
 
+Here, group indicates the group membership of each observation.
+
+The first 5 observations belong to group 1 The last 5 observations
+belong to group 2
+
+We now combine the response variable (y2) and the group indicator into a
+single object:
+
+``` r
 data<-cbind(y2,group)
-
 class(data)
 #> [1] "matrix" "array"
-
 data<-as.data.frame(data)
 ```
 
+cbind() binds the variables column‑wise, and as.data.frame() converts
+the result into a data frame suitable for statistical testing.
+
 #### T-test
+
+A t‑test compares the mean of two groups under the assumption that the
+data are normally distributed.
+
+Here, we perform an independent two‑sample t‑test using formula
+notation: - data$y2isthenumericresponsevariable - data$group is the
+grouping variable
 
 ``` r
 ?t.test
@@ -721,7 +917,14 @@ t.test(data$y2~data$group)
 #>           7.528           9.134
 ```
 
+The output shows whether there is a statistically significant difference
+between the group means.
+
 #### wilcox.test
+
+The Wilcoxon rank‑sum test is a non‑parametric alternative to the
+t‑test. It does not assume normality and instead compares the
+distributions of the two groups.
 
 ``` r
 ?wilcox.test
@@ -733,6 +936,9 @@ wilcox.test(data$y2~data$group)
 #> W = 6, p-value = 0.2222
 #> alternative hypothesis: true location shift is not equal to 0
 ```
+
+This test examines whether one group tends to have larger values than
+the other, based on ranks rather than means.
 
 ``` r
 library(spatialcourseOL)
