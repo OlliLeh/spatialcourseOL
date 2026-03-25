@@ -284,22 +284,22 @@ for (thissample in samples)
 
 Let's terminate the loop when the sample is 3:
 ```{r}
-> for (thissample in samples)
-+ {
-+    if (thissample == 3) break
-+    str <- paste(thissample,"is current sample",sep=" ")
-+    print(str)
-+ }
+for (thissample in samples)
+ {
+    if (thissample == 3) break
+    str <- paste(thissample,"is current sample",sep=" ")
+    print(str)
+ }
 ```
 
 Let's ignore when the sample number is even:
 ```{r}
-> for (thissample in samples)
-+ {
-+    if (thissample %% 2 == 0) next
-+    str <- paste(thissample,"is current sample",sep=" ")
-+    print(str)
-+ }
+for (thissample in samples)
+ {
+    if (thissample %% 2 == 0) next
+    str <- paste(thissample,"is current sample",sep=" ")
+    print(str)
+ }
 ```
 
 ### The if ( ) statement
@@ -379,13 +379,13 @@ Understanding the code:
 The purpose of the function is to provide all prime numbers up to the given value n. The basic idea of the program is contained in the lines:
 ```{r, eval=FALSE}
 sieve <- seq(2,n)
-+      primes <- c()
-+      for (i in seq(2,n)) {
-+          if (any(sieve == i)) {
-+              primes <- c(primes,i)
-+              sieve <- c(sieve[(sieve %% i) != 0], i)
-+          }
-+      }
+      primes <- c()
+      for (i in seq(2,n)) {
+          if (any(sieve == i)) {
+              primes <- c(primes,i)
+              sieve <- c(sieve[(sieve %% i) != 0], i)
+          }
+      }
 ```
 
 The sieve object holds all the candidates for testing. Initially, all integers from 2 through n are stored in this vector. The primes object is set up initially empty, eventually to contain all of the primes that are less than or equal to n. The composite numbers in sieve are removed, and the primes are copied to primes. 
