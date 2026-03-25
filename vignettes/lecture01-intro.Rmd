@@ -146,7 +146,7 @@ fahrenheit_to_celsius(10)
 R allows the user to create new functions. This is a useful feature, particularly when you want to automate certain tasks that you have to repeat over and over. Let’s start with a simple example. Suppose you want to calculate the standard error of a mean associated to a set of values. 
 
 Before proceeding to create the function we should check whether there is already a function with this name in R. Let’s type:
-```{r}
+```{r, eval=FALSE}
 se
 ```
 
@@ -213,6 +213,31 @@ Here is a summary of the advantages of these new methods:
 Here are two links for good examples of the permutation tests:
 •	http://spark.rstudio.com/ahmed/permutation/
 •	http://faculty.washington.edu/kenrice/sisg/SISG-08-06.pdf
+
+Let’s create a vector where elements [1:5] belong to group A and elements [6:10] belong to group B
+```{r}
+y2=c(9.65, 5.09, 8.80, 7.42, 6.68, 8.79, 9.36, 9.64, 9.02, 8.86)
+```
+Now let’s create permutation test: 
+
+First calculate the observed difference in group averages 
+```{r}
+obs.diff.means=mean(y2[1:5])-mean(y2[6:10])
+```
+
+Do the test with 500 permutations
+```{r}
+diff.means=numeric()
+for (i in 1:500){
+ perm=sample(y2,10,replace=F)
+ diff.means[i]=mean(perm[1:5])-mean(perm[6:10])
+ }
+```
+
+Draw a histogram from sampled differences
+```{r}
+hist(diff.means)
+```
 
 ### Example: Permutation test
 
