@@ -158,6 +158,7 @@ se<- function(x){
  return (sqrt(v/z))
 }
 ```
+
 After creating this function, you can use it as follows:
 ```{r}
 test<-c(2,4,3,6,4,9,11,3,7,6)
