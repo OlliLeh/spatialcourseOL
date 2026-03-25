@@ -207,8 +207,8 @@ This statement causes a set of commands to be invoked if condition evaluates TRU
 
 A simple example:
 ```{r}
-> x <- 3
-> if (x > 2) y <- 2*x else y <- 3*x
+x <- 3
+if (x > 2) y <- 2*x else y <- 3*x
 ```
 
 Since x > 2 is TRUE, y is assigned 2 * 3 = 6. If it hadn´t been true, y would have been assigned the value of 3 * x. We can confirm this:
