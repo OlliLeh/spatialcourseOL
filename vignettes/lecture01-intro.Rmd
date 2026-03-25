@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 Welcome to the course "Appelied Spatial Data Analysis and Research"
 course details: https://opas.peppi.uef.fi/en/course/YH00EM30/135183?period=2025-2026
 
-## What is R?
+# What is R?
 
 ### Why should we learn R?
 R follows a type inference coding structure and provides a wide variety of statistical and graphical techniques, including;
@@ -90,7 +90,6 @@ Over all there quite a big community of R Users and help can be found for most o
 
 ### R programming for ABSOLUTE beginners
 
-
 <iframe width="560" height="315"
         src="https://www.youtube.com/embed/FY8BISK5DpM"
         frameborder="0"
@@ -98,6 +97,124 @@ Over all there quite a big community of R Users and help can be found for most o
         allowfullscreen>
 </iframe>
 
+
+# Functions in R
+
+One of the great strengths of R is the user's ability to add functions. In fact, many of the functions in R are actually functions of functions. The functions take input, perform operations on the input and return output. The structure of a function is given below (see the webpage: https://www.learnbyexample.org/r-functions/):
+
+figures/myfigure.png
+
+The agrument can defined with or without defaults and when the function is called the arguments are passed to the statements.
+
+Functions in R are “first class objects”, which means that they can be treated much like any other R object. Importantly, 1) functions can be passed as arguments to other functions and 2) functions can be nested, so that you can define a function inside of another function. 
+
+Let’s create a simple function:
+
+```{r}
+f<-function(x) {
+ a=b*x^2
+ return(a)
+ }
+a<-2
+b<-1
+f(5)
+```
+
+The function returns 25, because 
+-	The function found b in the workspace that called it
+-	In the console a is still 2 because the function created its own local variable a.
+
+Here is another simple example where we define a function fahrenheit_to_celsius that converts temperatures from Fahrenheit to Celsius:
+
+```{r}
+fahrenheit_to_celsius <- function(temp_F) {
+   temp_C <- (temp_F - 32) * 5 / 9
+   return(temp_C)
+ }
+```
+
+We define fahrenheit_to_celsius by assigning it to the output of function. The list of argument names are contained within parentheses. Next, the body of the function–the statements that are executed when it runs–is contained within curly braces ({}). The statements in the body are indented by two spaces, which makes the code easier to read but does not affect how the code operates.
+
+When we call the function, the values we pass to it are assigned to those variables so that we can use them inside the function. Inside the function, we use a return statement to send a result back to whoever asked for it. You can test the function:
+
+```{r}
+fahrenheit_to_celsius(10)
+[1] -12.22222
+```
+
+### Example 1: Creating new functions: Standard error
+
+R allows the user to create new functions. This is a useful feature, particularly when you want to automate certain tasks that you have to repeat over and over. Let’s start with a simple example. Suppose you want to calculate the standard error of a mean associated to a set of values. 
+
+Before proceeding to create the function we should check whether there is already a function with this name in R. Let’s type:
+```{r}
+se
+```
+
+The error printed by R indicates that we are safe to use that name. Following code is a possible way to create our function:
+```{r}
+se<- function(x){
+ v <- var(x)
+ z <- length(x)
+ return (sqrt(v/z))
+}
+```
+After creating this function, you can use it as follows:
+```{r}
+test<-c(2,4,3,6,4,9,11,3,7,6)
+se(test)
+```
+The value returned by any function can be decided using the function return() or, alternatively, R returns the result of the last expression that was evaluated within the function. 
+
+### Example 2: More advanced function of basic statistics
+```{r}
+basic.stats <- function(x, more=F) {
+  stats <- list()
+  clean.x <- x[!is.na(x)]
+  stats$n <- length(x)
+  stats$nNAs <- stats$n-length(clean.x)
+  stats$mean <- mean(clean.x)
+  stats$std <- sd(clean.x)
+  stats$med <- median(clean.x)
+  if (more) {
+    stats$skew <- sum(((clean.x - stats$mean)/stats$std)^3)/length(clean.x)
+    stats$kurt <- sum(((clean.x - stats$mean)/stats$std)^4)/length(clean.x)-3
+    }
+  unlist(stats)
+ }
+```
+
+This function has a parameter (more) that has a default value (F). This means that you can call this function with or without setting this parameter. Below are examples of these two alternatives:
+```{r}
+basic.stats(test)
+        n      nNAs      mean       std       med 
+10.000000  0.000000  5.500000  2.877113  5.000000 
+basic.stats(test,more=T)
+         n       nNAs       mean        std        med       skew       kurt 
+10.0000000  0.0000000  5.5000000  2.8771128  5.0000000  0.5542469 -1.0902009
+```
+
+# R and Programming
+
+
+# Permutation Test and Resampling
+
+The bootstrap, permutation tests, and other resampling methods are part of this revolution. Resampling methods allow us to quantify uncertainty by calculating standard errors and confidence intervals and performing significance tests. They require fewer assumptions than traditional methods and generally give more accurate answers (sometimes very much more
+accurate). Moreover, resampling lets us tackle new inference settings easily.
+
+Resampling also helps us understand the concepts of statistical inference. The sampling distribution is an abstract idea. The bootstrap analog (the “bootstrap distribution”) is a concrete set of numbers that we analyze using familiar tools like histograms. The standard deviation of that distribution is a concrete analog to the abstract concept of a standard error. Resampling methods for significance tests have the same advantage; permutation tests produce a concrete set of numbers whose “permutation distribution” approximates the sampling distribution under the null hypothesis. Comparing our statistic to these numbers helps us understand p-values. 
+
+Here is a summary of the advantages of these new methods: 
+-	Fewer assumptions: For example, resampling methods do not require that distributions be Normal or that sample sizes be large.
+-	Greater accuracy: Permutation tests, and some bootstrap methods, are more accurate in practice than classical methods.
+-	Generality: Resampling methods are remarkably similar for a wide range of statistics and do not require new formulas for every statistic. You do not need to memorize or look up special formulas for each procedure.
+-	Promote understanding: Bootstrap procedures build intuition by providing concrete analogies to theoretical concepts
+
+Here are two links for good examples of the permutation tests:
+•	http://spark.rstudio.com/ahmed/permutation/
+•	http://faculty.washington.edu/kenrice/sisg/SISG-08-06.pdf
+
+Example 3.10: Permutation test
 
 
 ```{r setup}
