@@ -102,7 +102,7 @@ Over all there quite a big community of R Users and help can be found for most o
 
 One of the great strengths of R is the user's ability to add functions. In fact, many of the functions in R are actually functions of functions. The functions take input, perform operations on the input and return output. The structure of a function is given below (see the webpage: https://www.learnbyexample.org/r-functions/):
 
-figures/myfigure.png
+figures/function.png
 
 The agrument can defined with or without defaults and when the function is called the arguments are passed to the statements.
 
