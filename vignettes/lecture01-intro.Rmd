@@ -139,7 +139,6 @@ When we call the function, the values we pass to it are assigned to those variab
 
 ```{r}
 fahrenheit_to_celsius(10)
-[1] -12.22222
 ```
 
 ### Example 1: Creating new functions: Standard error
@@ -214,7 +213,7 @@ Here are two links for good examples of the permutation tests:
 •	http://spark.rstudio.com/ahmed/permutation/
 •	http://faculty.washington.edu/kenrice/sisg/SISG-08-06.pdf
 
-Example 3.10: Permutation test
+### Example: Permutation test
 
 
 ```{r setup}
