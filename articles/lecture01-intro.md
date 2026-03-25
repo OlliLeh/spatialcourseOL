@@ -118,7 +118,7 @@ The functions take input, perform operations on the input and return
 output. The structure of a function is given below (see the webpage:
 <https://www.learnbyexample.org/r-functions/>):
 
-figures/function.png
+![](../figures/function.png)
 
 The agrument can defined with or without defaults and when the function
 is called the arguments are passed to the statements.
@@ -313,7 +313,7 @@ Draw a histogram from sampled differences
 hist(diff.means)
 ```
 
-![](lecture01-intro_files/figure-html/unnamed-chunk-17-1.png)
+![](lecture01-intro_files/figure-html/unnamed-chunk-18-1.png)
 
 #### Example: Permutation test
 
