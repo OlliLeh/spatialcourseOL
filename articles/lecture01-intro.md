@@ -238,13 +238,349 @@ parameter. Below are examples of these two alternatives:
 basic.stats(test)
 #>         n      nNAs      mean       std       med 
 #> 10.000000  0.000000  5.500000  2.877113  5.000000
-
 basic.stats(test,more=T)
 #>          n       nNAs       mean        std        med       skew       kurt 
 #> 10.0000000  0.0000000  5.5000000  2.8771128  5.0000000  0.5542469 -1.0902009
 ```
 
 ## R and Programming
+
+Programming involves writing relatively complex systems of instructions.
+There are two broad styles of programming: the imperative style (used in
+R) involves stringing together instructions telling the computer what to
+do. The declarative style (used in HMTL in web pages) involves writing a
+description of the end result, without giving the details about how to
+get there. R programming may be procedural (describing what steps to
+take to achieve a task), modular (broken up in to self-contained
+packages), object-oriented (organized as a collection of functions which
+do specific calculations without having external side-effects), among
+other possibilities.
+
+#### The if ( ) statement
+
+The if ( ) statement allows us to control which statements are executed,
+and sometimes this is more convenient.
+
+Syntax if (condition) {commands when TRUE} if (condition( {commands when
+TRUE} else {commands when FALSE}
+
+This statement causes a set of commands to be invoked if condition
+evaluates TRUE. The else part is optional, and provides an alternative
+set of commands which are to be invoked in case the logical variables is
+FALSE.
+
+A simple example:
+
+``` r
+x <- 3
+if (x > 2) y <- 2*x else y <- 3*x
+```
+
+Since x \> 2 is TRUE, y is assigned 2 \* 3 = 6. If it hadn´t been true,
+y would have been assigned the value of 3 \* x. We can confirm this:
+
+``` r
+y
+#> [1] 6
+```
+
+The if ( ) statement is often used inside user-defined functions. The
+following is a typical example.
+
+Example: The correlation between two vectors of numbers is often
+calculated using the cor ( ) function. It is supposed to give a measure
+of linear association. We can add a scatter plot of data as follows:
+
+``` r
+corplot <- function(x,y,plotit) {
+ if (plotit == TRUE) plot(x,y)
+ cor(x,y)
+ }
+```
+
+``` r
+class(corplot)
+#> [1] "function"
+```
+
+We can apply this function to two vectors without plotting by typing
+
+``` r
+corplot(c(2,5,7),c(5,6,8),FALSE)
+#> [1] 0.953821
+```
+
+Or if we
+
+``` r
+corplot(c(2,5,7),c(5,6,8),T)
+```
+
+![](lecture01-intro_files/figure-html/unnamed-chunk-20-1.png)
+
+    #> [1] 0.953821
+
+and get a simple figure.
+
+Example: The function that follows is based on the sieve of
+Eratosthenes, the oldelst known systematic method for listing prime
+numbers up to a given value n. The idea is as follows: begin with a
+vector of numbers from 2 to n. Beginning with 2, eliminate all multiples
+of 2 which are larger than 2. Then move to the next number remaining in
+the vector, in this case, 3. Now, remove all multiples of 3 which are
+larger than 3. Proceed through all remaining entries of the vector in
+this way. The entry for 4 would have been removed in the first round,
+leaving 5 as the next entry to work with after 3; all multiples of 5
+would be removed at the next step and so on.
+
+``` r
+Eratosthenes <- function(n) {
+  if (n >= 2) {
+      sieve <- seq(2,n)
+      primes <- c()
+      for (i in seq(2,n)) {
+          if (any(sieve == i)) {
+              primes <- c(primes,i)
+              sieve <- c(sieve[(sieve %% i) != 0], i)
+          }
+      }
+      return(primes)
+  } else {
+      stop("Input value of n should be at least 2.")
+  }
+ }
+```
+
+Here are a couple of examples of the use of this function:
+
+``` r
+Eratosthenes(50)
+#>  [1]  2  3  5  7 11 13 17 19 23 29 31 37 41 43 47
+```
+
+Understanding the code: The purpose of the function is to provide all
+prime numbers up to the given value n. The basic idea of the program is
+contained in the lines:
+
+sieve \<- seq(2,n) + primes \<- c() + for (i in seq(2,n)) { + if
+(any(sieve == i)) { + primes \<- c(primes,i) + sieve \<- c(sieve\[(sieve
+%% i) != 0\], i) + } + }
+
+The sieve object holds all the candidates for testing. Initially, all
+integers from 2 through n are stored in this vector. The primes object
+is set up initially empty, eventually to contain all of the primes that
+are less than or equal to n. The composite numbers in sieve are removed,
+and the primes are copied to primes.
+
+Each integer i from 2 through n is checked in sequence to see whether it
+is still in the vector. The any ( ) function returns a TRUE if at least
+one of the logical vector elements in its argument is TRUE. In the case
+that i is still in the sieve vector, it must be a prime since it is the
+smallest number that has not been eliminated yet. All multiples of i are
+eliminated, since they are necessarily composite, and i is appended to
+primes. The expression (sieve %% i) == 0 would give TRUE for all
+elements of sieve which are multiples of i; since we want to eliminate
+these elements and save all other elements, we can negate this using !
+(sieve %% i == 0) or sieve %% i != 0. Then we can eliminate all
+multiples of i from the sieve vector using
+
+sieve \<- sieve\[(sieve %% i) != 0\]
+
+Note that this eliminates i as well, but we have already saved it in
+primes.
+
+#### The while ( ) loop
+
+Sometimes we need to do some calculations and keep going as long as a
+condition holds. The while ( ) statement accomplishes this.
+
+Syntax while (condition) {statements}
+
+The condition is evaluated, and if it evaluates to FALSE, nothing more
+is done. If it evaluates to TRUE the statements are executed, condition
+is evaluated again, and the process is repeated.
+
+Example:
+
+``` r
+z <- 0
+ while(z < 5) { 
+    z <- z + 2
+    print(z)  
+ }
+#> [1] 2
+#> [1] 4
+#> [1] 6
+```
+
+Example: Suppose we want to list all Fibonacci numbers less than 300. We
+don’t know beforehand how long this list is, so we wouldn’t know how to
+stop the for ( ) loop at the right time but a while ( ) loop is perfect:
+
+``` r
+Fib1 <- 1
+Fib2 <- 1
+Fibonacci <- c(Fib1,Fib2)
+while (Fib1 < 300) {
+   Fibonacci <- c(Fibonacci,Fib2)
+   oldFib2 <- Fib2
+   Fib2 <- Fib1 + Fib2
+   Fib1 <- oldFib2
+}
+```
+
+Understanding the code: The central idea is contained in the lines
+
+while (Fib1 \< 300) { Fibonacci \<- c(Fibonacci,Fib2)
+
+That is as long as the latest Fibonacci number created (in Fib2) is less
+than 300, it is appended to the growing vector Fibonacci. Thus we must
+ensure that Fib2 actually contains the updated Fibonacci number. By
+keeping track of the two most recently added numbers (Fib1 and Fib2) we
+can do the update
+
+Fib2 \<- Fib1 + Fib2
+
+Now Fib1 should be updated to the old value of Fib2 but that has been
+overwritten by the new value. So before executing the above line, we
+make a copy of Fib2 in oldFib2. After updating Fib2 we can assign the
+value in oldFib2 to Fib1.
+
+In order to start things off, Fib1 and Fib2, and Fibonacci need to be
+initialized. That is, within the loop, these objects will be used, so
+they need to be assigned sensible starting values.
+
+To see the final result of the computation, type
+
+``` r
+Fibonacci
+#>  [1]   1   1   1   2   3   5   8  13  21  34  55  89 144 233 377
+```
+
+#### The repeat ( ) loop, and the break and next statements
+
+Syntax repeat {statements}
+
+Loop is repeated until a break is specified. This means there needs to
+be a second statement to test whether or not to break from the loop.
+Break statement typically takes the form
+
+if (condition) break
+
+which is not a requirement of the syntax. The break statement causes the
+loop to terminate immediately. break statements can also be used in for
+( ) and while ( ) loops. The next statement causes control to return
+immediately to the top of the loop; it can also used in any loops.
+
+``` r
+z <- 0
+ repeat { 
+    z <- z + 1
+    print(z)
+    if(z > 100) break() 
+}
+#> [1] 1
+#> [1] 2
+#> [1] 3
+#> [1] 4
+#> [1] 5
+#> [1] 6
+#> [1] 7
+#> [1] 8
+#> [1] 9
+#> [1] 10
+#> [1] 11
+#> [1] 12
+#> [1] 13
+#> [1] 14
+#> [1] 15
+#> [1] 16
+#> [1] 17
+#> [1] 18
+#> [1] 19
+#> [1] 20
+#> [1] 21
+#> [1] 22
+#> [1] 23
+#> [1] 24
+#> [1] 25
+#> [1] 26
+#> [1] 27
+#> [1] 28
+#> [1] 29
+#> [1] 30
+#> [1] 31
+#> [1] 32
+#> [1] 33
+#> [1] 34
+#> [1] 35
+#> [1] 36
+#> [1] 37
+#> [1] 38
+#> [1] 39
+#> [1] 40
+#> [1] 41
+#> [1] 42
+#> [1] 43
+#> [1] 44
+#> [1] 45
+#> [1] 46
+#> [1] 47
+#> [1] 48
+#> [1] 49
+#> [1] 50
+#> [1] 51
+#> [1] 52
+#> [1] 53
+#> [1] 54
+#> [1] 55
+#> [1] 56
+#> [1] 57
+#> [1] 58
+#> [1] 59
+#> [1] 60
+#> [1] 61
+#> [1] 62
+#> [1] 63
+#> [1] 64
+#> [1] 65
+#> [1] 66
+#> [1] 67
+#> [1] 68
+#> [1] 69
+#> [1] 70
+#> [1] 71
+#> [1] 72
+#> [1] 73
+#> [1] 74
+#> [1] 75
+#> [1] 76
+#> [1] 77
+#> [1] 78
+#> [1] 79
+#> [1] 80
+#> [1] 81
+#> [1] 82
+#> [1] 83
+#> [1] 84
+#> [1] 85
+#> [1] 86
+#> [1] 87
+#> [1] 88
+#> [1] 89
+#> [1] 90
+#> [1] 91
+#> [1] 92
+#> [1] 93
+#> [1] 94
+#> [1] 95
+#> [1] 96
+#> [1] 97
+#> [1] 98
+#> [1] 99
+#> [1] 100
+#> [1] 101
+```
 
 ## Permutation Test and Resampling
 
@@ -282,6 +618,8 @@ Here are two links for good examples of the permutation tests: •
 <http://spark.rstudio.com/ahmed/permutation/> •
 <http://faculty.washington.edu/kenrice/sisg/SISG-08-06.pdf>
 
+#### Permutation test
+
 Let’s create a vector where elements \[1:5\] belong to group A and
 elements \[6:10\] belong to group B
 
@@ -313,9 +651,88 @@ Draw a histogram from sampled differences
 hist(diff.means)
 ```
 
-![](lecture01-intro_files/figure-html/unnamed-chunk-18-1.png)
+![](lecture01-intro_files/figure-html/unnamed-chunk-30-1.png)
 
-#### Example: Permutation test
+Let’s calculate the p-value for observed difference:
+
+``` r
+p2<-sum(abs(diff.means)>=abs(obs.diff.means))/500
+p2
+#> [1] 0.124
+```
+
+Note that p-value indicates the probability of getting the observed
+difference in averages by random samples, abs() calculate the two-sided
+p-value.
+
+Let’s calculate the 95% confidence intervals for the p-value
+(approximation of the normal distribution):
+
+``` r
+pm.part=1.96*sqrt(p2*(1-p2)/500)
+ucb=p2+pm.part
+lcb=p2-pm.part
+lcb;ucb
+#> [1] 0.0951109
+#> [1] 0.1528891
+```
+
+Let’s create a t-test and wilcoxon test and compare results between
+tests:
+
+``` r
+y2=c(9.65, 5.09, 8.80, 7.42, 6.68, 8.79, 9.36, 9.64, 9.02, 8.86)
+```
+
+``` r
+y2
+#>  [1] 9.65 5.09 8.80 7.42 6.68 8.79 9.36 9.64 9.02 8.86
+```
+
+First modify data and then create a data frame:
+
+``` r
+group<-c(1,1,1,1,1,2,2,2,2,2)
+
+data<-cbind(y2,group)
+
+class(data)
+#> [1] "matrix" "array"
+
+data<-as.data.frame(data)
+```
+
+#### T-test
+
+``` r
+?t.test
+
+t.test(data$y2~data$group)
+#> 
+#>  Welch Two Sample t-test
+#> 
+#> data:  data$y2 by data$group
+#> t = -1.9687, df = 4.3205, p-value = 0.1151
+#> alternative hypothesis: true difference in means between group 1 and group 2 is not equal to 0
+#> 95 percent confidence interval:
+#>  -3.8061332  0.5941332
+#> sample estimates:
+#> mean in group 1 mean in group 2 
+#>           7.528           9.134
+```
+
+#### wilcox.test
+
+``` r
+?wilcox.test
+wilcox.test(data$y2~data$group)
+#> 
+#>  Wilcoxon rank sum exact test
+#> 
+#> data:  data$y2 by data$group
+#> W = 6, p-value = 0.2222
+#> alternative hypothesis: true location shift is not equal to 0
+```
 
 ``` r
 library(spatialcourseOL)
