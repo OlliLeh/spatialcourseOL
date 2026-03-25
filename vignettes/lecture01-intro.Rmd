@@ -187,11 +187,9 @@ basic.stats <- function(x, more=F) {
 This function has a parameter (more) that has a default value (F). This means that you can call this function with or without setting this parameter. Below are examples of these two alternatives:
 ```{r}
 basic.stats(test)
-        n      nNAs      mean       std       med 
-10.000000  0.000000  5.500000  2.877113  5.000000 
+
 basic.stats(test,more=T)
-         n       nNAs       mean        std        med       skew       kurt 
-10.0000000  0.0000000  5.5000000  2.8771128  5.0000000  0.5542469 -1.0902009
+
 ```
 
 # R and Programming
