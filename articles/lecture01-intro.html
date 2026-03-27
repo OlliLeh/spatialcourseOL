@@ -719,16 +719,19 @@ advantage; permutation tests produce a concrete set of numbers whose
 “permutation distribution” approximates the sampling distribution under
 the null hypothesis. Comparing our statistic to these numbers helps us
 understand p-values.</p>
-<p>Here is a summary of the advantages of these new methods: - Fewer
-assumptions: For example, resampling methods do not require that
-distributions be Normal or that sample sizes be large. - Greater
-accuracy: Permutation tests, and some bootstrap methods, are more
-accurate in practice than classical methods. - Generality: Resampling
-methods are remarkably similar for a wide range of statistics and do not
-require new formulas for every statistic. You do not need to memorize or
-look up special formulas for each procedure. - Promote understanding:
-Bootstrap procedures build intuition by providing concrete analogies to
-theoretical concepts</p>
+<p>Here is a summary of the advantages of these new methods:</p>
+<ul>
+<li>Fewer assumptions: For example, resampling methods do not require
+that distributions be Normal or that sample sizes be large.</li>
+<li>Greater accuracy: Permutation tests, and some bootstrap methods, are
+more accurate in practice than classical methods.</li>
+<li>Generality: Resampling methods are remarkably similar for a wide
+range of statistics and do not require new formulas for every statistic.
+You do not need to memorize or look up special formulas for each
+procedure.</li>
+<li>Promote understanding: Bootstrap procedures build intuition by
+providing concrete analogies to theoretical concepts</li>
+</ul>
 <p>Here are two links for good examples of the permutation tests: • <a href="http://spark.rstudio.com/ahmed/permutation/" class="external-link uri">http://spark.rstudio.com/ahmed/permutation/</a> • <a href="http://faculty.washington.edu/kenrice/sisg/SISG-08-06.pdf" class="external-link uri">http://faculty.washington.edu/kenrice/sisg/SISG-08-06.pdf</a></p>
 <div class="section level4">
 <h4 id="permutation-test">Permutation test<a class="anchor" aria-label="anchor" href="#permutation-test"></a>
@@ -807,9 +810,11 @@ the result into a data frame suitable for statistical testing.</p>
 <p>A t‑test compares the mean of two groups under the assumption that
 the data are normally distributed.</p>
 <p>Here, we perform an independent two‑sample t‑test using formula
-notation: -
-data<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mn>2</mn><mi>i</mi><mi>s</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi>n</mi><mi>u</mi><mi>m</mi><mi>e</mi><mi>r</mi><mi>i</mi><mi>c</mi><mi>r</mi><mi>e</mi><mi>s</mi><mi>p</mi><mi>o</mi><mi>n</mi><mi>s</mi><mi>e</mi><mi>v</mi><mi>a</mi><mi>r</mi><mi>i</mi><mi>a</mi><mi>b</mi><mi>l</mi><mi>e</mi><mo>−</mo><mi>d</mi><mi>a</mi><mi>t</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">y2 is the numeric response variable
-- data</annotation></semantics></math>group is the grouping variable</p>
+notation:</p>
+<ul>
+<li>data$y2 is the numeric response variable</li>
+<li>data$group is the grouping variable</li>
+</ul>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">t.test</span></span>
 <span></span>

@@ -774,16 +774,18 @@ advantage; permutation tests produce a concrete set of numbers whose
 the null hypothesis. Comparing our statistic to these numbers helps us
 understand p-values.
 
-Here is a summary of the advantages of these new methods: - Fewer
-assumptions: For example, resampling methods do not require that
-distributions be Normal or that sample sizes be large. - Greater
-accuracy: Permutation tests, and some bootstrap methods, are more
-accurate in practice than classical methods. - Generality: Resampling
-methods are remarkably similar for a wide range of statistics and do not
-require new formulas for every statistic. You do not need to memorize or
-look up special formulas for each procedure. - Promote understanding:
-Bootstrap procedures build intuition by providing concrete analogies to
-theoretical concepts
+Here is a summary of the advantages of these new methods:
+
+- Fewer assumptions: For example, resampling methods do not require that
+  distributions be Normal or that sample sizes be large.
+- Greater accuracy: Permutation tests, and some bootstrap methods, are
+  more accurate in practice than classical methods.
+- Generality: Resampling methods are remarkably similar for a wide range
+  of statistics and do not require new formulas for every statistic. You
+  do not need to memorize or look up special formulas for each
+  procedure.
+- Promote understanding: Bootstrap procedures build intuition by
+  providing concrete analogies to theoretical concepts
 
 Here are two links for good examples of the permutation tests: •
 <http://spark.rstudio.com/ahmed/permutation/> •
@@ -897,8 +899,10 @@ A t‑test compares the mean of two groups under the assumption that the
 data are normally distributed.
 
 Here, we perform an independent two‑sample t‑test using formula
-notation: - data$y2isthenumericresponsevariable - data$group is the
-grouping variable
+notation:
+
+- data\$y2 is the numeric response variable
+- data\$group is the grouping variable
 
 ``` r
 ?t.test

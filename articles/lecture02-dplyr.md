@@ -816,9 +816,12 @@ municipalities <- municipalities %>%
 
 ### 7. Join the Excel Data with the Geospatial Layer
 
-We use right_join() because: - df contains new attribute data - we want
-to keep all rows in df - we want the resulting object to remain an sf
-object (right_join preserves class)
+We use right_join() because:
+
+- df contains new attribute data
+- we want to keep all rows in df
+- we want the resulting object to remain an sf object (right_join
+  preserves class)
 
 ``` r
 municipalities2 <- dplyr::right_join(x = municipalities, y = df, by=c("kunta" = "kunnan_numero"))
