@@ -699,9 +699,11 @@ st_write(kotka_grid,
 
 This example demonstrates how to:
 
-Download an Excel file directly from an online source Read it into R
-Clean and prepare the data Join it with official municipal boundaries
-Visualize the result on a map
+1.  Download an Excel file directly from an online source
+2.  Read it into R
+3.  Clean and prepare the data
+4.  Join it with official municipal boundaries
+5.  Visualize the result on a map
 
 ### 1. Load Required Libraries
 
@@ -798,10 +800,10 @@ Using geofi::get_municipalities(), we retrieve the 2025 municipal
 borders as an sf object. We then keep only the municipality ID and name.
 
 ``` r
-municipalities <- geofi::get_municipalities(year = 2025)
+municipalities <- geofi::get_municipalities(year = 2024)
 ```
 
-    ## Requesting response from: http://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2025
+    ## Requesting response from: http://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2024
 
     ## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
 
