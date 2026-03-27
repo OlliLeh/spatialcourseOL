@@ -13,13 +13,17 @@ articles:
 
   - title: "Week2"
     contents:
+      - lecture03-regression
       - assignment02-data2
 
   - title: "Week3"
-    contents: []
+    contents:
+     - lecture04-multivariate
 
   - title: "Week4"
-    contents: []
+    contents:
+     - assignment04-week4
 
   - title: "Week5"
-    contents: []
+    contents:
+     - assignment05-week5
