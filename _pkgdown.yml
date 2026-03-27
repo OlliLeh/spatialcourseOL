@@ -18,12 +18,13 @@ articles:
 
   - title: "Week3"
     contents:
-     - lecture04-multivariate
+      - lecture04-multivariate
 
   - title: "Week4"
     contents:
-     - assignment04-week4
+      - assignment04-week4
 
   - title: "Week5"
     contents:
-     - assignment05-week5
+      - assignment05-week5
+
