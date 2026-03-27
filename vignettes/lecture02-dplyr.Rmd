@@ -151,11 +151,11 @@ output: html_document
 
 This example demonstrates how to:
 
-Download an Excel file directly from an online source
-Read it into R
-Clean and prepare the data
-Join it with official municipal boundaries
-Visualize the result on a map
+1. Download an Excel file directly from an online source
+2. Read it into R
+3. Clean and prepare the data
+4. Join it with official municipal boundaries
+5. Visualize the result on a map
 
 ## 1. Load Required Libraries
 We begin by loading the packages needed for reading Excel files, cleaning column names, and handling Finnish geospatial data.
@@ -183,7 +183,6 @@ tmp <- tempfile(fileext = ".xlsx")
 download.file(url, tmp, mode = "wb")
 ```
 
-
 ## 3. Read the Excel File
 The file contains a header row that is not actual column names, so we skip it using skip = 1.
 We then convert the tibble to a standard data frame.
@@ -191,7 +190,6 @@ We then convert the tibble to a standard data frame.
 ```{r}
 df <- as.data.frame(read_excel(tmp, skip = 1)) # skip first line
 ```
-
 
 ## 4. Clean Column Names
 The dataset contains long Finnish variable names with spaces and special characters.
@@ -215,7 +213,7 @@ Using geofi::get_municipalities(), we retrieve the 2025 municipal borders as an 
 We then keep only the municipality ID and name.
 
 ```{r}
-municipalities <- geofi::get_municipalities(year = 2025)
+municipalities <- geofi::get_municipalities(year = 2024)
 municipalities <- municipalities %>% 
   select(kunta, kunta_name)
 ```
