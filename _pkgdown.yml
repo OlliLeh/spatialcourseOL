@@ -1,5 +1,5 @@
 
-url: https://ollileh.github.io/spatialcourse0L/
+url: https://ollileh.github.io/spatialcourseOL
 
 template:
   bootstrap: 5
@@ -13,7 +13,7 @@ articles:
 
   - title: "Week2"
     contents:
-      - lecture03-regression
+      - "lecture03-regression"
       - assignment02-data2
 
   - title: "Week3"
