@@ -220,6 +220,7 @@ municipalities <- municipalities %>%
 
 ## 7. Join the Excel Data with the Geospatial Layer
 We use right_join() because:
+
 - df contains new attribute data
 - we want to keep all rows in df
 - we want the resulting object to remain an sf object (right_join preserves class)
@@ -254,6 +255,7 @@ ggplot(municipalities2) +
 ```
 
 ## 9. Create an Interactive Leaflet Map
+
 Before creating an interactive leaflet map, we must ensure that our spatial data uses the correct coordinate reference system (CRS). Leaflet requires data in WGS84 geographic coordinates (EPSG:4326), which use longitude and latitude in degrees. However, our municipalities2 dataset is currently in a projected CRS:
 
 ```
