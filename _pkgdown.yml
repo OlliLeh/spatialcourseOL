@@ -5,12 +5,21 @@ template:
   bootstrap: 5
 
 articles:
-  - title: "Lectures"
+  - title: "Week1"
     contents:
       - lecture01-intro
       - lecture02-dplyr
-
-  - title: "Assignments"
-    contents:
       - assignment01-data
+
+  - title: "Week2"
+    contents:
       - assignment02-data2
+
+  - title: "Week3"
+    contents: []
+
+  - title: "Week4"
+    contents: []
+
+  - title: "Week5"
+    contents: []
