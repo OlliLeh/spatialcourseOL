@@ -13,7 +13,7 @@ articles:
 
   - title: "Week2"
     contents:
-      - "lecture03-regression"
+      - lecture03-regression
       - assignment02-data2
 
   - title: "Week3"
@@ -27,4 +27,3 @@ articles:
   - title: "Week5"
     contents:
       - assignment05-week5
-
