@@ -27,31 +27,40 @@ community is noted for its active contributions in terms of packages.
 ``` r
 # Number of R Packages
 length(available.packages(repos = "http://cran.us.r-project.org")[, 1])
-#> [1] 23417
+#> [1] 23425
 ```
 
 #### Installing R and RStudio on Windows
 
-The latest version of R can be download from the R homepage.
+The latest version of R can be download from the R homepage:
 
-R download page: <http://www.cran.r-project.org/bin/windows/base/> The
-page also provides some instructions and FAQ’s on R installation.
+- <http://www.cran.r-project.org/bin/windows/base/>
 
-RStudio IDE ( IDE: Integrated Development Environment) is a powerful and
-productive user interface for R.
+The page also provides some instructions and FAQ’s on R installation.
 
-It’s free and open source, and works great on Windows, Mac, and Linux
+Best of all, it’s free and open source, and works great on Windows, Mac,
+and Linux
 
 #### RStudio GUI/IDE
 
-RStudio GUI is composed of 4 panes which can be rearranged according to
-the requirements.
-
-There are a lot of short introductions to RStudio available online so we
-will not go into more details.
+RStudio is an integrated development environment (IDE) for R. It
+includes a console, syntax-highlighting editor that supports direct code
+execution, as well as tools for plotting, history, debugging and
+workspace management. You can use RStudio as a graphical front-end to R
+which means that you can access your scripts and data, find help, and
+preview plots and output all in one place.
 
 Download Rstudio from here
 <https://rstudio.com/products/rstudio/download/#download>
+
+![](figures/rstudio.png)
+
+There are a lot of short introductions to RStudio available online so we
+will not go into more details. If you are not familiar with RStudio,
+please look one of the tutorials listed here:
+
+- <https://ourcodingclub.github.io/tutorials/intro-to-r/>
+- <https://data-flair.training/blogs/rstudio-tutorial/>
 
 #### Installing Packages
 
@@ -62,8 +71,8 @@ package can be easily specified when calling this function. A call to
 this function asks the user to chose a CRAN mirror at the first
 instance.
 
-Run the following to install Quantreg package on R. Also use the help
-function to get the details.
+Run the following to install sf package on R. Also use the help function
+to get the details.
 
 ``` r
 # Install a package using RStudio Console
@@ -78,6 +87,16 @@ install.packages(c("reshape2", "foreign", "ggplot2", "stargazer"), dependencies 
 #> (as 'lib' is unspecified)
 # to be updated
 ```
+
+If you want to start a certain package, simply type
+
+``` r
+library(sf)
+#> Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
+```
+
+After that you can start using the functions contained in the AER
+package.
 
 #### Getting Help
 
@@ -109,6 +128,66 @@ Over all there quite a big community of R Users and help can be found
 for most of the topics.
 
 #### R programming for ABSOLUTE beginners
+
+## Basic features of R
+
+#### Calculating with R
+
+The basic operations are + (add), - (subtract), \* (multiply), and /
+(divide).
+
+R can also compute powers with the ^ operator. For example,
+
+``` r
+2^3
+#> [1] 8
+
+# same as 2*2*2
+2*2*2
+#> [1] 8
+```
+
+#### Named storage
+
+R has a workspace known as the global environment that can be used to
+store the results of calculations, and many other types of objects. For
+a first example, suppose we would like to store the result of the
+calculation 1.0025^30 for future use. We will assign this value to an
+object called interest.30 (value is an interest rate of 0.25% per year
+and a 30-year period).
+
+``` r
+interest.30 <- 1.0025^30
+```
+
+or equally
+
+``` r
+interest.30 = 1.0025^30
+```
+
+We tell R to make the assignment using an arrow that points to the left,
+created with the less-than sign (\<) and the hyphn (-). R also supports
+using the equals sign (=) in place the arrow in most circumstances but
+it is recommended to use the arrow as it makes clear that it is
+requesting an action rather than stating a relation or making a
+permanent definition.
+
+We can see the results of this assignment by typing the name of our new
+object at the prompt:
+
+``` r
+interest.30 
+#> [1] 1.077783
+```
+
+We can also use interest.30 for further calculations if we wish. For
+example, we can calculate the bank balance after 30 years at 0.25%
+annual interest if we start with an initial balance of 3000€. \>
+initial.balance \<- 3000 \> final.balance \<-
+initial.balance\*interest.30 \> final.balance \[1\] 3233.35
+
+which says that increase is \> final.balance - initial.balance
 
 ## Functions in R
 
@@ -478,7 +557,7 @@ Or if we
 corplot(c(2,5,7),c(5,6,8),T)
 ```
 
-![](lecture01-intro_files/figure-html/unnamed-chunk-28-1.png)
+![](lecture01-intro_files/figure-html/unnamed-chunk-34-1.png)
 
     #> [1] 0.953821
 
@@ -824,7 +903,7 @@ Draw a histogram from sampled differences
 hist(diff.means)
 ```
 
-![](lecture01-intro_files/figure-html/unnamed-chunk-40-1.png)
+![](lecture01-intro_files/figure-html/unnamed-chunk-46-1.png)
 
 Let’s calculate the p-value for observed difference:
 
@@ -943,6 +1022,8 @@ wilcox.test(data$y2~data$group)
 
 This test examines whether one group tends to have larger values than
 the other, based on ranks rather than means.
+
+## Time to Play the Game
 
 ``` r
 library(spatialcourseOL)

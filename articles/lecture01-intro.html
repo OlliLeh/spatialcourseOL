@@ -85,27 +85,38 @@ packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Number of R Packages</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/available.packages.html" class="external-link">available.packages</a></span><span class="op">(</span>repos <span class="op">=</span> <span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 23417</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 23425</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="installing-r-and-rstudio-on-windows">Installing R and RStudio on Windows<a class="anchor" aria-label="anchor" href="#installing-r-and-rstudio-on-windows"></a>
 </h4>
-<p>The latest version of R can be download from the R homepage.</p>
-<p>R download page: <a href="http://www.cran.r-project.org/bin/windows/base/" class="external-link uri">http://www.cran.r-project.org/bin/windows/base/</a> The page
-also provides some instructions and FAQ’s on R installation.</p>
-<p>RStudio IDE ( IDE: Integrated Development Environment) is a powerful
-and productive user interface for R.</p>
-<p>It’s free and open source, and works great on Windows, Mac, and
-Linux</p>
+<p>The latest version of R can be download from the R homepage:</p>
+<ul>
+<li><a href="http://www.cran.r-project.org/bin/windows/base/" class="external-link uri">http://www.cran.r-project.org/bin/windows/base/</a></li>
+</ul>
+<p>The page also provides some instructions and FAQ’s on R
+installation.</p>
+<p>Best of all, it’s free and open source, and works great on Windows,
+Mac, and Linux</p>
 </div>
 <div class="section level4">
 <h4 id="rstudio-guiide">RStudio GUI/IDE<a class="anchor" aria-label="anchor" href="#rstudio-guiide"></a>
 </h4>
-<p>RStudio GUI is composed of 4 panes which can be rearranged according
-to the requirements.</p>
-<p>There are a lot of short introductions to RStudio available online so
-we will not go into more details.</p>
+<p>RStudio is an integrated development environment (IDE) for R. It
+includes a console, syntax-highlighting editor that supports direct code
+execution, as well as tools for plotting, history, debugging and
+workspace management. You can use RStudio as a graphical front-end to R
+which means that you can access your scripts and data, find help, and
+preview plots and output all in one place.</p>
 <p>Download Rstudio from here <a href="https://rstudio.com/products/rstudio/download/#download" class="external-link uri">https://rstudio.com/products/rstudio/download/#download</a></p>
+<p><img src="figures/rstudio.png" class="r-plt" alt="" width="70%"></p>
+<p>There are a lot of short introductions to RStudio available online so
+we will not go into more details. If you are not familiar with RStudio,
+please look one of the tutorials listed here:</p>
+<ul>
+<li><a href="https://ourcodingclub.github.io/tutorials/intro-to-r/" class="external-link uri">https://ourcodingclub.github.io/tutorials/intro-to-r/</a></li>
+<li><a href="https://data-flair.training/blogs/rstudio-tutorial/" class="external-link uri">https://data-flair.training/blogs/rstudio-tutorial/</a></li>
+</ul>
 </div>
 <div class="section level4">
 <h4 id="installing-packages">Installing Packages<a class="anchor" aria-label="anchor" href="#installing-packages"></a>
@@ -116,7 +127,7 @@ from internet. Other options to install various dependencies to a
 package can be easily specified when calling this function. A call to
 this function asks the user to chose a CRAN mirror at the first
 instance.</p>
-<p>Run the following to install Quantreg package on R. Also use the help
+<p>Run the following to install sf package on R. Also use the help
 function to get the details.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install a package using RStudio Console</span></span>
@@ -128,6 +139,12 @@ function to get the details.</p>
 <span><span class="co">#&gt; Installing packages into '/home/runner/work/_temp/Library'</span></span>
 <span><span class="co">#&gt; (as 'lib' is unspecified)</span></span>
 <span><span class="co"># to be updated</span></span></code></pre></div>
+<p>If you want to start a certain package, simply type</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</span></span></code></pre></div>
+<p>After that you can start using the functions contained in the AER
+package.</p>
 </div>
 <div class="section level4">
 <h4 id="getting-help">Getting Help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
@@ -136,7 +153,7 @@ function to get the details.</p>
 every day it is good to know sources of help. The most basic help one
 can get is via the help() function. This function shows the help file
 for a function which has been created by package managers.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/help.html" class="external-link">help</a></span><span class="op">(</span><span class="st">"function name"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; No documentation for 'function name' in specified packages and libraries:</span></span>
 <span><span class="co">#&gt; you could try '??function name'</span></span></code></pre></div>
@@ -159,6 +176,56 @@ for most of the topics.</p>
 </div>
 </div>
 <div class="section level2">
+<h2 id="basic-features-of-r">Basic features of R<a class="anchor" aria-label="anchor" href="#basic-features-of-r"></a>
+</h2>
+<div class="section level4">
+<h4 id="calculating-with-r">Calculating with R<a class="anchor" aria-label="anchor" href="#calculating-with-r"></a>
+</h4>
+<p>The basic operations are + (add), - (subtract), * (multiply), and /
+(divide).</p>
+<p>R can also compute powers with the ^ operator. For example,</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fl">2</span><span class="op">^</span><span class="fl">3</span></span>
+<span><span class="co">#&gt; [1] 8</span></span>
+<span></span>
+<span><span class="co"># same as 2*2*2</span></span>
+<span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span></span>
+<span><span class="co">#&gt; [1] 8</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="named-storage">Named storage<a class="anchor" aria-label="anchor" href="#named-storage"></a>
+</h4>
+<p>R has a workspace known as the global environment that can be used to
+store the results of calculations, and many other types of objects. For
+a first example, suppose we would like to store the result of the
+calculation 1.0025^30 for future use. We will assign this value to an
+object called interest.30 (value is an interest rate of 0.25% per year
+and a 30-year period).</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">interest.30</span> <span class="op">&lt;-</span> <span class="fl">1.0025</span><span class="op">^</span><span class="fl">30</span></span></code></pre></div>
+<p>or equally</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">interest.30</span> <span class="op">=</span> <span class="fl">1.0025</span><span class="op">^</span><span class="fl">30</span></span></code></pre></div>
+<p>We tell R to make the assignment using an arrow that points to the
+left, created with the less-than sign (&lt;) and the hyphn (-). R also
+supports using the equals sign (=) in place the arrow in most
+circumstances but it is recommended to use the arrow as it makes clear
+that it is requesting an action rather than stating a relation or making
+a permanent definition.</p>
+<p>We can see the results of this assignment by typing the name of our
+new object at the prompt:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">interest.30</span> </span>
+<span><span class="co">#&gt; [1] 1.077783</span></span></code></pre></div>
+<p>We can also use interest.30 for further calculations if we wish. For
+example, we can calculate the bank balance after 30 years at 0.25%
+annual interest if we start with an initial balance of 3000€. &gt;
+initial.balance &lt;- 3000 &gt; final.balance &lt;-
+initial.balance*interest.30 &gt; final.balance [1] 3233.35</p>
+<p>which says that increase is &gt; final.balance - initial.balance</p>
+</div>
+</div>
+<div class="section level2">
 <h2 id="functions-in-r">Functions in R<a class="anchor" aria-label="anchor" href="#functions-in-r"></a>
 </h2>
 <p>One of the great strengths of R is the user’s ability to add
@@ -175,7 +242,7 @@ be passed as arguments to other functions and 2) functions can be
 nested, so that you can define a function inside of another
 function.</p>
 <p>Let’s create a simple function:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span><span class="op">&lt;-</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span> <span class="va">a</span><span class="op">=</span><span class="va">b</span><span class="op">*</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span></span>
 <span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
@@ -190,7 +257,7 @@ function created its own local variable a.</p>
 <p>Here is another simple example where we define a function
 fahrenheit_to_celsius that converts temperatures from Fahrenheit to
 Celsius:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fahrenheit_to_celsius</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">temp_F</span><span class="op">)</span> <span class="op">{</span></span>
 <span>   <span class="va">temp_C</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">temp_F</span> <span class="op">-</span> <span class="fl">32</span><span class="op">)</span> <span class="op">*</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">9</span></span>
 <span>   <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">temp_C</span><span class="op">)</span></span>
@@ -205,7 +272,7 @@ not affect how the code operates.</p>
 those variables so that we can use them inside the function. Inside the
 function, we use a return statement to send a result back to whoever
 asked for it. You can test the function:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">fahrenheit_to_celsius</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] -12.22222</span></span></code></pre></div>
 <div class="section level4">
@@ -218,18 +285,18 @@ want to calculate the standard error of a mean associated to a set of
 values.</p>
 <p>Before proceeding to create the function we should check whether
 there is already a function with this name in R. Let’s type:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">se</span></span></code></pre></div>
 <p>The error printed by R indicates that we are safe to use that name.
 Following code is a possible way to create our function:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">se</span><span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
 <span> <span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span> <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">v</span><span class="op">/</span><span class="va">z</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>After creating this function, you can use it as follows:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span>,<span class="fl">3</span>,<span class="fl">6</span>,<span class="fl">4</span>,<span class="fl">9</span>,<span class="fl">11</span>,<span class="fl">3</span>,<span class="fl">7</span>,<span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">se</span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.9098229</span></span></code></pre></div>
@@ -240,7 +307,7 @@ that was evaluated within the function.</p>
 <div class="section level4">
 <h4 id="example-2-more-advanced-function-of-basic-statistics">Example 2: More advanced function of basic statistics<a class="anchor" aria-label="anchor" href="#example-2-more-advanced-function-of-basic-statistics"></a>
 </h4>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">basic.stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">more</span><span class="op">=</span><span class="cn">F</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="va">clean.x</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span></span>
@@ -258,7 +325,7 @@ that was evaluated within the function.</p>
 <p>This function has a parameter (more) that has a default value (F).
 This means that you can call this function with or without setting this
 parameter. Below are examples of these two alternatives:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">basic.stats</span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         n      nNAs      mean       std       med </span></span>
 <span><span class="co">#&gt; 10.000000  0.000000  5.500000  2.877113  5.000000</span></span>
@@ -297,7 +364,7 @@ defined as the sum of the preceding two elements. For example, the third
 element is 2, the fourth element is 3, the fifth element is 5, and so
 on.</p>
 <p>To obtain first 12 Fibonacci numbers in R, we can use</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Fibonacci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span></span>
 <span><span class="va">Fibonacci</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">Fibonacci</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">3</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span> <span class="va">Fibonacci</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">Fibonacci</span><span class="op">[</span><span class="va">i</span><span class="op">-</span><span class="fl">2</span><span class="op">]</span><span class="op">+</span><span class="va">Fibonacci</span><span class="op">[</span><span class="va">i</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span></span></code></pre></div>
@@ -311,7 +378,7 @@ i.e. 2. Fibonacci[4] is then assigned the latest value of Fibonacci[2] +
 Fibonacci[3] , giving it the value 3. The for ( ) loop updates the third
 through 12th element of the sequence in this way.</p>
 <p>To see all types, type in</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Fibonacci</span></span>
 <span><span class="co">#&gt;  [1]   1   1   2   3   5   8  13  21  34  55  89 144</span></span></code></pre></div>
 <p>Example: Suppose a car dealer promotes two options for the purchase
@@ -346,7 +413,7 @@ i = \frac{1 - (1 + 0.00593)^{-20}}{19} = 0.00586
 before we can be confident that we have the solution to the fixed-point
 equation. Here is R code to work out the solution after 1 000
 iterations.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">0.006</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">)</span><span class="op">{</span></span>
 <span> <span class="va">i</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">i</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">19</span></span>
@@ -354,12 +421,12 @@ iterations.</p>
 <span><span class="va">i</span></span>
 <span><span class="co">#&gt; [1] 0.004935593</span></span></code></pre></div>
 <p>Example: Let’s create a vector containing number 1-10:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">samples</span></span>
 <span><span class="co">#&gt;  [1]  1  2  3  4  5  6  7  8  9 10</span></span></code></pre></div>
 <p>Go through the samples one by one and print them out:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">thissample</span> <span class="kw">in</span> <span class="va">samples</span><span class="op">)</span></span>
 <span> <span class="op">{</span></span>
 <span>   <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">thissample</span><span class="op">)</span></span>
@@ -375,7 +442,7 @@ iterations.</p>
 <span><span class="co">#&gt; [1] 9</span></span>
 <span><span class="co">#&gt; [1] 10</span></span></code></pre></div>
 <p>Let’s do something inside the for loop:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">thissample</span> <span class="kw">in</span> <span class="va">samples</span><span class="op">)</span></span>
 <span> <span class="op">{</span></span>
 <span>    <span class="va">str</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">thissample</span>,<span class="st">"is current sample"</span>,sep<span class="op">=</span><span class="st">" "</span><span class="op">)</span></span>
@@ -392,7 +459,7 @@ iterations.</p>
 <span><span class="co">#&gt; [1] "9 is current sample"</span></span>
 <span><span class="co">#&gt; [1] "10 is current sample"</span></span></code></pre></div>
 <p>Let’s terminate the loop when the sample is 3:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">thissample</span> <span class="kw">in</span> <span class="va">samples</span><span class="op">)</span></span>
 <span> <span class="op">{</span></span>
 <span>    <span class="kw">if</span> <span class="op">(</span><span class="va">thissample</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span> <span class="kw">break</span></span>
@@ -402,7 +469,7 @@ iterations.</p>
 <span><span class="co">#&gt; [1] "1 is current sample"</span></span>
 <span><span class="co">#&gt; [1] "2 is current sample"</span></span></code></pre></div>
 <p>Let’s ignore when the sample number is even:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">thissample</span> <span class="kw">in</span> <span class="va">samples</span><span class="op">)</span></span>
 <span> <span class="op">{</span></span>
 <span>    <span class="kw">if</span> <span class="op">(</span><span class="va">thissample</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="kw">next</span></span>
@@ -427,13 +494,13 @@ evaluates TRUE. The else part is optional, and provides an alternative
 set of commands which are to be invoked in case the logical variables is
 FALSE.</p>
 <p>A simple example:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">2</span><span class="op">)</span> <span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">*</span><span class="va">x</span> <span class="kw">else</span> <span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">3</span><span class="op">*</span><span class="va">x</span></span></code></pre></div>
 <p>Since x &gt; 2 is TRUE, y is assigned 2 * 3 = 6. If it hadn´t been
 true, y would have been assigned the value of 3 * x. We can confirm
 this:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y</span></span>
 <span><span class="co">#&gt; [1] 6</span></span></code></pre></div>
 <p>The if ( ) statement is often used inside user-defined functions. The
@@ -441,23 +508,23 @@ following is a typical example.</p>
 <p>Example: The correlation between two vectors of numbers is often
 calculated using the cor ( ) function. It is supposed to give a measure
 of linear association. We can add a scatter plot of data as follows:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corplot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,<span class="va">plotit</span><span class="op">)</span> <span class="op">{</span></span>
 <span> <span class="kw">if</span> <span class="op">(</span><span class="va">plotit</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span><span class="op">)</span></span>
 <span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span><span class="op">)</span></span>
 <span> <span class="op">}</span></span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">corplot</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "function"</span></span></code></pre></div>
 <p>We can apply this function to two vectors without plotting by
 typing</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">corplot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">5</span>,<span class="fl">7</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">8</span><span class="op">)</span>,<span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.953821</span></span></code></pre></div>
 <p>Or if we</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">corplot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">5</span>,<span class="fl">7</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">8</span><span class="op">)</span>,<span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture01-intro_files/figure-html/unnamed-chunk-28-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture01-intro_files/figure-html/unnamed-chunk-34-1.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; [1] 0.953821</span></span></code></pre>
 <p>and get a simple figure.</p>
 <p>Example: The function that follows is based on the sieve of
@@ -470,7 +537,7 @@ larger than 3. Proceed through all remaining entries of the vector in
 this way. The entry for 4 would have been removed in the first round,
 leaving 5 as the next entry to work with after 3; all multiples of 5
 would be removed at the next step and so on.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Eratosthenes</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&gt;=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="va">sieve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>,<span class="va">n</span><span class="op">)</span></span>
@@ -487,13 +554,13 @@ would be removed at the next step and so on.</p>
 <span>  <span class="op">}</span></span>
 <span> <span class="op">}</span></span></code></pre></div>
 <p>Here are a couple of examples of the use of this function:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Eratosthenes</span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1]  2  3  5  7 11 13 17 19 23 29 31 37 41 43 47</span></span></code></pre></div>
 <p>Understanding the code: The purpose of the function is to provide all
 prime numbers up to the given value n. The basic idea of the program is
 contained in the lines:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sieve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>,<span class="va">n</span><span class="op">)</span></span>
 <span>      <span class="va">primes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>      <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>,<span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -518,7 +585,7 @@ elements of sieve which are multiples of i; since we want to eliminate
 these elements and save all other elements, we can negate this using !
 (sieve %% i == 0) or sieve %% i != 0. Then we can eliminate all
 multiples of i from the sieve vector using</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sieve</span> <span class="op">&lt;-</span> <span class="va">sieve</span><span class="op">[</span><span class="op">(</span><span class="va">sieve</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="va">i</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">0</span><span class="op">]</span></span></code></pre></div>
 <p>Note that this eliminates i as well, but we have already saved it in
 primes.</p>
@@ -533,7 +600,7 @@ condition holds. The while ( ) statement accomplishes this.</p>
 more is done. If it evaluates to TRUE the statements are executed,
 condition is evaluated again, and the process is repeated.</p>
 <p>Example:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span> <span class="kw">while</span><span class="op">(</span><span class="va">z</span> <span class="op">&lt;</span> <span class="fl">5</span><span class="op">)</span> <span class="op">{</span> </span>
 <span>    <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">z</span> <span class="op">+</span> <span class="fl">2</span></span>
@@ -546,7 +613,7 @@ condition is evaluated again, and the process is repeated.</p>
 We don’t know beforehand how long this list is, so we wouldn’t know how
 to stop the for ( ) loop at the right time but a while ( ) loop is
 perfect:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Fib1</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span><span class="va">Fib2</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span><span class="va">Fibonacci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">Fib1</span>,<span class="va">Fib2</span><span class="op">)</span></span>
@@ -573,7 +640,7 @@ value in oldFib2 to Fib1.</p>
 initialized. That is, within the loop, these objects will be used, so
 they need to be assigned sensible starting values.</p>
 <p>To see the final result of the computation, type</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Fibonacci</span></span>
 <span><span class="co">#&gt;  [1]   1   1   1   2   3   5   8  13  21  34  55  89 144 233 377</span></span></code></pre></div>
 </div>
@@ -589,7 +656,7 @@ Break statement typically takes the form</p>
 the loop to terminate immediately. break statements can also be used in
 for ( ) and while ( ) loops. The next statement causes control to return
 immediately to the top of the loop; it can also used in any loops.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span> <span class="kw">repeat</span> <span class="op">{</span> </span>
 <span>    <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">z</span> <span class="op">+</span> <span class="fl">1</span></span>
@@ -738,25 +805,25 @@ providing concrete analogies to theoretical concepts</li>
 </h4>
 <p>Let’s create a vector where elements [1:5] belong to group A and
 elements [6:10] belong to group B</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y2</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9.65</span>, <span class="fl">5.09</span>, <span class="fl">8.80</span>, <span class="fl">7.42</span>, <span class="fl">6.68</span>, <span class="fl">8.79</span>, <span class="fl">9.36</span>, <span class="fl">9.64</span>, <span class="fl">9.02</span>, <span class="fl">8.86</span><span class="op">)</span></span></code></pre></div>
 <p>Now let’s create permutation test:</p>
 <p>First calculate the observed difference in group averages</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">obs.diff.means</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">y2</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">y2</span><span class="op">[</span><span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p>Do the test with 500 permutations</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">diff.means</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">500</span><span class="op">)</span><span class="op">{</span></span>
 <span> <span class="va">perm</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">y2</span>,<span class="fl">10</span>,replace<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
 <span> <span class="va">diff.means</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">perm</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">perm</span><span class="op">[</span><span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span>
 <span> <span class="op">}</span></span></code></pre></div>
 <p>Draw a histogram from sampled differences</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">diff.means</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture01-intro_files/figure-html/unnamed-chunk-40-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture01-intro_files/figure-html/unnamed-chunk-46-1.png" class="r-plt" alt="" width="700"></p>
 <p>Let’s calculate the p-value for observed difference:</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">diff.means</span><span class="op">)</span><span class="op">&gt;=</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">obs.diff.means</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">500</span></span>
 <span><span class="va">p2</span></span>
 <span><span class="co">#&gt; [1] 0.124</span></span></code></pre></div>
@@ -765,7 +832,7 @@ difference in averages by random samples, abs() calculate the two-sided
 p-value.</p>
 <p>Let’s calculate the 95% confidence intervals for the p-value
 (approximation of the normal distribution):</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pm.part</span><span class="op">=</span><span class="fl">1.96</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">p2</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">p2</span><span class="op">)</span><span class="op">/</span><span class="fl">500</span><span class="op">)</span></span>
 <span><span class="va">ucb</span><span class="op">=</span><span class="va">p2</span><span class="op">+</span><span class="va">pm.part</span></span>
 <span><span class="va">lcb</span><span class="op">=</span><span class="va">p2</span><span class="op">-</span><span class="va">pm.part</span></span>
@@ -779,24 +846,24 @@ p-value.</p>
 <p>Let’s create a t-test and a Wilcoxon test and compare the results
 between these approaches. Here we simply define a numeric vector y2
 containing ten observations.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y2</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9.65</span>, <span class="fl">5.09</span>, <span class="fl">8.80</span>, <span class="fl">7.42</span>, <span class="fl">6.68</span>, <span class="fl">8.79</span>, <span class="fl">9.36</span>, <span class="fl">9.64</span>, <span class="fl">9.02</span>, <span class="fl">8.86</span><span class="op">)</span></span></code></pre></div>
 <p>We print out the values just to confirm that the vector was created
 correctly.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y2</span></span>
 <span><span class="co">#&gt;  [1] 9.65 5.09 8.80 7.42 6.68 8.79 9.36 9.64 9.02 8.86</span></span></code></pre></div>
 <p>Preparing the data: Next, we create a grouping variable and combine
 it with the response values. This allows us to perform two‑sample
 tests.</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">group</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p>Here, group indicates the group membership of each observation.</p>
 <p>The first 5 observations belong to group 1 The last 5 observations
 belong to group 2</p>
 <p>We now combine the response variable (y2) and the group indicator
 into a single object:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">y2</span>,<span class="va">group</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "matrix" "array"</span></span>
@@ -815,7 +882,7 @@ notation:</p>
 <li>data$y2 is the numeric response variable</li>
 <li>data$group is the grouping variable</li>
 </ul>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">t.test</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">y2</span><span class="op">~</span><span class="va">data</span><span class="op">$</span><span class="va">group</span><span class="op">)</span></span>
@@ -839,7 +906,7 @@ difference between the group means.</p>
 <p>The Wilcoxon rank‑sum test is a non‑parametric alternative to the
 t‑test. It does not assume normality and instead compares the
 distributions of the two groups.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">wilcox.test</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">wilcox.test</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">y2</span><span class="op">~</span><span class="va">data</span><span class="op">$</span><span class="va">group</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -850,14 +917,20 @@ distributions of the two groups.</p>
 <span><span class="co">#&gt; alternative hypothesis: true location shift is not equal to 0</span></span></code></pre></div>
 <p>This test examines whether one group tends to have larger values than
 the other, based on ranks rather than means.</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+</div>
+</div>
+<div class="section level2">
+<h2 id="time-to-play-the-game">Time to Play the Game<a class="anchor" aria-label="anchor" href="#time-to-play-the-game"></a>
+</h2>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/F_JF8oSxXtM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/OlliLeh/spatialcourseOL" class="external-link">spatialcourseOL</a></span><span class="op">)</span></span>
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_pkgdown.html" class="external-link">use_pkgdown</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Setting active project to</span></span>
 <span><span class="co">#&gt;   <span style="color: #0000BB;">"/home/runner/work/spatialcourseOL/spatialcourseOL"</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">ℹ</span> Leaving <span style="color: #0000BB;">_pkgdown.yml</span> unchanged.</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">☐</span> Edit <span style="color: #0000BB;">_pkgdown.yml</span>.</span></span></code></pre></div>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
