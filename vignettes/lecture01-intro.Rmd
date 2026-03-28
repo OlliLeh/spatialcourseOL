@@ -220,7 +220,7 @@ x[2]
 We can extract more than one element at a time. For example, 
 ```{r}
 some.numbers[c(3,6,7)]
-```{r}
+```
 
 Negative indices can be used to avoid certain elements. For example, we can select all but the second element of x as follows:
 ```{r}
