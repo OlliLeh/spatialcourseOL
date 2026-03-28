@@ -297,7 +297,7 @@ rep(3,12) # repeat the value 3, 12 times
 ```
 
 ```{r}
-> rep(seq(2,20,by=2),2) # repeat the pattern 2 4 ... 20, twice
+rep(seq(2,20,by=2),2) # repeat the pattern 2 4 ... 20, twice
 ```
 
 ```{r}
