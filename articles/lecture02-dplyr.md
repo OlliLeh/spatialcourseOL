@@ -2,6 +2,15 @@
 
 ## Reading data with R
 
+R provides powerful tools for working with spatial data, making it a
+flexible environment for GIS analysis and reproducible workflows. In
+practice, most geographic datasets come in either vector (points, lines,
+polygons) or raster (grids) format. The sf package standardizes how
+vector data are stored and accessed, while terra offers efficient tools
+for raster operations. Before performing spatial analysis, we need to
+import these datasets into R. The code below shows how to read some of
+the most common spatial file formats.
+
 ##### Read a Shapefile (.shp):
 
 ``` r
@@ -55,9 +64,16 @@ admin_utm <- st_transform(shp, 32635)
 r_utm <- project(r, "EPSG:32635")
 ```
 
-Let´s have an example next.
+The sf package is the core R library for working with vector spatial
+data. It provides functions to read, write, analyze, and visualize
+geographic objects using modern standards. More information and
+documentation can be found on the project website:
 
-------------------------------------------------------------------------
+- <https://r-spatial.github.io/sf/>
+
+![](figures/sf.png)
+
+### Let´s have an example next.
 
 ### 1. Introduction
 
@@ -673,7 +689,7 @@ ggplot(grid_5km) +
   labs(title = "Statistics Finland 5 km Grid")
 ```
 
-![](lecture02-dplyr_files/figure-html/unnamed-chunk-12-1.png)
+![](lecture02-dplyr_files/figure-html/unnamed-chunk-13-1.png)
 
 ### 6. Clip the Grid to Kotka
 
@@ -736,7 +752,7 @@ ggplot(kotka_grid) +
   labs(title = "Statistics Finland 5 km Grid in Kotka")
 ```
 
-![](lecture02-dplyr_files/figure-html/unnamed-chunk-16-1.png)
+![](lecture02-dplyr_files/figure-html/unnamed-chunk-17-1.png)
 
 ### 7. Export the Result as a Shapefile
 
@@ -908,7 +924,7 @@ ggplot(municipalities2) +
   guides(fill=guide_legend(title="", nrow=3)) 
 ```
 
-![](lecture02-dplyr_files/figure-html/unnamed-chunk-26-1.png)
+![](lecture02-dplyr_files/figure-html/unnamed-chunk-27-1.png)
 
 ### 9. Create an Interactive Leaflet Map
 
