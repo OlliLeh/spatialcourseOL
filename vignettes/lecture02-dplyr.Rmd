@@ -14,6 +14,55 @@ title: "Open Data: Statistics Finland WFS service"
 output: html_document
 ---
 
+#### Read a Shapefile (.shp):
+```{r, eval=FALSE}
+library(sf)
+shp <- st_read("data/admin_areas.shp")
+```
+
+#### Read a GeoPackage (.gpkg):
+```{r, eval=FALSE}
+library(sf)
+```
+
+List layers
+```{r, eval=FALSE}
+st_layers("data/geodata.gpkg")
+```
+
+Read a specific layer
+```{r, eval=FALSE}
+roads <- st_read("data/geodata.gpkg", layer = "roads")
+```
+
+#### Read GeoJSON
+```{r, eval=FALSE}
+library(sf)
+
+geojson <- st_read("data/borders.geojson")
+```
+
+#### Read a Raster (GeoTIFF .tif)
+```{r, eval=FALSE}
+library(terra)
+
+r <- rast("data/elevation.tif")
+```
+
+#### Reproject Vector Data
+```{r, eval=FALSE}
+admin_utm <- st_transform(shp, 32635)
+```
+
+#### Reproject Raster Data
+```{r, eval=FALSE}
+r_utm <- project(r, "EPSG:32635")
+```
+
+Let´s have an example next.
+
+---
+
 ## 1. Introduction
 
 This example demonstrates how to download, explore, and process open spatial data from the Statistics Finland WFS service.  
@@ -27,7 +76,6 @@ We will:
 
 This workflow helps you understand how openly available geospatial data can be accessed and integrated into spatial analysis.
 
----
 
 ## 2. Load Required Libraries
 
