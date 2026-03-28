@@ -186,8 +186,8 @@ x
 
 The : symbol can be used to create sequences of increasing (or decreasing) values. For example, 
 ```{r}
-> numbers5to20 <- 5:20
-> numbers5to20
+numbers5to20 <- 5:20
+numbers5to20
 ```
 
 Vectors can be joined together with the c function. For example, note what happens when we type
@@ -1052,7 +1052,7 @@ In Windows versions of R, it is possible to use the File ׀ Change dir… menu t
 
 It is also possible to use the setwd ( ) function. For example, to work with data in the folder mydata on the C-drive type
 ```{r, eval=FALSE}
-> setwd(“c:/mydata”) 	# or setwd(“c\\mydata”)
+setwd(“c:/mydata”) 	# or setwd(“c\\mydata”)
 ```
 
 Data sets frequently consist of more than one column of data where each column represents measurements of a single variable. Each row usually represents a single observation. This format s referred to as case-by-variable format. 
