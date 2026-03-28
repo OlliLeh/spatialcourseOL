@@ -2,6 +2,63 @@
 
 ## Reading data with R
 
+##### Read a Shapefile (.shp):
+
+``` r
+library(sf)
+shp <- st_read("data/admin_areas.shp")
+```
+
+##### Read a GeoPackage (.gpkg):
+
+``` r
+library(sf)
+```
+
+List layers
+
+``` r
+st_layers("data/geodata.gpkg")
+```
+
+Read a specific layer
+
+``` r
+roads <- st_read("data/geodata.gpkg", layer = "roads")
+```
+
+##### Read GeoJSON
+
+``` r
+library(sf)
+
+geojson <- st_read("data/borders.geojson")
+```
+
+##### Read a Raster (GeoTIFF .tif)
+
+``` r
+library(terra)
+
+r <- rast("data/elevation.tif")
+```
+
+##### Reproject Vector Data
+
+``` r
+admin_utm <- st_transform(shp, 32635)
+```
+
+##### Reproject Raster Data
+
+``` r
+r_utm <- project(r, "EPSG:32635")
+```
+
+Let´s have an example next.
+
+------------------------------------------------------------------------
+
 ### 1. Introduction
 
 This example demonstrates how to download, explore, and process open
@@ -16,8 +73,6 @@ We will:
 
 This workflow helps you understand how openly available geospatial data
 can be accessed and integrated into spatial analysis.
-
-------------------------------------------------------------------------
 
 ### 2. Load Required Libraries
 
@@ -618,7 +673,7 @@ ggplot(grid_5km) +
   labs(title = "Statistics Finland 5 km Grid")
 ```
 
-![](lecture02-dplyr_files/figure-html/unnamed-chunk-4-1.png)
+![](lecture02-dplyr_files/figure-html/unnamed-chunk-12-1.png)
 
 ### 6. Clip the Grid to Kotka
 
@@ -681,7 +736,7 @@ ggplot(kotka_grid) +
   labs(title = "Statistics Finland 5 km Grid in Kotka")
 ```
 
-![](lecture02-dplyr_files/figure-html/unnamed-chunk-8-1.png)
+![](lecture02-dplyr_files/figure-html/unnamed-chunk-16-1.png)
 
 ### 7. Export the Result as a Shapefile
 
@@ -853,7 +908,7 @@ ggplot(municipalities2) +
   guides(fill=guide_legend(title="", nrow=3)) 
 ```
 
-![](lecture02-dplyr_files/figure-html/unnamed-chunk-18-1.png)
+![](lecture02-dplyr_files/figure-html/unnamed-chunk-26-1.png)
 
 ### 9. Create an Interactive Leaflet Map
 
