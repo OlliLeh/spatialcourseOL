@@ -926,7 +926,112 @@ ggplot(municipalities2) +
 
 ![](lecture02-dplyr_files/figure-html/unnamed-chunk-27-1.png)
 
-### 9. Create an Interactive Leaflet Map
+## Create an Interactive Leaflet Map
+
+### What is Leaflet Package
+
+The leaflet package in R provides an easy and interactive way to create
+web-based maps directly from R code. Built on top of the popular
+JavaScript Leaflet library, the R package enables users to visualize
+spatial data, add interactive elements, and customize map layers—all
+without needing to write JavaScript.
+
+Key Features
+
+- Interactive maps: Zooming, panning, popups, tooltips.
+- Easy layering: Add markers, polygons, rasters, tile providers, and
+  custom shapes.
+- Works with spatial data formats: Such as sf, sp, GeoJSON.
+- Dynamic styling: Colors, icons, legends, and custom widgets.
+- Seamless integration: Works well with Shiny apps and R Markdown.
+
+#### Example: Minimal code
+
+``` r
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap tiles
+  addMarkers(lng = 29.7636, lat = 62.6010, popup = "Hello from Joensuu!")
+```
+
+#### Example: Add a data frame of points
+
+Create a data frame:
+
+``` r
+cities <- data.frame(
+  name = c("Joensuu", "Helsinki", "Oulu"),
+  lat  = c(62.6010, 60.1921, 65.0121),
+  lng  = c(29.7636, 24.9458, 25.466))
+```
+
+Map it using addMarkers() or addCircleMarkers():
+
+``` r
+leaflet(cities) %>%
+  addTiles() %>%
+  addCircleMarkers(
+    ~lng, ~lat,
+    popup = ~name,
+    radius = 6,
+    color = "red",
+    fillOpacity = 0.8)
+```
+
+#### Example: Add polygons or shapefiles (e.g., municipal borders)
+
+Using geofi::get_municipalities(), we retrieve the 2025 municipal
+borders as an sf object. We then keep only the municipality ID and name.
+
+``` r
+municipalities <- geofi::get_municipalities(year = 2024)
+```
+
+    ## Requesting response from: http://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2024
+
+    ## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
+
+    ## Data is licensed under: Attribution 4.0 International (CC BY 4.0)
+
+``` r
+municipalities <- municipalities %>% 
+  select(kunta, kunta_name)
+```
+
+Municipalities object is in the Finnish national grid ETRS89 / TM35FIN
+(EPSG:3067). Leaflet, however, needs WGS84 (EPSG:4326) coordinates
+(lat/lon).
+
+Transform municipalities to WGS84:
+
+``` r
+library(sf)
+muni_wgs84 <- st_transform(municipalities, crs = 4326)
+```
+
+Then, we can use it
+
+``` r
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%
+  addPolygons(data = muni_wgs84, fillOpacity = 0.2, color = "blue")
+```
+
+Typical Use Cases
+
+- Visualizing geographic data (points, lines, polygons)
+- Creating interactive dashboards (e.g., with Shiny)
+- Exploring geospatial datasets
+- Teaching or demonstrating spatial concepts
+
+### Drawing a Map with Leaflet
+
+Jatketaan edellistä esimerkkiä, jossa kuvattiin kartalla kuntaryhmät.
+Tehdään tästä aineistosta myös interaktiivinen kartta hyödyntämällä
+leaflet pakettia.
 
 Before creating an interactive leaflet map, we must ensure that our
 spatial data uses the correct coordinate reference system (CRS). Leaflet
@@ -993,6 +1098,125 @@ leaflet_map <- leaflet(municipalities3) %>%
 ``` r
 leaflet_map
 ```
+
+#### Step-by-step explanation:
+
+1.  Start the leaflet map with data
+
+``` r
+leaflet_map <- leaflet(municipalities3) %>%
+```
+
+- leaflet(municipalities3) initializes a leaflet map.
+- municipalities3 is an sf object.
+- This means leaflet automatically knows that each row is a geometry
+  (polygon), and lets you refer to attribute columns using formulas like
+  ~kuntaryhma.
+
+2.  Add a background tile map
+
+``` r
+addProviderTiles("CartoDB.Positron") %>%
+```
+
+- Loads a tile layer from the CartoDB Positron style (light, clean
+  basemap).
+- This becomes the background on which your polygons are drawn.
+
+3.  Add the municipal polygons
+
+``` r
+addPolygons(
+  fillColor   = ~pal(kuntaryhma),
+  fillOpacity = 0.8,
+  color       = "white",
+  weight      = 1,
+  popup       = ~paste0(
+    "<strong>", kunta_name, "</strong><br>",
+    "Group: ", kuntaryhma
+  ),
+  highlight = highlightOptions(
+    weight = 2,
+    color = "#444444",
+    fillOpacity = 0.9,
+    bringToFront = TRUE
+  )
+) %>%
+```
+
+This is the core mapping step. Let’s break it down:
+
+3.1 Color each municipality using a palette
+
+``` r
+fillColor = ~pal(kuntaryhma)
+```
+
+- pal is a color palette function you created earlier (e.g.,
+  colorFactor).
+- ~kuntaryhma means: use the kuntaryhma column from municipalities3.
+- Each municipality gets a color matching its group.
+
+3.2 Set polygon styling
+
+``` r
+fillOpacity = 0.8
+color = "white"
+weight = 1
+```
+
+- fillOpacity: how transparent the fill color is.
+- color: border line color (white).
+- weight: border thickness (1 pixel).
+
+3.3 Add a popup for each municipality
+
+``` r
+popup = ~paste0(
+  "<strong>", kunta_name, "</strong><br>",
+  "Group: ", kuntaryhma
+)
+```
+
+- Uses values from the data: kunta_name (municipality name), and
+  kuntaryhma (municipality group)
+- paste0() builds HTML-formatted text for the popup.
+
+3.4 Add interactive highlight on mouse hover
+
+``` r
+highlight = highlightOptions(
+  weight = 2,
+  color = "#444444",
+  fillOpacity = 0.9,
+  bringToFront = TRUE
+)
+```
+
+When the user hovers over a polygon: - Border becomes thicker (weight =
+2) - Border turns dark gray (#444444) - Fill becomes less transparent
+(fillOpacity = 0.9) - Polygon is brought to the front so it isn’t hidden
+
+4.  Add a legend to explain the colors
+
+``` r
+addLegend(
+  pal = pal,
+  values = ~kuntaryhma,
+  title = "Municipality Group",
+  opacity = 1
+)
+```
+
+- Uses the same palette function (pal) used for the polygon colors.
+- values = ~kuntaryhma tells the legend what categories appear.
+- title sets the legend title.
+- opacity = 1 makes it fully visible.
+
+After all steps, you get an interactive map where: - Municipalities are
+colored by group - over highlighting improves interactivity - Clicking
+shows detailed popups - Legend explains the meaning of colors - Clean
+basemap makes shapes look sharp
 
 ``` r
 library(spatialcourseOL)
