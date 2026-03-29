@@ -1011,7 +1011,13 @@ guides(fill = guide_legend(title = "", nrow = 3))
 - nrow = 3 arranges legend items in three rows.
 - title = “” ensures no legend title appears.
 
-## Add North Arrow and Scale on Map
+### 10. Add North Arrow and Scale on Map
+
+To improve map readability and orientation, a scale bar and a north
+arrow are added using the ggspatial package.
+
+These elements help readers interpret distances and direction directly
+on the map.
 
 ``` r
 library(ggspatial)
@@ -1025,8 +1031,20 @@ ggplot(municipalities2) +
   )                                                         # north arrow
 ```
 
-![](lecture02-dplyr_files/figure-html/unnamed-chunk-34-1.png) \# Create
-an Interactive Leaflet Map
+![](lecture02-dplyr_files/figure-html/unnamed-chunk-34-1.png)
+
+### 11. Useful links for self-studying
+
+There are excellent online resources for learning how to create maps
+with ggplot2 and sf in R. Here are some of the best:
+
+<https://r-spatial.org/r/2018/10/25/ggplot2-sf.html>
+
+<https://ggplot2-book.org/maps.html>
+
+<https://bookdown.org/nicohahn/making_maps_with_r5/docs/ggplot2.html>
+
+## Create an Interactive Leaflet Map
 
 ### 1. What is Leaflet Package
 

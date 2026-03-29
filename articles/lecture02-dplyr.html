@@ -1009,10 +1009,13 @@ consistent.</li>
 <li>title = “” ensures no legend title appears.</li>
 </ul>
 </div>
-</div>
-<div class="section level2">
-<h2 id="add-north-arrow-and-scale-on-map">Add North Arrow and Scale on Map<a class="anchor" aria-label="anchor" href="#add-north-arrow-and-scale-on-map"></a>
-</h2>
+<div class="section level3">
+<h3 id="add-north-arrow-and-scale-on-map">10. Add North Arrow and Scale on Map<a class="anchor" aria-label="anchor" href="#add-north-arrow-and-scale-on-map"></a>
+</h3>
+<p>To improve map readability and orientation, a scale bar and a north
+arrow are added using the ggspatial package.</p>
+<p>These elements help readers interpret distances and direction
+directly on the map.</p>
 <div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://paleolimbot.github.io/ggspatial/" class="external-link">ggspatial</a></span><span class="op">)</span></span>
 <span></span>
@@ -1023,8 +1026,21 @@ consistent.</li>
 <span>    location <span class="op">=</span> <span class="st">"tl"</span>,</span>
 <span>    style <span class="op">=</span> <span class="va">north_arrow_fancy_orienteering</span></span>
 <span>  <span class="op">)</span>                                                         <span class="co"># north arrow</span></span></code></pre></div>
-<p><img src="lecture02-dplyr_files/figure-html/unnamed-chunk-34-1.png" class="r-plt" alt="" width="700">
-# Create an Interactive Leaflet Map</p>
+<p><img src="lecture02-dplyr_files/figure-html/unnamed-chunk-34-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+<div class="section level3">
+<h3 id="useful-links-for-self-studying">11. Useful links for self-studying<a class="anchor" aria-label="anchor" href="#useful-links-for-self-studying"></a>
+</h3>
+<p>There are excellent online resources for learning how to create maps
+with ggplot2 and sf in R. Here are some of the best:</p>
+<p><a href="https://r-spatial.org/r/2018/10/25/ggplot2-sf.html" class="external-link uri">https://r-spatial.org/r/2018/10/25/ggplot2-sf.html</a></p>
+<p><a href="https://ggplot2-book.org/maps.html" class="external-link uri">https://ggplot2-book.org/maps.html</a></p>
+<p><a href="https://bookdown.org/nicohahn/making_maps_with_r5/docs/ggplot2.html" class="external-link uri">https://bookdown.org/nicohahn/making_maps_with_r5/docs/ggplot2.html</a></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="create-an-interactive-leaflet-map">Create an Interactive Leaflet Map<a class="anchor" aria-label="anchor" href="#create-an-interactive-leaflet-map"></a>
+</h2>
 <div class="section level3">
 <h3 id="what-is-leaflet-package">1. What is Leaflet Package<a class="anchor" aria-label="anchor" href="#what-is-leaflet-package"></a>
 </h3>
