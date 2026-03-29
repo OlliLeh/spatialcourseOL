@@ -73,9 +73,9 @@ documentation can be found on the project website:
 
 ![](figures/sf.png)
 
-### Let´s have an example next.
+Let´s have an example next.
 
-### 1. Introduction
+## Reading Open Data: Statistics Finland WFS service”
 
 This example demonstrates how to download, explore, and process open
 spatial data from the Statistics Finland WFS service.  
@@ -90,7 +90,7 @@ We will:
 This workflow helps you understand how openly available geospatial data
 can be accessed and integrated into spatial analysis.
 
-### 2. Load Required Libraries
+### 1. Load Required Libraries
 
 In this step, we load the R packages used throughout the analysis. These
 include tools for spatial data handling (sf), data manipulation (dplyr,
@@ -161,7 +161,7 @@ library(geofi)   # for Finnish municipal boundaries
     ## - New functions for interacting with both National Land Survey and Statistics Finland OCG API-services. See three new vignettes for examples.
     ## **************
 
-### 3. Inspect the WFS Service
+### 2. Inspect the WFS Service
 
 Statistics Finland provides geospatial datasets through a WFS service.
 
@@ -639,7 +639,7 @@ vayla_client$getFeatureTypes(pretty = TRUE)
     ## 226        Vaalipiirit 2026 (1:1 000 000)
     ## 227        Vaalipiirit 2026 (1:4 500 000)
 
-### 4. Download the 5 km Grid Dataset
+### 3. Download the 5 km Grid Dataset
 
 Once we know which dataset we want, we construct a WFS request URL that
 retrieves the 5 km statistical grid (called hila5km) in GeoJSON format.
@@ -676,7 +676,7 @@ grid_5km <- st_read(grid_url)
     ## Bounding box:  xmin: 60000 ymin: 6605000 xmax: 735000 ymax: 7780000
     ## Projected CRS: ETRS89 / TM35FIN(E,N)
 
-### 5. Visualize the Grid
+### 4. Visualize the Grid
 
 In this step, we create a simple map of the downloaded 5 km grid. The
 ggplot2 and geom_sf() functions allow us to quickly inspect the geometry
@@ -691,7 +691,7 @@ ggplot(grid_5km) +
 
 ![](lecture02-dplyr_files/figure-html/unnamed-chunk-13-1.png)
 
-### 6. Clip the Grid to Kotka
+### 5. Clip the Grid to Kotka
 
 To focus the analysis on a specific municipality, we first download
 Finland’s municipal boundaries using geofi::get_municipalities(). We
@@ -699,7 +699,7 @@ then compute the centroid of each grid cell and perform a spatial join
 to determine which grid cells fall inside the municipality of Kotka.
 This isolates only the portion of the grid that overlaps Kotka’s area.
 
-##### 6.1 Retrieve municipality boundaries with geofi-package
+##### 5.1 Retrieve municipality boundaries with geofi-package
 
 The geofi package provides streamlined access to Finnish administrative
 and statistical geospatial data through the Statistics Finland WFS API,
@@ -726,7 +726,7 @@ municipalities <- geofi::get_municipalities(year = 2022) %>%
 
     ## Data is licensed under: Attribution 4.0 International (CC BY 4.0)
 
-##### 6.2 Generate centroids for each grid cell
+##### 5.2 Generate centroids for each grid cell
 
 ``` r
 grid_centroids <- st_centroid(grid_5km)
@@ -734,7 +734,7 @@ grid_centroids <- st_centroid(grid_5km)
 
     ## Warning: st_centroid assumes attributes are constant over geometries
 
-##### 6.3 Select grid cells located in Kotka
+##### 5.3 Select grid cells located in Kotka
 
 ``` r
 kotka <- subset(municipalities, kunta_name == "Kotka")
@@ -754,7 +754,7 @@ ggplot(kotka_grid) +
 
 ![](lecture02-dplyr_files/figure-html/unnamed-chunk-17-1.png)
 
-### 7. Export the Result as a Shapefile
+### 6. Export the Result as a Shapefile
 
 Finally, we save the clipped grid as a shapefile using st_write().
 Shapefiles can be opened in GIS software such as QGIS or ArcGIS, making
@@ -926,9 +926,11 @@ ggplot(municipalities2) +
 
 ![](lecture02-dplyr_files/figure-html/unnamed-chunk-27-1.png)
 
+### 9. Step-by-step explanation
+
 ## Create an Interactive Leaflet Map
 
-### What is Leaflet Package
+### 1. What is Leaflet Package
 
 The leaflet package in R provides an easy and interactive way to create
 web-based maps directly from R code. Built on top of the popular
@@ -1027,11 +1029,11 @@ Typical Use Cases
 - Exploring geospatial datasets
 - Teaching or demonstrating spatial concepts
 
-### Drawing a Map with Leaflet
+### 2. Drawing a Map with Leaflet
 
-Jatketaan edellistä esimerkkiä, jossa kuvattiin kartalla kuntaryhmät.
-Tehdään tästä aineistosta myös interaktiivinen kartta hyödyntämällä
-leaflet pakettia.
+Let’s continue with the previous example where we mapped the
+municipality groups. We will also create an interactive map from this
+dataset by using the leaflet package.
 
 Before creating an interactive leaflet map, we must ensure that our
 spatial data uses the correct coordinate reference system (CRS). Leaflet
@@ -1099,7 +1101,7 @@ leaflet_map <- leaflet(municipalities3) %>%
 leaflet_map
 ```
 
-#### Step-by-step explanation:
+### 3. Step-by-step explanation
 
 1.  Start the leaflet map with data
 
