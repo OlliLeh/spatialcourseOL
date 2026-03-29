@@ -29,5 +29,6 @@ Imports:
     geofi,
     janitor,
     leaflet,
-    readxl
+    readxl,
+    ggspatial
     
