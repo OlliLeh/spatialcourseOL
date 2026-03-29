@@ -928,7 +928,105 @@ ggplot(municipalities2) +
 
 ### 9. Step-by-step explanation
 
-## Create an Interactive Leaflet Map
+1.  Start a ggplot and load the data
+
+``` r
+ggplot(municipalities2) +
+```
+
+- Starts a new ggplot.
+- The data source is municipalities2, an sf (simple features) object
+  containing polygons.
+- All following layers inherit this dataset unless overridden.
+
+2.  Draw the municipality polygons
+
+``` r
+geom_sf(aes(fill = kuntaryhma),
+        alpha = 0.75, colour = "white", lwd = 0.1) +
+```
+
+What this does:
+
+- geom_sf() draws the geometries inside municipalities2.
+- aes(fill = kuntaryhma) maps polygon color to the variable kuntaryhma.
+- alpha = 0.75 makes polygons slightly transparent.
+- colour = “white” draws thin white borders around municipalities.
+- lwd = 0.1 sets a very thin border line width.
+
+3.  Set manual colors for the groups
+
+``` r
+scale_fill_manual(
+  values = c(ccities, crural, cdense),
+  name = "",
+  guide = guide_legend(
+    direction = "horizontal",
+    label.position = "top",
+    keywidth = 3,
+    keyheight = 0.5
+  )
+) +
+```
+
+What this does: - Assigns custom colors to the fill scale. - ccities,
+crural, and cdense are likely predefined color vectors. - name = “”
+removes the legend title.
+
+The legend guide is customized:
+
+- direction = “horizontal” → legend items in a horizontal line.
+- label.position = “top” → labels appear above the color boxes.
+- keywidth = 3 → wide legend keys.
+- keyheight = 0.5 → flat, low legend keys.
+
+4.  Move the legend inside the plot
+
+``` r
+theme(legend.position = c(0.16, 0.7)) +
+```
+
+Places the legend at coordinates (0.16, 0.7) within the plot area.
+
+5.  Style the legend text
+
+``` r
+theme(
+  legend.title = element_text(size = 12),
+  legend.text  = element_text(size = 12)
+) +
+```
+
+- Increases legend text size for readability.
+- Even though the legend title is empty, the code keeps styling
+  consistent.
+
+6.  Control number of legend rows
+
+``` r
+guides(fill = guide_legend(title = "", nrow = 3))
+```
+
+- Fine‑tunes the legend for the fill aesthetic.
+- nrow = 3 arranges legend items in three rows.
+- title = “” ensures no legend title appears.
+
+## Add North Arrow and Scale on Map
+
+``` r
+library(ggspatial)
+
+ggplot(municipalities2) +
+  geom_sf(aes(fill = kuntaryhma)) +
+  annotation_scale(location = "bl", width_hint = 0.3) +    # scale bar
+  annotation_north_arrow(
+    location = "tl",
+    style = north_arrow_fancy_orienteering
+  )                                                         # north arrow
+```
+
+![](lecture02-dplyr_files/figure-html/unnamed-chunk-34-1.png) \# Create
+an Interactive Leaflet Map
 
 ### 1. What is Leaflet Package
 
