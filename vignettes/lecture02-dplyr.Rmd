@@ -487,6 +487,28 @@ leaflet() %>%
   addPolygons(data = muni_wgs84, fillOpacity = 0.2, color = "blue")
 ```  
 
+### Example: Add Video Content
+Leaflet in R allows you to attach any HTML content to a popup, including embedded YouTube videos. In this example, we create an <iframe> snippet containing the YouTube embed link, then assign it as the popup of a map marker. When the marker is clicked, the video plays directly inside the map interface.
+
+```{r}
+library(leaflet)
+```
+
+```{r}
+youtube_iframe <- '<iframe width="300" height="200"
+src="https://www.youtube.com/embed/JCizmc4tRxY"
+frameborder="0" allowfullscreen></iframe>'
+```
+
+```  {r}
+leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(
+    lng = 26.9459, lat = 60.4666,   # Example coords (Helsinki)
+    popup = youtube_iframe
+  )
+```  
+
 Typical Use Cases
 
 - Visualizing geographic data (points, lines, polygons)
