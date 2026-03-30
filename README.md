@@ -47,25 +47,14 @@ Students with basic experience in spatial data and statistical methods who want 
 - Introduction to course datasets  
 - **Lecture + Practical + Assignment 1**
 
-### **Week 2 — Data Wrangling with dplyr**
-- Efficient manipulation of attribute and spatial data  
-- Joining, filtering, transforming geospatial tables  
-- **Lecture + Practical + Assignment 2**
+### **Week 2 — Data Visualization & Regression analysis**
 
-### **Week 3 — Spatial Data & GIS Methods**
-- Reading, transforming, and visualizing spatial objects  
-- CRSs, projections, working with vector & raster data  
-- **Lecture + Practical + Assignment 3**
+### **Week 3 — Multivariate Analysis**
 
-### **Week 4 — Geospatial modelling II**
-- Regression, nonparametric methods, spatial regression  
-- Model diagnostics & interpretation  
-- **Lecture + Practical + Assignment 4**
+### **Week 4 — Geospatial modelling I**
 
 ### **Week 5 — Geospatial modelling II**
-- Regression, nonparametric methods, spatial regression  
-- Model diagnostics & interpretation  
-- **Lecture + Practical + Assignment 4**
+
 
 (Additional weeks can be added here as the course evolves.)
 
