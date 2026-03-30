@@ -1177,12 +1177,52 @@ leaflet() %>%
   )
 ```
 
+We can also add different backgrounds map with following example. First,
+we create a basic Leaflet map and store it in the object m. This map
+includes default OpenStreetMap tiles and a marker with a YouTube popup.
+
+``` r
+m<-leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(
+    lng = 26.9459, lat = 60.4666,   # Example coords (Helsinki)
+    popup = youtube_iframe
+  )
+```
+
+Next, we enhance this map by adding additional background layers. We add
+the Esri World Imagery satellite map with 50% opacity to allow blending,
+and then we add the CartoDB Voyager Labels layer to display clear labels
+on top of the satellite imagery.
+
+Because we start from m and continue piping, these layers are added on
+top of the original map without recreating it.
+
+``` r
+m %>%
+  addProviderTiles(
+    providers$Esri.WorldImagery,
+    options = providerTileOptions(opacity = 0.5)
+  ) %>%
+  addProviderTiles(providers$CartoDB.VoyagerOnlyLabels)
+```
+
 Typical Use Cases
 
 - Visualizing geographic data (points, lines, polygons)
 - Creating interactive dashboards (e.g., with Shiny)
 - Exploring geospatial datasets
 - Teaching or demonstrating spatial concepts
+
+For more examples, take a look for these websites:
+
+![](figures/leaflet2.png)
+
+- <https://rstudio.github.io/leaflet/articles/basemaps.html>
+
+![](figures/leaflet1.png)
+
+- <https://r-graph-gallery.com/package/leaflet.html>
 
 ### 2. Drawing a Map with Leaflet
 
