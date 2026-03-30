@@ -767,6 +767,10 @@ municipalities <- geofi::get_municipalities(year = 2022) %>%
 
 ##### 5.2 Generate centroids for each grid cell
 
+st_centroid(grid_5km) converts each 5 km grid polygon into a single
+point located at its center. These centroid points can then be used for
+labeling, spatial analysis, or extracting values.
+
 ``` r
 grid_centroids <- st_centroid(grid_5km)
 ```
@@ -775,15 +779,29 @@ grid_centroids <- st_centroid(grid_5km)
 
 ##### 5.3 Select grid cells located in Kotka
 
+This extracts only the polygon representing the municipality Kotka from
+the full municipalities dataset.
+
 ``` r
 kotka <- subset(municipalities, kunta_name == "Kotka")
+```
 
+Next, st_join() checks which grid centroid points fall inside the Kotka
+polygon and attaches Kotka’s attributes (such as kunta_name) to those
+points.
+
+``` r
 grid_in_kotka <- st_join(grid_centroids, kotka)
+```
 
+And finally, this filters the joined data so that only the centroid
+points that actually belong to Kotka are kept.
+
+``` r
 kotka_grid <- subset(grid_in_kotka, kunta_name == "Kotka")
 ```
 
-Visualize the results
+Let´s visualize the results
 
 ``` r
 ggplot(kotka_grid) +
@@ -791,7 +809,7 @@ ggplot(kotka_grid) +
   labs(title = "Statistics Finland 5 km Grid in Kotka")
 ```
 
-![](lecture02-dplyr_files/figure-html/unnamed-chunk-17-1.png)
+![](lecture02-dplyr_files/figure-html/unnamed-chunk-19-1.png)
 
 ### 6. Export the Result as a Shapefile
 
@@ -963,7 +981,7 @@ ggplot(municipalities2) +
   guides(fill=guide_legend(title="", nrow=3)) 
 ```
 
-![](lecture02-dplyr_files/figure-html/unnamed-chunk-27-1.png)
+![](lecture02-dplyr_files/figure-html/unnamed-chunk-29-1.png)
 
 ### 9. Step-by-step explanation
 
@@ -1070,7 +1088,7 @@ ggplot(municipalities2) +
   )                                                         # north arrow
 ```
 
-![](lecture02-dplyr_files/figure-html/unnamed-chunk-34-1.png)
+![](lecture02-dplyr_files/figure-html/unnamed-chunk-36-1.png)
 
 ### 11. Useful links for self-studying
 
