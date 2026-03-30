@@ -691,6 +691,45 @@ ggplot(grid_5km) +
 
 ![](lecture02-dplyr_files/figure-html/unnamed-chunk-13-1.png)
 
+Let’s break it down line by line.
+
+    1. ggplot(grid_5km)
+
+- ggplot() initializes a new ggplot object.
+- grid_5km is an sf object, meaning it contains geometry (polygons) plus
+  data.
+- Because it’s an sf object, ggplot automatically knows how to interpret
+  the geometry for mapping.
+
+In other words: This sets up the plotting environment using your 5 km
+grid dataset from Statistics Finland.
+
+    2. geom_sf(aes(fill = id), color = NA)
+
+This is the key line that draws the map. geom_sf()
+
+- A special geom used for plotting spatial features (points, lines,
+  polygons) from sf objects.
+
+aes(fill = id)
+
+- Fills each polygon using the variable id.
+- That means every 5 km grid cell gets a color based on its id value.
+- If id is categorical, you get distinct colors; if numeric, a gradient.
+
+color = NA
+
+- Removes the polygon borders.
+- Without borders, the grid cells blend into a smooth map, which is
+  often visually cleaner.
+
+&nbsp;
+
+    3. labs(title = "Statistics Finland 5 km Grid")
+
+- Adds a title to the plot.
+- Makes the map clearer and ready for reporting or presentations.
+
 ### 5. Clip the Grid to Kotka
 
 To focus the analysis on a specific municipality, we first download
