@@ -62,19 +62,69 @@
 <div class="section level2">
 <h2 id="assignment-01-working-with-spatial-data">Assignment 01: Working with Spatial Data<a class="anchor" aria-label="anchor" href="#assignment-01-working-with-spatial-data"></a>
 </h2>
-<p>In this assignment, you will learn to:</p>
-<ul>
-<li>Load spatial data</li>
-<li>Inspect coordinate reference systems (CRS)</li>
-<li>Create simple maps</li>
-<li>Perform basic transformations</li>
-</ul>
-<p>Use the example dataset included in the <code>mycourse</code>
-package.</p>
+<div class="section level3">
+<h3 id="basic-use-of-r-lecture01">Basic use of R (lecture01):<a class="anchor" aria-label="anchor" href="#basic-use-of-r-lecture01"></a>
+</h3>
+<ol style="list-style-type: decimal">
+<li>Create the vectors:</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>(1,2,3,…,19,20)</li>
+<li>(20,19,…,2,1)</li>
+<li>(1,2,3,…,19,20,19,18,…,2,1)</li>
+<li>(4,6,3) and assign it to the name tmp</li>
+</ol>
+<ol start="2" style="list-style-type: decimal">
+<li>Using rep () and seq () functions, create the vectors:</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>[1] 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 and</li>
+<li>[1] 0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3 4 4 4 4 4</li>
+</ol>
+<ol start="3" style="list-style-type: decimal">
+<li><p>Create a vector x which get values 1-10. Recalculate vector z
+values so that if the value of the x is less than 5, z=x-1, and if
+values of the x is something else, z=x/x.</p></li>
+<li><p>Repeat following calculation z=z+1 until z &gt; 100. Define first
+that z=0. Print the result after every calculation.</p></li>
+<li><p>Write a R-function which calculate average for vector x &lt;-
+c(1,2,3,4,5).</p></li>
+<li><p>Create a data frame with two variables: year and result. Variable
+year has values 1,2 and,3, and variable result has values 10,8 and 9.
+Write a R-function that create a line plot you’re your data
+frame.</p></li>
+<li><p>Create a permutation test and analyze whether the group mean is
+different between A and B groups. Calculate also Mann-Whitney test for
+groups. Group A: {5,6,7,5,5,6,8,9,10,15,2} and group B:
+{2,8,1,14,3,15,5,6,8,14,12,3} Explain your results!</p></li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="reading-and-mapping-data-with-r-lecture02">Reading and mapping data with R (lecture02):<a class="anchor" aria-label="anchor" href="#reading-and-mapping-data-with-r-lecture02"></a>
+</h3>
+<ol start="8" style="list-style-type: decimal">
+<li><p>Create a map of the regions of Finland (called
+maakunta4500k_2026). Add a north arrow and a scale bar to the map.
+Include both the map image and the code you used to create it in your
+portfolio answer.</p></li>
+<li><p>Create an interactive Leaflet map of your hometown and add what
+you consider the three best places in your hometown. Include the code
+you used to create the map in your portfolio answer.</p></li>
+<li><p>Create a map showing the municipality level urban–rural
+classification. Use the CSV file aluejaot_muokattu2 (found in the
+course’s Elearn platform under the folder Data 31.3.2026) as your
+dataset, where the urban–rural classification is given in English in the
+variable Alueluokka_eng. Use the 2023 municipal boundaries. Include the
+code you used to create the map in your portfolio answer.</p></li>
+</ol>
+<p>After you have created a solution for exercise, save them with code
+to your portfolio.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/OlliLeh/spatialcourseOL" class="external-link">spatialcourseOL</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-  </main>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
