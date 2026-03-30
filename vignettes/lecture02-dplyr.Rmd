@@ -428,6 +428,17 @@ leaflet() %>%
   addMarkers(lng = 29.7636, lat = 62.6010, popup = "Hello from Joensuu!")
 ```
 
+### Example: Add more popups on map
+```{r}
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap tiles
+  addMarkers(lng = 29.7636, lat = 62.6010, popup = "Hello from Joensuu!") %>%
+  addMarkers(lng = 29.7416, lat = 62.6045, popup = "Hello from University!") %>%
+  addMarkers(lng = 29.7762, lat = 62.6003, popup = "Hello from Railway Station!")
+```
+
 ### Example: Add a data frame of points
 Create a data frame:
 ```{r}
