@@ -1153,7 +1153,7 @@ leaflet() %>%
 #### Example: Add Video Content
 
 Leaflet in R allows you to attach any HTML content to a popup, including
-embedded YouTube videos. In this example, we create an snippet
+embedded YouTube videos. In this example, we create an iframe snippet
 containing the YouTube embed link, then assign it as the popup of a map
 marker. When the marker is clicked, the video plays directly inside the
 map interface.
