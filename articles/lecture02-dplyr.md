@@ -1214,7 +1214,34 @@ Typical Use Cases
 - Exploring geospatial datasets
 - Teaching or demonstrating spatial concepts
 
-For more examples, take a look for these websites:
+#### How to save leaflet map?
+
+This is the standard way because Leaflet is an interactive JavaScript
+map.
+
+``` r
+library(htmlwidgets)
+
+saveWidget(
+  widget = m,
+  file = "my_leaflet_map.html",
+  selfcontained = TRUE
+)
+```
+
+Explanation:
+
+saveWidget() from htmlwidgets exports the map into an HTML file that
+works offline. selfcontained = TRUE bundles all CSS/JS inside the file
+(bigger file, but portable). m is your Leaflet object.
+
+Then you can:
+
+- open the HTML file in a browser
+- email it
+- upload to a web page
+
+#### For more examples, take a look for these websites:
 
 ![](figures/leaflet2.png)
 
