@@ -79,7 +79,6 @@ We will:
 
 This workflow helps you understand how openly available geospatial data can be accessed and integrated into spatial analysis.
 
-
 ## 1. Load Required Libraries
 
 In this step, we load the R packages used throughout the analysis. These include tools for spatial data handling (sf), data manipulation (dplyr, purrr), downloading data from web services (httr, ows4R), and visualization (ggplot2). The geofi package is also loaded to access official Finnish municipal boundary data.
@@ -94,7 +93,6 @@ library(ows4R)
 library(ggplot2)
 library(geofi)   # for Finnish municipal boundaries
 ```
-
 
 ## 2. Inspect the WFS Service
 Statistics Finland provides geospatial datasets through a WFS service.
@@ -540,7 +538,32 @@ Typical Use Cases
 - Exploring geospatial datasets
 - Teaching or demonstrating spatial concepts
 
-For more examples, take a look for these websites:
+### How to save leaflet map?
+
+This is the standard way because Leaflet is an interactive JavaScript map.
+```{r, eval=FALSE}
+library(htmlwidgets)
+
+saveWidget(
+  widget = m,
+  file = "my_leaflet_map.html",
+  selfcontained = TRUE
+)
+```
+
+Explanation:
+
+saveWidget() from htmlwidgets exports the map into an HTML file that works offline.
+selfcontained = TRUE bundles all CSS/JS inside the file (bigger file, but portable).
+m is your Leaflet object.
+
+Then you can:
+
+- open the HTML file in a browser
+- email it
+- upload to a web page
+
+### For more examples, take a look for these websites:
 
 ```{r, echo=FALSE, out.width="70%"}
 knitr::include_graphics("figures/leaflet2.png")
