@@ -114,3 +114,283 @@ ggplot2 is:
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
 </iframe>
+
+
+# Working with ggplot2: Population development of the municipalities
+
+### 1. Installing and loading R packages
+
+What is an R package? An R package is a collection of functions, datasets, and documentation that extends what R can do. Base R is fairly minimal; most real data analysis uses packages.
+
+Loading commonly used packages
+```{r}
+library(forecast)
+library(foreign)
+library(reshape2)
+library(ggplot2)
+library(zoo)
+library(scales)
+library(dplyr)
+library(ggthemes)
+```
+
+Installing and loading additional packages
+```{r, eval=FALSE}
+install.packages("geofacet")
+```
+
+```{r}
+library(geofacet)
+```
+geofacet is used for geographical faceting (e.g. small multiples laid out like a map).
+
+Explanation:
+
+- install.packages() downloads the package from CRAN
+- You only need to install a package once
+- library() must be run every session
+
+Installing a package from GitHub
+```{r, eval=FALSE}
+remotes::install_github("ropengov/geofi")
+```
+
+```{r}
+library(geofi)
+```
+
+Explanation:
+
+- Some packages are not on CRAN
+- install_github() installs directly from GitHub
+- geofi provides Finnish municipality and regional data
+
+Note! This requires the remotes package to be installed.
+
+### 2. Reading data into R
+
+```{r}
+library(spatialcourseOL)
+```
+
+Reading a CSV file
+```{r}
+aluejaot2 <- spatialcourseOL::aluejaot2
+head(aluejaot2)
+```
+
+Explanation:
+
+- read.csv() loads a CSV file into R as a data frame
+- sep = "," specifies comma‑separated values
+- encoding = "UTF-8" ensures correct character encoding (important for Finnish characters)
+- stringsAsFactors = FALSE keeps text variables as character strings
+- names(dat) shows column names of the dat object
+
+Reading a second dataset
+```{r}
+data_vakie3 <- spatialcourseOL::data_vakie3
+head(data_vakie3)
+```
+
+### 3. Merging datasets
+
+```{r}
+x2 <- merge(data_vakie3, aluejaot2, by.x="tunnus", by.y="tunnus",all.x=T)
+```
+
+Explanation:
+
+- merge() combines two datasets
+- by.x and by.y specify the id variable which is found from both of datasets (here id is tunnus)
+- all.x = TRUE keeps all rows from data (left join)
+
+### 4. Reshaping the data (wide → long)
+
+```{r}
+data2 <- melt(data = x2, id.vars = c("tunnus", "nimi","Maakunta"), measure.vars = c(3:43))
+```
+
+Many datasets are initially in wide format:
+
+```{r, echo=FALSE, out.width="70%"}
+knitr::include_graphics("figures/wide_long.png")
+```
+
+melt():
+
+- Keeps identifier variables (id.vars)
+- Converts columns 3–43 into: a variable column and a value column
+
+As a results, data2 is suitable for ggplot2 and time‑series analysis.
+
+### 5. Creating a time variable
+
+```{r}
+aika <- seq(2000,2040,1)
+aika
+```
+
+Explanation:
+
+- seq() creates a sequence of numbers
+- Here: years from 2000 to 2040
+- Step size = 1 year
+
+This vector can be used as:
+
+- A time axis
+- A reference for plotting
+- Indexing years
+
+### 6. Creating a repeated time variable
+```{r}
+b <- rep(aika,310)
+```
+
+Explanation:
+
+- aika is a vector of years (2000–2040)
+- rep() repeats this vector 310 times
+- The result is a long vector where the time sequence is repeated for each spatial unit (e.g. municipality or region)
+
+Why this is needed?
+
+After reshaping the data into long format, we need a time variable that matches the number of rows in the dataset.
+
+Conceptually:
+
+- Each region has values for every year
+- b assigns the correct year to each observation
+
+### 7. Sorting the data by region name
+
+```{r}
+data3 <- data2[order(data2$nimi),]
+```
+
+Explanation:
+
+- order(data2$nimi) sorts rows alphabetically by region name (nimi)
+- The brackets [ , ] reorder the rows accordingly
+
+Why this matters?
+
+- Ensures that time series are properly aligned
+- Matches the structure of the repeated time vector (b)
+- Prevents mismatch between years and regions
+
+This step is crucial for correct time–region alignment.
+
+### 8. Adding the time variable to the data
+
+```{r}
+data4 <- cbind(data3,b)
+names(data4)
+```
+
+Explanation:
+
+- cbind() binds a new column to the dataset
+- The new column b represents time (years)
+- names(data4) checks that the column was added correctly
+
+### 9. Converting values to numeric
+
+```{r}
+data4$value <- as.numeric(data4$value)
+```
+
+Explanation:
+
+- After melt(), values are often stored as characters
+- as.numeric() converts them into numeric values
+
+Why this is important?
+
+- Mathematical operations (sum, mean, plots) require numeric data
+- Without this step, aggregation would fail or give errors
+
+### 10. Aggregating data by year, region, and province
+
+```{r}
+data5 <- aggregate(data4$value, by=list(data4$b,data4$nimi, data4$Maakunta),FUN=sum)
+```
+
+Explanation:
+This step summarizes the data.
+
+- aggregate() groups observations
+- Grouping variables:
+
++ data4$b → year
++ data4$nimi → region
++ data4$Maakunta → province
+
+- FUN = sum → sums values within each group
+
+Conceptually: This produces one value per year per region, suitable for:
+
+- time‑series analysis
+- plotting trends
+- regional comparisons
+
+The output columns will be named:
+
+- Group.1 → year
+- Group.2 → region name
+- Group.3 → province
+- x → aggregated value
+
+### 11. Checking dataset dimensions
+
+``` {r}
+dim(data5)
+```
+
+Explanation:
+
+dim() reports:
+
+- number of rows
+- number of columns
+
+Why this matters?
+
+- Confirms that aggregation worked as expected
+- Useful for sanity checking before analysis or plotting
+
+### 12. Subsetting one province
+
+```{r}
+vs <- subset(data5, Group.3=="Pohjois-Karjala")
+```
+
+Explanation:
+
+- subset() filters the data
+- Keeps only rows where the province is Pohjois‑Karjala
+
+Result: vs contains only regional time series for North Karelia
+
+Ready for:
+
+- regional plots
+- comparisons
+- focused analysis
+
+### 13. Visualising regional population development with ggplot2
+
+The complete plotting code
+```{r}
+ggplot(vs, aes(x=Group.1, y=x, group=Group.2))+
+  geom_line(size=1.1) +
+  theme(axis.text.x=element_text(angle=90, vjust=0.5,hjust=1)) +
+  facet_geo(facets = ~Group.2, grid=geofi::grid_pohjois_karjala, scales = "free_y") +
+  labs(title="Population development 2000-2019 and population projection 2020-2040", y="Population", x="Municipality")+
+  theme(axis.text = element_text(size=12),
+        axis.title = element_text(size=12, face="bold"),
+        plot.title = element_text(size=14, face="bold"),
+        strip.text = element_text(size=12))+
+  scale_x_continuous(breaks=seq(2000, 2040,5)) 
+```

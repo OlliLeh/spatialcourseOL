@@ -33,7 +33,7 @@ Imports:
     ggspatial,
     forecast,
     foreign,
-    reshape,
+    reshape2,
     ggthemes,
     zoo,
     scales,
