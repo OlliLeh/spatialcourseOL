@@ -2,15 +2,16 @@ pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  assignment01-data: assignment01-data.html
-  assignment02-data2: assignment02-data2.html
+  assignment01-week1: assignment01-week1.html
+  assignment02-week2: assignment02-week2.html
   assignment04-week4: assignment04-week4.html
   assignment05-week5: assignment05-week5.html
   lecture01-intro: lecture01-intro.html
   lecture02-dplyr: lecture02-dplyr.html
-  lecture03-regression: lecture03-regression.html
-  lecture04-multivariate: lecture04-multivariate.html
-last_built: 2026-03-30T17:53Z
+  lecture03-ggplot2: lecture03-ggplot2.html
+  lecture04-regression: lecture04-regression.html
+  lecture05-multivariate: lecture05-multivariate.html
+last_built: 2026-04-09T09:47Z
 urls:
   reference: https://ollileh.github.io/spatialcourseOL/reference
   article: https://ollileh.github.io/spatialcourseOL/articles

@@ -1,4 +1,4 @@
-# lecture02-Reading data
+# Lecture 2: Reading data
 
 ## Reading data with R
 
@@ -154,12 +154,7 @@ library(geofi)   # for Finnish municipal boundaries
     ## 
     ## geofi R package: tools for open GIS data for Finland.
     ## Part of rOpenGov <ropengov.org>.
-    ## 
-    ## **************
-    ## Changes in version 1.1.0:
-    ## - Object `municipality_central_localities` is depracated and replaced with function `municipality_central_localities()`. More at https://github.com/rOpenGov/geofi/blob/master/NEWS.md
-    ## - New functions for interacting with both National Land Survey and Statistics Finland OCG API-services. See three new vignettes for examples.
-    ## **************
+    ## Version 1.2.1
 
 ### 2. Inspect the WFS Service
 
@@ -759,7 +754,7 @@ municipalities <- geofi::get_municipalities(year = 2022) %>%
   select(kunta, kunta_name)
 ```
 
-    ## Requesting response from: http://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2022
+    ## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2022
 
     ## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
 
@@ -931,7 +926,7 @@ borders as an sf object. We then keep only the municipality ID and name.
 municipalities <- geofi::get_municipalities(year = 2024)
 ```
 
-    ## Requesting response from: http://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2024
+    ## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2024
 
     ## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
 
@@ -1175,7 +1170,7 @@ borders as an sf object. We then keep only the municipality ID and name.
 municipalities <- geofi::get_municipalities(year = 2024)
 ```
 
-    ## Requesting response from: http://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2024
+    ## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2024
 
     ## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
 

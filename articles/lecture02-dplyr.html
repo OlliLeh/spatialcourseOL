@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>lecture02-Reading data • spatialcourseOL</title>
+<title>Lecture 2: Reading data • spatialcourseOL</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="lecture02-Reading data">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Lecture 2: Reading data">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -53,7 +53,7 @@
 <script src="lecture02-dplyr_files/leaflet-binding-2.2.3/leaflet.js"></script><script src="lecture02-dplyr_files/leaflet-providers-3.0.0/leaflet-providers.js"></script><script src="lecture02-dplyr_files/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>lecture02-Reading data</h1>
+      <h1>Lecture 2: Reading data</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/OlliLeh/spatialcourseOL/blob/master/vignettes/lecture02-dplyr.Rmd" class="external-link"><code>vignettes/lecture02-dplyr.Rmd</code></a></small>
@@ -193,12 +193,7 @@ official Finnish municipal boundary data.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## geofi R package: tools for open GIS data for Finland.</span></span>
 <span><span class="co">## Part of rOpenGov &lt;ropengov.org&gt;.</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## **************</span></span>
-<span><span class="co">## Changes in version 1.1.0:</span></span>
-<span><span class="co">## - Object `municipality_central_localities` is depracated and replaced with function `municipality_central_localities()`. More at https://github.com/rOpenGov/geofi/blob/master/NEWS.md</span></span>
-<span><span class="co">## - New functions for interacting with both National Land Survey and Statistics Finland OCG API-services. See three new vignettes for examples.</span></span>
-<span><span class="co">## **************</span></span></code></pre>
+<span><span class="co">## Version 1.2.1</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="inspect-the-wfs-service">2. Inspect the WFS Service<a class="anchor" aria-label="anchor" href="#inspect-the-wfs-service"></a>
@@ -786,7 +781,7 @@ geofi-package</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">municipalities</span> <span class="op">&lt;-</span> <span class="fu">geofi</span><span class="fu">::</span><span class="fu"><a href="https://ropengov.github.io/geofi/reference/get_municipalities.html" class="external-link">get_municipalities</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2022</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">kunta</span>, <span class="va">kunta_name</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Requesting response from: http://geo.stat.fi/geoserver/wfs?service=WFS&amp;version=1.0.0&amp;request=getFeature&amp;typename=tilastointialueet%3Akunta4500k_2022</span></span></code></pre>
+<pre><code><span><span class="co">## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&amp;version=1.0.0&amp;request=getFeature&amp;typename=tilastointialueet%3Akunta4500k_2022</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)</span></span></code></pre>
 <pre><code><span><span class="co">## Data is licensed under: Attribution 4.0 International (CC BY 4.0)</span></span></code></pre>
 </div>
@@ -933,7 +928,7 @@ borders as an sf object. We then keep only the municipality ID and
 name.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">municipalities</span> <span class="op">&lt;-</span> <span class="fu">geofi</span><span class="fu">::</span><span class="fu"><a href="https://ropengov.github.io/geofi/reference/get_municipalities.html" class="external-link">get_municipalities</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Requesting response from: http://geo.stat.fi/geoserver/wfs?service=WFS&amp;version=1.0.0&amp;request=getFeature&amp;typename=tilastointialueet%3Akunta4500k_2024</span></span></code></pre>
+<pre><code><span><span class="co">## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&amp;version=1.0.0&amp;request=getFeature&amp;typename=tilastointialueet%3Akunta4500k_2024</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)</span></span></code></pre>
 <pre><code><span><span class="co">## Data is licensed under: Attribution 4.0 International (CC BY 4.0)</span></span></code></pre>
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
@@ -1161,7 +1156,7 @@ borders as an sf object. We then keep only the municipality ID and
 name.</p>
 <div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">municipalities</span> <span class="op">&lt;-</span> <span class="fu">geofi</span><span class="fu">::</span><span class="fu"><a href="https://ropengov.github.io/geofi/reference/get_municipalities.html" class="external-link">get_municipalities</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Requesting response from: http://geo.stat.fi/geoserver/wfs?service=WFS&amp;version=1.0.0&amp;request=getFeature&amp;typename=tilastointialueet%3Akunta4500k_2024</span></span></code></pre>
+<pre><code><span><span class="co">## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&amp;version=1.0.0&amp;request=getFeature&amp;typename=tilastointialueet%3Akunta4500k_2024</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)</span></span></code></pre>
 <pre><code><span><span class="co">## Data is licensed under: Attribution 4.0 International (CC BY 4.0)</span></span></code></pre>
 <div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">

@@ -116,20 +116,24 @@ are pushed to the repository.
 
 ### Week1
 
-- [lecture01-An Introduction to
+- [Lecture 1: An Introduction to
   R](https://ollileh.github.io/spatialcourseOL/articles/lecture01-intro.md):
-- [lecture02-Reading
+- [Lecture 2: Reading
   data](https://ollileh.github.io/spatialcourseOL/articles/lecture02-dplyr.md):
-- [assignment01-data](https://ollileh.github.io/spatialcourseOL/articles/assignment01-data.md):
+- [assignment01-data](https://ollileh.github.io/spatialcourseOL/articles/assignment01-week1.md):
 
 ### Week2
 
-- [lecture03-regression](https://ollileh.github.io/spatialcourseOL/articles/lecture03-regression.md):
-- [assignment02-data2](https://ollileh.github.io/spatialcourseOL/articles/assignment02-data2.md):
+- [Lecture 3:
+  ggplot2](https://ollileh.github.io/spatialcourseOL/articles/lecture03-ggplot2.md):
+- [Lecture 4: Regression
+  analysis](https://ollileh.github.io/spatialcourseOL/articles/lecture04-regression.md):
+- [assignment02-data2](https://ollileh.github.io/spatialcourseOL/articles/assignment02-week2.md):
 
 ### Week3
 
-- [lecture04-multivariate](https://ollileh.github.io/spatialcourseOL/articles/lecture04-multivariate.md):
+- [Lecture 5: Multivariate
+  analysis](https://ollileh.github.io/spatialcourseOL/articles/lecture05-multivariate.md):
 
 ### Week4
 

@@ -1,14 +1,15 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://ollileh.github.io/spatialcourseOL/404.html</loc></url>
-<url><loc>https://ollileh.github.io/spatialcourseOL/articles/assignment01-data.html</loc></url>
-<url><loc>https://ollileh.github.io/spatialcourseOL/articles/assignment02-data2.html</loc></url>
+<url><loc>https://ollileh.github.io/spatialcourseOL/articles/assignment01-week1.html</loc></url>
+<url><loc>https://ollileh.github.io/spatialcourseOL/articles/assignment02-week2.html</loc></url>
 <url><loc>https://ollileh.github.io/spatialcourseOL/articles/assignment04-week4.html</loc></url>
 <url><loc>https://ollileh.github.io/spatialcourseOL/articles/assignment05-week5.html</loc></url>
 <url><loc>https://ollileh.github.io/spatialcourseOL/articles/index.html</loc></url>
 <url><loc>https://ollileh.github.io/spatialcourseOL/articles/lecture01-intro.html</loc></url>
 <url><loc>https://ollileh.github.io/spatialcourseOL/articles/lecture02-dplyr.html</loc></url>
-<url><loc>https://ollileh.github.io/spatialcourseOL/articles/lecture03-regression.html</loc></url>
-<url><loc>https://ollileh.github.io/spatialcourseOL/articles/lecture04-multivariate.html</loc></url>
+<url><loc>https://ollileh.github.io/spatialcourseOL/articles/lecture03-ggplot2.html</loc></url>
+<url><loc>https://ollileh.github.io/spatialcourseOL/articles/lecture04-regression.html</loc></url>
+<url><loc>https://ollileh.github.io/spatialcourseOL/articles/lecture05-multivariate.html</loc></url>
 <url><loc>https://ollileh.github.io/spatialcourseOL/authors.html</loc></url>
 <url><loc>https://ollileh.github.io/spatialcourseOL/index.html</loc></url>
 <url><loc>https://ollileh.github.io/spatialcourseOL/reference/index.html</loc></url>
