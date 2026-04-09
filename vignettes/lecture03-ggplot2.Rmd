@@ -154,7 +154,9 @@ Note! This requires the remotes package to be installed.
 
 Reading a CSV file
 ```{r}
-data(aluejaot2)
+# Load regional classification data shipped with the course package
+load(
+  system.file("data", "aluejaot2.rda", package = "spatialcourseOL"))
 head(aluejaot2)
 ```
 
