@@ -515,6 +515,97 @@ for:</p>
 <span><span class="co">#&gt;   package. You can do this easily by calling:</span></span>
 <span><span class="co">#&gt;   grid_submit(__grid_df_name__)</span></span></code></pre></div>
 <p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" alt="" width="700"></p>
+<p>Step‑by‑step explanation</p>
+<div class="section level5">
+<h5 id="defining-the-plot-structure">1. Defining the plot structure<a class="anchor" aria-label="anchor" href="#defining-the-plot-structure"></a>
+</h5>
+<pre><code><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">vs</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Group.1</span>, y <span class="op">=</span> <span class="va">x</span>, group <span class="op">=</span> <span class="va">Group.2</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<p>Explanation:</p>
+<ul>
+<li>vs is the dataset (Pohjois‑Karjala only)</li>
+<li>Group.1 → year</li>
+<li>x → aggregated population</li>
+<li>group = Group.2 → separate line for each municipality</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="drawing-population-trends-as-lines">2. Drawing population trends as lines<a class="anchor" aria-label="anchor" href="#drawing-population-trends-as-lines"></a>
+</h5>
+<pre><code><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1.1</span><span class="op">)</span></span></code></pre>
+<p>Explanation:</p>
+<ul>
+<li>Draws a continuous line for each municipality</li>
+<li>size = 1.1 increases line thickness for readability</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="rotating-xaxis-labels">3. Rotating x‑axis labels<a class="anchor" aria-label="anchor" href="#rotating-xaxis-labels"></a>
+</h5>
+<pre><code><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<p>Explanation:</p>
+<ul>
+<li>Rotates year labels by 90 degrees</li>
+<li>Prevents overlapping text</li>
+<li>Improves readability when many years are shown</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="spatial-faceting-using-geofacet">4. Spatial faceting using geofacet<a class="anchor" aria-label="anchor" href="#spatial-faceting-using-geofacet"></a>
+</h5>
+<pre><code><span><span class="fu"><a href="https://hafen.github.io/geofacet/reference/facet_geo.html" class="external-link">facet_geo</a></span><span class="op">(</span></span>
+<span>  facets <span class="op">=</span> <span class="op">~</span> <span class="va">Group.2</span>,</span>
+<span>  grid <span class="op">=</span> <span class="fu">geofi</span><span class="fu">::</span><span class="va"><a href="https://ropengov.github.io/geofi/reference/grid_pohjois_karjala.html" class="external-link">grid_pohjois_karjala</a></span>,</span>
+<span>  scales <span class="op">=</span> <span class="st">"free_y"</span></span>
+<span><span class="op">)</span></span></code></pre>
+<p>Explanation (this is the key idea):</p>
+<ul>
+<li>Creates one panel per municipality</li>
+<li>Panels are arranged geographically, not alphabetically</li>
+<li>geofi::grid_pohjois_karjala defines the spatial layout</li>
+<li>scales = “free_y” gives each municipality its own y‑axis range</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="adding-labels-and-title">5. Adding labels and title<a class="anchor" aria-label="anchor" href="#adding-labels-and-title"></a>
+</h5>
+<pre><code><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>  title <span class="op">=</span> <span class="st">"Population development 2000–2019 and population projection 2020–2040"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"Population"</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"Municipality"</span><span class="op">)</span></span></code></pre>
+<p>Explanation:</p>
+<ul>
+<li>Adds an informative title</li>
+<li>Labels axes clearly</li>
+<li>Essential for standalone interpretation</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="improving-visual-appearance">6. Improving visual appearance<a class="anchor" aria-label="anchor" href="#improving-visual-appearance"></a>
+</h5>
+<pre><code><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>  axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,</span>
+<span>  axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
+<span>  plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
+<span>  strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+<p>Explanation:</p>
+<ul>
+<li>Increases font sizes</li>
+<li>Makes titles and axes clearer</li>
+<li>Improves readability for lectures and reports</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="controlling-xaxis-year-breaks">7. Controlling x‑axis year breaks<a class="anchor" aria-label="anchor" href="#controlling-xaxis-year-breaks"></a>
+</h5>
+<pre><code><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">2040</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<p>Explanation:</p>
+<ul>
+<li>Shows year labels every 5 years</li>
+<li>Avoids clutter</li>
+<li>Makes long time series easier to read</li>
+</ul>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
