@@ -7,7 +7,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r setup, include=FALSE}
+library(spatialcourseOL)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -1195,8 +1197,4 @@ write.foreign(mydata, "c:/mydata.txt", "c:/mydata.sas",   package="SAS")
         allowfullscreen>
 </iframe>
 
-```{r setup}
-library(spatialcourseOL)
-usethis::use_pkgdown()
 
-```

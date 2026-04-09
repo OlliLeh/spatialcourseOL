@@ -7,6 +7,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, include=FALSE}
+library(spatialcourseOL)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 # Reading data with R
 
 R provides powerful tools for working with spatial data, making it a flexible environment for GIS analysis and reproducible workflows. In practice, most geographic datasets come in either vector (points, lines, polygons) or raster (grids) format. The sf package standardizes how vector data are stored and accessed, while terra offers efficient tools for raster operations. Before performing spatial analysis, we need to import these datasets into R. The code below shows how to read some of the most common spatial file formats.
@@ -798,21 +807,3 @@ After all steps, you get an interactive map where:
 - Legend explains the meaning of colors
 - Clean basemap makes shapes look sharp
 
-
-
-
-
-
-
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
-
-```{r setup}
-library(spatialcourseOL)
-```
