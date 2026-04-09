@@ -394,3 +394,95 @@ ggplot(vs, aes(x=Group.1, y=x, group=Group.2))+
         strip.text = element_text(size=12))+
   scale_x_continuous(breaks=seq(2000, 2040,5)) 
 ```
+
+
+Step‑by‑step explanation
+
+#### 1. Defining the plot structure
+```
+ggplot(vs, aes(x = Group.1, y = x, group = Group.2))
+```
+
+Explanation:
+
+- vs is the dataset (Pohjois‑Karjala only)
+- Group.1 → year
+- x → aggregated population
+- group = Group.2 → separate line for each municipality
+
+#### 2. Drawing population trends as lines
+```
+geom_line(size = 1.1)
+```
+Explanation:
+
+- Draws a continuous line for each municipality
+- size = 1.1 increases line thickness for readability
+
+#### 3. Rotating x‑axis labels
+```
+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
+
+Explanation:
+
+- Rotates year labels by 90 degrees
+- Prevents overlapping text
+- Improves readability when many years are shown
+
+#### 4. Spatial faceting using geofacet
+```
+facet_geo(
+  facets = ~ Group.2,
+  grid = geofi::grid_pohjois_karjala,
+  scales = "free_y"
+)
+```
+
+Explanation (this is the key idea):
+
+- Creates one panel per municipality
+- Panels are arranged geographically, not alphabetically
+- geofi::grid_pohjois_karjala defines the spatial layout
+- scales = "free_y" gives each municipality its own y‑axis range
+
+#### 5. Adding labels and title
+```
+labs(
+  title = "Population development 2000–2019 and population projection 2020–2040",
+  y = "Population",
+  x = "Municipality")
+```
+
+Explanation:
+
+- Adds an informative title
+- Labels axes clearly
+- Essential for standalone interpretation
+
+#### 6. Improving visual appearance
+```
+theme(
+  axis.text = element_text(size = 12),
+  axis.title = element_text(size = 12, face = "bold"),
+  plot.title = element_text(size = 14, face = "bold"),
+  strip.text = element_text(size = 12)
+)
+```
+Explanation:
+
+- Increases font sizes
+- Makes titles and axes clearer
+- Improves readability for lectures and reports
+
+#### 7. Controlling x‑axis year breaks
+```
+scale_x_continuous(breaks = seq(2000, 2040, 5))
+```
+
+Explanation:
+
+- Shows year labels every 5 years
+- Avoids clutter
+- Makes long time series easier to read
+
