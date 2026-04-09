@@ -477,7 +477,8 @@ ggplot(vs, aes(x=Group.1, y=x, group=Group.2))+
         axis.title = element_text(size=12, face="bold"),
         plot.title = element_text(size=14, face="bold"),
         strip.text = element_text(size=12))+
-  scale_x_continuous(breaks=seq(2000, 2040,5)) 
+  coord_cartesian(xlim = c(2000, 2040)) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(4)) 
 #> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 #> ℹ Please use `linewidth` instead.
 #> This warning is displayed once per session.
