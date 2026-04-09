@@ -161,6 +161,362 @@ directly, ggplot2 builds plots by combining components (“layers”):</p>
 </iframe>
 </div>
 </div>
+<div class="section level2">
+<h2 id="working-with-ggplot2-population-development-of-the-municipalities">Working with ggplot2: Population development of the
+municipalities<a class="anchor" aria-label="anchor" href="#working-with-ggplot2-population-development-of-the-municipalities"></a>
+</h2>
+<div class="section level4">
+<h4 id="installing-and-loading-r-packages">1. Installing and loading R packages<a class="anchor" aria-label="anchor" href="#installing-and-loading-r-packages"></a>
+</h4>
+<p>What is an R package? An R package is a collection of functions,
+datasets, and documentation that extends what R can do. Base R is fairly
+minimal; most real data analysis uses packages.</p>
+<p>Loading commonly used packages</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pkg.robjhyndman.com/forecast/" class="external-link">forecast</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/foreign/" class="external-link">foreign</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/reshape" class="external-link">reshape2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://zoo.R-Forge.R-project.org/" class="external-link">zoo</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'zoo'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     as.Date, as.Date.numeric</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jrnold.github.io/ggthemes/" class="external-link">ggthemes</a></span><span class="op">)</span></span></code></pre></div>
+<p>Installing and loading additional packages</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geofacet"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hafen/geofacet" class="external-link">geofacet</a></span><span class="op">)</span></span></code></pre></div>
+<p>geofacet is used for geographical faceting (e.g. small multiples laid
+out like a map).</p>
+<p>Explanation:</p>
+<ul>
+<li>install.packages() downloads the package from CRAN</li>
+<li>You only need to install a package once</li>
+<li>library() must be run every session</li>
+</ul>
+<p>Installing a package from GitHub</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ropengov/geofi"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ropengov.github.io/geofi/" class="external-link">geofi</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; geofi R package: tools for open GIS data for Finland.</span></span>
+<span><span class="co">#&gt; Part of rOpenGov &lt;ropengov.org&gt;.</span></span>
+<span><span class="co">#&gt; Version 1.2.1</span></span></code></pre></div>
+<p>Explanation:</p>
+<ul>
+<li>Some packages are not on CRAN</li>
+<li>install_github() installs directly from GitHub</li>
+<li>geofi provides Finnish municipality and regional data</li>
+</ul>
+<p>Note! This requires the remotes package to be installed.</p>
+</div>
+<div class="section level4">
+<h4 id="reading-data-into-r">2. Reading data into R<a class="anchor" aria-label="anchor" href="#reading-data-into-r"></a>
+</h4>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/OlliLeh/spatialcourseOL" class="external-link">spatialcourseOL</a></span><span class="op">)</span></span></code></pre></div>
+<p>Reading a CSV file</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">aluejaot2</span> <span class="op">&lt;-</span> <span class="fu">spatialcourseOL</span><span class="fu">::</span><span class="va"><a href="../reference/aluejaot2.html">aluejaot2</a></span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">aluejaot2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   tunnus    nimi22       NUTS.1     Tukialue                ELY.keskus</span></span>
+<span><span class="co">#&gt; 1      5  Alajärvi Manner-Suomi tukialue 2+3   11 Etelä-Pohjanmaan ely</span></span>
+<span><span class="co">#&gt; 2      9 Alavieska Manner-Suomi   tukialue 1 13 Pohjois-Pohjanmaan ely</span></span>
+<span><span class="co">#&gt; 3     10    Alavus Manner-Suomi tukialue 2+3   11 Etelä-Pohjanmaan ely</span></span>
+<span><span class="co">#&gt; 4     16  Asikkala Manner-Suomi tukialue 2+3             04 Hämeen ely</span></span>
+<span><span class="co">#&gt; 5     18    Askola Manner-Suomi tukialue 2+3          01 Uudenmaan ely</span></span>
+<span><span class="co">#&gt; 6     19      Aura Manner-Suomi tukialue 2+3   02 Varsinais-Suomen ely</span></span>
+<span><span class="co">#&gt;                      Suuralue          Maakunta           Seutukunta</span></span>
+<span><span class="co">#&gt; 1           3 Länsi-Suomen sa   Etelä-Pohjanmaa   146 Järviseudun sk</span></span>
+<span><span class="co">#&gt; 2 4 Pohjois- ja Itä-Suomen sa Pohjois-Pohjanmaa    177 Ylivieskan sk</span></span>
+<span><span class="co">#&gt; 3           3 Länsi-Suomen sa   Etelä-Pohjanmaa 144 Kuusiokuntien sk</span></span>
+<span><span class="co">#&gt; 4           2 Etelä-Suomen sa       Päijät-Häme        071 Lahden sk</span></span>
+<span><span class="co">#&gt; 5     1 Helsinki-Uudenmaan sa           Uusimaa       015 Porvoon sk</span></span>
+<span><span class="co">#&gt; 6           2 Etelä-Suomen sa   Varsinais-Suomi       025 Loimaan sk</span></span>
+<span><span class="co">#&gt;                                      Leader               Alueluokka</span></span>
+<span><span class="co">#&gt; 1                            40 Aisapari ry             Ydinmaaseutu</span></span>
+<span><span class="co">#&gt; 2                       44 Rieska-LEADER ry             Ydinmaaseutu</span></span>
+<span><span class="co">#&gt; 3                          37 Kuudestaan ry             Ydinmaaseutu</span></span>
+<span><span class="co">#&gt; 4                     15 Päijänne-Leader ry Kaupunkien läh. maaseutu</span></span>
+<span><span class="co">#&gt; 5  01 Maaseudun kehittämisyhdistys SILMU ry Kaupunkien läh. maaseutu</span></span>
+<span><span class="co">#&gt; 6 06 Varsinais-Suomen jokivarsikumppanit ry Kaupunkien läh. maaseutu</span></span>
+<span><span class="co">#&gt;              Kuntaryhma       Alueluokka_eng</span></span>
+<span><span class="co">#&gt; 1 Taajaan asutut kunnat           Core rural</span></span>
+<span><span class="co">#&gt; 2 Maaseutumaiset kunnat           Core rural</span></span>
+<span><span class="co">#&gt; 3 Taajaan asutut kunnat           Core rural</span></span>
+<span><span class="co">#&gt; 4 Taajaan asutut kunnat Rural close to urban</span></span>
+<span><span class="co">#&gt; 5 Maaseutumaiset kunnat Rural close to urban</span></span>
+<span><span class="co">#&gt; 6 Maaseutumaiset kunnat Rural close to urban</span></span></code></pre></div>
+<p>Explanation:</p>
+<ul>
+<li>read.csv() loads a CSV file into R as a data frame</li>
+<li>sep = “,” specifies comma‑separated values</li>
+<li>encoding = “UTF-8” ensures correct character encoding (important for
+Finnish characters)</li>
+<li>stringsAsFactors = FALSE keeps text variables as character
+strings</li>
+<li>names(dat) shows column names of the dat object</li>
+</ul>
+<p>Reading a second dataset</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_vakie3</span> <span class="op">&lt;-</span> <span class="fu">spatialcourseOL</span><span class="fu">::</span><span class="va"><a href="../reference/data_vakie3.html">data_vakie3</a></span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_vakie3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   tunnus      nimi X2000 X2001 X2002 X2003 X2004 X2005 X2006 X2007 X2008 X2009</span></span>
+<span><span class="co">#&gt; 1      5  Alajärvi 11503 11341 11185 11075 11027 10910 10768 10698 10634 10573</span></span>
+<span><span class="co">#&gt; 2      9 Alavieska  2940  2902  2898  2891  2894  2854  2827  2817  2759  2776</span></span>
+<span><span class="co">#&gt; 3     10    Alavus 13135 13040 12925 12897 12880 12868 12791 12788 12706 12586</span></span>
+<span><span class="co">#&gt; 4     16  Asikkala  8644  8680  8648  8554  8547  8560  8597  8663  8604  8551</span></span>
+<span><span class="co">#&gt; 5     18    Askola  4389  4421  4446  4474  4530  4555  4627  4711  4761  4831</span></span>
+<span><span class="co">#&gt; 6     19      Aura  3338  3378  3457  3514  3620  3699  3750  3823  3852  3840</span></span>
+<span><span class="co">#&gt;   X2010 X2011 X2012 X2013 X2014 X2015 X2016 X2017 X2018 X2019 X2020 X2021 X2022</span></span>
+<span><span class="co">#&gt; 1 10487 10327 10268 10227 10171 10006  9899  9831  9700  9562  9472  9363  9256</span></span>
+<span><span class="co">#&gt; 2  2770  2750  2761  2740  2687  2687  2639  2610  2573  2519  2496  2461  2428</span></span>
+<span><span class="co">#&gt; 3 12439 12385 12341 12228 12103 12044 11907 11713 11544 11468 11253 11118 10988</span></span>
+<span><span class="co">#&gt; 4  8552  8498  8461  8405  8374  8287  8323  8248  8149  8083  8032  7980  7929</span></span>
+<span><span class="co">#&gt; 5  4864  4911  4988  4991  5064  5104  5046  4990  4958  4943  4947  4938  4924</span></span>
+<span><span class="co">#&gt; 6  3911  3975  3971  3962  3982  3986  3984  3991  3984  3941  3973  3968  3963</span></span>
+<span><span class="co">#&gt;   X2023 X2024 X2025 X2026 X2027 X2028 X2029 X2030 X2031 X2032 X2033 X2034 X2035</span></span>
+<span><span class="co">#&gt; 1  9153  9052  8952  8854  8757  8659  8565  8475  8390  8307  8228  8153  8079</span></span>
+<span><span class="co">#&gt; 2  2396  2366  2338  2309  2283  2257  2231  2206  2181  2156  2132  2112  2090</span></span>
+<span><span class="co">#&gt; 3 10861 10736 10608 10486 10365 10250 10136 10023  9913  9808  9705  9604  9504</span></span>
+<span><span class="co">#&gt; 4  7874  7819  7761  7707  7653  7600  7548  7498  7448  7399  7350  7300  7255</span></span>
+<span><span class="co">#&gt; 5  4912  4900  4889  4877  4864  4846  4827  4808  4788  4770  4751  4733  4717</span></span>
+<span><span class="co">#&gt; 6  3959  3951  3946  3940  3935  3932  3925  3917  3909  3902  3893  3884  3875</span></span>
+<span><span class="co">#&gt;   X2036 X2037 X2038 X2039 X2040</span></span>
+<span><span class="co">#&gt; 1  8009  7938  7870  7802  7735</span></span>
+<span><span class="co">#&gt; 2  2072  2054  2036  2020  2003</span></span>
+<span><span class="co">#&gt; 3  9406  9313  9221  9134  9048</span></span>
+<span><span class="co">#&gt; 4  7208  7163  7119  7076  7032</span></span>
+<span><span class="co">#&gt; 5  4701  4688  4677  4666  4656</span></span>
+<span><span class="co">#&gt; 6  3866  3859  3853  3846  3842</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="merging-datasets">3. Merging datasets<a class="anchor" aria-label="anchor" href="#merging-datasets"></a>
+</h4>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">data_vakie3</span>, <span class="va">aluejaot2</span>, by.x<span class="op">=</span><span class="st">"tunnus"</span>, by.y<span class="op">=</span><span class="st">"tunnus"</span>,all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<p>Explanation:</p>
+<ul>
+<li>merge() combines two datasets</li>
+<li>by.x and by.y specify the id variable which is found from both of
+datasets (here id is tunnus)</li>
+<li>all.x = TRUE keeps all rows from data (left join)</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="reshaping-the-data-wide-long">4. Reshaping the data (wide → long)<a class="anchor" aria-label="anchor" href="#reshaping-the-data-wide-long"></a>
+</h4>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/melt.html" class="external-link">melt</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">x2</span>, id.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tunnus"</span>, <span class="st">"nimi"</span>,<span class="st">"Maakunta"</span><span class="op">)</span>, measure.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">43</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Many datasets are initially in wide format:</p>
+<p><img src="figures/wide_long.png" class="r-plt" alt="" width="70%"></p>
+<p>melt():</p>
+<ul>
+<li>Keeps identifier variables (id.vars)</li>
+<li>Converts columns 3–43 into: a variable column and a value
+column</li>
+</ul>
+<p>As a results, data2 is suitable for ggplot2 and time‑series
+analysis.</p>
+</div>
+<div class="section level4">
+<h4 id="creating-a-time-variable">5. Creating a time variable<a class="anchor" aria-label="anchor" href="#creating-a-time-variable"></a>
+</h4>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">aika</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2000</span>,<span class="fl">2040</span>,<span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">aika</span></span>
+<span><span class="co">#&gt;  [1] 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014</span></span>
+<span><span class="co">#&gt; [16] 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024 2025 2026 2027 2028 2029</span></span>
+<span><span class="co">#&gt; [31] 2030 2031 2032 2033 2034 2035 2036 2037 2038 2039 2040</span></span></code></pre></div>
+<p>Explanation:</p>
+<ul>
+<li>seq() creates a sequence of numbers</li>
+<li>Here: years from 2000 to 2040</li>
+<li>Step size = 1 year</li>
+</ul>
+<p>This vector can be used as:</p>
+<ul>
+<li>A time axis</li>
+<li>A reference for plotting</li>
+<li>Indexing years</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="creating-a-repeated-time-variable">6. Creating a repeated time variable<a class="anchor" aria-label="anchor" href="#creating-a-repeated-time-variable"></a>
+</h4>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">aika</span>,<span class="fl">310</span><span class="op">)</span></span></code></pre></div>
+<p>Explanation:</p>
+<ul>
+<li>aika is a vector of years (2000–2040)</li>
+<li>rep() repeats this vector 310 times</li>
+<li>The result is a long vector where the time sequence is repeated for
+each spatial unit (e.g. municipality or region)</li>
+</ul>
+<p>Why this is needed?</p>
+<p>After reshaping the data into long format, we need a time variable
+that matches the number of rows in the dataset.</p>
+<p>Conceptually:</p>
+<ul>
+<li>Each region has values for every year</li>
+<li>b assigns the correct year to each observation</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="sorting-the-data-by-region-name">7. Sorting the data by region name<a class="anchor" aria-label="anchor" href="#sorting-the-data-by-region-name"></a>
+</h4>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data3</span> <span class="op">&lt;-</span> <span class="va">data2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">data2</span><span class="op">$</span><span class="va">nimi</span><span class="op">)</span>,<span class="op">]</span></span></code></pre></div>
+<p>Explanation:</p>
+<ul>
+<li>order(data2$nimi) sorts rows alphabetically by region name
+(nimi)</li>
+<li>The brackets [ , ] reorder the rows accordingly</li>
+</ul>
+<p>Why this matters?</p>
+<ul>
+<li>Ensures that time series are properly aligned</li>
+<li>Matches the structure of the repeated time vector (b)</li>
+<li>Prevents mismatch between years and regions</li>
+</ul>
+<p>This step is crucial for correct time–region alignment.</p>
+</div>
+<div class="section level4">
+<h4 id="adding-the-time-variable-to-the-data">8. Adding the time variable to the data<a class="anchor" aria-label="anchor" href="#adding-the-time-variable-to-the-data"></a>
+</h4>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">data3</span>,<span class="va">b</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "tunnus"   "nimi"     "Maakunta" "variable" "value"    "b"</span></span></code></pre></div>
+<p>Explanation:</p>
+<ul>
+<li>cbind() binds a new column to the dataset</li>
+<li>The new column b represents time (years)</li>
+<li>names(data4) checks that the column was added correctly</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="converting-values-to-numeric">9. Converting values to numeric<a class="anchor" aria-label="anchor" href="#converting-values-to-numeric"></a>
+</h4>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data4</span><span class="op">$</span><span class="va">value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">data4</span><span class="op">$</span><span class="va">value</span><span class="op">)</span></span></code></pre></div>
+<p>Explanation:</p>
+<ul>
+<li>After melt(), values are often stored as characters</li>
+<li>as.numeric() converts them into numeric values</li>
+</ul>
+<p>Why this is important?</p>
+<ul>
+<li>Mathematical operations (sum, mean, plots) require numeric data</li>
+<li>Without this step, aggregation would fail or give errors</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="aggregating-data-by-year-region-and-province">10. Aggregating data by year, region, and province<a class="anchor" aria-label="anchor" href="#aggregating-data-by-year-region-and-province"></a>
+</h4>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">data4</span><span class="op">$</span><span class="va">value</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">data4</span><span class="op">$</span><span class="va">b</span>,<span class="va">data4</span><span class="op">$</span><span class="va">nimi</span>, <span class="va">data4</span><span class="op">$</span><span class="va">Maakunta</span><span class="op">)</span>,FUN<span class="op">=</span><span class="va">sum</span><span class="op">)</span></span></code></pre></div>
+<p>Explanation: This step summarizes the data.</p>
+<ul>
+<li><p>aggregate() groups observations</p></li>
+<li><p>Grouping variables:</p></li>
+<li><p>data4$b → year</p></li>
+<li><p>data4$nimi → region</p></li>
+<li><p>data4$Maakunta → province</p></li>
+<li><p>FUN = sum → sums values within each group</p></li>
+</ul>
+<p>Conceptually: This produces one value per year per region, suitable
+for:</p>
+<ul>
+<li>time‑series analysis</li>
+<li>plotting trends</li>
+<li>regional comparisons</li>
+</ul>
+<p>The output columns will be named:</p>
+<ul>
+<li>Group.1 → year</li>
+<li>Group.2 → region name</li>
+<li>Group.3 → province</li>
+<li>x → aggregated value</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="checking-dataset-dimensions">11. Checking dataset dimensions<a class="anchor" aria-label="anchor" href="#checking-dataset-dimensions"></a>
+</h4>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">data5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 12669     4</span></span></code></pre></div>
+<p>Explanation:</p>
+<p>dim() reports:</p>
+<ul>
+<li>number of rows</li>
+<li>number of columns</li>
+</ul>
+<p>Why this matters?</p>
+<ul>
+<li>Confirms that aggregation worked as expected</li>
+<li>Useful for sanity checking before analysis or plotting</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="subsetting-one-province">12. Subsetting one province<a class="anchor" aria-label="anchor" href="#subsetting-one-province"></a>
+</h4>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">vs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">data5</span>, <span class="va">Group.3</span><span class="op">==</span><span class="st">"Pohjois-Karjala"</span><span class="op">)</span></span></code></pre></div>
+<p>Explanation:</p>
+<ul>
+<li>subset() filters the data</li>
+<li>Keeps only rows where the province is Pohjois‑Karjala</li>
+</ul>
+<p>Result: vs contains only regional time series for North Karelia</p>
+<p>Ready for:</p>
+<ul>
+<li>regional plots</li>
+<li>comparisons</li>
+<li>focused analysis</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="visualising-regional-population-development-with-ggplot2">13. Visualising regional population development with ggplot2<a class="anchor" aria-label="anchor" href="#visualising-regional-population-development-with-ggplot2"></a>
+</h4>
+<p>The complete plotting code</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">vs</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Group.1</span>, y<span class="op">=</span><span class="va">x</span>, group<span class="op">=</span><span class="va">Group.2</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">1.1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle<span class="op">=</span><span class="fl">90</span>, vjust<span class="op">=</span><span class="fl">0.5</span>,hjust<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://hafen.github.io/geofacet/reference/facet_geo.html" class="external-link">facet_geo</a></span><span class="op">(</span>facets <span class="op">=</span> <span class="op">~</span><span class="va">Group.2</span>, grid<span class="op">=</span><span class="fu">geofi</span><span class="fu">::</span><span class="va"><a href="https://ropengov.github.io/geofi/reference/grid_pohjois_karjala.html" class="external-link">grid_pohjois_karjala</a></span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title<span class="op">=</span><span class="st">"Population development 2000-2019 and population projection 2020-2040"</span>, y<span class="op">=</span><span class="st">"Population"</span>, x<span class="op">=</span><span class="st">"Municipality"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">12</span><span class="op">)</span>,</span>
+<span>        axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">12</span>, face<span class="op">=</span><span class="st">"bold"</span><span class="op">)</span>,</span>
+<span>        plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span>, face<span class="op">=</span><span class="st">"bold"</span><span class="op">)</span>,</span>
+<span>        strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">2040</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
+<span><span class="co">#&gt; Note: You provided a user-specified grid. If this is a generally-useful</span></span>
+<span><span class="co">#&gt;   grid, please consider submitting it to become a part of the geofacet</span></span>
+<span><span class="co">#&gt;   package. You can do this easily by calling:</span></span>
+<span><span class="co">#&gt;   grid_submit(__grid_df_name__)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
