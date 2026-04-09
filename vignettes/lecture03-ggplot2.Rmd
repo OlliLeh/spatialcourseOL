@@ -117,7 +117,6 @@ library(forecast)
 library(foreign)
 library(reshape)
 library(ggplot2)
-library(strucchange)
 library(zoo)
 library(scales)
 library(dplyr)
@@ -155,8 +154,8 @@ Note! This requires the remotes package to be installed.
 
 Reading a CSV file
 ``` {r}
-dat<-read.csv("D:/UEF 2018/HANKKEET/Ravit ytr 2022/aluejaot2.csv", sep=",",encoding="UTF-8", stringsAsFactors=FALSE) 
-names(dat)
+data(aluejaot2)
+head(aluejaot2)
 ```
 
 Explanation:
@@ -169,8 +168,8 @@ Explanation:
 
 Reading a second dataset
 ```{r}
-data = read.csv("D:/UEF 2018/GIS mallinnus II 2024/14.3.2024 johdatus visualisointi//data_vakie3.csv", sep=",",
-                encoding="UTF-8", stringsAsFactors=FALSE)
+data(data_vakie3)
+head(data_vakie3)
 ```
 
 ### 3. Merging datasets
