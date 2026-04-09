@@ -1,5 +1,5 @@
 ---
-title: "lecture02-Reading data"
+title: "Lecture 2: Reading data"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{lecture02-Reading data}

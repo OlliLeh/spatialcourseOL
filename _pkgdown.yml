@@ -9,12 +9,13 @@ articles:
     contents:
       - lecture01-intro
       - lecture02-dplyr
-      - assignment01-data
+      - assignment01-week1
 
   - title: "Week2"
     contents:
-      - lecture03-regression
-      - assignment02-data2
+      - lecture03-ggplot2
+      - lecture04-regression
+      - assignment02-week2
 
   - title: "Week3"
     contents:
