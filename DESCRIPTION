@@ -30,5 +30,12 @@ Imports:
     janitor,
     leaflet,
     readxl,
-    ggspatial
+    ggspatial,
+    forecast,
+    foreign,
+    reshape,
+    ggthemes,
+    zoo,
+    scales,
+    geofacet
     
