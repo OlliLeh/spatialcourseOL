@@ -51,10 +51,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Lecture 3: ggplot2</h1>
-                        <h4 data-toc-skip class="author">Olli
-Lehtonen</h4>
             
-            <h4 data-toc-skip class="date">2026-03-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/OlliLeh/spatialcourseOL/blob/master/vignettes/lecture03-ggplot2.Rmd" class="external-link"><code>vignettes/lecture03-ggplot2.Rmd</code></a></small>
       <div class="d-none name"><code>lecture03-ggplot2.Rmd</code></div>
@@ -62,7 +59,108 @@ Lehtonen</h4>
 
     
     
-
+<div class="section level2">
+<h2 id="ggplot2">ggplot2<a class="anchor" aria-label="anchor" href="#ggplot2"></a>
+</h2>
+<p>ggplot2 is a widely used data visualization package in R that lets
+you create clear, powerful, and customizable plots using a consistent
+and logical system called the Grammar of Graphics.</p>
+<p>More details: <a href="https://ggplot2.tidyverse.org/" class="external-link uri">https://ggplot2.tidyverse.org/</a></p>
+<div class="float">
+<img src="figures/ggplot2_figure.png" style="width:70.0%" alt="ggplot2 logo"><div class="figcaption">ggplot2 logo</div>
+</div>
+<p>Why ggplot2 is so popular:</p>
+<ul>
+<li>Declarative and readable</li>
+<li>Easy to extend and modify</li>
+<li>Produces publication-quality figures</li>
+<li>Works perfectly with tidy data</li>
+<li>Excellent support for statistical graphics</li>
+</ul>
+<p>ggplot2 has also an official extension mechanism which means that
+others can now easily create their own stats, geoms and positions, and
+provide them in other packages. You can find more information from
+here:</p>
+<p><a href="https://exts.ggplot2.tidyverse.org/ggiraph.html" class="external-link uri">https://exts.ggplot2.tidyverse.org/ggiraph.html</a></p>
+<p>Please, take a look also to this webpage:</p>
+<p><a href="https://github.com/erikgahner/awesome-ggplot2" class="external-link uri">https://github.com/erikgahner/awesome-ggplot2</a></p>
+<div class="section level4">
+<h4 id="core-idea-grammar-of-graphics">Core idea: “Grammar of Graphics”<a class="anchor" aria-label="anchor" href="#core-idea-grammar-of-graphics"></a>
+</h4>
+<p>Instead of choosing a plot type (like “bar plot” or “scatter plot”)
+directly, ggplot2 builds plots by combining components (“layers”):</p>
+<ul>
+<li>Data – what you want to plot</li>
+<li>Aesthetics (aes) – how variables map to visuals (x, y, color, size,
+…)</li>
+<li>Geoms – what geometric objects to draw (points, lines, bars, …)</li>
+<li>Scales – how values map to colors, sizes, axes</li>
+<li>Facets – splitting plots into panels</li>
+<li>Themes – visual appearance (fonts, background, gridlines)</li>
+</ul>
+<p>You add these components together using +.</p>
+<div class="section level5">
+<h5 id="a-simple-example">A simple example<a class="anchor" aria-label="anchor" href="#a-simple-example"></a>
+</h5>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">wt</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-1-1.png" class="r-plt" alt="" width="700"></p>
+<p>This means:</p>
+<ul>
+<li>Data: mtcars</li>
+<li>x-axis: weight (wt)</li>
+<li>y-axis: miles per gallon (mpg)</li>
+<li>Geom: points (scatter plot)</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="adding-more-layers">Adding more layers<a class="anchor" aria-label="anchor" href="#adding-more-layers"></a>
+</h5>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Fuel efficiency vs car weight"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Weight"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Miles per gallon"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" alt="" width="700"></p>
+<p>Here you extend the same plot by:</p>
+<ul>
+<li>adding a regression line</li>
+<li>adding labels</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="how-it-differs-from-base-r-plots">How it differs from base R plots<a class="anchor" aria-label="anchor" href="#how-it-differs-from-base-r-plots"></a>
+</h5>
+<p>Base R:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">wt</span>, <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="" width="700"></p>
+<p>ggplot2:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="700"></p>
+<p>ggplot2 is:</p>
+<ul>
+<li>more structured</li>
+<li>more consistent</li>
+<li>easier to build complex plots incrementally</li>
+</ul>
+</div>
+</div>
+<div class="section level4">
+<h4 id="an-introduction-to-data-visualization-using-r-programming">An introduction to data visualization using R programming<a class="anchor" aria-label="anchor" href="#an-introduction-to-data-visualization-using-r-programming"></a>
+</h4>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/HPJn1CMvtmI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
