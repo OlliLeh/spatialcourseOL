@@ -605,7 +605,7 @@ You can see, that facet_geo() is a geographic faceting method that arranges smal
 
 The figure does not render correctly, so below is an image showing the figure as it should look.
 
-![geofacetti logo](figures/geofacetti.png){width=70%}
+![geofacetti logo](figures/geofacetti.png){width=1200px height=800px}
 
 Step‑by‑step explanation
 
