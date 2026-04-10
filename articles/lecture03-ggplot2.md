@@ -108,6 +108,231 @@ ggplot2 is:
 
 #### An introduction to data visualization using R programming
 
+## Creating maps with ggplot2
+
+Recently, the package ggplot2 has allowed the use of simple features
+from the package sf as layers in a graph. The combination of ggplot2 and
+sf therefore enables to programmatically create maps, using the grammar
+of graphics, just as informative or visually appealing as traditional
+GIS software.
+
+Let´s start by loading the basic packages necessary for all maps,
+i.e. ggplot2 and sf.
+
+``` r
+library("ggplot2")
+library("sf")
+#> Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
+```
+
+The package rnaturalearth provides a map of countries of the entire
+world. Use ne_countries to pull country data and choose the scale
+(rnaturalearthhires is necessary for scale = “large”). The function can
+return sp classes (default) or directly sf classes, as defined in the
+argument return class:
+
+``` r
+library("rnaturalearth")
+library("rnaturalearthdata")
+#> 
+#> Attaching package: 'rnaturalearthdata'
+#> The following object is masked from 'package:rnaturalearth':
+#> 
+#>     countries110
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+class(world)
+#> [1] "sf"         "data.frame"
+```
+
+#### Basic plot
+
+First, let us start with creating a base map of the world using ggplot2.
+This base map will then be extended with different map elements, as well
+as zoomed in to an area of interest. We can check that the world map was
+properly retrieved and converted into an sf object, and plot it with
+ggplot2:
+
+``` r
+ggplot(data = world) +
+    geom_sf()
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-7-1.png)
+
+This call nicely introduces the structure of a ggplot call: The first
+part ggplot(data = world) initiates the ggplot graph, and indicates that
+the main data is stored in the world object. The line ends up with a +
+sign, which indicates that the call is not complete yet, and each
+subsequent line correspond to another layer or scale.
+
+In this case, we use the geom_sf function, which simply adds a geometry
+stored in a sf object.
+
+#### Title, subtitle, and axis labels
+
+A title and a subtitle can be added to the map using the function
+ggtitle, passing any valid character string (e.g. with quotation marks)
+as arguments. Axis names are absent by default on a map, but can be
+changed to something more suitable (e.g. “Longitude” and “Latitude”),
+depending on the map:
+
+``` r
+ggplot(data = world) +
+    geom_sf() +
+    xlab("Longitude") + ylab("Latitude") +
+    ggtitle("World map", subtitle = paste0("(", length(unique(world$NAME)), " countries)"))
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-8-1.png)
+
+#### Map color
+
+In many ways, sf geometries are no different than regular geometries,
+and can be displayed with the same level of control on their attributes.
+Here is an example with the polygons of the countries filled with a
+green color (argument fill), using black for the outline of the
+countries (argument color):
+
+``` r
+ggplot(data = world) + 
+    geom_sf(color = "black", fill = "lightgreen")
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-9-1.png)
+
+The package ggplot2 allows the use of more complex color schemes, such
+as a gradient on one variable of the data. Here is another example that
+shows the population of each country. In this example, we use the
+“viridis” colorblind-friendly palette for the color gradient (with
+option = “plasma” for the plasma variant), using the square root of the
+population (which is stored in the variable POP_EST of the world
+object):
+
+``` r
+ggplot(data = world) +
+    geom_sf(aes(fill = pop_est)) +
+    scale_fill_viridis_c(option = "plasma", trans = "sqrt")
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-10-1.png)
+
+#### Projection and extent
+
+The function coord_sf allows to deal with the coordinate system, which
+includes both projection and extent of the map. By default, the map will
+use the coordinate system of the first layer that defines one
+(i.e. scanned in the order provided), or if none, fall back on WGS84
+(latitude/longitude, the reference system used in GPS). Using the
+argument crs, it is possible to override this setting, and project on
+the fly to any projection. This can be achieved using any valid PROJ4
+string (here, the European-centric ETRS89 Lambert Azimuthal Equal-Area
+projection):
+
+``` r
+ggplot(data = world) +
+    geom_sf() +
+    coord_sf(crs = "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs ")
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-11-1.png)
+
+#### Scale bar and North arrow
+
+Scale bar and north arrow can be added on map with the package
+ggspatial, which provides easy-to-use functions for this purpose.
+
+``` r
+library("ggspatial")
+ggplot(data = world) +
+    geom_sf() +
+    annotation_scale(location = "bl", width_hint = 0.5) +
+    annotation_north_arrow(location = "bl", which_north = "true", 
+        pad_x = unit(0.75, "in"), pad_y = unit(0.5, "in"),
+        style = north_arrow_fancy_orienteering) +
+    coord_sf(xlim = c(-102.15, -74.12), ylim = c(7.65, 33.97))
+#> Scale on map varies by more than 10%, scale bar may be inaccurate
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-12-1.png) These
+lines add a scale bar:
+
+    annotation_scale(location = "bl", width_hint = 0.5) +
+
+Arguments explained:
+
+- location = “bl”
+
+- bottom-left corner of the map
+
+- options include “bl”, “br”, “tl”, “tr”
+
+- width_hint = 0.5
+
+- scale bar will take about half the width of the plot
+
+- it is only a hint, not an exact measurement
+
+These lines add a north arrow:
+
+    annotation_north_arrow(
+      location = "bl",
+      which_north = "true",
+      pad_x = unit(0.75, "in"),
+      pad_y = unit(0.5, "in"),
+      style = north_arrow_fancy_orienteering
+    ) 
+
+Key parameters:
+
+Position:
+
+- location = “bl” - bottom-left
+
+- pad_x, pad_y - spacing from plot edges
+
+- measured in inches
+
+- prevents overlap with the scale bar
+
+Direction:
+
+- which_north = “true”
+- arrow points to true north
+
+Style:
+
+- style = north_arrow_fancy_orienteering
+
+- a decorative, compass-style arrow
+
+- ggspatial provides several built-in styles
+
+This part of the code:
+
+    coord_sf(
+      xlim = c(-102.15, -74.12),
+      ylim = c(7.65, 33.97)
+    )
+
+- Limits the visible map area
+- Uses longitude (xlim) and latitude (ylim)
+- Does not change the data itself, only what you see
+
+#### Saving the map
+
+Saving of the map is very easy by using ggsave. This function allows a
+graphic (typically the last plot displayed) to be saved in a variety of
+formats, including the most common PNG (raster bitmap) and PDF (vector
+graphics), with control over the size and resolution of the outcome.
+
+For instance here, we save a PDF version of the map, which keeps the
+best quality, and a PNG version of it for web purposes:
+
+``` r
+ggsave("map_web.png", width = 6, height = 6, dpi = "screen")
+```
+
 ## Working with ggplot2: Population development of the municipalities
 
 #### 1. Installing and loading R packages
@@ -503,7 +728,7 @@ ggplot(vs, aes(x=Group.1, y=x))+
   facet_wrap(facets = ~Group.2, scales = "free_y") 
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-24-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-33-1.png)
 
 Above code, explained line by line:
 
@@ -728,7 +953,7 @@ ggplot(vs, aes(x=Group.1, y=x, group=Group.2))+
 #>   grid_submit(__grid_df_name__)
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-28-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-37-1.png)
 
 You can see, that facet_geo() is a geographic faceting method that
 arranges small ggplot panels to resemble a map, making regional
