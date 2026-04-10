@@ -9,6 +9,11 @@ output: html_document
 library(spatialcourseOL)
 library(dplyr)
 library(data.table)
+library(dplyr)
+library(purrr)
+library(sf)
+library(httr)
+llibrary(ows4R)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -229,6 +234,143 @@ mdls$r.squared
 
 ```
 
+### Hypothesis Testing for Comparing Regression Models
+
+In regression analysis, we often want to **test whether a subset of predictors is statistically relevant**.
+This can be formulated as a hypothesis test comparing:
+
+- a **full model** (with all predictors), and  
+- a **restricted (nested) model** where some coefficients are set to zero.
+
+We use **F-tests** to compare these models.
+
+#### The data and model
+
+We use the built-in `savings` dataset, which contains information on savings rates and several demographic and economic predictors.
+
+```{r}
+data(savings)
+```
+
+The response variable is:
+
+- sr: aggregate personal saving rate
+
+The predictors are:
+
+- pop15: percentage of population under 15
+- pop75: percentage of population over 75
+- dpi: real per-capita disposable income
+- ddpi: growth rate of disposable income
+
+The Full Regression Model:
+
+We begin by fitting the full model, which includes all predictors.
+
+```{r}
+g <- lm(sr ~ pop15 + pop75 + dpi + ddpi, savings)
+summary(g)
+```
+
+This model estimates the relationship between the savings rate and all four explanatory variables.
+
+#### Testing Overall Model Significance Using an F-Test
+
+Total Sum of Squares (TSS)
+
+The total variation in the response variable is given by:
+```{r}
+tss <- sum((savings$sr - mean(savings$sr))^2)
+tss
+```
+
+Residual Sum of Squares (RSS)
+
+The unexplained variation under the full model is:
+```{r}
+rss <- deviance(g)
+rss
+```
+
+Residual Degrees of Freedom
+```{r}
+df.residual(g)
+```
+
+Manual F-Statistic Calculation
+
+The F-statistic is computed as:
+```{r}
+fstat <- ((tss - rss) / 4) / (rss / df.residual(g))
+fstat
+```
+
+P-value for the F-Test
+```{r}
+1 - pf(fstat, 4, df.residual(g))
+```
+
+A small p-value indicates that at least one predictor is statistically significant.
+
+#### General F-Test: Comparing Nested Models
+
+Instead of testing against a model with no predictors, we can compare two nested regression models.
+
+Restricted (Null) Model
+We remove pop15 from the full model:
+```{r}
+g2 <- lm(sr ~ pop75 + dpi + ddpi, savings)
+```
+
+Residual Sum of Squares for the Restricted Model
+```{r}
+rss2 <- deviance(g2)
+rss2
+```
+
+F-Statistic for Nested Models
+```{r}
+fstat <- (deviance(g2) - deviance(g)) / (deviance(g) / df.residual(g))
+fstat
+```
+
+Corresponding P-value
+```{r}
+1 - pf(fstat, 1, df.residual(g))
+```
+
+#### Using anova() for Model Comparison
+
+A more convenient and standard approach is to use the anova() function.
+```{r}
+anova(g2, g)
+```
+
+This automatically computes the F-statistic and p-value for comparing nested models.
+
+#### Testing Multiple Coefficient Restrictions
+
+We now test whether both pop75 and ddpi can be excluded from the model.
+
+Restricted Model
+```{r}
+g3 <- lm(sr ~ pop15 + dpi, savings)
+```
+
+Model Comparison
+```{r}
+anova(g3, g)
+```
+
+**Summary**
+
+- F-tests allow us to compare nested regression models
+- The test evaluates whether excluded variables significantly improve model fit
+- For a single restriction, the F-test is equivalent to a t-test
+- The anova() function provides a clean and reliable implementation
+
+These tools are essential for principled model selection in regression analysis.
+
 ### Variable selection in regression models
 
 In multiple regression analysis, we often face the question of **which predictors should be included in the model**. Including too many variables may lead to over fitting, while excluding relevant predictors can bias results.
@@ -388,9 +530,28 @@ Diagnostic plots provide essential insight into:
 
 If serious violations are detected, remedial measures such as transforming variables, adding nonlinear terms, or using alternative models should be considered.
 
-### Reporting results
 
 # Regression analysis and open postcode area data 
+
+The Paavo service contains data by postal code area on the population structure, education, income, housing, workplaces, households' life stage and main activities of the inhabitants.
+
+The database contains data by postal code area on the population structure, education, income, housing, workplaces, households' life stage and main activities of the inhabitants.
+
+You can use the data in decision-making and planning or learn more about your area of residence. Paavo offers information on the allocation of marketplaces, marketing planning, research and regional studies and plans.
+
+You can find more information about PAAVO from here:
+https://stat.fi/en/services/statistical-data-services/statistical-databases/paavo
+
+**Objective of the Exercise**
+In this lecture, we demonstrate how to:
+
+- Download spatial postcode-level data from Statistics Finland’s WFS service
+- Combine data from two different years
+- Compute changes in employment at the postcode area level
+- Classify areas by employment growth intensity
+- Summarize employment concentrations in growth areas
+
+The workflow combines spatial data handling, data merging, and basic regional analysis.
 
 ```{r, eval=FALSE}
 install.packages("purrr")
@@ -404,13 +565,14 @@ install.packages("ows4R")
 library(dplyr)
 library(purrr)
 library(sf)
-library(tmap)
 library(httr)
 library(data.table)
 library(ows4R)
 ```
 
-Download postcodearea data from the WFS service of Statistics Finland:
+#### Downloading Postcode Area Data (Year 2022)
+
+We begin by downloading postcode area data using a Web Feature Service (WFS) query.
 
 ```{r}
 url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
@@ -418,14 +580,18 @@ url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
            query =list(service ="WFS",
                        version ="2.0.0",
                        request ="GetFeature",
-                       typename ="postialue:pno_tilasto_2022",
+                       typename ="postialue:pno_tilasto_2025",
                        outputFormat ="json"))%>%
   setattr("class","url")
 request <-build_url(url)
 p22 <-st_read(request)
 ```
 
-And the same for year 2016:
+This produces an sf object containing postcode area geometries and associated attributes, including the number of jobs.
+
+#### Downloading Corresponding Data for Year 2016
+
+We repeat the same procedure for the year 2016.
 
 ```{r}
 url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
@@ -440,11 +606,20 @@ request <-build_url(url)
 p16 <-st_read(request)
 ```
 
-We can see the content of the data by calling names of the variables:
+#### Inspecting the Data Structure
+
+To understand the available variables, we list the column names.
+
 ```{r}
 names(p16)
 ```
 
+#### Extracting Relevant Variables (2016 Data)
+
+We extract:
+
+- the postcode area identifier
+- the total number of jobs in 2016
 
 ```{r}
 p16data<-p16[,c(2,78)]
@@ -452,65 +627,88 @@ p16data<-as.data.frame(p16data[,1:2])
 colnames(p16data)<-c("posti_alue","tyopy16") #postcode & total number of jobs
 ```
 
-yhdistetään /merging the data
+- posti_alue: postcode area
+- tyopy16: total number of jobs in 2016
+
+#### Merging 2016 Data with 2022 Spatial Data
+
+We merge the 2016 employment data with the 2022 spatial dataset using a right join.
 
 ```{r}
 p22_data <- dplyr::right_join(x = p16data, y = p22, by=c("posti_alue" = "postinumeroalue"))
 ```
 
-right_join retains orinal format of p22 data
+Why right_join()?
+
+- Preserves the geometry and structure of the 2022 spatial dataset
+- Ensures that all 2022 postcode areas remain in the data
+
+#### Handling Missing Values
+
+If a postcode area has no recorded jobs in 2016, we treat this as zero employment.
 
 ```{r}
 p22_data$tyopy16[is.na(p22_data$tyopy16)] <- 0
 ```
 
-lasketaan muutokset/ calculate changes
+#### Calculating Employment Change (2016–2022)
+
+Absolute Change & Percentage Change
 
 ```{r}
 p22_data$tp_m22_16<-(p22_data$tp_tyopy-p22_data$tyopy16)
 p22_data$tp_m22_16p<-((p22_data$tp_tyopy-p22_data$tyopy16)/p22_data$tyopy16)*100
 ```
 
-luokitellaan kasvualueet eli muodostetaan niist? "skenaariot"/classify areas
+- tp_tyopy: total number of jobs in 2022
+- tp_m22_16: absolute employment change
+- tp_m22_16p: percentage change
 
+#### Classifying Employment Growth Areas
+
+We classify postcode areas into growth categories based on absolute job growth.
+
+Any Positive Growth
 ```{r}
 p22_data$kasvu<-ifelse(p22_data$tp_m22_16>0,1,0)
 table(p22_data$kasvu)
 ```
 
+Weak Growth (More Than 10 Jobs)
 ```{r}
 p22_data$kasvu_heikko<-ifelse(p22_data$tp_m22_16>10,1,0)
 table(p22_data$kasvu_heikko)
 ```
 
+Moderate Growth (More Than 100 Jobs)
 ```{r}
 p22_data$kasvu_kohtal<-ifelse(p22_data$tp_m22_16>100,1,0)
 table(p22_data$kasvu_kohtal)
 ```
 
+Strong Growth (More Than 500 Jobs)
 ```{r}
 p22_data$kasvu_voima<-ifelse(p22_data$tp_m22_16>500,1,0)
 table(p22_data$kasvu_voima)
 ```
 
-yhteensä työpaikkoja
+These classifications allow us to define different employment growth scenarios at the postcode level.
+
+Total Number of Jobs (2022)
 ```{r}
 sum(p22_data$tp_tyopy) 
 ```
 
-```{r}
-t1<-subset(p22_data, kasvu_voima>0); sum(t1$tp_tyopy)/2150025
-t2<-subset(p22_data, kasvu_kohtal>0); sum(t2$tp_tyopy)/2150025
-t3<-subset(p22_data, kasvu_heikko>0); sum(t3$tp_tyopy)/2150025
-t4<-subset(p22_data, kasvu>0); sum(t4$tp_tyopy)/2150025
-```
+#### Share of Jobs Located in Growth Areas
 
-# lasketaan osuudet työpaikkojen lukumäärän kasvusta eli kuinka paljon 
-# työpaikkojen kasvusta tapahtui missäkin "skenaariossa"
+We now compute the share of total employment located in areas with different growth intensities.
+The denominator 2,150,025 represents the total number of jobs nationally.
 
 ```{r}
-(sum(t1$tp_m22_16))/167463
-(sum(t2$tp_m22_16)-sum(t1$tp_m22_16))/167463
-(sum(t3$tp_m22_16)-sum(t2$tp_m22_16))/167463
-(sum(t4$tp_m22_16)-sum(t3$tp_m22_16))/167463
+t1<-subset(p22_data, kasvu_voima>100); sum(t1$tp_tyopy)/sum(p22_data$tp_tyopy) 
+t2<-subset(p22_data, kasvu_kohtal>50); sum(t2$tp_tyopy)/sum(p22_data$tp_tyopy) 
+t3<-subset(p22_data, kasvu_heikko>10); sum(t3$tp_tyopy)/sum(p22_data$tp_tyopy) 
+t4<-subset(p22_data, kasvu>0); sum(t4$tp_tyopy)/sum(p22_data$tp_tyopy) 
 ```
+
+These indicators help quantify how concentrated employment growth is geographically.
