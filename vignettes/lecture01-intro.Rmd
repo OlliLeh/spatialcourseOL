@@ -72,12 +72,12 @@ The easiest way to install packages is to do it via R console. The command insta
 
 Run the following to install sf package on R. Also use the help function to get the details.
 
-```{r}
+```{r, eval=FALSE}
 # Install a package using RStudio Console
 install.packages("sf", dependencies = c("Depends", "Suggests"))
 ```
 
-```{r}
+```{r, eval=FALSE}
 install.packages(c("reshape2", "foreign", "ggplot2", "stargazer"), dependencies = TRUE)
 # to be updated
 ```

@@ -40,7 +40,8 @@ Imports:
     geofacet,
     ellipsis,
     rnaturalearth,
-    rnaturalearthdata  
+    rnaturalearthdata,
+    countrycode  
 Depends: 
     R (>= 2.10)
 LazyData: true

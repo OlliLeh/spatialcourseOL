@@ -10,6 +10,10 @@ vignette: >
 ```{r setup, include=FALSE}
 library(spatialcourseOL)
 
+data(HDI_data)
+data(data_vakie3)
+data(aluejaot2)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -202,6 +206,7 @@ ggplot(data = world) +
         style = north_arrow_fancy_orienteering) +
     coord_sf(xlim = c(-102.15, -74.12), ylim = c(7.65, 33.97))
 ```
+
 These lines add a scale bar:
 
 ```
@@ -277,6 +282,107 @@ For instance here, we save a PDF version of the map, which keeps the best qualit
 ggsave("map_web.png", width = 6, height = 6, dpi = "screen")
 ```
 
+### Add another data
+
+Let´s load required packages:
+```{r, eval=FALSE}
+library(dplyr)
+library(countrycode)
+```
+
+```{r, eval=FALSE}
+library(spatialcourseOL)
+data(HDI_data)
+
+head(HDI_data)
+```
+
+The ISO3C code is appended to the HDI_data2 dataset based on the country name. (note that we create here a new dataset HDI_data2)
+```{r}
+HDI_data2 <- HDI_data %>%
+  mutate(iso3 = countrycode(Country, "country.name", "iso3c")
+  )
+```
+
+Next, the world and hdi_country2 datasets are merged by using left_join() function:
+```{r}
+joined <- world %>%
+  left_join(
+    HDI_data2,
+    by = c("adm0_iso" = "iso3"))
+```
+
+Let´s then make a new map:
+```{r}
+ggplot() +
+  geom_sf(
+    data = joined,
+    aes(fill = HDI_2023),
+    color = "grey70",
+    linewidth = 0.2) +
+  scale_fill_viridis_c(
+    option = "plasma",
+    na.value = "grey85",
+    name = "HDI (2023)") +
+  coord_sf(expand = FALSE) +
+  labs(title = "Human Development Index by countries") +
+  theme_minimal()
+```
+
+Remove Antarctica and make a new map: 
+
+```{r}
+joined2<-joined |> dplyr::filter(continent != "Antarctica")
+```
+
+```{r}
+ggplot() +
+  geom_sf(
+    data = joined2,
+    aes(fill = HDI_2023),
+    color = "grey70",
+    linewidth = 0.2) +
+  scale_fill_viridis_c(
+    option = "plasma",
+    na.value = "grey85",
+    name = "HDI (2023)") +
+  coord_sf(expand = FALSE) +
+  labs(title = "Human Development Index by countries") +
+  theme_minimal() 
+```
+  
+The coordinate reference system is improved by adding coord_sf(crs = "+proj=robin").
+
+```{r}
+ggplot() +
+  geom_sf(
+    data = joined,
+    aes(fill = HDI_2023),
+    color = "grey70",
+    linewidth = 0.2
+  ) +
+  coord_sf(crs = "+proj=eqearth") +
+  theme_minimal()
+```
+
+You can also add title and caption:  
+
+```{r}
+ggplot() +
+  geom_sf(
+    data = joined2,
+    aes(fill = HDI_2023),
+    color = "grey70",
+    linewidth = 0.2
+  ) +
+  coord_sf(crs = "+proj=eqearth") +
+  theme_minimal() + labs(title = "Human Development Index by countries") +
+  labs(fill = "HDI 2023") +
+  labs(caption="Digital Geosciences, UEF") +
+  theme(legend.title = element_text(size=16)) + theme(plot.title = element_text(size = 20))+
+  theme(plot.caption = element_text(size=16) )
+```
+
 # Working with ggplot2: Population development of the municipalities
 
 ### 1. Installing and loading R packages
@@ -335,8 +441,8 @@ library(spatialcourseOL)
 ```
 
 Reading a CSV file
-```{r}
-aluejaot2 <- spatialcourseOL::aluejaot2
+```{r, eval=FALSE}
+data(aluejaot2)
 head(aluejaot2)
 ```
 
@@ -349,8 +455,8 @@ Explanation:
 - names(dat) shows column names of the dat object
 
 Reading a second dataset
-```{r}
-data_vakie3 <- spatialcourseOL::data_vakie3
+```{r, eval=FALSE}
+data(data_vakie3)
 head(data_vakie3)
 ```
 
