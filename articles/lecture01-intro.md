@@ -77,14 +77,10 @@ to get the details.
 ``` r
 # Install a package using RStudio Console
 install.packages("sf", dependencies = c("Depends", "Suggests"))
-#> Installing package into '/home/runner/work/_temp/Library'
-#> (as 'lib' is unspecified)
 ```
 
 ``` r
 install.packages(c("reshape2", "foreign", "ggplot2", "stargazer"), dependencies = TRUE)
-#> Installing packages into '/home/runner/work/_temp/Library'
-#> (as 'lib' is unspecified)
 # to be updated
 ```
 

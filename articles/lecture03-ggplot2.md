@@ -254,8 +254,9 @@ ggplot(data = world) +
 #> Scale on map varies by more than 10%, scale bar may be inaccurate
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-12-1.png) These
-lines add a scale bar:
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-12-1.png)
+
+These lines add a scale bar:
 
     annotation_scale(location = "bl", width_hint = 0.5) +
 
@@ -333,6 +334,132 @@ best quality, and a PNG version of it for web purposes:
 ggsave("map_web.png", width = 6, height = 6, dpi = "screen")
 ```
 
+#### Add another data
+
+Let´s load required packages:
+
+``` r
+library(dplyr)
+library(countrycode)
+```
+
+``` r
+library(spatialcourseOL)
+data(HDI_data)
+
+head(HDI_data)
+```
+
+The ISO3C code is appended to the HDI_data2 dataset based on the country
+name. (note that we create here a new dataset HDI_data2)
+
+``` r
+HDI_data2 <- HDI_data %>%
+  mutate(iso3 = countrycode(Country, "country.name", "iso3c")
+  )
+#> Warning: There was 1 warning in `mutate()`.
+#> ℹ In argument: `iso3 = countrycode(Country, "country.name", "iso3c")`.
+#> Caused by warning:
+#> ! Some values were not matched unambiguously: Micronesia
+#> To fix unmatched values, please use the `custom_match` argument. If you think the default matching rules should be improved, please file an issue at https://github.com/vincentarelbundock/countrycode/issues
+```
+
+Next, the world and hdi_country2 datasets are merged by using
+left_join() function:
+
+``` r
+joined <- world %>%
+  left_join(
+    HDI_data2,
+    by = c("adm0_iso" = "iso3"))
+#> Warning in sf_column %in% names(g): Detected an unexpected many-to-many relationship between `x` and `y`.
+#> ℹ Row 193 of `x` matches multiple rows in `y`.
+#> ℹ Row 192 of `y` matches multiple rows in `x`.
+#> ℹ If a many-to-many relationship is expected, set `relationship =
+#>   "many-to-many"` to silence this warning.
+```
+
+Let´s then make a new map:
+
+``` r
+ggplot() +
+  geom_sf(
+    data = joined,
+    aes(fill = HDI_2023),
+    color = "grey70",
+    linewidth = 0.2) +
+  scale_fill_viridis_c(
+    option = "plasma",
+    na.value = "grey85",
+    name = "HDI (2023)") +
+  coord_sf(expand = FALSE) +
+  labs(title = "Human Development Index by countries") +
+  theme_minimal()
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-18-1.png)
+
+Remove Antarctica and make a new map:
+
+``` r
+joined2<-joined |> dplyr::filter(continent != "Antarctica")
+```
+
+``` r
+ggplot() +
+  geom_sf(
+    data = joined2,
+    aes(fill = HDI_2023),
+    color = "grey70",
+    linewidth = 0.2) +
+  scale_fill_viridis_c(
+    option = "plasma",
+    na.value = "grey85",
+    name = "HDI (2023)") +
+  coord_sf(expand = FALSE) +
+  labs(title = "Human Development Index by countries") +
+  theme_minimal() 
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-20-1.png)
+
+The coordinate reference system is improved by adding coord_sf(crs =
+“+proj=robin”).
+
+``` r
+ggplot() +
+  geom_sf(
+    data = joined,
+    aes(fill = HDI_2023),
+    color = "grey70",
+    linewidth = 0.2
+  ) +
+  coord_sf(crs = "+proj=eqearth") +
+  theme_minimal()
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-21-1.png)
+
+You can also add title and caption:
+
+``` r
+ggplot() +
+  geom_sf(
+    data = joined2,
+    aes(fill = HDI_2023),
+    color = "grey70",
+    linewidth = 0.2
+  ) +
+  coord_sf(crs = "+proj=eqearth") +
+  theme_minimal() + labs(title = "Human Development Index by countries") +
+  labs(fill = "HDI 2023") +
+  labs(caption="Digital Geosciences, UEF") +
+  theme(legend.title = element_text(size=16)) + theme(plot.title = element_text(size = 20))+
+  theme(plot.caption = element_text(size=16) )
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-22-1.png)
+
 ## Working with ggplot2: Population development of the municipalities
 
 #### 1. Installing and loading R packages
@@ -356,14 +483,6 @@ library(zoo)
 #>     as.Date, as.Date.numeric
 library(scales)
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(ggthemes)
 ```
 
@@ -417,36 +536,8 @@ library(spatialcourseOL)
 Reading a CSV file
 
 ``` r
-aluejaot2 <- spatialcourseOL::aluejaot2
+data(aluejaot2)
 head(aluejaot2)
-#>   tunnus    nimi22       NUTS.1     Tukialue                ELY.keskus
-#> 1      5  Alajärvi Manner-Suomi tukialue 2+3   11 Etelä-Pohjanmaan ely
-#> 2      9 Alavieska Manner-Suomi   tukialue 1 13 Pohjois-Pohjanmaan ely
-#> 3     10    Alavus Manner-Suomi tukialue 2+3   11 Etelä-Pohjanmaan ely
-#> 4     16  Asikkala Manner-Suomi tukialue 2+3             04 Hämeen ely
-#> 5     18    Askola Manner-Suomi tukialue 2+3          01 Uudenmaan ely
-#> 6     19      Aura Manner-Suomi tukialue 2+3   02 Varsinais-Suomen ely
-#>                      Suuralue          Maakunta           Seutukunta
-#> 1           3 Länsi-Suomen sa   Etelä-Pohjanmaa   146 Järviseudun sk
-#> 2 4 Pohjois- ja Itä-Suomen sa Pohjois-Pohjanmaa    177 Ylivieskan sk
-#> 3           3 Länsi-Suomen sa   Etelä-Pohjanmaa 144 Kuusiokuntien sk
-#> 4           2 Etelä-Suomen sa       Päijät-Häme        071 Lahden sk
-#> 5     1 Helsinki-Uudenmaan sa           Uusimaa       015 Porvoon sk
-#> 6           2 Etelä-Suomen sa   Varsinais-Suomi       025 Loimaan sk
-#>                                      Leader               Alueluokka
-#> 1                            40 Aisapari ry             Ydinmaaseutu
-#> 2                       44 Rieska-LEADER ry             Ydinmaaseutu
-#> 3                          37 Kuudestaan ry             Ydinmaaseutu
-#> 4                     15 Päijänne-Leader ry Kaupunkien läh. maaseutu
-#> 5  01 Maaseudun kehittämisyhdistys SILMU ry Kaupunkien läh. maaseutu
-#> 6 06 Varsinais-Suomen jokivarsikumppanit ry Kaupunkien läh. maaseutu
-#>              Kuntaryhma       Alueluokka_eng
-#> 1 Taajaan asutut kunnat           Core rural
-#> 2 Maaseutumaiset kunnat           Core rural
-#> 3 Taajaan asutut kunnat           Core rural
-#> 4 Taajaan asutut kunnat Rural close to urban
-#> 5 Maaseutumaiset kunnat Rural close to urban
-#> 6 Maaseutumaiset kunnat Rural close to urban
 ```
 
 Explanation:
@@ -461,36 +552,8 @@ Explanation:
 Reading a second dataset
 
 ``` r
-data_vakie3 <- spatialcourseOL::data_vakie3
+data(data_vakie3)
 head(data_vakie3)
-#>   tunnus      nimi X2000 X2001 X2002 X2003 X2004 X2005 X2006 X2007 X2008 X2009
-#> 1      5  Alajärvi 11503 11341 11185 11075 11027 10910 10768 10698 10634 10573
-#> 2      9 Alavieska  2940  2902  2898  2891  2894  2854  2827  2817  2759  2776
-#> 3     10    Alavus 13135 13040 12925 12897 12880 12868 12791 12788 12706 12586
-#> 4     16  Asikkala  8644  8680  8648  8554  8547  8560  8597  8663  8604  8551
-#> 5     18    Askola  4389  4421  4446  4474  4530  4555  4627  4711  4761  4831
-#> 6     19      Aura  3338  3378  3457  3514  3620  3699  3750  3823  3852  3840
-#>   X2010 X2011 X2012 X2013 X2014 X2015 X2016 X2017 X2018 X2019 X2020 X2021 X2022
-#> 1 10487 10327 10268 10227 10171 10006  9899  9831  9700  9562  9472  9363  9256
-#> 2  2770  2750  2761  2740  2687  2687  2639  2610  2573  2519  2496  2461  2428
-#> 3 12439 12385 12341 12228 12103 12044 11907 11713 11544 11468 11253 11118 10988
-#> 4  8552  8498  8461  8405  8374  8287  8323  8248  8149  8083  8032  7980  7929
-#> 5  4864  4911  4988  4991  5064  5104  5046  4990  4958  4943  4947  4938  4924
-#> 6  3911  3975  3971  3962  3982  3986  3984  3991  3984  3941  3973  3968  3963
-#>   X2023 X2024 X2025 X2026 X2027 X2028 X2029 X2030 X2031 X2032 X2033 X2034 X2035
-#> 1  9153  9052  8952  8854  8757  8659  8565  8475  8390  8307  8228  8153  8079
-#> 2  2396  2366  2338  2309  2283  2257  2231  2206  2181  2156  2132  2112  2090
-#> 3 10861 10736 10608 10486 10365 10250 10136 10023  9913  9808  9705  9604  9504
-#> 4  7874  7819  7761  7707  7653  7600  7548  7498  7448  7399  7350  7300  7255
-#> 5  4912  4900  4889  4877  4864  4846  4827  4808  4788  4770  4751  4733  4717
-#> 6  3959  3951  3946  3940  3935  3932  3925  3917  3909  3902  3893  3884  3875
-#>   X2036 X2037 X2038 X2039 X2040
-#> 1  8009  7938  7870  7802  7735
-#> 2  2072  2054  2036  2020  2003
-#> 3  9406  9313  9221  9134  9048
-#> 4  7208  7163  7119  7076  7032
-#> 5  4701  4688  4677  4666  4656
-#> 6  3866  3859  3853  3846  3842
 ```
 
 #### 3. Merging datasets
@@ -728,7 +791,7 @@ ggplot(vs, aes(x=Group.1, y=x))+
   facet_wrap(facets = ~Group.2, scales = "free_y") 
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-33-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-42-1.png)
 
 Above code, explained line by line:
 
@@ -953,7 +1016,7 @@ ggplot(vs, aes(x=Group.1, y=x, group=Group.2))+
 #>   grid_submit(__grid_df_name__)
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-37-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-46-1.png)
 
 You can see, that facet_geo() is a geographic faceting method that
 arranges small ggplot panels to resemble a map, making regional
