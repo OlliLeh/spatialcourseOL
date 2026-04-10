@@ -3,7 +3,24 @@
 ### Learn to analyze, model, and visualize spatial data using modern R-based geospatial tools.
 
 Welcome to **Applied Spatial Analysis and Research (YH00EM30)** — a hands‑on course designed for students interested in geospatial modelling, spatial data science, and applied statistical research. The course focuses on practical skills for working with spatial datasets in R and interpreting results in real‑world contexts.  
+
 This course is based on the official University of Eastern Finland course curriculum. 
+
+## Installation
+You can install the development version of **spatialcourseOL** from GitHub using:
+
+```r
+if (!requireNamespace("devtools", quietly = TRUE)) {
+  install.packages("devtools")
+}
+devtools::install_github("Ollileh/spatialcourseOL")
+```
+
+After installation, restart your R session and load the package:
+
+```r
+library(spatialcourseOL)
+```
 
 ---
 
