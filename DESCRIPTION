@@ -37,7 +37,8 @@ Imports:
     ggthemes,
     zoo,
     scales,
-    geofacet
+    geofacet,
+    ellipsis
 Depends: 
     R (>= 2.10)
 LazyData: true
