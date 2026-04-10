@@ -38,7 +38,9 @@ Imports:
     zoo,
     scales,
     geofacet,
-    ellipsis
+    ellipsis,
+    rnaturalearth,
+    rnaturalearthdata  
 Depends: 
     R (>= 2.10)
 LazyData: true
