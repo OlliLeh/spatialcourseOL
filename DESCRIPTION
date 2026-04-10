@@ -41,7 +41,10 @@ Imports:
     ellipsis,
     rnaturalearth,
     rnaturalearthdata,
-    countrycode  
+    countrycode,
+    faraway,
+    MASS,
+    leaps  
 Depends: 
     R (>= 2.10)
 LazyData: true

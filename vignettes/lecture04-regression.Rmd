@@ -6,6 +6,509 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+library(spatialcourseOL)
+
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Regression analysis
+
+Let’s assume that we want to model the response Y in terms of three predictors; X1, X2 and X3. One general form for the model would be:
+
+The multiple linear regression model can be written as
+
+$$
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \varepsilon
+$$
+
+where  
+- $Y$ is the dependent variable  
+- $\beta_0$ is the intercept  
+- $\beta_1, \beta_2, \beta_3$ are regression coefficients  
+- $X_1, X_2, X_3$ are explanatory variables  
+- $\varepsilon$ is the error term
+
+#### Estimation of the model
+
+The regression coefficients $\beta_0, \beta_1, \beta_2, \beta_3$ are usually estimated using ordinary least squares (OLS).
+
+The idea of OLS is to choose coefficient values that minimize the sum of squared residuals:
+
+$$
+\sum_{i=1}^{n} (Y_i - \hat{Y}_i)^2
+$$
+
+where $\hat{Y}_i$ is the predicted value of $Y$ for observation $i$.
+
+Under standard assumptions, the OLS estimators are unbiased and efficient.
+
+#### Interpretation of coefficients
+
+Each regression coefficient has a clear interpretation:
+
+- **$\beta_0$ (intercept):**  
+  The expected value of $Y$ when all predictors equal zero.
+
+- **$\beta_1$:**
+  The expected change in $Y$ for a one‑unit increase in $X_1$, holding $X_2$ and $X_3$ constant.
+
+- **$\beta_2, \beta_3$:**
+  Interpreted analogously for $X_2$ and $X_3$.
+
+This *“all else equal”* interpretation is central to multiple regression analysis.
+
+#### Model assumptions
+
+For the linear regression model to be valid, the following assumptions are commonly made:
+
+1. **Linearity**  
+   The relationship between the predictors and the response is linear.
+
+2. **Independence**  
+   Observations are independent of each other.
+
+3. **Homoscedasticity**  
+   The variance of the error term $\varepsilon$ is constant across observations.
+
+4. **Normality of errors**  
+   The error term $\varepsilon$ is normally distributed (mainly important for inference).
+
+5. **No perfect multicollinearity**  
+   Predictors are not perfectly correlated with each other.
+
+Violations of these assumptions can lead to biased estimates or invalid inference.
+
+#### Goodness of fit
+
+Two commonly used measures are:
+
+- **$R^2$**  
+  The proportion of variance in $Y$ explained by the model.
+
+- **Adjusted $R^2$**  
+  Adjusts $R^2$ for the number of predictors and is preferred when comparing models.
+
+The coefficient of determination is defined as
+
+$$
+R^2 = 1 - \frac{\text{Residual Sum of Squares}}{\text{Total Sum of Squares}}
+$$
+
+#### Extensions
+
+Possible extensions of the basic linear regression framework include:
+
+- interaction effects (e.g. $X_1 \times X_2$)
+- nonlinear terms (e.g. polynomials)
+- generalized linear models
+- spatial regression models
+
+### Examples of regression models 
+
+#### Faithfull data
+Apply the simple linear regression model for the data set faithful, and estimate the next eruption duration if the waiting time since the last eruption has been 80 minutes.
+
+Let’s check the dataset:
+```{r}
+?faithful
+```
+
+Then let’s estimate the regression model:
+```{r}
+eruption.lm = lm(eruptions ~ waiting, data=faithful) 
+```
+
+Then we extract the parameters of the estimated regression equation with the coefficients function.
+```{r}
+coeffs = coefficients(eruption.lm); coeffs 
+
+```
+
+We now fit the eruption duration using the estimated regression equation.
+``` {r}
+waiting = 80           # the waiting time 
+duration = coeffs[1] + coeffs[2]*waiting 
+duration 
+```
+
+Based on the simple linear regression model, if the waiting time since the last eruption has been 80 minutes, we expect the next one to last 4.1762 minutes.
+
+#### Gala data
+
+Let’s look an example concerning the number of species of tortoise on the various Galapagos Islands. There are 30 cases (Islands) and seven variables in the dataset. We start by reading the data in to R and examining it. 
+
+``` {r}
+library(faraway)
+
+data(gala)
+gala
+```
+
+Let’s see background of the data:
+
+```{r}
+?gala
+```
+
+Fitting a linear model in R is done using the lm( ) command. Notice the syntax for specifying the predictors in the model. By typing,
+
+```{r}
+mdl <- lm(Species~Area + Elevation + Nearest + Scruz+ Adjacent, data=gala)
+summary(mdl)
+```
+
+We can identify several useful quantities in this output. Other statistical packages tend to produce output quite similar to this. One useful feature of R is that it is possible to directly calculate quantities of interest. 
+
+First we make the X-matrix:
+
+```{r}
+x <- model.matrix(~Area + Elevation + Nearest + Scruz + Adjacent, gala)
+```
+
+and here is the response y:
+
+```{r}
+y <- gala$Species
+```
+
+Now let’s construct (XTX)-1. t ( ) does transpose and %*% does matrix multiplication. solve (A) computes A-1 while solve(A,b) solves Ax=b:
+
+```{r}
+xtxi <- solve(t(x)%*%x)
+```
+
+We can get B  directly, using (XTX)-1XTy:
+
+```{r}
+xtxi%*%t(x)%*%y
+```
+
+This is a very bad way to compute B because it is inefficient and can be very inaccurate when the predictors are strongly correlated. A better way is:
+
+```{r}
+solve(crossprod(x,x),crossprod(x,y))
+```
+
+where crosspod(x,y) computes xTy. 
+
+We can extract the regression quantities we need from the model object. Commonly used are residuals (), fitted (), deviance () which gives the RSS, df.residual () which gives the degrees of freedom and coef () which gives the  . You can also extract other needed quantities by examining the model object and its summary:
+
+```{r}
+names(mdl)
+mdls <- summary(mdl)
+names(mdls)
+```
+
+We can estimate   using the formula  , where n-p is the degrees of freedom. We can also extract it from the summary:
+
+```{r}
+sqrt(deviance(mdl)/df.residual(mdl))
+
+mdls$sigma
+```
+
+We can also extract (XTX)-1 and use it to compute the standard errors for the coefficients:
+
+```{r}
+xtxi <- mdls$cov.unscaled
+sqrt(diag(xtxi))*60.975
+```
+
+or get them from the summary object:
+
+```{r}
+mdls$coef[,2]
+```
+
+Finally, we may compute or extract R2: 
+```{r}
+1-deviance(mdl)/sum((y-mean(y))^2)
+mdls$r.squared
+
+```
+
+### Variable selection in regression models
+
+In multiple regression analysis, we often face the question of **which predictors should be included in the model**. Including too many variables may lead to over fitting, while excluding relevant predictors can bias results.
+
+A common approach for variable selection is to use **information criteria**, such as the Akaike Information Criterion (AIC), which balances model fit and model complexity.
+
+#### Variable selection using AIC
+
+We illustrate variable selection methods using the built‑in **state** dataset.
+
+First, we construct a data frame containing the variables of interest and fit a full regression model including all predictors.
+
+```{r}
+data(state)
+
+statedata <- data.frame(
+  state.x77,
+  row.names = state.abb,
+  check.names = TRUE
+)
+
+g <- lm(Life.Exp ~ ., data = statedata)
+```
+
+Stepwise variable selection using AIC
+
+The step() function performs stepwise model selection by sequentially adding or removing predictors based on the AIC value.
+
+```{r}
+step(g)
+```
+
+Interpretation:
+
+- The algorithm searches for a model with lower AIC than the full model.
+- At each step, predictors are added or removed if doing so improves the AIC.
+- The final model represents a balance between goodness of fit and model simplicity.
+
+#### Alternative approach: stepAIC() from the MASS package
+
+The MASS package provides the stepAIC() function, which allows explicit control over the direction of the search.
+
+```{r}
+library(MASS)
+
+stepAIC(
+  lm(Life.Exp ~ ., data = statedata),
+  direction = "both")
+```
+
+Interpretation:
+
+- "both" allows both forward selection and backward elimination.
+- Results are often comparable to step() but offer more flexibility.
+- Smaller AIC values indicate preferred models.
+
+#### Best subset selection using the leaps package
+
+Another approach to variable selection is best subset selection, which evaluates combinations of predictors rather than following a stepwise path.
+
+```{r}
+library(leaps)
+
+x <- model.matrix(g)[, -1]
+y <- statedata$Life.Exp
+
+g_leaps <- leaps(x, y)
+```
+
+This method examines models with different numbers of predictors to identify those with optimal performance according to specific criteria.
+
+**Model comparison using Mallows’ Cp**
+
+Mallows’ $C_p$ statistic is commonly used to assess model adequacy and complexity.
+
+```{r}
+library(faraway)
+Cpplot(g_leaps)
+```
+Interpretation:
+
+- Models with low $C_p$ values are preferred.
+- A good model typically has $C_p$ close to the number of predictors plus the intercept.
+- This plot helps identify parsimonious models with strong explanatory power.
+
+#### Summary
+
+Different variable selection techniques may lead to different models. In practice:
+
+- Stepwise methods are computationally efficient but may miss optimal models.
+- Best subset selection provides a broader comparison but can be computationally expensive.
+- Information criteria such as AIC help balance model fit and complexity.
+
+Variable selection should always be guided by statistical reasoning, theoretical understanding, and substantive knowledge, not automatic procedures alone.
+
+### Regression diagnostic
+
+Regression diagnostics are used to evaluate whether the assumptions of the linear regression model are reasonably satisfied and to identify potentially influential observations.
+
+In this section, we illustrate regression diagnostics using an example dataset.
+
+####  Diagnostics for a multiple linear regression model
+
+We use the **savings** dataset from the *faraway* package. First, we fit a multiple linear regression model and then inspect standard diagnostic plots.
+
+```{r}
+library(faraway)
+
+data(savings)
+?savings
+
+g <- lm(sr ~ pop15 + pop75 + dpi + ddpi, data = savings)
+```
+
+R automatically produces four standard diagnostic plots for a linear regression model using the plot() function. These plots help assess model assumptions and identify problematic observations.
+
+```{r}
+par(mfrow = c(2, 2))
+plot(g)
+```
+
+**Residuals vs. Fitted values**
+This plot examines whether the relationship between predictors and the response is approximately linear.
+Interpretation:
+
+- It is desirable to see residuals evenly scattered around a horizontal line at zero.
+- Systematic patterns (curvature or funnel shapes) may indicate nonlinearity or heteroscedasticity.
+
+**Normal Q–Q plot**
+This plot assesses whether the residuals are approximately normally distributed.
+Interpretation:
+
+- If residuals follow the dashed reference line closely, the normality assumption is reasonable.
+- Strong deviations from the line suggest departures from normality.
+
+**Scale–Location plot**
+Also called the Spread–Location plot, this diagnostic evaluates the assumption of constant variance (homoscedasticity).
+Interpretation:
+
+- A roughly horizontal line with evenly spread points is desirable.
+- Increasing or decreasing spread suggests heteroscedasticity.
+
+**Residuals vs. Leverage**
+This plot identifies observations that may have a disproportionate influence on the fitted model.
+Interpretation:
+
+- Observations with high leverage and large residuals are potentially influential.
+- Points lying outside the Cook’s distance contours may substantially affect model estimates.
+
+**Summary**
+Diagnostic plots provide essential insight into:
+
+- linearity
+- normality of residuals
+- constant variance
+- influence of individual observations
+
+If serious violations are detected, remedial measures such as transforming variables, adding nonlinear terms, or using alternative models should be considered.
+
+### Reporting results
+
+# Regression analysis and open postcode area data 
+
+```{r, eval=FALSE}
+install.packages("purrr")
+install.packages("sf")
+install.packages("tmap")
+install.packages("httr")
+install.packages("data.table")
+install.packages("ows4R")
+
+#options(pckgType="binary")
+library(dplyr)
+library(purrr)
+library(sf)
+library(tmap)
+library(httr)
+library(data.table)
+library(ows4R)
+```
+
+Download postcodearea data from the WFS service of Statistics Finland:
+
+```{r}
+url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
+           scheme ="https",
+           query =list(service ="WFS",
+                       version ="2.0.0",
+                       request ="GetFeature",
+                       typename ="postialue:pno_tilasto_2022",
+                       outputFormat ="json"))%>%
+  setattr("class","url")
+request <-build_url(url)
+p22 <-st_read(request)
+```
+
+And the same for year 2016:
+
+```{r}
+url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
+           scheme ="https",
+           query =list(service ="WFS",
+                       version ="2.0.0",
+                       request ="GetFeature",
+                       typename ="postialue:pno_tilasto_2016",
+                       outputFormat ="json"))%>%
+  setattr("class","url")
+request <-build_url(url)
+p16 <-st_read(request)
+```
+
+We can see the content of the data by calling names of the variables:
+```{r}
+names(p16)
+```
+
+
+```{r}
+p16data<-p16[,c(2,78)]
+p16data<-as.data.frame(p16data[,1:2])
+colnames(p16data)<-c("posti_alue","tyopy16") #postcode & total number of jobs
+```
+
+yhdistetään /merging the data
+
+```{r}
+p22_data <- dplyr::right_join(x = p16data, y = p22, by=c("posti_alue" = "postinumeroalue"))
+```
+
+right_join retains orinal format of p22 data
+
+```{r}
+p22_data$tyopy16[is.na(p22_data$tyopy16)] <- 0
+```
+
+lasketaan muutokset/ calculate changes
+
+```{r}
+p22_data$tp_m22_16<-(p22_data$tp_tyopy-p22_data$tyopy16)
+p22_data$tp_m22_16p<-((p22_data$tp_tyopy-p22_data$tyopy16)/p22_data$tyopy16)*100
+```
+
+luokitellaan kasvualueet eli muodostetaan niist? "skenaariot"/classify areas
+
+```{r}
+p22_data$kasvu<-ifelse(p22_data$tp_m22_16>0,1,0)
+table(p22_data$kasvu)
+```
+
+```{r}
+p22_data$kasvu_heikko<-ifelse(p22_data$tp_m22_16>10,1,0)
+table(p22_data$kasvu_heikko)
+```
+
+```{r}
+p22_data$kasvu_kohtal<-ifelse(p22_data$tp_m22_16>100,1,0)
+table(p22_data$kasvu_kohtal)
+```
+
+```{r}
+p22_data$kasvu_voima<-ifelse(p22_data$tp_m22_16>500,1,0)
+table(p22_data$kasvu_voima)
+```
+
+yhteensä työpaikkoja
+```{r}
+sum(p22_data$tp_tyopy) 
+```
+
+```{r}
+t1<-subset(p22_data, kasvu_voima>0); sum(t1$tp_tyopy)/2150025
+t2<-subset(p22_data, kasvu_kohtal>0); sum(t2$tp_tyopy)/2150025
+t3<-subset(p22_data, kasvu_heikko>0); sum(t3$tp_tyopy)/2150025
+t4<-subset(p22_data, kasvu>0); sum(t4$tp_tyopy)/2150025
+```
+
+# lasketaan osuudet työpaikkojen lukumäärän kasvusta eli kuinka paljon 
+# työpaikkojen kasvusta tapahtui missäkin "skenaariossa"
+
+```{r}
+(sum(t1$tp_m22_16))/167463
+(sum(t2$tp_m22_16)-sum(t1$tp_m22_16))/167463
+(sum(t3$tp_m22_16)-sum(t2$tp_m22_16))/167463
+(sum(t4$tp_m22_16)-sum(t3$tp_m22_16))/167463
+```
