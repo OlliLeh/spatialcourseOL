@@ -465,14 +465,252 @@ Ready for:
 
 #### 13. Visualising regional population development with ggplot2
 
+#### Facetting
+
+Faceting means splitting one plot into multiple small plots, each
+showing a subset of the data, but:
+
+- using the same variables
+- the same geoms
+- the same aesthetics
+
+Think of it as: “Draw the same plot many times, once for each group.”
+
+This is extremely useful when you want to:
+
+- compare groups
+- see patterns that would be hidden if everything were overlaid
+- teach students how trends differ across categories
+
+In ggplot2, the two main faceting functions are:
+
+- facet_wrap() - One grouping variable
+- facet_grid() - Two grouping variables (rows × columns)
+
+##### What is faceting in ggplot2?
+
+Faceting means splitting one plot into multiple small plots, each
+showing a subset of the data, but:
+
+- using the same variables
+- the same geoms
+- the same aesthetics
+
+``` r
+ggplot(vs, aes(x=Group.1, y=x))+
+  geom_line(linewidth=1) +
+  theme(axis.text.x=element_text(angle=90, vjust=0.5,hjust=1)) +
+  facet_wrap(facets = ~Group.2, scales = "free_y") 
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-24-1.png)
+
+Above code, explained line by line:
+
+    ggplot(vs, aes(x = Group.1, y = x)) +
+
+This initializes the plot
+
+- vs is your data frame
+- Group.1 - x-axis (likely year)
+- x - y-axis (population or similar variable)
+
+&nbsp;
+
+    geom_line(linewidth = 1) +
+
+Draws a line in each panel
+
+- geom_line() connects points in order of x
+- linewidth = 1 makes the line thicker and more readable
+
+&nbsp;
+
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+
+Rotates x-axis labels
+
+- angle = 90 → vertical labels
+- vjust, hjust → alignment adjustments
+
+This is common when x-axis labels are long or many (e.g. years).
+
+    facet_wrap(facets = ~Group.2, scales = "free_y")
+
+This is the key faceting line and it tells ggplot:
+
+“Create one panel for each unique value of Group.2.”
+
+If Group.2 contains municipalities, you get:
+
+- one panel per municipality
+
+If it contains regions or categories:
+
+- one panel per region/category
+
+Internally, ggplot:
+
+- Splits the data by Group.2
+- Draws the same plot for each subset
+- Arranges the panels automatically in rows and columns
+
+scales = “free_y” — very important:
+
+- Each facet gets its own y-axis scale
+- Makes small and large groups equally visible
+- Improves readability and comparison of shape (trends)
+
+Basically, the code draws a separate line plot for each value of
+Group.2, arranged automatically on the page, with each plot showing how
+x changes over Group.1 and using its own y-axis scale.
+
+#### facet_geo()
+
+Standard faceting (facet_wrap(), facet_grid()) arranges panels
+
+- alphabetically
+- or in rows/columns you choose
+
+This means that “geography” is lost. For example, municipalities in
+Finland would appear in an arbitrary order, not reflecting where they
+are located.
+
+Function facet_geo() keeps geography visible while still showing one
+plot per region.
+
+##### What is facet_geo()?
+
+In simple terms:
+
+- Each facet = one region, positioned to roughly match its real-world
+  map location
+
+So instead of this:
+
+    Helsinki | Espoo | Tampere
+    Turku    | Oulu  | Kuopio
+
+you get something like:
+
+            Oulu
+    Kuopio  Jyväskylä
+    Turku   Helsinki
+
+##### How geo_facet works conceptually
+
+You provide two things:
+
+Your data
+
+- Includes a region variable (e.g. municipality)
+
+A geographic grid: A lookup table with:
+
+- region name
+- row
+- column
+
+Example of a grid (simplified):
+
+``` r
+grid_finland <- data.frame(
+  municipality = c("Helsinki", "Turku", "Oulu"),
+  row = c(3, 4, 1),
+  col = c(3, 2, 3)
+)
+```
+
+This grid tells facet_geo() where each panel should go.
+
+Predefined grids for Finland are available in the geofi package:
+
+<https://ropengov.github.io/geofi/articles/geofi_datasets.html>
+
+``` r
+d <- data(package = "geofi")
+as_tibble(d$results) |> 
+  select(Item,Title) |> 
+    filter(grepl("grid", Item)) |> 
+  print(n = 100)
+#> # A tibble: 22 × 2
+#>    Item                   Title                                                 
+#>    <chr>                  <chr>                                                 
+#>  1 grid_ahvenanmaa        custom geofacet grid for Ahvenanmaa region            
+#>  2 grid_etela_karjala     custom geofacet grid for Etelä-Karjala region as in 2…
+#>  3 grid_etela_pohjanmaa   custom geofacet grid for Etelä-Pohjanmaa              
+#>  4 grid_etela_savo        custom geofacet grid for Etelä-Savo                   
+#>  5 grid_hyvinvointialue   custom geofacet grid for Wellbeing services counties  
+#>  6 grid_kainuu            custom geofacet grid for Kainuu region                
+#>  7 grid_kanta_hame        custom geofacet grid for Kanta-Häme region            
+#>  8 grid_keski_pohjanmaa   custom geofacet grid for Keski-Pohjanmaa region       
+#>  9 grid_keski_suomi       custom geofacet grid for Keski-Suomi region as in 2020
+#> 10 grid_kymenlaakso       custom geofacet grid for Kymenlaakso region           
+#> 11 grid_lappi             custom geofacet grid for Lappi region as in 2020      
+#> 12 grid_maakunta          custom geofacet grid for regions                      
+#> 13 grid_paijat_hame       custom geofacet grid for Päijät-Häme region           
+#> 14 grid_pirkanmaa         custom geofacet grid for Pirkanmaa region             
+#> 15 grid_pohjanmaa         custom geofacet grid for Pohjanmaa region             
+#> 16 grid_pohjois_karjala   custom geofacet grid for Pohjois-Karjala region       
+#> 17 grid_pohjois_pohjanmaa custom geofacet grid for Pohjois-Pohjanmaa region     
+#> 18 grid_pohjois_savo      custom geofacet grid for Pohjois-Savo region          
+#> 19 grid_sairaanhoitop     custom geofacet grid for health care districts        
+#> 20 grid_satakunta         custom geofacet grid for Satakunta region             
+#> 21 grid_uusimaa           custom geofacet grid for Uusimaa region               
+#> 22 grid_varsinais_suomi   custom geofacet grid for Varsinais-Suomi region
+```
+
+##### Why it’s good for teaching and research
+
+Advantages
+
+- Preserves regional context
+- Easier comparison than maps
+- Works with any ggplot geometry
+- Great for time series per region
+
+Limitations
+
+- Approximate geography
+- Many regions - small panels
+
+##### What geo_facet is not
+
+It is not:
+
+- a real map
+- spatially precise
+- using coordinates or projections
+
+It is:
+
+- a visual metaphor for geography
+- designed for comparative time series or distributions
+
+Perfect for:
+
+- population trends
+- unemployment rates
+- health indicators
+- education statistics
+
+Note! Recent updates to ggplot2 (v3.5.0+) have caused layout issues with
+older versions of geofacet, leading to misaligned grids or empty plots.
+If you do not see your figure correctly, install older version of the
+ggplot2 by following code:
+
+``` r
+devtools::install_version(package = "ggplot2", version = "3.5.2", repos = "http://cran.us.r-project.org")
+```
+
 The complete plotting code
 
 ``` r
 ggplot(vs, aes(x=Group.1, y=x, group=Group.2))+
-  geom_line(size=1.1) +
+  geom_line(size=1) +
   theme(axis.text.x=element_text(angle=90, vjust=0.5,hjust=1)) +
   facet_geo(facets = ~Group.2, grid=geofi::grid_pohjois_karjala, scales = "free_y") +
-  labs(title="Population development 2000-2019 and population projection 2020-2040", y="Population", x="Municipality")+
+  labs(title="Population development 2000-2019 and \npopulation projection 2020-2040", y="Population", x="Municipality")+
   theme(axis.text = element_text(size=12),
         axis.title = element_text(size=12, face="bold"),
         plot.title = element_text(size=14, face="bold"),
@@ -490,7 +728,11 @@ ggplot(vs, aes(x=Group.1, y=x, group=Group.2))+
 #>   grid_submit(__grid_df_name__)
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-24-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-28-1.png)
+
+You can see, that facet_geo() is a geographic faceting method that
+arranges small ggplot panels to resemble a map, making regional
+comparisons easier while showing detailed plots for each area.
 
 Step‑by‑step explanation
 
