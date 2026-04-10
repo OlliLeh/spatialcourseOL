@@ -734,6 +734,13 @@ You can see, that facet_geo() is a geographic faceting method that
 arranges small ggplot panels to resemble a map, making regional
 comparisons easier while showing detailed plots for each area.
 
+The figure does not render correctly, so below is an image showing the
+figure as it should look.
+
+![geofacetti logo](figures/geofacetti.png)
+
+geofacetti logo
+
 Step‑by‑step explanation
 
 ##### 1. Defining the plot structure
