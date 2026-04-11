@@ -930,7 +930,7 @@ High leverage points are not automatically wrong, but they should be understood 
 
 Highly correlated predictors can inflate standard errors.
 
-```{r}
+```{r, eval=FALSE}
 library(car)
 vif(testia3)
 ```
@@ -946,7 +946,7 @@ Logistic regression assumes that continuous predictors are linearly related to t
 
 Visual check (example)
 
-```{r}
+```{r, eval=FALSE}
 library(ggplot2)
 
 ggplot(p25_data, aes(tyottom, model1_res)) +
