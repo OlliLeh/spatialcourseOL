@@ -13,7 +13,7 @@ library(dplyr)
 library(purrr)
 library(sf)
 library(httr)
-llibrary(ows4R)
+library(ows4R)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
