@@ -584,7 +584,7 @@ url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
                        outputFormat ="json"))%>%
   setattr("class","url")
 request <-build_url(url)
-p22 <-st_read(request)
+p25 <-st_read(request)
 ```
 
 This produces an sf object containing postcode area geometries and associated attributes, including the number of jobs.
@@ -622,7 +622,7 @@ We extract:
 - the total number of jobs in 2016
 
 ```{r}
-p16data<-p16[,c(2,78)]
+p16data<-p16[,c(2,79)]
 p16data<-as.data.frame(p16data[,1:2])
 colnames(p16data)<-c("posti_alue","tyopy16") #postcode & total number of jobs
 ```
@@ -632,10 +632,15 @@ colnames(p16data)<-c("posti_alue","tyopy16") #postcode & total number of jobs
 
 #### Merging 2016 Data with 2022 Spatial Data
 
-We merge the 2016 employment data with the 2022 spatial dataset using a right join.
+We merge the 2016 employment data with the 2022 spatial dataset using a right join. Before doing so, we convert the ID variables (postinumeroalue and posti_alue) to the same data type, because joins require matching variable types.
 
 ```{r}
-p22_data <- dplyr::right_join(x = p16data, y = p22, by=c("posti_alue" = "postinumeroalue"))
+p25$postinumeroalue <- as.numeric(p25$postinumeroalue)
+p16data$posti_alue <- as.numeric(p16data$posti_alue)
+```
+
+```{r}
+p25_data <- dplyr::right_join(x = p16data, y = p25, by=c("posti_alue" = "postinumeroalue"))
 ```
 
 Why right_join()?
@@ -648,7 +653,7 @@ Why right_join()?
 If a postcode area has no recorded jobs in 2016, we treat this as zero employment.
 
 ```{r}
-p22_data$tyopy16[is.na(p22_data$tyopy16)] <- 0
+p25_data$tyopy16[is.na(p25_data$tyopy16)] <- 0
 ```
 
 #### Calculating Employment Change (2016–2022)
@@ -656,13 +661,13 @@ p22_data$tyopy16[is.na(p22_data$tyopy16)] <- 0
 Absolute Change & Percentage Change
 
 ```{r}
-p22_data$tp_m22_16<-(p22_data$tp_tyopy-p22_data$tyopy16)
-p22_data$tp_m22_16p<-((p22_data$tp_tyopy-p22_data$tyopy16)/p22_data$tyopy16)*100
+p25_data$tp_m25_16<-(p25_data$tp_tyopy-p25_data$tyopy16)
+p25_data$tp_m25_16p<-((p25_data$tp_tyopy-p25_data$tyopy16)/p25_data$tyopy16)*100
 ```
 
-- tp_tyopy: total number of jobs in 2022
-- tp_m22_16: absolute employment change
-- tp_m22_16p: percentage change
+- tp_tyopy: total number of jobs in 2025
+- tp_m25_16: absolute employment change in from 2016 to 2025
+- tp_m25_16p: percentage change in from 2016 to 2025
 
 #### Classifying Employment Growth Areas
 
@@ -670,33 +675,33 @@ We classify postcode areas into growth categories based on absolute job growth.
 
 Any Positive Growth
 ```{r}
-p22_data$kasvu<-ifelse(p22_data$tp_m22_16>0,1,0)
-table(p22_data$kasvu)
+p25_data$kasvu<-ifelse(p25_data$tp_m25_16>0,1,0)
+table(p25_data$kasvu)
 ```
 
 Weak Growth (More Than 10 Jobs)
 ```{r}
-p22_data$kasvu_heikko<-ifelse(p22_data$tp_m22_16>10,1,0)
-table(p22_data$kasvu_heikko)
+p25_data$kasvu_heikko<-ifelse(p25_data$tp_m25_16>10,1,0)
+table(p25_data$kasvu_heikko)
 ```
 
 Moderate Growth (More Than 100 Jobs)
 ```{r}
-p22_data$kasvu_kohtal<-ifelse(p22_data$tp_m22_16>100,1,0)
-table(p22_data$kasvu_kohtal)
+p25_data$kasvu_kohtal<-ifelse(p25_data$tp_m25_16>100,1,0)
+table(p25_data$kasvu_kohtal)
 ```
 
 Strong Growth (More Than 500 Jobs)
 ```{r}
-p22_data$kasvu_voima<-ifelse(p22_data$tp_m22_16>500,1,0)
-table(p22_data$kasvu_voima)
+p25_data$kasvu_voima<-ifelse(p25_data$tp_m25_16>500,1,0)
+table(p25_data$kasvu_voima)
 ```
 
 These classifications allow us to define different employment growth scenarios at the postcode level.
 
 Total Number of Jobs (2022)
 ```{r}
-sum(p22_data$tp_tyopy) 
+sum(p25_data$tp_tyopy) 
 ```
 
 #### Share of Jobs Located in Growth Areas
@@ -705,10 +710,252 @@ We now compute the share of total employment located in areas with different gro
 The denominator 2,150,025 represents the total number of jobs nationally.
 
 ```{r}
-t1<-subset(p22_data, kasvu_voima>100); sum(t1$tp_tyopy)/sum(p22_data$tp_tyopy) 
-t2<-subset(p22_data, kasvu_kohtal>50); sum(t2$tp_tyopy)/sum(p22_data$tp_tyopy) 
-t3<-subset(p22_data, kasvu_heikko>10); sum(t3$tp_tyopy)/sum(p22_data$tp_tyopy) 
-t4<-subset(p22_data, kasvu>0); sum(t4$tp_tyopy)/sum(p22_data$tp_tyopy) 
+t1<-subset(p25_data, kasvu_voima>0); sum(t1$tp_tyopy)/sum(p25_data$tp_tyopy) 
+t2<-subset(p25_data, kasvu_kohtal>0); sum(t2$tp_tyopy)/sum(p25_data$tp_tyopy) 
+t3<-subset(p25_data, kasvu_heikko>0); sum(t3$tp_tyopy)/sum(p25_data$tp_tyopy) 
+t4<-subset(p25_data, kasvu>0); sum(t4$tp_tyopy)/sum(p25_data$tp_tyopy) 
 ```
 
 These indicators help quantify how concentrated employment growth is geographically.
+
+
+#### Modelling the Development of the Number of Jobs
+
+In this section, we construct explanatory variables and estimate a binary response model
+for job growth using a binomial (logistic) regression.
+
+We begin by constructing several percentage-based and density variables that will be used
+as regressors in the model.
+
+```{r}
+# Unemployment rate (%)
+p25_data$tyottom <- (p25_data$pt_tyott / p25_data$pt_tyoll) * 100
+
+# Share of highly educated (%)
+p25_data$korkk <- (p25_data$ko_yl_kork / p25_data$ko_koul) * 100
+
+# Share of new jobs (%)
+p25_data$alkut <- (p25_data$tp_alku_a / p25_data$tp_tyopy) * 100
+
+# Share of retirees (%)
+p25_data$elak <- (p25_data$te_elak / p25_data$te_taly) * 100
+
+# Population density (inhabitants per km^2)
+p25_data$as_tih <- p25_data$he_vakiy / (p25_data$pinta_ala / 1000)
+```
+
+**Model Specification**
+
+We estimate a generalized linear model (GLM) with a binomial distribution and a
+logit link function. The dependent variable kasvu indicates whether job growth
+occurred.
+
+```{r}
+model1<-glm(kasvu~tyottom+korkk+alkut+elak+as_tih+he_kika+ra_as_kpa, data=p25_data, family="binomial",na.action = na.exclude)
+```
+
+**Model Output**
+
+The table below reports coefficient estimates, standard errors, and significance levels.
+
+```{r}
+summary(model1)
+```
+
+Note: At this stage, you should carefully analyse the model diagnostics
+(e.g. goodness-of-fit, influential observations, and multicollinearity).
+
+**Predicted Probabilities**
+
+Using the estimated model, we calculate predicted probabilities of job growth for
+each observation.
+
+```{r}
+p25_data$model1_res<-predict(model1, type="response")
+```
+
+**Distribution of Predicted Probabilities**
+
+Finally, we visualise the distribution of the predicted probabilities.
+
+```{r}
+hist(p25_data$model1_res)
+```
+
+**What if we change model?**
+
+The model is modified by replacing the dependent variable with strong concentration, in order to examine how the regression coefficients change.
+
+```{r}
+model2<-glm(kasvu_voima~tyottom+korkk+alkut+elak+as_tih+he_kika+ra_as_kpa, data=p25_data, family="binomial",na.action = na.exclude)
+```
+
+```{r}
+summary(model2)
+```
+
+How do the regression coefficients differ relative to Model 1? What conclusions can be drawn from the results?
+
+#### Model diagnostics
+
+Why diagnostics matter in logistic regression?
+
+Model diagnostics help you answer four key questions:
+
+- Does the model fit the data reasonably well?
+- Are the predictors behaving as expected?
+- Are there influential or problematic observations?
+- Are the model assumptions seriously violated?
+
+Logistic regression does not assume normal errors or constant variance, but it does rely on other important assumptions.
+
+**1. Overall model fit**
+
+(a) Residual deviance vs. null deviance
+From summary(model1):
+
+```{r}
+summary(model1)
+```
+
+Key quantities:
+
+- Null deviance: model with no predictors
+- Residual deviance: model with predictors
+
+Rule of thumb
+
+- Residual deviance should be clearly smaller than the null deviance.
+
+If they are very similar, the predictors add little explanatory power.
+
+(b) Likelihood ratio test
+You can formally test whether the full model is better than the null model:
+
+```{r}
+anova(model1, test = "Chisq")
+```
+
+A small p‑value indicates that the model improves fit relative to an intercept‑only model.
+
+**2. Goodness of fit**
+
+(a) Pseudo‑R²
+Logistic regression does not have an ordinary R², but pseudo‑R² measures are useful:
+
+```{r, eval=FALSE}
+library(pscl)
+pR2(model1)
+```
+
+Common interpretation:
+
+- 0.02–0.05: weak fit
+- 0.10–0.20: moderate fit
+
+0.20: strong fit (for social sciences)
+
+These are not directly comparable to linear regression R².
+
+(b) Classification performance (optional)
+If your outcome kasvu is binary (0/1):
+
+```{r}
+pred_class <- ifelse(p25_data$model1_res > 0.5, 1, 0)
+table(pred_class, p25_data$kasvu)
+```
+
+This helps evaluate prediction accuracy, but should not replace statistical diagnostics.
+
+**3. Residual diagnostics**
+
+(a) Deviance residuals
+Plot residuals against fitted values:
+
+```{r}
+res <- residuals(model1, type = "deviance")
+fit <- fitted(model1)
+
+plot(fit, res,
+     xlab = "Fitted values",
+     ylab = "Deviance residuals")
+```
+
+What to look for:
+
+- Residuals roughly centered around zero
+- No strong patterns or funnels
+
+Problems:
+
+- Curvature - missing nonlinear terms
+- Extreme vertical spreads - outliers or poor fit
+
+(b) Residuals vs. predictors
+
+Example:
+
+```{r}
+plot(p25_data$tyottom, residuals(model1, type = "deviance"),
+     xlab = "Unemployment rate",
+     ylab = "Deviance residuals")
+abline(h = 0, lty = 2)
+```
+
+Residuals should not show systematic trends.
+
+**4. Influential observations**
+
+Some data points may have disproportionate influence on the results.
+(a) Cook’s distance
+
+```{r}
+plot(cooks.distance(model1),
+     ylab = "Cook's distance")
+abline(h = 4 / nrow(p25_data), lty = 2)
+```
+
+Observations above the line deserve inspection.
+
+(b) Leverage and influence
+
+```{r}
+plot(hatvalues(model1),
+     ylab = "Leverage")
+```
+
+High leverage points are not automatically wrong, but they should be understood substantively.
+
+**5. Multicollinearity diagnostics**
+
+Highly correlated predictors can inflate standard errors.
+
+```{r}
+library(car)
+vif(testia3)
+```
+
+Rule of thumb:
+
+- VIF < 5 - usually acceptable
+- VIF > 10 - serious multicollinearity
+
+**6. Functional form (linearity in the logit)**
+
+Logistic regression assumes that continuous predictors are linearly related to the log‑odds, not to the outcome itself.
+
+Visual check (example)
+
+```{r}
+library(ggplot2)
+
+ggplot(p25_data, aes(tyottom, model1_res)) +
+  geom_point() +
+  geom_smooth()
+```
+
+Curvature suggests you may need:
+
+- transformations,
+- polynomial terms,
+- or splines.
