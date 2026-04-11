@@ -19,6 +19,7 @@ library(tidyr)
 library(patchwork)
 library(gstat)
 library(stars)
+library(ggplot2)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
