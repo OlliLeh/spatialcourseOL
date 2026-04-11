@@ -687,6 +687,10 @@ library(MASS)
     ## 
     ## Attaching package: 'MASS'
 
+    ## The following object is masked from 'package:patchwork':
+    ## 
+    ##     area
+
     ## The following object is masked from 'package:dplyr':
     ## 
     ##     select
@@ -943,7 +947,7 @@ library(data.table)
 library(ows4R)
 ```
 
-##### Downloading Postcode Area Data (Year 2022)
+#### Downloading Postcode Area Data (Year 2022)
 
 We begin by downloading postcode area data using a Web Feature Service
 (WFS) query.
@@ -973,7 +977,7 @@ p25 <-st_read(request)
 This produces an sf object containing postcode area geometries and
 associated attributes, including the number of jobs.
 
-##### Downloading Corresponding Data for Year 2016
+#### Downloading Corresponding Data for Year 2016
 
 We repeat the same procedure for the year 2016.
 
@@ -999,7 +1003,7 @@ p16 <-st_read(request)
     ## Bounding box:  xmin: 83748.43 ymin: 6629044 xmax: 732907.7 ymax: 7776450
     ## Projected CRS: ETRS89 / TM35FIN(E,N)
 
-##### Inspecting the Data Structure
+#### Inspecting the Data Structure
 
 To understand the available variables, we list the column names.
 
@@ -1031,7 +1035,7 @@ names(p16)
     ## [106] "pt_tyovy"   "pt_tyoll"   "pt_tyott"   "pt_tyovu"   "pt_0_14"   
     ## [111] "pt_opisk"   "pt_elakel"  "pt_muut"    "geometry"
 
-##### Extracting Relevant Variables (2016 Data)
+#### Extracting Relevant Variables (2016 Data)
 
 We extract:
 
@@ -1047,7 +1051,7 @@ colnames(p16data)<-c("posti_alue","tyopy16") #postcode & total number of jobs
 - posti_alue: postcode area
 - tyopy16: total number of jobs in 2016
 
-##### Merging 2016 Data with 2022 Spatial Data
+#### Merging 2016 Data with 2022 Spatial Data
 
 We merge the 2016 employment data with the 2022 spatial dataset using a
 right join. Before doing so, we convert the ID variables
@@ -1068,7 +1072,7 @@ Why right_join()?
 - Preserves the geometry and structure of the 2022 spatial dataset
 - Ensures that all 2022 postcode areas remain in the data
 
-##### Handling Missing Values
+#### Handling Missing Values
 
 If a postcode area has no recorded jobs in 2016, we treat this as zero
 employment.
@@ -1077,7 +1081,7 @@ employment.
 p25_data$tyopy16[is.na(p25_data$tyopy16)] <- 0
 ```
 
-##### Calculating Employment Change (2016–2022)
+#### Calculating Employment Change (2016–2022)
 
 Absolute Change & Percentage Change
 
@@ -1090,7 +1094,7 @@ p25_data$tp_m25_16p<-((p25_data$tp_tyopy-p25_data$tyopy16)/p25_data$tyopy16)*100
 - tp_m25_16: absolute employment change in from 2016 to 2025
 - tp_m25_16p: percentage change in from 2016 to 2025
 
-##### Classifying Employment Growth Areas
+#### Classifying Employment Growth Areas
 
 We classify postcode areas into growth categories based on absolute job
 growth.
@@ -1150,7 +1154,7 @@ sum(p25_data$tp_tyopy)
 
     ## [1] 2271080
 
-##### Share of Jobs Located in Growth Areas
+#### Share of Jobs Located in Growth Areas
 
 We now compute the share of total employment located in areas with
 different growth intensities. The denominator 2,150,025 represents the
@@ -1183,7 +1187,7 @@ t4<-subset(p25_data, kasvu>0); sum(t4$tp_tyopy)/sum(p25_data$tp_tyopy)
 These indicators help quantify how concentrated employment growth is
 geographically.
 
-##### Modelling the Development of the Number of Jobs
+#### Modelling the Development of the Number of Jobs
 
 In this section, we construct explanatory variables and estimate a
 binary response model for job growth using a binomial (logistic)
@@ -1320,10 +1324,17 @@ summary(model2)
     ## 
     ## Number of Fisher Scoring iterations: 6
 
+And then we can save the model2 results for a new variable called as
+model2_res:
+
+``` r
+p25_data$model2_res<-predict(model2, type="response")
+```
+
 How do the regression coefficients differ relative to Model 1? What
 conclusions can be drawn from the results?
 
-##### Model diagnostics
+#### Model diagnostics
 
 Why diagnostics matter in logistic regression?
 
@@ -1463,7 +1474,7 @@ plot(fit, res,
      ylab = "Deviance residuals")
 ```
 
-![](lecture04-regression_files/figure-html/unnamed-chunk-65-1.png)
+![](lecture04-regression_files/figure-html/unnamed-chunk-66-1.png)
 
 What to look for:
 
@@ -1486,7 +1497,7 @@ plot(p25_data$tyottom, residuals(model1, type = "deviance"),
 abline(h = 0, lty = 2)
 ```
 
-![](lecture04-regression_files/figure-html/unnamed-chunk-66-1.png)
+![](lecture04-regression_files/figure-html/unnamed-chunk-67-1.png)
 
 Residuals should not show systematic trends.
 
@@ -1501,7 +1512,7 @@ plot(cooks.distance(model1),
 abline(h = 4 / nrow(p25_data), lty = 2)
 ```
 
-![](lecture04-regression_files/figure-html/unnamed-chunk-67-1.png)
+![](lecture04-regression_files/figure-html/unnamed-chunk-68-1.png)
 
 Observations above the line deserve inspection.
 
@@ -1512,7 +1523,7 @@ plot(hatvalues(model1),
      ylab = "Leverage")
 ```
 
-![](lecture04-regression_files/figure-html/unnamed-chunk-68-1.png)
+![](lecture04-regression_files/figure-html/unnamed-chunk-69-1.png)
 
 High leverage points are not automatically wrong, but they should be
 understood substantively.
@@ -1551,3 +1562,392 @@ Curvature suggests you may need:
 - transformations,
 - polynomial terms,
 - or splines.
+
+## Spatial Interpolation with Kriging
+
+**What is spatial interpolation?**
+
+Spatial interpolation is the activity of estimating values of spatially
+continuous variables at locations where they have not been observed,
+based on measurements at known locations.
+
+#### 1. Introduction
+
+In this exercise, a continuous surface is created using interpolation to
+describe the probability of growth in the number of jobs across Finland.
+In this way, we visualise the results of the regression model developed
+in the previous exercise.
+
+In these lecture notes we:
+
+- demonstrate simple spatial interpolation techniques,
+- explore modelling of spatial correlation using variograms,
+- perform spatial prediction using ordinary kriging, and
+- visualise and export interpolation results.
+
+The analysis relies mainly on the gstat package together with modern
+spatial packages in R.
+
+#### 2. Packages and Data
+
+We begin by loading the required packages.
+
+``` r
+library(geofi)
+library(sf)
+library(ggplot2)
+library(dplyr)
+library(viridis)
+library(tidyr)
+library(patchwork)
+library(gstat)
+library(stars)
+```
+
+**Municipality boundaries**
+
+Municipality boundaries are used for visualisation and spatial
+aggregation of results.
+
+``` r
+municipalities <- geofi::get_municipalities(year = 2021)
+```
+
+    ## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2021
+
+    ## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
+
+    ## 
+    ## geofi R package: tools for open GIS data for Finland.
+    ## Part of rOpenGov <ropengov.org>.
+    ## Version 1.2.1
+
+    ## Data is licensed under: Attribution 4.0 International (CC BY 4.0)
+
+#### 3. Preparing Point Data
+
+This exercise continues an earlier analysis. We assume the object
+p25_data already exists in the workspace.
+
+**Selecting variables**
+
+We keep only the variables needed for interpolation.
+
+``` r
+# inspect variable names
+names(p25_data)
+```
+
+    ##   [1] "posti_alue"   "tyopy16"      NA             "id"           "nimi"        
+    ##   [6] "namn"         "euref_x"      "euref_y"      "pinta_ala"    "vuosi"       
+    ##  [11] "kunta"        "he_vakiy"     "he_naiset"    "he_miehet"    "he_kika"     
+    ##  [16] "he_0_2"       "he_3_6"       "he_7_12"      "he_13_15"     "he_16_17"    
+    ##  [21] "he_18_19"     "he_20_24"     "he_25_29"     "he_30_34"     "he_35_39"    
+    ##  [26] "he_40_44"     "he_45_49"     "he_50_54"     "he_55_59"     "he_60_64"    
+    ##  [31] "he_65_69"     "he_70_74"     "he_75_79"     "he_80_84"     "he_85_"      
+    ##  [36] "ko_ika18y"    "ko_perus"     "ko_koul"      "ko_yliop"     "ko_ammat"    
+    ##  [41] "ko_al_kork"   "ko_yl_kork"   "hr_tuy"       "hr_ktu"       "hr_mtu"      
+    ##  [46] "hr_pi_tul"    "hr_ke_tul"    "hr_hy_tul"    "hr_ovy"       "te_taly"     
+    ##  [51] "te_takk"      "te_as_valj"   "te_yks"       "te_nuor"      "te_eil_np"   
+    ##  [56] "te_laps"      "te_plap"      "te_aklap"     "te_klap"      "te_teini"    
+    ##  [61] "te_yhlap"     "te_aik"       "te_elak"      "te_omis_as"   "te_vuok_as"  
+    ##  [66] "te_muu_as"    "tr_kuty"      "tr_ktu"       "tr_mtu"       "tr_pi_tul"   
+    ##  [71] "tr_ke_tul"    "tr_hy_tul"    "tr_ovy"       "ra_ke"        "ra_raky"     
+    ##  [76] "ra_muut"      "ra_asrak"     "ra_asunn"     "ra_as_kpa"    "ra_pt_as"    
+    ##  [81] "ra_kt_as"     "ra_muu_as"    "tp_tyopy"     "tp_alku_a"    "tp_jalo_bf"  
+    ##  [86] "tp_palv_gu"   "tp_a_maat"    "tp_b_kaiv"    "tp_c_teol"    "tp_d_ener"   
+    ##  [91] "tp_e_vesi"    "tp_f_rake"    "tp_g_kaup"    "tp_h_kulj"    "tp_i_majo"   
+    ##  [96] "tp_j_info"    "tp_k_raho"    "tp_l_kiin"    "tp_m_erik"    "tp_n_hall"   
+    ## [101] "tp_o_julk"    "tp_p_koul"    "tp_q_terv"    "tp_r_taid"    "tp_s_muup"   
+    ## [106] "tp_t_koti"    "tp_u_kans"    "tp_x_tunt"    "pt_vakiy"     "pt_tyoll"    
+    ## [111] "pt_tyott"     "pt_0_14"      "pt_opisk"     "pt_elakel"    "pt_muut"     
+    ## [116] "geometry"     "tp_m25_16"    "tp_m25_16p"   "kasvu"        "kasvu_heikko"
+    ## [121] "kasvu_kohtal" "kasvu_voima"  "tyottom"      "korkk"        "alkut"       
+    ## [126] "elak"         "as_tih"       "model1_res"   "model2_res"
+
+``` r
+# select relevant columns
+pdata3 <- p25_data[, c(1, 7, 8, 129)]
+summary(pdata3)
+```
+
+    ##    posti_alue       euref_x          euref_y          model2_res      
+    ##  Min.   :  100   Min.   : 90361   Min.   :6639963   Min.   :0.000001  
+    ##  1st Qu.:25438   1st Qu.:321052   1st Qu.:6753730   1st Qu.:0.036578  
+    ##  Median :51770   Median :399308   Median :6883752   Median :0.125017  
+    ##  Mean   :51257   Mean   :410317   Mean   :6924968   Mean   :0.251857  
+    ##  3rd Qu.:77752   3rd Qu.:499228   3rd Qu.:7021408   3rd Qu.:0.386879  
+    ##  Max.   :99990   Max.   :720123   Max.   :7750572   Max.   :0.999912  
+    ##                                                     NA's   :64
+
+**Handling missing values**
+
+``` r
+pdata4 <- na.omit(pdata3)
+```
+
+**Converting to an sf object**
+
+The point data are converted into an sf object using ETRS-TM35FIN
+(EPSG:3067).
+
+``` r
+crs <- st_crs("EPSG:3067")
+
+int.sf <- st_as_sf(
+  pdata4,
+  coords = c("euref_x", "euref_y"),
+  crs = "EPSG:3067") %>%
+  st_transform(crs)
+```
+
+#### 4. Creating a Prediction Grid
+
+To perform kriging, we define a regular prediction grid (pixels)
+covering Finland. Here we use a resolution of 10 km × 10 km.
+
+``` r
+grd <- st_bbox(municipalities) %>%
+  st_as_stars(dx = 10000) %>%
+  st_crop(municipalities)
+
+grd
+```
+
+    ## stars object with 2 dimensions and 1 attribute
+    ## attribute(s):
+    ##         Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
+    ## values     0       0      0    0       0    0 4024
+    ## dimension(s):
+    ##   from  to  offset  delta                refsys x/y
+    ## x    1  65   83748  10000 ETRS89 / TM35FIN(E,N) [x]
+    ## y    1 114 7776431 -10000 ETRS89 / TM35FIN(E,N) [y]
+
+#### 5. Variogram Analysis
+
+A variogram describes how similar (or dissimilar) values of a spatial
+variable are as a function of the distance between locations.
+
+In simple terms:
+
+- Nearby locations tend to have more similar values than distant
+  locations, and the variogram quantifies this relationship.
+
+What a variogram shows
+
+For pairs of observations at distance hhh, the variogram measures the
+average squared difference:
+
+$$\gamma(h) = \frac{1}{2}\,{\mathbb{E}}\left\lbrack \left( Z(s) - Z(s + h) \right)^{2} \right\rbrack$$
+
+Small distances → small differences (high similarity) Large distances →
+large differences (low similarity)
+
+**Key concepts**
+
+Nugget: variability at very small distances (measurement error or
+microscale variation) Sill: total spatial variance Range: distance
+beyond which locations are no longer spatially correlated
+
+Graphically:
+
+- the curve rises with distance,
+- then levels off at the sill.
+
+**Why variograms matter**
+
+A variogram is essential for kriging because it:
+
+- models spatial autocorrelation,
+- determines how observations are weighted in prediction,
+- controls both predictions and uncertainty.
+
+No variogram - no kriging.
+
+**Sample variogram**
+
+To apply geostatistical interpolation, we first model spatial dependence
+using a variogram.
+
+``` r
+v <- variogram(model2_res ~ 1, int.sf)
+plot(v, plot.numbers = TRUE)
+```
+
+![](lecture04-regression_files/figure-html/unnamed-chunk-78-1.png)
+
+By default, the variogram function:
+
+- sets the cutoff to one-third of the bounding box diagonal, and
+- divides it into 15 distance bins.
+
+**Custom variogram settings**
+
+These defaults can be modified if needed.
+
+``` r
+v0 <- variogram(
+  model2_res ~ 1, 
+  int.sf, 
+  cutoff = 1000, 
+  width = 1000)
+  
+plot(v0, plot.numbers = TRUE)
+```
+
+![](lecture04-regression_files/figure-html/unnamed-chunk-79-1.png)
+
+#### 6. Fitting a Variogram Model
+
+A variogram is a function that quantifies how spatial similarity
+decreases with distance and is the core model behind geostatistical
+interpolation methods such as kriging.
+
+To enable kriging, we fit a theoretical variogram model to the empirical
+variogram. Here we use an exponential model.
+
+``` r
+v.m <- fit.variogram(
+  v, 
+  vgm(psill = 1, model = "Exp", range = 5000, nugget = 1))
+```
+
+    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, : No
+    ## convergence after 200 iterations: try different initial values?
+
+``` r
+plot(v, v.m, plot.numbers = TRUE)
+```
+
+![](lecture04-regression_files/figure-html/unnamed-chunk-80-1.png)
+
+#### 7. Ordinary Kriging
+
+With a fitted variogram model, we can now perform ordinary kriging. At a
+high level, kriging interpolation answers the question:
+
+- Given observed values of tulos3 at known locations, and an assumed
+  spatial correlation model, what is the best linear unbiased prediction
+  of tulos3 at all grid cell locations?
+
+Kriging is not just interpolation by distance. It:
+
+- Uses spatial autocorrelation (encoded in the variogram model v.m)
+
+- Optimally weights observations based on their configuration in space
+
+- Produces both:
+
+- a prediction (expected value), and
+
+- an uncertainty estimate (kriging variance)
+
+krige(tulos3 ~ 1, int.sf, grd, v.m) performs ordinary kriging by
+combining a constant-mean model with a fitted variogram to predict
+spatially continuous values of tulos3 and quantify uncertainty at each
+grid cell.
+
+``` r
+k <- krige(
+  model2_res ~ 1,
+  int.sf,
+  grd,
+  v.m)
+```
+
+    ## [using ordinary kriging]
+
+The result is a stars object containing predicted values (var1.pred) and
+kriging variance (var1.var).
+
+#### 8. Visualising the Interpolation Surface with ggplot2
+
+We overlay the kriging surface with municipality boundaries.
+
+``` r
+ggplot(municipalities) +
+  geom_stars(data = k, aes(fill = var1.pred, x = x, y = y)) +
+  geom_sf(
+    lwd = 0.15,
+    fill = NA,
+    color = "white") +
+  scale_fill_viridis_c(
+    option = "C",
+    direction = -1,
+    name = "Probability",
+    breaks = scales::pretty_breaks(n = 5),
+    labels = scales::number_format(accuracy = 0.01)) +
+  coord_sf(expand = FALSE) +
+  labs(x = "", y = "") +
+  ggtitle(
+    "Growth probability") +
+  theme_classic(base_family = "sans") +
+  theme(
+    plot.background = element_rect(fill = "white", color = NA),
+    plot.title = element_text(
+      colour = "gold1",
+      size = 16,
+      face = "bold",
+      hjust = 0.5),
+    plot.subtitle = element_text(
+      colour = "white",
+      size = 11,
+      hjust = 0.5),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    legend.background = element_rect(fill = "white"),
+    legend.key = element_rect(fill = "white"),
+    legend.title = element_text(size = 14),
+    plot.margin = unit(c(1.5, 1.5, 1, 1), "cm"))
+```
+
+![](lecture04-regression_files/figure-html/unnamed-chunk-82-1.png)
+
+#### 9. Exporting Results
+
+**Saving the interpolation surface**
+
+The kriging surface is saved as a GeoTIFF raster
+
+``` r
+setwd("C:/Data kansio")
+write_stars(k, "interpolointipinta.tif")
+```
+
+**Aggregating predictions by municipalities**
+
+We compute the mean predicted value within each municipality.
+
+``` r
+k2 <- aggregate(k, municipalities, FUN = mean) %>%
+  st_as_sf()
+```
+
+``` r
+st_write(k2, "test_keh2.shp")
+```
+
+**Joining results back to municipality data**
+
+``` r
+t <- st_join(municipalities, k2, join = st_equals, left = TRUE)
+t2 <- t[, c(2, 3, 70, 71)]
+```
+
+``` r
+st_write(t2, "test_keh2.shp")
+```
+
+#### 10. Summary
+
+In this exercise we:
+
+- explored spatial dependence using variograms,
+- fitted a theoretical variogram model,
+- performed ordinary kriging on point data, and
+- aggregated and exported spatial predictions.
+
+These steps form a standard workflow for geostatistical interpolation in
+R.
