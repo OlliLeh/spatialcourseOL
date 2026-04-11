@@ -62,7 +62,1355 @@ Lehtonen</h4>
 
     
     
-
+<div class="section level2">
+<h2 id="regression-analysis">Regression analysis<a class="anchor" aria-label="anchor" href="#regression-analysis"></a>
+</h2>
+<p>Let’s assume that we want to model the response Y in terms of three
+predictors; X1, X2 and X3. One general form for the model would be:</p>
+<p>The multiple linear regression model can be written as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mo>=</mo><msub><mi>β</mi><mn>0</mn></msub><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><msub><mi>X</mi><mn>2</mn></msub><mo>+</mo><msub><mi>β</mi><mn>3</mn></msub><msub><mi>X</mi><mn>3</mn></msub><mo>+</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \varepsilon
+</annotation></semantics></math></p>
+<p>where<br>
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+is the dependent variable<br>
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\beta_0</annotation></semantics></math>
+is the intercept<br>
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><msub><mi>β</mi><mn>2</mn></msub><mo>,</mo><msub><mi>β</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\beta_1, \beta_2, \beta_3</annotation></semantics></math>
+are regression coefficients<br>
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mn>1</mn></msub><mo>,</mo><msub><mi>X</mi><mn>2</mn></msub><mo>,</mo><msub><mi>X</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">X_1, X_2, X_3</annotation></semantics></math>
+are explanatory variables<br>
+-
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ε</mi><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math>
+is the error term</p>
+<div class="section level5">
+<h5 id="estimation-of-the-model">Estimation of the model<a class="anchor" aria-label="anchor" href="#estimation-of-the-model"></a>
+</h5>
+<p>The regression coefficients
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>0</mn></msub><mo>,</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><msub><mi>β</mi><mn>2</mn></msub><mo>,</mo><msub><mi>β</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\beta_0, \beta_1, \beta_2, \beta_3</annotation></semantics></math>
+are usually estimated using ordinary least squares (OLS).</p>
+<p>The idea of OLS is to choose coefficient values that minimize the sum
+of squared residuals:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>−</mo><msub><mover><mi>Y</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">
+\sum_{i=1}^{n} (Y_i - \hat{Y}_i)^2
+</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>Y</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\hat{Y}_i</annotation></semantics></math>
+is the predicted value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+for observation
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>.</p>
+<p>Under standard assumptions, the OLS estimators are unbiased and
+efficient.</p>
+</div>
+<div class="section level5">
+<h5 id="interpretation-of-coefficients">Interpretation of coefficients<a class="anchor" aria-label="anchor" href="#interpretation-of-coefficients"></a>
+</h5>
+<p>Each regression coefficient has a clear interpretation:</p>
+<ul>
+<li><p><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\beta_0</annotation></semantics></math>
+(intercept):</strong><br>
+The expected value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+when all predictors equal zero.</p></li>
+<li><p><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\beta_1</annotation></semantics></math>:</strong>
+The expected change in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+for a one‑unit increase in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mn>1</mn></msub><annotation encoding="application/x-tex">X_1</annotation></semantics></math>,
+holding
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mn>2</mn></msub><annotation encoding="application/x-tex">X_2</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mn>3</mn></msub><annotation encoding="application/x-tex">X_3</annotation></semantics></math>
+constant.</p></li>
+<li><p><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>2</mn></msub><mo>,</mo><msub><mi>β</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\beta_2, \beta_3</annotation></semantics></math>:</strong>
+Interpreted analogously for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mn>2</mn></msub><annotation encoding="application/x-tex">X_2</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mn>3</mn></msub><annotation encoding="application/x-tex">X_3</annotation></semantics></math>.</p></li>
+</ul>
+<p>This <em>“all else equal”</em> interpretation is central to multiple
+regression analysis.</p>
+</div>
+<div class="section level5">
+<h5 id="model-assumptions">Model assumptions<a class="anchor" aria-label="anchor" href="#model-assumptions"></a>
+</h5>
+<p>For the linear regression model to be valid, the following
+assumptions are commonly made:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Linearity</strong><br>
+The relationship between the predictors and the response is
+linear.</p></li>
+<li><p><strong>Independence</strong><br>
+Observations are independent of each other.</p></li>
+<li><p><strong>Homoscedasticity</strong><br>
+The variance of the error term
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ε</mi><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math>
+is constant across observations.</p></li>
+<li><p><strong>Normality of errors</strong><br>
+The error term
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ε</mi><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math>
+is normally distributed (mainly important for inference).</p></li>
+<li><p><strong>No perfect multicollinearity</strong><br>
+Predictors are not perfectly correlated with each other.</p></li>
+</ol>
+<p>Violations of these assumptions can lead to biased estimates or
+invalid inference.</p>
+</div>
+<div class="section level5">
+<h5 id="goodness-of-fit">Goodness of fit<a class="anchor" aria-label="anchor" href="#goodness-of-fit"></a>
+</h5>
+<p>Two commonly used measures are:</p>
+<ul>
+<li><p><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math></strong><br>
+The proportion of variance in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+explained by the model.</p></li>
+<li><p><strong>Adjusted
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math></strong><br>
+Adjusts
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math>
+for the number of predictors and is preferred when comparing
+models.</p></li>
+</ul>
+<p>The coefficient of determination is defined as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>R</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>−</mo><mfrac><mtext mathvariant="normal">Residual Sum of Squares</mtext><mtext mathvariant="normal">Total Sum of Squares</mtext></mfrac></mrow><annotation encoding="application/x-tex">
+R^2 = 1 - \frac{\text{Residual Sum of Squares}}{\text{Total Sum of Squares}}
+</annotation></semantics></math></p>
+</div>
+<div class="section level5">
+<h5 id="extensions">Extensions<a class="anchor" aria-label="anchor" href="#extensions"></a>
+</h5>
+<p>Possible extensions of the basic linear regression framework
+include:</p>
+<ul>
+<li>interaction effects
+(e.g. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mn>1</mn></msub><mo>×</mo><msub><mi>X</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">X_1 \times X_2</annotation></semantics></math>)</li>
+<li>nonlinear terms (e.g. polynomials)</li>
+<li>generalized linear models</li>
+<li>spatial regression models</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="examples-of-regression-models">Examples of regression models<a class="anchor" aria-label="anchor" href="#examples-of-regression-models"></a>
+</h4>
+<div class="section level5">
+<h5 id="faithfull-data">Faithfull data<a class="anchor" aria-label="anchor" href="#faithfull-data"></a>
+</h5>
+<p>Apply the simple linear regression model for the data set faithful,
+and estimate the next eruption duration if the waiting time since the
+last eruption has been 80 minutes.</p>
+<p>Let’s check the dataset:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">?</span><span class="va">faithful</span></span></code></pre></div>
+<p>Then let’s estimate the regression model:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eruption.lm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">eruptions</span> <span class="op">~</span> <span class="va">waiting</span>, data<span class="op">=</span><span class="va">faithful</span><span class="op">)</span> </span></code></pre></div>
+<p>Then we extract the parameters of the estimated regression equation
+with the coefficients function.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">coeffs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coefficients</a></span><span class="op">(</span><span class="va">eruption.lm</span><span class="op">)</span>; <span class="va">coeffs</span> </span></code></pre></div>
+<pre><code><span><span class="co">## (Intercept)     waiting </span></span>
+<span><span class="co">## -1.87401599  0.07562795</span></span></code></pre>
+<p>We now fit the eruption duration using the estimated regression
+equation.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">waiting</span> <span class="op">=</span> <span class="fl">80</span>           <span class="co"># the waiting time </span></span>
+<span><span class="va">duration</span> <span class="op">=</span> <span class="va">coeffs</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">coeffs</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="va">waiting</span> </span>
+<span><span class="va">duration</span> </span></code></pre></div>
+<pre><code><span><span class="co">## (Intercept) </span></span>
+<span><span class="co">##     4.17622</span></span></code></pre>
+<p>Based on the simple linear regression model, if the waiting time
+since the last eruption has been 80 minutes, we expect the next one to
+last 4.1762 minutes.</p>
+</div>
+<div class="section level5">
+<h5 id="gala-data">Gala data<a class="anchor" aria-label="anchor" href="#gala-data"></a>
+</h5>
+<p>Let’s look an example concerning the number of species of tortoise on
+the various Galapagos Islands. There are 30 cases (Islands) and seven
+variables in the dataset. We start by reading the data in to R and
+examining it.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/julianfaraway/faraway" class="external-link">faraway</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gala</span><span class="op">)</span></span>
+<span><span class="va">gala</span></span></code></pre></div>
+<pre><code><span><span class="co">##              Species Endemics    Area Elevation Nearest Scruz Adjacent</span></span>
+<span><span class="co">## Baltra            58       23   25.09       346     0.6   0.6     1.84</span></span>
+<span><span class="co">## Bartolome         31       21    1.24       109     0.6  26.3   572.33</span></span>
+<span><span class="co">## Caldwell           3        3    0.21       114     2.8  58.7     0.78</span></span>
+<span><span class="co">## Champion          25        9    0.10        46     1.9  47.4     0.18</span></span>
+<span><span class="co">## Coamano            2        1    0.05        77     1.9   1.9   903.82</span></span>
+<span><span class="co">## Daphne.Major      18       11    0.34       119     8.0   8.0     1.84</span></span>
+<span><span class="co">## Daphne.Minor      24        0    0.08        93     6.0  12.0     0.34</span></span>
+<span><span class="co">## Darwin            10        7    2.33       168    34.1 290.2     2.85</span></span>
+<span><span class="co">## Eden               8        4    0.03        71     0.4   0.4    17.95</span></span>
+<span><span class="co">## Enderby            2        2    0.18       112     2.6  50.2     0.10</span></span>
+<span><span class="co">## Espanola          97       26   58.27       198     1.1  88.3     0.57</span></span>
+<span><span class="co">## Fernandina        93       35  634.49      1494     4.3  95.3  4669.32</span></span>
+<span><span class="co">## Gardner1          58       17    0.57        49     1.1  93.1    58.27</span></span>
+<span><span class="co">## Gardner2           5        4    0.78       227     4.6  62.2     0.21</span></span>
+<span><span class="co">## Genovesa          40       19   17.35        76    47.4  92.2   129.49</span></span>
+<span><span class="co">## Isabela          347       89 4669.32      1707     0.7  28.1   634.49</span></span>
+<span><span class="co">## Marchena          51       23  129.49       343    29.1  85.9    59.56</span></span>
+<span><span class="co">## Onslow             2        2    0.01        25     3.3  45.9     0.10</span></span>
+<span><span class="co">## Pinta            104       37   59.56       777    29.1 119.6   129.49</span></span>
+<span><span class="co">## Pinzon           108       33   17.95       458    10.7  10.7     0.03</span></span>
+<span><span class="co">## Las.Plazas        12        9    0.23        94     0.5   0.6    25.09</span></span>
+<span><span class="co">## Rabida            70       30    4.89       367     4.4  24.4   572.33</span></span>
+<span><span class="co">## SanCristobal     280       65  551.62       716    45.2  66.6     0.57</span></span>
+<span><span class="co">## SanSalvador      237       81  572.33       906     0.2  19.8     4.89</span></span>
+<span><span class="co">## SantaCruz        444       95  903.82       864     0.6   0.0     0.52</span></span>
+<span><span class="co">## SantaFe           62       28   24.08       259    16.5  16.5     0.52</span></span>
+<span><span class="co">## SantaMaria       285       73  170.92       640     2.6  49.2     0.10</span></span>
+<span><span class="co">## Seymour           44       16    1.84       147     0.6   9.6    25.09</span></span>
+<span><span class="co">## Tortuga           16        8    1.24       186     6.8  50.9    17.95</span></span>
+<span><span class="co">## Wolf              21       12    2.85       253    34.1 254.7     2.33</span></span></code></pre>
+<p>Let’s see background of the data:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">?</span><span class="va">gala</span></span></code></pre></div>
+<p>Fitting a linear model in R is done using the lm( ) command. Notice
+the syntax for specifying the predictors in the model. By typing,</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mdl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">Area</span> <span class="op">+</span> <span class="va">Elevation</span> <span class="op">+</span> <span class="va">Nearest</span> <span class="op">+</span> <span class="va">Scruz</span><span class="op">+</span> <span class="va">Adjacent</span>, data<span class="op">=</span><span class="va">gala</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mdl</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## lm(formula = Species ~ Area + Elevation + Nearest + Scruz + Adjacent, </span></span>
+<span><span class="co">##     data = gala)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residuals:</span></span>
+<span><span class="co">##      Min       1Q   Median       3Q      Max </span></span>
+<span><span class="co">## -111.679  -34.898   -7.862   33.460  182.584 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">##              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept)  7.068221  19.154198   0.369 0.715351    </span></span>
+<span><span class="co">## Area        -0.023938   0.022422  -1.068 0.296318    </span></span>
+<span><span class="co">## Elevation    0.319465   0.053663   5.953 3.82e-06 ***</span></span>
+<span><span class="co">## Nearest      0.009144   1.054136   0.009 0.993151    </span></span>
+<span><span class="co">## Scruz       -0.240524   0.215402  -1.117 0.275208    </span></span>
+<span><span class="co">## Adjacent    -0.074805   0.017700  -4.226 0.000297 ***</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residual standard error: 60.98 on 24 degrees of freedom</span></span>
+<span><span class="co">## Multiple R-squared:  0.7658, Adjusted R-squared:  0.7171 </span></span>
+<span><span class="co">## F-statistic:  15.7 on 5 and 24 DF,  p-value: 6.838e-07</span></span></code></pre>
+<p>We can identify several useful quantities in this output. Other
+statistical packages tend to produce output quite similar to this. One
+useful feature of R is that it is possible to directly calculate
+quantities of interest.</p>
+<p>First we make the X-matrix:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="op">~</span><span class="va">Area</span> <span class="op">+</span> <span class="va">Elevation</span> <span class="op">+</span> <span class="va">Nearest</span> <span class="op">+</span> <span class="va">Scruz</span> <span class="op">+</span> <span class="va">Adjacent</span>, <span class="va">gala</span><span class="op">)</span></span></code></pre></div>
+<p>and here is the response y:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">gala</span><span class="op">$</span><span class="va">Species</span></span></code></pre></div>
+<p>Now let’s construct (XTX)-1. t ( ) does transpose and %*% does matrix
+multiplication. solve (A) computes A-1 while solve(A,b) solves Ax=b:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">xtxi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/transpose.html" class="external-link">t</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p>We can get B directly, using (XTX)-1XTy:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">xtxi</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rspatial.github.io/terra/reference/transpose.html" class="external-link">t</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">y</span></span></code></pre></div>
+<pre><code><span><span class="co">##                     [,1]</span></span>
+<span><span class="co">## (Intercept)  7.068220709</span></span>
+<span><span class="co">## Area        -0.023938338</span></span>
+<span><span class="co">## Elevation    0.319464761</span></span>
+<span><span class="co">## Nearest      0.009143961</span></span>
+<span><span class="co">## Scruz       -0.240524230</span></span>
+<span><span class="co">## Adjacent    -0.074804832</span></span></code></pre>
+<p>This is a very bad way to compute B because it is inefficient and can
+be very inaccurate when the predictors are strongly correlated. A better
+way is:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">x</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                     [,1]</span></span>
+<span><span class="co">## (Intercept)  7.068220709</span></span>
+<span><span class="co">## Area        -0.023938338</span></span>
+<span><span class="co">## Elevation    0.319464761</span></span>
+<span><span class="co">## Nearest      0.009143961</span></span>
+<span><span class="co">## Scruz       -0.240524230</span></span>
+<span><span class="co">## Adjacent    -0.074804832</span></span></code></pre>
+<p>where crosspod(x,y) computes xTy.</p>
+<p>We can extract the regression quantities we need from the model
+object. Commonly used are residuals (), fitted (), deviance () which
+gives the RSS, df.residual () which gives the degrees of freedom and
+coef () which gives the . You can also extract other needed quantities
+by examining the model object and its summary:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">mdl</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] "coefficients"  "residuals"     "effects"       "rank"         </span></span>
+<span><span class="co">##  [5] "fitted.values" "assign"        "qr"            "df.residual"  </span></span>
+<span><span class="co">##  [9] "xlevels"       "call"          "terms"         "model"</span></span></code></pre>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mdls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mdl</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">mdls</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] "call"          "terms"         "residuals"     "coefficients" </span></span>
+<span><span class="co">##  [5] "aliased"       "sigma"         "df"            "r.squared"    </span></span>
+<span><span class="co">##  [9] "adj.r.squared" "fstatistic"    "cov.unscaled"</span></span></code></pre>
+<p>We can estimate using the formula , where n-p is the degrees of
+freedom. We can also extract it from the summary:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deviance.html" class="external-link">deviance</a></span><span class="op">(</span><span class="va">mdl</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html" class="external-link">df.residual</a></span><span class="op">(</span><span class="va">mdl</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 60.97519</span></span></code></pre>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mdls</span><span class="op">$</span><span class="va">sigma</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 60.97519</span></span></code></pre>
+<p>We can also extract (XTX)-1 and use it to compute the standard errors
+for the coefficients:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">xtxi</span> <span class="op">&lt;-</span> <span class="va">mdls</span><span class="op">$</span><span class="va">cov.unscaled</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">xtxi</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fl">60.975</span></span></code></pre></div>
+<pre><code><span><span class="co">## (Intercept)        Area   Elevation     Nearest       Scruz    Adjacent </span></span>
+<span><span class="co">## 19.15413865  0.02242228  0.05366264  1.05413269  0.21540158  0.01770013</span></span></code></pre>
+<p>or get them from the summary object:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mdls</span><span class="op">$</span><span class="va">coef</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## (Intercept)        Area   Elevation     Nearest       Scruz    Adjacent </span></span>
+<span><span class="co">## 19.15419782  0.02242235  0.05366280  1.05413595  0.21540225  0.01770019</span></span></code></pre>
+<p>Finally, we may compute or extract R2:</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/stats/deviance.html" class="external-link">deviance</a></span><span class="op">(</span><span class="va">mdl</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">y</span><span class="op">-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.7658469</span></span></code></pre>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mdls</span><span class="op">$</span><span class="va">r.squared</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.7658469</span></span></code></pre>
+</div>
+</div>
+<div class="section level4">
+<h4 id="hypothesis-testing-for-comparing-regression-models">Hypothesis Testing for Comparing Regression Models<a class="anchor" aria-label="anchor" href="#hypothesis-testing-for-comparing-regression-models"></a>
+</h4>
+<p>In regression analysis, we often want to <strong>test whether a
+subset of predictors is statistically relevant</strong>. This can be
+formulated as a hypothesis test comparing:</p>
+<ul>
+<li>a <strong>full model</strong> (with all predictors), and<br>
+</li>
+<li>a <strong>restricted (nested) model</strong> where some coefficients
+are set to zero.</li>
+</ul>
+<p>We use <strong>F-tests</strong> to compare these models.</p>
+<div class="section level5">
+<h5 id="the-data-and-model">The data and model<a class="anchor" aria-label="anchor" href="#the-data-and-model"></a>
+</h5>
+<p>We use the built-in <code>savings</code> dataset, which contains
+information on savings rates and several demographic and economic
+predictors.</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">savings</span><span class="op">)</span></span></code></pre></div>
+<p>The response variable is:</p>
+<ul>
+<li>sr: aggregate personal saving rate</li>
+</ul>
+<p>The predictors are:</p>
+<ul>
+<li>pop15: percentage of population under 15</li>
+<li>pop75: percentage of population over 75</li>
+<li>dpi: real per-capita disposable income</li>
+<li>ddpi: growth rate of disposable income</li>
+</ul>
+<p>The Full Regression Model:</p>
+<p>We begin by fitting the full model, which includes all
+predictors.</p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">sr</span> <span class="op">~</span> <span class="va">pop15</span> <span class="op">+</span> <span class="va">pop75</span> <span class="op">+</span> <span class="va">dpi</span> <span class="op">+</span> <span class="va">ddpi</span>, <span class="va">savings</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## lm(formula = sr ~ pop15 + pop75 + dpi + ddpi, data = savings)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residuals:</span></span>
+<span><span class="co">##     Min      1Q  Median      3Q     Max </span></span>
+<span><span class="co">## -8.2422 -2.6857 -0.2488  2.4280  9.7509 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">##               Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept) 28.5660865  7.3545161   3.884 0.000334 ***</span></span>
+<span><span class="co">## pop15       -0.4611931  0.1446422  -3.189 0.002603 ** </span></span>
+<span><span class="co">## pop75       -1.6914977  1.0835989  -1.561 0.125530    </span></span>
+<span><span class="co">## dpi         -0.0003369  0.0009311  -0.362 0.719173    </span></span>
+<span><span class="co">## ddpi         0.4096949  0.1961971   2.088 0.042471 *  </span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residual standard error: 3.803 on 45 degrees of freedom</span></span>
+<span><span class="co">## Multiple R-squared:  0.3385, Adjusted R-squared:  0.2797 </span></span>
+<span><span class="co">## F-statistic: 5.756 on 4 and 45 DF,  p-value: 0.0007904</span></span></code></pre>
+<p>This model estimates the relationship between the savings rate and
+all four explanatory variables.</p>
+</div>
+<div class="section level5">
+<h5 id="testing-overall-model-significance-using-an-f-test">Testing Overall Model Significance Using an F-Test<a class="anchor" aria-label="anchor" href="#testing-overall-model-significance-using-an-f-test"></a>
+</h5>
+<p>Total Sum of Squares (TSS)</p>
+<p>The total variation in the response variable is given by:</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">savings</span><span class="op">$</span><span class="va">sr</span> <span class="op">-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">savings</span><span class="op">$</span><span class="va">sr</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">tss</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 983.6283</span></span></code></pre>
+<p>Residual Sum of Squares (RSS)</p>
+<p>The unexplained variation under the full model is:</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deviance.html" class="external-link">deviance</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
+<span><span class="va">rss</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 650.713</span></span></code></pre>
+<p>Residual Degrees of Freedom</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html" class="external-link">df.residual</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 45</span></span></code></pre>
+<p>Manual F-Statistic Calculation</p>
+<p>The F-statistic is computed as:</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fstat</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="op">(</span><span class="va">tss</span> <span class="op">-</span> <span class="va">rss</span><span class="op">)</span> <span class="op">/</span> <span class="fl">4</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">rss</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html" class="external-link">df.residual</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fstat</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 5.755681</span></span></code></pre>
+<p>P-value for the F-Test</p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html" class="external-link">pf</a></span><span class="op">(</span><span class="va">fstat</span>, <span class="fl">4</span>, <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html" class="external-link">df.residual</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.0007903779</span></span></code></pre>
+<p>A small p-value indicates that at least one predictor is
+statistically significant.</p>
+</div>
+<div class="section level5">
+<h5 id="general-f-test-comparing-nested-models">General F-Test: Comparing Nested Models<a class="anchor" aria-label="anchor" href="#general-f-test-comparing-nested-models"></a>
+</h5>
+<p>Instead of testing against a model with no predictors, we can compare
+two nested regression models.</p>
+<p>Restricted (Null) Model We remove pop15 from the full model:</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">g2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">sr</span> <span class="op">~</span> <span class="va">pop75</span> <span class="op">+</span> <span class="va">dpi</span> <span class="op">+</span> <span class="va">ddpi</span>, <span class="va">savings</span><span class="op">)</span></span></code></pre></div>
+<p>Residual Sum of Squares for the Restricted Model</p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rss2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deviance.html" class="external-link">deviance</a></span><span class="op">(</span><span class="va">g2</span><span class="op">)</span></span>
+<span><span class="va">rss2</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 797.7249</span></span></code></pre>
+<p>F-Statistic for Nested Models</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fstat</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deviance.html" class="external-link">deviance</a></span><span class="op">(</span><span class="va">g2</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deviance.html" class="external-link">deviance</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deviance.html" class="external-link">deviance</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html" class="external-link">df.residual</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fstat</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 10.16659</span></span></code></pre>
+<p>Corresponding P-value</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html" class="external-link">pf</a></span><span class="op">(</span><span class="va">fstat</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html" class="external-link">df.residual</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.002603019</span></span></code></pre>
+</div>
+<div class="section level5">
+<h5 id="using-anova-for-model-comparison">Using anova() for Model Comparison<a class="anchor" aria-label="anchor" href="#using-anova-for-model-comparison"></a>
+</h5>
+<p>A more convenient and standard approach is to use the anova()
+function.</p>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">g2</span>, <span class="va">g</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Analysis of Variance Table</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model 1: sr ~ pop75 + dpi + ddpi</span></span>
+<span><span class="co">## Model 2: sr ~ pop15 + pop75 + dpi + ddpi</span></span>
+<span><span class="co">##   Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)   </span></span>
+<span><span class="co">## 1     46 797.72                                </span></span>
+<span><span class="co">## 2     45 650.71  1    147.01 10.167 0.002603 **</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
+<p>This automatically computes the F-statistic and p-value for comparing
+nested models.</p>
+</div>
+<div class="section level5">
+<h5 id="testing-multiple-coefficient-restrictions">Testing Multiple Coefficient Restrictions<a class="anchor" aria-label="anchor" href="#testing-multiple-coefficient-restrictions"></a>
+</h5>
+<p>We now test whether both pop75 and ddpi can be excluded from the
+model.</p>
+<p>Restricted Model</p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">g3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">sr</span> <span class="op">~</span> <span class="va">pop15</span> <span class="op">+</span> <span class="va">dpi</span>, <span class="va">savings</span><span class="op">)</span></span></code></pre></div>
+<p>Model Comparison</p>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">g3</span>, <span class="va">g</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Analysis of Variance Table</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model 1: sr ~ pop15 + dpi</span></span>
+<span><span class="co">## Model 2: sr ~ pop15 + pop75 + dpi + ddpi</span></span>
+<span><span class="co">##   Res.Df    RSS Df Sum of Sq      F  Pr(&gt;F)  </span></span>
+<span><span class="co">## 1     47 744.12                              </span></span>
+<span><span class="co">## 2     45 650.71  2    93.411 3.2299 0.04889 *</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
+<p><strong>Summary</strong></p>
+<ul>
+<li>F-tests allow us to compare nested regression models</li>
+<li>The test evaluates whether excluded variables significantly improve
+model fit</li>
+<li>For a single restriction, the F-test is equivalent to a t-test</li>
+<li>The anova() function provides a clean and reliable
+implementation</li>
+</ul>
+<p>These tools are essential for principled model selection in
+regression analysis.</p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="variable-selection-in-regression-models">Variable selection in regression models<a class="anchor" aria-label="anchor" href="#variable-selection-in-regression-models"></a>
+</h4>
+<p>In multiple regression analysis, we often face the question of
+<strong>which predictors should be included in the model</strong>.
+Including too many variables may lead to over fitting, while excluding
+relevant predictors can bias results.</p>
+<p>A common approach for variable selection is to use
+<strong>information criteria</strong>, such as the Akaike Information
+Criterion (AIC), which balances model fit and model complexity.</p>
+<div class="section level5">
+<h5 id="variable-selection-using-aic">Variable selection using AIC<a class="anchor" aria-label="anchor" href="#variable-selection-using-aic"></a>
+</h5>
+<p>We illustrate variable selection methods using the built‑in
+<strong>state</strong> dataset.</p>
+<p>First, we construct a data frame containing the variables of interest
+and fit a full regression model including all predictors.</p>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">state</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">statedata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="va">state.x77</span>,</span>
+<span>  row.names <span class="op">=</span> <span class="va">state.abb</span>,</span>
+<span>  check.names <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Life.Exp</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">statedata</span><span class="op">)</span></span></code></pre></div>
+<p>Stepwise variable selection using AIC</p>
+<p>The step() function performs stepwise model selection by sequentially
+adding or removing predictors based on the AIC value.</p>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/step.html" class="external-link">step</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Start:  AIC=-22.18</span></span>
+<span><span class="co">## Life.Exp ~ Population + Income + Illiteracy + Murder + HS.Grad + </span></span>
+<span><span class="co">##     Frost + Area</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##              Df Sum of Sq    RSS     AIC</span></span>
+<span><span class="co">## - Area        1    0.0011 23.298 -24.182</span></span>
+<span><span class="co">## - Income      1    0.0044 23.302 -24.175</span></span>
+<span><span class="co">## - Illiteracy  1    0.0047 23.302 -24.174</span></span>
+<span><span class="co">## &lt;none&gt;                    23.297 -22.185</span></span>
+<span><span class="co">## - Population  1    1.7472 25.044 -20.569</span></span>
+<span><span class="co">## - Frost       1    1.8466 25.144 -20.371</span></span>
+<span><span class="co">## - HS.Grad     1    2.4413 25.738 -19.202</span></span>
+<span><span class="co">## - Murder      1   23.1411 46.438  10.305</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Step:  AIC=-24.18</span></span>
+<span><span class="co">## Life.Exp ~ Population + Income + Illiteracy + Murder + HS.Grad + </span></span>
+<span><span class="co">##     Frost</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##              Df Sum of Sq    RSS     AIC</span></span>
+<span><span class="co">## - Illiteracy  1    0.0038 23.302 -26.174</span></span>
+<span><span class="co">## - Income      1    0.0059 23.304 -26.170</span></span>
+<span><span class="co">## &lt;none&gt;                    23.298 -24.182</span></span>
+<span><span class="co">## - Population  1    1.7599 25.058 -22.541</span></span>
+<span><span class="co">## - Frost       1    2.0488 25.347 -21.968</span></span>
+<span><span class="co">## - HS.Grad     1    2.9804 26.279 -20.163</span></span>
+<span><span class="co">## - Murder      1   26.2721 49.570  11.569</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Step:  AIC=-26.17</span></span>
+<span><span class="co">## Life.Exp ~ Population + Income + Murder + HS.Grad + Frost</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##              Df Sum of Sq    RSS     AIC</span></span>
+<span><span class="co">## - Income      1     0.006 23.308 -28.161</span></span>
+<span><span class="co">## &lt;none&gt;                    23.302 -26.174</span></span>
+<span><span class="co">## - Population  1     1.887 25.189 -24.280</span></span>
+<span><span class="co">## - Frost       1     3.037 26.339 -22.048</span></span>
+<span><span class="co">## - HS.Grad     1     3.495 26.797 -21.187</span></span>
+<span><span class="co">## - Murder      1    34.739 58.041  17.456</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Step:  AIC=-28.16</span></span>
+<span><span class="co">## Life.Exp ~ Population + Murder + HS.Grad + Frost</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##              Df Sum of Sq    RSS     AIC</span></span>
+<span><span class="co">## &lt;none&gt;                    23.308 -28.161</span></span>
+<span><span class="co">## - Population  1     2.064 25.372 -25.920</span></span>
+<span><span class="co">## - Frost       1     3.122 26.430 -23.877</span></span>
+<span><span class="co">## - HS.Grad     1     5.112 28.420 -20.246</span></span>
+<span><span class="co">## - Murder      1    34.816 58.124  15.528</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## lm(formula = Life.Exp ~ Population + Murder + HS.Grad + Frost, </span></span>
+<span><span class="co">##     data = statedata)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">## (Intercept)   Population       Murder      HS.Grad        Frost  </span></span>
+<span><span class="co">##   7.103e+01    5.014e-05   -3.001e-01    4.658e-02   -5.943e-03</span></span></code></pre>
+<p>Interpretation:</p>
+<ul>
+<li>The algorithm searches for a model with lower AIC than the full
+model.</li>
+<li>At each step, predictors are added or removed if doing so improves
+the AIC.</li>
+<li>The final model represents a balance between goodness of fit and
+model simplicity.</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="alternative-approach-stepaic-from-the-mass-package">Alternative approach: stepAIC() from the MASS package<a class="anchor" aria-label="anchor" href="#alternative-approach-stepaic-from-the-mass-package"></a>
+</h5>
+<p>The MASS package provides the stepAIC() function, which allows
+explicit control over the direction of the search.</p>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Attaching package: 'MASS'</span></span></code></pre>
+<pre><code><span><span class="co">## The following object is masked from 'package:dplyr':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     select</span></span></code></pre>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html" class="external-link">stepAIC</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Life.Exp</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">statedata</span><span class="op">)</span>,</span>
+<span>  direction <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Start:  AIC=-22.18</span></span>
+<span><span class="co">## Life.Exp ~ Population + Income + Illiteracy + Murder + HS.Grad + </span></span>
+<span><span class="co">##     Frost + Area</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##              Df Sum of Sq    RSS     AIC</span></span>
+<span><span class="co">## - Area        1    0.0011 23.298 -24.182</span></span>
+<span><span class="co">## - Income      1    0.0044 23.302 -24.175</span></span>
+<span><span class="co">## - Illiteracy  1    0.0047 23.302 -24.174</span></span>
+<span><span class="co">## &lt;none&gt;                    23.297 -22.185</span></span>
+<span><span class="co">## - Population  1    1.7472 25.044 -20.569</span></span>
+<span><span class="co">## - Frost       1    1.8466 25.144 -20.371</span></span>
+<span><span class="co">## - HS.Grad     1    2.4413 25.738 -19.202</span></span>
+<span><span class="co">## - Murder      1   23.1411 46.438  10.305</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Step:  AIC=-24.18</span></span>
+<span><span class="co">## Life.Exp ~ Population + Income + Illiteracy + Murder + HS.Grad + </span></span>
+<span><span class="co">##     Frost</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##              Df Sum of Sq    RSS     AIC</span></span>
+<span><span class="co">## - Illiteracy  1    0.0038 23.302 -26.174</span></span>
+<span><span class="co">## - Income      1    0.0059 23.304 -26.170</span></span>
+<span><span class="co">## &lt;none&gt;                    23.298 -24.182</span></span>
+<span><span class="co">## - Population  1    1.7599 25.058 -22.541</span></span>
+<span><span class="co">## + Area        1    0.0011 23.297 -22.185</span></span>
+<span><span class="co">## - Frost       1    2.0488 25.347 -21.968</span></span>
+<span><span class="co">## - HS.Grad     1    2.9804 26.279 -20.163</span></span>
+<span><span class="co">## - Murder      1   26.2721 49.570  11.569</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Step:  AIC=-26.17</span></span>
+<span><span class="co">## Life.Exp ~ Population + Income + Murder + HS.Grad + Frost</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##              Df Sum of Sq    RSS     AIC</span></span>
+<span><span class="co">## - Income      1     0.006 23.308 -28.161</span></span>
+<span><span class="co">## &lt;none&gt;                    23.302 -26.174</span></span>
+<span><span class="co">## - Population  1     1.887 25.189 -24.280</span></span>
+<span><span class="co">## + Illiteracy  1     0.004 23.298 -24.182</span></span>
+<span><span class="co">## + Area        1     0.000 23.302 -24.174</span></span>
+<span><span class="co">## - Frost       1     3.037 26.339 -22.048</span></span>
+<span><span class="co">## - HS.Grad     1     3.495 26.797 -21.187</span></span>
+<span><span class="co">## - Murder      1    34.739 58.041  17.456</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Step:  AIC=-28.16</span></span>
+<span><span class="co">## Life.Exp ~ Population + Murder + HS.Grad + Frost</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##              Df Sum of Sq    RSS     AIC</span></span>
+<span><span class="co">## &lt;none&gt;                    23.308 -28.161</span></span>
+<span><span class="co">## + Income      1     0.006 23.302 -26.174</span></span>
+<span><span class="co">## + Illiteracy  1     0.004 23.304 -26.170</span></span>
+<span><span class="co">## + Area        1     0.001 23.307 -26.163</span></span>
+<span><span class="co">## - Population  1     2.064 25.372 -25.920</span></span>
+<span><span class="co">## - Frost       1     3.122 26.430 -23.877</span></span>
+<span><span class="co">## - HS.Grad     1     5.112 28.420 -20.246</span></span>
+<span><span class="co">## - Murder      1    34.816 58.124  15.528</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## lm(formula = Life.Exp ~ Population + Murder + HS.Grad + Frost, </span></span>
+<span><span class="co">##     data = statedata)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">## (Intercept)   Population       Murder      HS.Grad        Frost  </span></span>
+<span><span class="co">##   7.103e+01    5.014e-05   -3.001e-01    4.658e-02   -5.943e-03</span></span></code></pre>
+<p>Interpretation:</p>
+<ul>
+<li>“both” allows both forward selection and backward elimination.</li>
+<li>Results are often comparable to step() but offer more
+flexibility.</li>
+<li>Smaller AIC values indicate preferred models.</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="best-subset-selection-using-the-leaps-package">Best subset selection using the leaps package<a class="anchor" aria-label="anchor" href="#best-subset-selection-using-the-leaps-package"></a>
+</h5>
+<p>Another approach to variable selection is best subset selection,
+which evaluates combinations of predictors rather than following a
+stepwise path.</p>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">leaps</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">statedata</span><span class="op">$</span><span class="va">Life.Exp</span></span>
+<span></span>
+<span><span class="va">g_leaps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/leaps/man/leaps.html" class="external-link">leaps</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></code></pre></div>
+<p>This method examines models with different numbers of predictors to
+identify those with optimal performance according to specific
+criteria.</p>
+<p><strong>Model comparison using Mallows’ Cp</strong></p>
+<p>Mallows’
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>p</mi></msub><annotation encoding="application/x-tex">C_p</annotation></semantics></math>
+statistic is commonly used to assess model adequacy and complexity.</p>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/julianfaraway/faraway" class="external-link">faraway</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/faraway/man/Cpplot.html" class="external-link">Cpplot</a></span><span class="op">(</span><span class="va">g_leaps</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture04-regression_files/figure-html/unnamed-chunk-36-1.png" class="r-plt" alt="" width="700">
+Interpretation:</p>
+<ul>
+<li>Models with low
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>p</mi></msub><annotation encoding="application/x-tex">C_p</annotation></semantics></math>
+values are preferred.</li>
+<li>A good model typically has
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>p</mi></msub><annotation encoding="application/x-tex">C_p</annotation></semantics></math>
+close to the number of predictors plus the intercept.</li>
+<li>This plot helps identify parsimonious models with strong explanatory
+power.</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h5>
+<p>Different variable selection techniques may lead to different models.
+In practice:</p>
+<ul>
+<li>Stepwise methods are computationally efficient but may miss optimal
+models.</li>
+<li>Best subset selection provides a broader comparison but can be
+computationally expensive.</li>
+<li>Information criteria such as AIC help balance model fit and
+complexity.</li>
+</ul>
+<p>Variable selection should always be guided by statistical reasoning,
+theoretical understanding, and substantive knowledge, not automatic
+procedures alone.</p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="regression-diagnostic">Regression diagnostic<a class="anchor" aria-label="anchor" href="#regression-diagnostic"></a>
+</h4>
+<p>Regression diagnostics are used to evaluate whether the assumptions
+of the linear regression model are reasonably satisfied and to identify
+potentially influential observations.</p>
+<p>In this section, we illustrate regression diagnostics using an
+example dataset.</p>
+<div class="section level5">
+<h5 id="diagnostics-for-a-multiple-linear-regression-model">Diagnostics for a multiple linear regression model<a class="anchor" aria-label="anchor" href="#diagnostics-for-a-multiple-linear-regression-model"></a>
+</h5>
+<p>We use the <strong>savings</strong> dataset from the <em>faraway</em>
+package. First, we fit a multiple linear regression model and then
+inspect standard diagnostic plots.</p>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/julianfaraway/faraway" class="external-link">faraway</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">savings</span><span class="op">)</span></span>
+<span><span class="op">?</span><span class="va">savings</span></span>
+<span></span>
+<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">sr</span> <span class="op">~</span> <span class="va">pop15</span> <span class="op">+</span> <span class="va">pop75</span> <span class="op">+</span> <span class="va">dpi</span> <span class="op">+</span> <span class="va">ddpi</span>, data <span class="op">=</span> <span class="va">savings</span><span class="op">)</span></span></code></pre></div>
+<p>R automatically produces four standard diagnostic plots for a linear
+regression model using the plot() function. These plots help assess
+model assumptions and identify problematic observations.</p>
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture04-regression_files/figure-html/unnamed-chunk-38-1.png" class="r-plt" alt="" width="700"></p>
+<p><strong>Residuals vs. Fitted values</strong> This plot examines
+whether the relationship between predictors and the response is
+approximately linear. Interpretation:</p>
+<ul>
+<li>It is desirable to see residuals evenly scattered around a
+horizontal line at zero.</li>
+<li>Systematic patterns (curvature or funnel shapes) may indicate
+nonlinearity or heteroscedasticity.</li>
+</ul>
+<p><strong>Normal Q–Q plot</strong> This plot assesses whether the
+residuals are approximately normally distributed. Interpretation:</p>
+<ul>
+<li>If residuals follow the dashed reference line closely, the normality
+assumption is reasonable.</li>
+<li>Strong deviations from the line suggest departures from
+normality.</li>
+</ul>
+<p><strong>Scale–Location plot</strong> Also called the Spread–Location
+plot, this diagnostic evaluates the assumption of constant variance
+(homoscedasticity). Interpretation:</p>
+<ul>
+<li>A roughly horizontal line with evenly spread points is
+desirable.</li>
+<li>Increasing or decreasing spread suggests heteroscedasticity.</li>
+</ul>
+<p><strong>Residuals vs. Leverage</strong> This plot identifies
+observations that may have a disproportionate influence on the fitted
+model. Interpretation:</p>
+<ul>
+<li>Observations with high leverage and large residuals are potentially
+influential.</li>
+<li>Points lying outside the Cook’s distance contours may substantially
+affect model estimates.</li>
+</ul>
+<p><strong>Summary</strong> Diagnostic plots provide essential insight
+into:</p>
+<ul>
+<li>linearity</li>
+<li>normality of residuals</li>
+<li>constant variance</li>
+<li>influence of individual observations</li>
+</ul>
+<p>If serious violations are detected, remedial measures such as
+transforming variables, adding nonlinear terms, or using alternative
+models should be considered.</p>
+</div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="regression-analysis-and-open-postcode-area-data">Regression analysis and open postcode area data<a class="anchor" aria-label="anchor" href="#regression-analysis-and-open-postcode-area-data"></a>
+</h2>
+<p>The Paavo service contains data by postal code area on the population
+structure, education, income, housing, workplaces, households’ life
+stage and main activities of the inhabitants.</p>
+<p>The database contains data by postal code area on the population
+structure, education, income, housing, workplaces, households’ life
+stage and main activities of the inhabitants.</p>
+<p>You can use the data in decision-making and planning or learn more
+about your area of residence. Paavo offers information on the allocation
+of marketplaces, marketing planning, research and regional studies and
+plans.</p>
+<p>You can find more information about PAAVO from here: <a href="https://stat.fi/en/services/statistical-data-services/statistical-databases/paavo" class="external-link uri">https://stat.fi/en/services/statistical-data-services/statistical-databases/paavo</a></p>
+<p><strong>Objective of the Exercise</strong> In this lecture, we
+demonstrate how to:</p>
+<ul>
+<li>Download spatial postcode-level data from Statistics Finland’s WFS
+service</li>
+<li>Combine data from two different years</li>
+<li>Compute changes in employment at the postcode area level</li>
+<li>Classify areas by employment growth intensity</li>
+<li>Summarize employment concentrations in growth areas</li>
+</ul>
+<p>The workflow combines spatial data handling, data merging, and basic
+regional analysis.</p>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"purrr"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"sf"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tmap"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"httr"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"data.table"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ows4R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#options(pckgType="binary")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/" class="external-link">httr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/eblondel/ows4R" class="external-link">ows4R</a></span><span class="op">)</span></span></code></pre></div>
+<div class="section level5">
+<h5 id="downloading-postcode-area-data-year-2022">Downloading Postcode Area Data (Year 2022)<a class="anchor" aria-label="anchor" href="#downloading-postcode-area-data-year-2022"></a>
+</h5>
+<p>We begin by downloading postcode area data using a Web Feature
+Service (WFS) query.</p>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>hostname <span class="op">=</span><span class="st">"geo.stat.fi/geoserver/postialue/wfs"</span>,</span>
+<span>           scheme <span class="op">=</span><span class="st">"https"</span>,</span>
+<span>           query <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>service <span class="op">=</span><span class="st">"WFS"</span>,</span>
+<span>                       version <span class="op">=</span><span class="st">"2.0.0"</span>,</span>
+<span>                       request <span class="op">=</span><span class="st">"GetFeature"</span>,</span>
+<span>                       typename <span class="op">=</span><span class="st">"postialue:pno_tilasto_2025"</span>,</span>
+<span>                       outputFormat <span class="op">=</span><span class="st">"json"</span><span class="op">)</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/setattr.html" class="external-link">setattr</a></span><span class="op">(</span><span class="st">"class"</span>,<span class="st">"url"</span><span class="op">)</span></span>
+<span><span class="va">request</span> <span class="op">&lt;-</span><span class="fu"><a href="https://httr.r-lib.org/reference/parse_url.html" class="external-link">build_url</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span>
+<span><span class="va">p25</span> <span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Reading layer `OGRGeoJSON' from data source </span></span>
+<span><span class="co">##   `https://geo.stat.fi/geoserver/postialue/wfs/?service=WFS&amp;version=2.0.0&amp;request=GetFeature&amp;typename=postialue%3Apno_tilasto_2025&amp;outputFormat=json' </span></span>
+<span><span class="co">##   using driver `GeoJSON'</span></span>
+<span><span class="co">## Simple feature collection with 3026 features and 113 fields</span></span>
+<span><span class="co">## Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">## Dimension:     XY</span></span>
+<span><span class="co">## Bounding box:  xmin: 83748.43 ymin: 6629044 xmax: 732907.7 ymax: 7776450</span></span>
+<span><span class="co">## Projected CRS: ETRS89 / TM35FIN(E,N)</span></span></code></pre>
+<p>This produces an sf object containing postcode area geometries and
+associated attributes, including the number of jobs.</p>
+</div>
+<div class="section level5">
+<h5 id="downloading-corresponding-data-for-year-2016">Downloading Corresponding Data for Year 2016<a class="anchor" aria-label="anchor" href="#downloading-corresponding-data-for-year-2016"></a>
+</h5>
+<p>We repeat the same procedure for the year 2016.</p>
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>hostname <span class="op">=</span><span class="st">"geo.stat.fi/geoserver/postialue/wfs"</span>,</span>
+<span>           scheme <span class="op">=</span><span class="st">"https"</span>,</span>
+<span>           query <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>service <span class="op">=</span><span class="st">"WFS"</span>,</span>
+<span>                       version <span class="op">=</span><span class="st">"2.0.0"</span>,</span>
+<span>                       request <span class="op">=</span><span class="st">"GetFeature"</span>,</span>
+<span>                       typename <span class="op">=</span><span class="st">"postialue:pno_tilasto_2016"</span>,</span>
+<span>                       outputFormat <span class="op">=</span><span class="st">"json"</span><span class="op">)</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/setattr.html" class="external-link">setattr</a></span><span class="op">(</span><span class="st">"class"</span>,<span class="st">"url"</span><span class="op">)</span></span>
+<span><span class="va">request</span> <span class="op">&lt;-</span><span class="fu"><a href="https://httr.r-lib.org/reference/parse_url.html" class="external-link">build_url</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span>
+<span><span class="va">p16</span> <span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Reading layer `OGRGeoJSON' from data source </span></span>
+<span><span class="co">##   `https://geo.stat.fi/geoserver/postialue/wfs/?service=WFS&amp;version=2.0.0&amp;request=GetFeature&amp;typename=postialue%3Apno_tilasto_2016&amp;outputFormat=json' </span></span>
+<span><span class="co">##   using driver `GeoJSON'</span></span>
+<span><span class="co">## Simple feature collection with 3036 features and 113 fields</span></span>
+<span><span class="co">## Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">## Dimension:     XY</span></span>
+<span><span class="co">## Bounding box:  xmin: 83748.43 ymin: 6629044 xmax: 732907.7 ymax: 7776450</span></span>
+<span><span class="co">## Projected CRS: ETRS89 / TM35FIN(E,N)</span></span></code></pre>
+</div>
+<div class="section level5">
+<h5 id="inspecting-the-data-structure">Inspecting the Data Structure<a class="anchor" aria-label="anchor" href="#inspecting-the-data-structure"></a>
+</h5>
+<p>To understand the available variables, we list the column names.</p>
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">p16</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   [1] "id"         "gid"        "posti_alue" "nimi"       "namn"      </span></span>
+<span><span class="co">##   [6] "euref_x"    "euref_y"    "pinta_ala"  "vuosi"      "kunta"     </span></span>
+<span><span class="co">##  [11] "he_vakiy"   "he_naiset"  "he_miehet"  "he_kika"    "he_0_2"    </span></span>
+<span><span class="co">##  [16] "he_3_6"     "he_7_12"    "he_13_15"   "he_16_17"   "he_18_19"  </span></span>
+<span><span class="co">##  [21] "he_20_24"   "he_25_29"   "he_30_34"   "he_35_39"   "he_40_44"  </span></span>
+<span><span class="co">##  [26] "he_45_49"   "he_50_54"   "he_55_59"   "he_60_64"   "he_65_69"  </span></span>
+<span><span class="co">##  [31] "he_70_74"   "he_75_79"   "he_80_84"   "he_85_"     "ko_ika18y" </span></span>
+<span><span class="co">##  [36] "ko_perus"   "ko_koul"    "ko_yliop"   "ko_ammat"   "ko_al_kork"</span></span>
+<span><span class="co">##  [41] "ko_yl_kork" "hr_tuy"     "hr_ktu"     "hr_mtu"     "hr_pi_tul" </span></span>
+<span><span class="co">##  [46] "hr_ke_tul"  "hr_hy_tul"  "hr_ovy"     "te_taly"    "te_takk"   </span></span>
+<span><span class="co">##  [51] "te_as_valj" "te_nuor"    "te_eil_np"  "te_laps"    "te_plap"   </span></span>
+<span><span class="co">##  [56] "te_aklap"   "te_klap"    "te_teini"   "te_aik"     "te_elak"   </span></span>
+<span><span class="co">##  [61] "te_omis_as" "te_vuok_as" "te_muu_as"  "tr_kuty"    "tr_ktu"    </span></span>
+<span><span class="co">##  [66] "tr_mtu"     "tr_pi_tul"  "tr_ke_tul"  "tr_hy_tul"  "tr_ovy"    </span></span>
+<span><span class="co">##  [71] "ra_ke"      "ra_raky"    "ra_muut"    "ra_asrak"   "ra_asunn"  </span></span>
+<span><span class="co">##  [76] "ra_as_kpa"  "ra_pt_as"   "ra_kt_as"   "tp_tyopy"   "tp_alku_a" </span></span>
+<span><span class="co">##  [81] "tp_jalo_bf" "tp_palv_gu" "tp_a_maat"  "tp_b_kaiv"  "tp_c_teol" </span></span>
+<span><span class="co">##  [86] "tp_d_ener"  "tp_e_vesi"  "tp_f_rake"  "tp_g_kaup"  "tp_h_kulj" </span></span>
+<span><span class="co">##  [91] "tp_i_majo"  "tp_j_info"  "tp_k_raho"  "tp_l_kiin"  "tp_m_erik" </span></span>
+<span><span class="co">##  [96] "tp_n_hall"  "tp_o_julk"  "tp_p_koul"  "tp_q_terv"  "tp_r_taid" </span></span>
+<span><span class="co">## [101] "tp_s_muup"  "tp_t_koti"  "tp_u_kans"  "tp_x_tunt"  "pt_vakiy"  </span></span>
+<span><span class="co">## [106] "pt_tyovy"   "pt_tyoll"   "pt_tyott"   "pt_tyovu"   "pt_0_14"   </span></span>
+<span><span class="co">## [111] "pt_opisk"   "pt_elakel"  "pt_muut"    "geometry"</span></span></code></pre>
+</div>
+<div class="section level5">
+<h5 id="extracting-relevant-variables-2016-data">Extracting Relevant Variables (2016 Data)<a class="anchor" aria-label="anchor" href="#extracting-relevant-variables-2016-data"></a>
+</h5>
+<p>We extract:</p>
+<ul>
+<li>the postcode area identifier</li>
+<li>the total number of jobs in 2016</li>
+</ul>
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p16data</span><span class="op">&lt;-</span><span class="va">p16</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">79</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">p16data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">p16data</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">p16data</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"posti_alue"</span>,<span class="st">"tyopy16"</span><span class="op">)</span> <span class="co">#postcode &amp; total number of jobs</span></span></code></pre></div>
+<ul>
+<li>posti_alue: postcode area</li>
+<li>tyopy16: total number of jobs in 2016</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="merging-2016-data-with-2022-spatial-data">Merging 2016 Data with 2022 Spatial Data<a class="anchor" aria-label="anchor" href="#merging-2016-data-with-2022-spatial-data"></a>
+</h5>
+<p>We merge the 2016 employment data with the 2022 spatial dataset using
+a right join. Before doing so, we convert the ID variables
+(postinumeroalue and posti_alue) to the same data type, because joins
+require matching variable types.</p>
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p25</span><span class="op">$</span><span class="va">postinumeroalue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">p25</span><span class="op">$</span><span class="va">postinumeroalue</span><span class="op">)</span></span>
+<span><span class="va">p16data</span><span class="op">$</span><span class="va">posti_alue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">p16data</span><span class="op">$</span><span class="va">posti_alue</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p25_data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">right_join</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">p16data</span>, y <span class="op">=</span> <span class="va">p25</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"posti_alue"</span> <span class="op">=</span> <span class="st">"postinumeroalue"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Why right_join()?</p>
+<ul>
+<li>Preserves the geometry and structure of the 2022 spatial
+dataset</li>
+<li>Ensures that all 2022 postcode areas remain in the data</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="handling-missing-values">Handling Missing Values<a class="anchor" aria-label="anchor" href="#handling-missing-values"></a>
+</h5>
+<p>If a postcode area has no recorded jobs in 2016, we treat this as
+zero employment.</p>
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></code></pre></div>
+</div>
+<div class="section level5">
+<h5 id="calculating-employment-change-20162022">Calculating Employment Change (2016–2022)<a class="anchor" aria-label="anchor" href="#calculating-employment-change-20162022"></a>
+</h5>
+<p>Absolute Change &amp; Percentage Change</p>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m25_16</span><span class="op">&lt;-</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">-</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m25_16p</span><span class="op">&lt;-</span><span class="op">(</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">-</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span><span class="op">/</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span></code></pre></div>
+<ul>
+<li>tp_tyopy: total number of jobs in 2025</li>
+<li>tp_m25_16: absolute employment change in from 2016 to 2025</li>
+<li>tp_m25_16p: percentage change in from 2016 to 2025</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="classifying-employment-growth-areas">Classifying Employment Growth Areas<a class="anchor" aria-label="anchor" href="#classifying-employment-growth-areas"></a>
+</h5>
+<p>We classify postcode areas into growth categories based on absolute
+job growth.</p>
+<p>Any Positive Growth</p>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m25_16</span><span class="op">&gt;</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##    0    1 </span></span>
+<span><span class="co">##   87 2939</span></span></code></pre>
+<p>Weak Growth (More Than 10 Jobs)</p>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_heikko</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m25_16</span><span class="op">&gt;</span><span class="fl">10</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_heikko</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##    0    1 </span></span>
+<span><span class="co">##  465 2561</span></span></code></pre>
+<p>Moderate Growth (More Than 100 Jobs)</p>
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_kohtal</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m25_16</span><span class="op">&gt;</span><span class="fl">100</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_kohtal</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##    0    1 </span></span>
+<span><span class="co">## 1661 1365</span></span></code></pre>
+<p>Strong Growth (More Than 500 Jobs)</p>
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_voima</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m25_16</span><span class="op">&gt;</span><span class="fl">500</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_voima</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##    0    1 </span></span>
+<span><span class="co">## 2271  755</span></span></code></pre>
+<p>These classifications allow us to define different employment growth
+scenarios at the postcode level.</p>
+<p>Total Number of Jobs (2022)</p>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span> </span></code></pre></div>
+<pre><code><span><span class="co">## [1] 2271080</span></span></code></pre>
+</div>
+<div class="section level5">
+<h5 id="share-of-jobs-located-in-growth-areas">Share of Jobs Located in Growth Areas<a class="anchor" aria-label="anchor" href="#share-of-jobs-located-in-growth-areas"></a>
+</h5>
+<p>We now compute the share of total employment located in areas with
+different growth intensities. The denominator 2,150,025 represents the
+total number of jobs nationally.</p>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">t1</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">p25_data</span>, <span class="va">kasvu_voima</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">t1</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span> </span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.8932697</span></span></code></pre>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">t2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">p25_data</span>, <span class="va">kasvu_kohtal</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">t2</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span> </span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.9629485</span></span></code></pre>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">t3</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">p25_data</span>, <span class="va">kasvu_heikko</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">t3</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span> </span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.9856363</span></span></code></pre>
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">t4</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">p25_data</span>, <span class="va">kasvu</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">t4</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span> </span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.9871004</span></span></code></pre>
+<p>These indicators help quantify how concentrated employment growth is
+geographically.</p>
+</div>
+<div class="section level5">
+<h5 id="modelling-the-development-of-the-number-of-jobs">Modelling the Development of the Number of Jobs<a class="anchor" aria-label="anchor" href="#modelling-the-development-of-the-number-of-jobs"></a>
+</h5>
+<p>In this section, we construct explanatory variables and estimate a
+binary response model for job growth using a binomial (logistic)
+regression.</p>
+<p>We begin by constructing several percentage-based and density
+variables that will be used as regressors in the model.</p>
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Unemployment rate (%)</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyottom</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">pt_tyott</span> <span class="op">/</span> <span class="va">p25_data</span><span class="op">$</span><span class="va">pt_tyoll</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span>
+<span></span>
+<span><span class="co"># Share of highly educated (%)</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">korkk</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">ko_yl_kork</span> <span class="op">/</span> <span class="va">p25_data</span><span class="op">$</span><span class="va">ko_koul</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span>
+<span></span>
+<span><span class="co"># Share of new jobs (%)</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">alkut</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_alku_a</span> <span class="op">/</span> <span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span>
+<span></span>
+<span><span class="co"># Share of retirees (%)</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">elak</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">te_elak</span> <span class="op">/</span> <span class="va">p25_data</span><span class="op">$</span><span class="va">te_taly</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span>
+<span></span>
+<span><span class="co"># Population density (inhabitants per km^2)</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">as_tih</span> <span class="op">&lt;-</span> <span class="va">p25_data</span><span class="op">$</span><span class="va">he_vakiy</span> <span class="op">/</span> <span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">pinta_ala</span> <span class="op">/</span> <span class="fl">1000</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Model Specification</strong></p>
+<p>We estimate a generalized linear model (GLM) with a binomial
+distribution and a logit link function. The dependent variable kasvu
+indicates whether job growth occurred.</p>
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model1</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">kasvu</span><span class="op">~</span><span class="va">tyottom</span><span class="op">+</span><span class="va">korkk</span><span class="op">+</span><span class="va">alkut</span><span class="op">+</span><span class="va">elak</span><span class="op">+</span><span class="va">as_tih</span><span class="op">+</span><span class="va">he_kika</span><span class="op">+</span><span class="va">ra_as_kpa</span>, data<span class="op">=</span><span class="va">p25_data</span>, family<span class="op">=</span><span class="st">"binomial"</span>,na.action <span class="op">=</span> <span class="va">na.exclude</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Model Output</strong></p>
+<p>The table below reports coefficient estimates, standard errors, and
+significance levels.</p>
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## glm(formula = kasvu ~ tyottom + korkk + alkut + elak + as_tih + </span></span>
+<span><span class="co">##     he_kika + ra_as_kpa, family = "binomial", data = p25_data, </span></span>
+<span><span class="co">##     na.action = na.exclude)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">##              Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">## (Intercept)  0.056489   1.732366   0.033 0.973987    </span></span>
+<span><span class="co">## tyottom      0.094105   0.020760   4.533 5.81e-06 ***</span></span>
+<span><span class="co">## korkk       -0.037865   0.011464  -3.303 0.000957 ***</span></span>
+<span><span class="co">## alkut        0.018137   0.009200   1.971 0.048667 *  </span></span>
+<span><span class="co">## elak        -0.004182   0.019561  -0.214 0.830719    </span></span>
+<span><span class="co">## as_tih      -0.140686   0.071850  -1.958 0.050222 .  </span></span>
+<span><span class="co">## he_kika      0.104873   0.033860   3.097 0.001953 ** </span></span>
+<span><span class="co">## ra_as_kpa   -0.006897   0.009889  -0.697 0.485508    </span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## (Dispersion parameter for binomial family taken to be 1)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Null deviance: 389.09  on 2961  degrees of freedom</span></span>
+<span><span class="co">## Residual deviance: 322.43  on 2954  degrees of freedom</span></span>
+<span><span class="co">##   (64 observations deleted due to missingness)</span></span>
+<span><span class="co">## AIC: 338.43</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Number of Fisher Scoring iterations: 8</span></span></code></pre>
+<p>Note: At this stage, you should carefully analyse the model
+diagnostics (e.g. goodness-of-fit, influential observations, and
+multicollinearity).</p>
+<p><strong>Predicted Probabilities</strong></p>
+<p>Using the estimated model, we calculate predicted probabilities of
+job growth for each observation.</p>
+<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p25_data</span><span class="op">$</span><span class="va">model1_res</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">model1</span>, type<span class="op">=</span><span class="st">"response"</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Distribution of Predicted Probabilities</strong></p>
+<p>Finally, we visualise the distribution of the predicted
+probabilities.</p>
+<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">model1_res</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture04-regression_files/figure-html/unnamed-chunk-58-1.png" class="r-plt" alt="" width="700"></p>
+<p><strong>What if we change model?</strong></p>
+<p>The model is modified by replacing the dependent variable with strong
+concentration, in order to examine how the regression coefficients
+change.</p>
+<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">kasvu_voima</span><span class="op">~</span><span class="va">tyottom</span><span class="op">+</span><span class="va">korkk</span><span class="op">+</span><span class="va">alkut</span><span class="op">+</span><span class="va">elak</span><span class="op">+</span><span class="va">as_tih</span><span class="op">+</span><span class="va">he_kika</span><span class="op">+</span><span class="va">ra_as_kpa</span>, data<span class="op">=</span><span class="va">p25_data</span>, family<span class="op">=</span><span class="st">"binomial"</span>,na.action <span class="op">=</span> <span class="va">na.exclude</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## glm(formula = kasvu_voima ~ tyottom + korkk + alkut + elak + </span></span>
+<span><span class="co">##     as_tih + he_kika + ra_as_kpa, family = "binomial", data = p25_data, </span></span>
+<span><span class="co">##     na.action = na.exclude)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">##              Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">## (Intercept) 18.483913   1.012472  18.256  &lt; 2e-16 ***</span></span>
+<span><span class="co">## tyottom     -0.133090   0.009484 -14.033  &lt; 2e-16 ***</span></span>
+<span><span class="co">## korkk       -0.034420   0.008369  -4.113 3.91e-05 ***</span></span>
+<span><span class="co">## alkut       -0.023206   0.002763  -8.398  &lt; 2e-16 ***</span></span>
+<span><span class="co">## elak         0.025238   0.006332   3.986 6.73e-05 ***</span></span>
+<span><span class="co">## as_tih      -0.001754   0.071426  -0.025     0.98    </span></span>
+<span><span class="co">## he_kika     -0.167041   0.015137 -11.035  &lt; 2e-16 ***</span></span>
+<span><span class="co">## ra_as_kpa   -0.114281   0.005840 -19.568  &lt; 2e-16 ***</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## (Dispersion parameter for binomial family taken to be 1)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Null deviance: 3343.3  on 2961  degrees of freedom</span></span>
+<span><span class="co">## Residual deviance: 2038.1  on 2954  degrees of freedom</span></span>
+<span><span class="co">##   (64 observations deleted due to missingness)</span></span>
+<span><span class="co">## AIC: 2054.1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Number of Fisher Scoring iterations: 6</span></span></code></pre>
+<p>How do the regression coefficients differ relative to Model 1? What
+conclusions can be drawn from the results?</p>
+</div>
+<div class="section level5">
+<h5 id="model-diagnostics">Model diagnostics<a class="anchor" aria-label="anchor" href="#model-diagnostics"></a>
+</h5>
+<p>Why diagnostics matter in logistic regression?</p>
+<p>Model diagnostics help you answer four key questions:</p>
+<ul>
+<li>Does the model fit the data reasonably well?</li>
+<li>Are the predictors behaving as expected?</li>
+<li>Are there influential or problematic observations?</li>
+<li>Are the model assumptions seriously violated?</li>
+</ul>
+<p>Logistic regression does not assume normal errors or constant
+variance, but it does rely on other important assumptions.</p>
+<p><strong>1. Overall model fit</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li>Residual deviance vs. null deviance From summary(model1):</li>
+</ol>
+<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## glm(formula = kasvu ~ tyottom + korkk + alkut + elak + as_tih + </span></span>
+<span><span class="co">##     he_kika + ra_as_kpa, family = "binomial", data = p25_data, </span></span>
+<span><span class="co">##     na.action = na.exclude)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">##              Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">## (Intercept)  0.056489   1.732366   0.033 0.973987    </span></span>
+<span><span class="co">## tyottom      0.094105   0.020760   4.533 5.81e-06 ***</span></span>
+<span><span class="co">## korkk       -0.037865   0.011464  -3.303 0.000957 ***</span></span>
+<span><span class="co">## alkut        0.018137   0.009200   1.971 0.048667 *  </span></span>
+<span><span class="co">## elak        -0.004182   0.019561  -0.214 0.830719    </span></span>
+<span><span class="co">## as_tih      -0.140686   0.071850  -1.958 0.050222 .  </span></span>
+<span><span class="co">## he_kika      0.104873   0.033860   3.097 0.001953 ** </span></span>
+<span><span class="co">## ra_as_kpa   -0.006897   0.009889  -0.697 0.485508    </span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## (Dispersion parameter for binomial family taken to be 1)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Null deviance: 389.09  on 2961  degrees of freedom</span></span>
+<span><span class="co">## Residual deviance: 322.43  on 2954  degrees of freedom</span></span>
+<span><span class="co">##   (64 observations deleted due to missingness)</span></span>
+<span><span class="co">## AIC: 338.43</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Number of Fisher Scoring iterations: 8</span></span></code></pre>
+<p>Key quantities:</p>
+<ul>
+<li>Null deviance: model with no predictors</li>
+<li>Residual deviance: model with predictors</li>
+</ul>
+<p>Rule of thumb</p>
+<ul>
+<li>Residual deviance should be clearly smaller than the null
+deviance.</li>
+</ul>
+<p>If they are very similar, the predictors add little explanatory
+power.</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Likelihood ratio test You can formally test whether the full model
+is better than the null model:</li>
+</ol>
+<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">model1</span>, test <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Analysis of Deviance Table</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model: binomial, link: logit</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Response: kasvu</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Terms added sequentially (first to last)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##           Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    </span></span>
+<span><span class="co">## NULL                       2961     389.09              </span></span>
+<span><span class="co">## tyottom    1    7.909      2960     381.18 0.0049183 ** </span></span>
+<span><span class="co">## korkk      1   34.726      2959     346.45 3.795e-09 ***</span></span>
+<span><span class="co">## alkut      1    4.209      2958     342.24 0.0402124 *  </span></span>
+<span><span class="co">## elak       1    1.972      2957     340.27 0.1601979    </span></span>
+<span><span class="co">## as_tih     1    5.128      2956     335.14 0.0235446 *  </span></span>
+<span><span class="co">## he_kika    1   12.228      2955     322.92 0.0004708 ***</span></span>
+<span><span class="co">## ra_as_kpa  1    0.487      2954     322.43 0.4854138    </span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
+<p>A small p‑value indicates that the model improves fit relative to an
+intercept‑only model.</p>
+<p><strong>2. Goodness of fit</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li>Pseudo‑R² Logistic regression does not have an ordinary R², but
+pseudo‑R² measures are useful:</li>
+</ol>
+<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/atahk/pscl" class="external-link">pscl</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/pscl/man/pR2.html" class="external-link">pR2</a></span><span class="op">(</span><span class="va">model1</span><span class="op">)</span></span></code></pre></div>
+<p>Common interpretation:</p>
+<ul>
+<li>0.02–0.05: weak fit</li>
+<li>0.10–0.20: moderate fit</li>
+</ul>
+<p>0.20: strong fit (for social sciences)</p>
+<p>These are not directly comparable to linear regression R².</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Classification performance (optional) If your outcome kasvu is
+binary (0/1):</li>
+</ol>
+<div class="sourceCode" id="cb118"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pred_class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">model1_res</span> <span class="op">&gt;</span> <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">pred_class</span>, <span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##           </span></span>
+<span><span class="co">## pred_class    0    1</span></span>
+<span><span class="co">##          0    0    1</span></span>
+<span><span class="co">##          1   36 2925</span></span></code></pre>
+<p>This helps evaluate prediction accuracy, but should not replace
+statistical diagnostics.</p>
+<p><strong>3. Residual diagnostics</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li>Deviance residuals Plot residuals against fitted values:</li>
+</ol>
+<div class="sourceCode" id="cb120"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">model1</span>, type <span class="op">=</span> <span class="st">"deviance"</span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted</a></span><span class="op">(</span><span class="va">model1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">res</span>,</span>
+<span>     xlab <span class="op">=</span> <span class="st">"Fitted values"</span>,</span>
+<span>     ylab <span class="op">=</span> <span class="st">"Deviance residuals"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture04-regression_files/figure-html/unnamed-chunk-65-1.png" class="r-plt" alt="" width="700"></p>
+<p>What to look for:</p>
+<ul>
+<li>Residuals roughly centered around zero</li>
+<li>No strong patterns or funnels</li>
+</ul>
+<p>Problems:</p>
+<ul>
+<li>Curvature - missing nonlinear terms</li>
+<li>Extreme vertical spreads - outliers or poor fit</li>
+</ul>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Residuals vs. predictors</li>
+</ol>
+<p>Example:</p>
+<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyottom</span>, <span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">model1</span>, type <span class="op">=</span> <span class="st">"deviance"</span><span class="op">)</span>,</span>
+<span>     xlab <span class="op">=</span> <span class="st">"Unemployment rate"</span>,</span>
+<span>     ylab <span class="op">=</span> <span class="st">"Deviance residuals"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture04-regression_files/figure-html/unnamed-chunk-66-1.png" class="r-plt" alt="" width="700"></p>
+<p>Residuals should not show systematic trends.</p>
+<p><strong>4. Influential observations</strong></p>
+<p>Some data points may have disproportionate influence on the results.
+(a) Cook’s distance</p>
+<div class="sourceCode" id="cb122"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/influence.measures.html" class="external-link">cooks.distance</a></span><span class="op">(</span><span class="va">model1</span><span class="op">)</span>,</span>
+<span>     ylab <span class="op">=</span> <span class="st">"Cook's distance"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">4</span> <span class="op">/</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture04-regression_files/figure-html/unnamed-chunk-67-1.png" class="r-plt" alt="" width="700"></p>
+<p>Observations above the line deserve inspection.</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Leverage and influence</li>
+</ol>
+<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/influence.measures.html" class="external-link">hatvalues</a></span><span class="op">(</span><span class="va">model1</span><span class="op">)</span>,</span>
+<span>     ylab <span class="op">=</span> <span class="st">"Leverage"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture04-regression_files/figure-html/unnamed-chunk-68-1.png" class="r-plt" alt="" width="700"></p>
+<p>High leverage points are not automatically wrong, but they should be
+understood substantively.</p>
+<p><strong>5. Multicollinearity diagnostics</strong></p>
+<p>Highly correlated predictors can inflate standard errors.</p>
+<div class="sourceCode" id="cb124"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bprice2652/car_repo" class="external-link">car</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/vif.html" class="external-link">vif</a></span><span class="op">(</span><span class="va">testia3</span><span class="op">)</span></span></code></pre></div>
+<p>Rule of thumb:</p>
+<ul>
+<li>VIF &lt; 5 - usually acceptable</li>
+<li>VIF &gt; 10 - serious multicollinearity</li>
+</ul>
+<p><strong>6. Functional form (linearity in the logit)</strong></p>
+<p>Logistic regression assumes that continuous predictors are linearly
+related to the log‑odds, not to the outcome itself.</p>
+<p>Visual check (example)</p>
+<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">p25_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">tyottom</span>, <span class="va">model1_res</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Curvature suggests you may need:</p>
+<ul>
+<li>transformations,</li>
+<li>polynomial terms,</li>
+<li>or splines.</li>
+</ul>
+</div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
