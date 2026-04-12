@@ -11,10 +11,14 @@ vignette: >
 library(spatialcourseOL)
 library(dplyr)
 library(countrycode)
+library(patchwork)
+library(ggthemes)
+library(ggplot2)
 
 data(HDI_data)
 data(data_vakie3)
 data(aluejaot2)
+data(pop_category)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -30,7 +34,7 @@ ggplot2 is a widely used data visualization package in R that lets you create cl
 More details:
 https://ggplot2.tidyverse.org/
 
-![ggplot2 logo](figures/ggplot2_figure.png){width=70%}
+![ggplot2 logo](figures/ggplot2_figure.png){width=90%}
 
 Why ggplot2 is so popular:
 
@@ -61,7 +65,14 @@ Instead of choosing a plot type (like “bar plot” or “scatter plot”) dire
 
 You add these components together using +.
 
-#### A simple example
+## A simple example
+
+Every ggplot2 plot has three key components:
+
+- data,
+- A set of aesthetic mappings between variables in the data and visual properties, and
+- At least one layer which describes how to render each observation. Layers are usually created with a geom function.
+
 
 ```{r}
 library(ggplot2)
@@ -69,14 +80,22 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
   geom_point()
 ```
 
-This means:
+This produces a scatterplot defined by:
 
-- Data: mtcars
-- x-axis: weight (wt)
-- y-axis: miles per gallon (mpg)
-- Geom: points (scatter plot)
+- Data - mtcars
+- Aesthetic mapping: engine size mapped to x position (wt), fuel economy to y position (mpg).
+- Layer - Geom: points (scatter plot)
 
-#### Adding more layers
+Pay attention to the structure of this function call: data and aesthetic mappings are supplied in ggplot(), then layers are added on with +. This is an important pattern, and as you learn more about ggplot2 you’ll construct increasingly sophisticated plots by adding on more types of components.
+
+Almost every plot maps a variable to x and y, so naming these aesthetics is tedious, so the first two unnamed arguments to aes() will be mapped to x and y. This means that the following code is identical to the example above:
+
+```
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point()
+```
+
+## Adding more layers
 
 ```{r}
 ggplot(mtcars, aes(wt, mpg)) +
@@ -85,8 +104,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   labs(
     title = "Fuel efficiency vs car weight",
     x = "Weight",
-    y = "Miles per gallon"
-  )
+    y = "Miles per gallon")
 ```
 
 Here you extend the same plot by:
@@ -94,7 +112,133 @@ Here you extend the same plot by:
 - adding a regression line
 - adding labels
 
-#### How it differs from base R plots
+Plot geoms
+
+- geom_smooth() fits a smoother to the data and displays the smooth and its standard error.
+- geom_boxplot() produces a box-and-whisker plot to summarise the distribution of a set of points.
+- geom_histogram() and geom_freqpoly() show the distribution of continuous variables.
+- geom_bar() shows the distribution of categorical variables.
+- geom_path() and geom_line() draw lines between the data points. A line plot is constrained to produce lines that travel from left to right, while paths can go in any direction. Lines are typically used to explore how things change over time.
+
+Note that different geoms can use the same data and aesthetics!
+Multiple geoms can be layered like in this example:
+
+```{r}
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point() + 
+  geom_smooth()
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+```
+
+This overlays the scatterplot with a smooth curve, including an assessment of uncertainty in the form of point-wise confidence intervals shown in grey. If you’re not interested in the confidence interval, turn it off with geom_smooth(se = FALSE).
+
+An important argument to geom_smooth() is the method, which allows you to choose which type of model is used to fit the smooth curve:
+
+- method = "loess", the default for small n, uses a smooth local regression (as described in ?loess). The wiggliness of the line is controlled by the span parameter, which ranges from 0 (exceedingly wiggly) to 1 (not so wiggly).
+
+```{r}
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point() + 
+  geom_smooth(span = 0.2)
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+```
+
+```{r}
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point() + 
+  geom_smooth(span = 1)
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+```
+
+- method = "gam" fits a generalised additive model provided by the mgcv package. You need to first load mgcv, then use a formula like formula = y ~ s(x) or y ~ s(x, bs = "cs") (for large data). This is what ggplot2 uses when there are more than 1,000 points. 
+
+```{r}
+library(mgcv)
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point() + 
+  geom_smooth(method = "gam", formula = y ~ s(x))
+```
+
+## Boxplots and jittered points
+
+When a set of data includes a categorical variable and one or more continuous variables, you will probably be interested to know how the values of the continuous variables vary with the levels of the categorical variable.
+
+There are three useful techniques that help to visualise a categorical variable and one continuous variable:
+
+- Jittering, geom_jitter(), adds a little random noise to the data which can help avoid overplotting.
+- Boxplots, geom_boxplot(), summarise the shape of the distribution with a handful of summary statistics.
+- Violin plots, geom_violin(), show a compact representation of the “density” of the distribution, highlighting the areas where more points are found.
+
+These are illustrated below:
+
+```{r}
+ggplot(mpg, aes(drv, hwy)) + geom_jitter()
+```
+
+```{r}
+ggplot(mpg, aes(drv, hwy)) + geom_boxplot()
+```
+
+```{r}
+ggplot(mpg, aes(drv, hwy)) + geom_violin()
+```
+
+## Histograms and frequency polygons
+
+Histograms and frequency polygons show the distribution of a single numeric variable. They provide more information about the distribution of a single group than boxplots do, at the expense of needing more space.
+
+```{r}
+ggplot(mpg, aes(hwy)) + geom_histogram()
+#> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+```
+
+```{r}
+ggplot(mpg, aes(hwy)) + geom_freqpoly()
+#> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+```
+
+Both histograms and frequency polygons work in the same way: they bin the data, then count the number of observations in each bin. The only difference is the display: histograms use bars and frequency polygons use lines.
+
+## Bar charts
+
+The discrete analogue of the histogram is the bar chart, geom_bar(). It’s easy to use: 
+
+```{r}
+ggplot(mpg, aes(manufacturer)) + 
+  geom_bar()
+```
+
+## Time series with line 
+
+Line and path plots are typically used for time series data. Line plots join the points from left to right, while path plots join them in the order that they appear in the dataset (in other words, a line plot is a path plot of the data sorted by x value). Line plots usually have time on the x-axis, showing how a single variable has changed over time. Path plots show how two variables have simultaneously changed over time, with time encoded in the way that observations are connected.
+
+Because the year variable in the mpg dataset only has two values, we’ll show some time series plots using the economics dataset, which contains economic data on the US measured over the last 40 years. 
+
+The figures below shows two plots of unemployment over time, both produced using geom_line(). The first shows the unemployment rate while the second shows the median number of weeks unemployed. We can already see some differences in these two variables, particularly in the last peak, where the unemployment percentage is lower than it was in the preceding peaks, but the length of unemployment is high.
+
+```{r}
+ggplot(economics, aes(date, unemploy / pop)) +
+  geom_line()
+```
+  
+```{r}  
+ggplot(economics, aes(date, uempmed)) +
+  geom_line()
+```
+
+## How it differs from base R plots
+
+Base R plotting
+
+- Procedural
+- “Draw now, modify later”
+- Plot type chosen first (plot, hist, boxplot)
+
+ggplot2
+
+- Declarative
+- “Describe what to plot”
+- Visualization built from components
 
 Base R:
 ```{r}
@@ -112,9 +256,15 @@ ggplot2 is:
 - more consistent
 - easier to build complex plots incrementally
 
+See more information about ggplot2 from this fantastic book: “ggplot2: elegant graphics for data analysis”
+
+https://ggplot2-book.org/
+
+![ggplot2 logo](figures/ggplot2_book.png){width=90%}
+
 ## An introduction to data visualization using R programming
 
-<iframe width="560" height="315"
+<iframe width="600" height="360"
         src="https://www.youtube.com/embed/HPJn1CMvtmI"
         frameborder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -143,7 +293,7 @@ world <- ne_countries(scale = "medium", returnclass = "sf")
 class(world)
 ```
 
-## Basic plot
+### Basic plot
 
 First, let us start with creating a base map of the world using ggplot2. This base map will then be extended with different map elements, as well as zoomed in to an area of interest. We can check that the world map was properly retrieved and converted into an sf object, and plot it with ggplot2:
 
@@ -156,7 +306,7 @@ This call nicely introduces the structure of a ggplot call: The first part ggplo
 
 In this case, we use the geom_sf function, which simply adds a geometry stored in a sf object. 
 
-### Title, subtitle, and axis labels
+## Title, subtitle, and axis labels
 
 A title and a subtitle can be added to the map using the function ggtitle, passing any valid character string (e.g. with quotation marks) as arguments. Axis names are absent by default on a map, but can be changed to something more suitable (e.g. “Longitude” and “Latitude”), depending on the map:
 
@@ -167,7 +317,7 @@ ggplot(data = world) +
     ggtitle("World map", subtitle = paste0("(", length(unique(world$NAME)), " countries)"))
 ```
 
-### Map color
+## Map color
 
 In many ways, sf geometries are no different than regular geometries, and can be displayed with the same level of control on their attributes. Here is an example with the polygons of the countries filled with a green color (argument fill), using black for the outline of the countries (argument color):
 
@@ -184,7 +334,7 @@ ggplot(data = world) +
     scale_fill_viridis_c(option = "plasma", trans = "sqrt")
 ```
 
-### Projection and extent
+## Projection and extent
 
 The function coord_sf allows to deal with the coordinate system, which includes both projection and extent of the map. By default, the map will use the coordinate system of the first layer that defines one (i.e. scanned in the order provided), or if none, fall back on WGS84 (latitude/longitude, the reference system used in GPS). Using the argument crs, it is possible to override this setting, and project on the fly to any projection. This can be achieved using any valid PROJ4 string (here, the European-centric ETRS89 Lambert Azimuthal Equal-Area projection):
 
@@ -194,7 +344,7 @@ ggplot(data = world) +
     coord_sf(crs = "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs ")
 ```
 
-### Scale bar and North arrow
+## Scale bar and North arrow
 
 Scale bar and north arrow can be added on map with the package ggspatial, which provides easy-to-use functions for this purpose.
  
@@ -274,7 +424,7 @@ coord_sf(
 - Uses longitude (xlim) and latitude (ylim)
 - Does not change the data itself, only what you see
 
-### Saving the map
+## Saving the map
 
 Saving of the map is very easy by using ggsave. This function allows a graphic (typically the last plot displayed) to be saved in a variety of formats, including the most common PNG (raster bitmap) and PDF (vector graphics), with control over the size and resolution of the outcome. 
 
@@ -302,8 +452,7 @@ head(HDI_data)
 The ISO3C code is appended to the HDI_data2 dataset based on the country name. (note that we create here a new dataset HDI_data2)
 ```{r}
 HDI_data2 <- HDI_data %>%
-  mutate(iso3 = countrycode(Country, "country.name", "iso3c")
-  )
+  mutate(iso3 = countrycode(Country, "country.name", "iso3c"))
 ```
 
 Next, the world and hdi_country2 datasets are merged by using left_join() function:
@@ -385,6 +534,121 @@ ggplot() +
   theme(plot.caption = element_text(size=16) )
 ```
 
+# Working with ggplot2: Population development of the municipality categories
+
+```{r}
+data(pop_category)
+```
+
+```{r}
+group.labs <- c("Sparsely populate", "Urban", "Rural close to urban", "Core rural")
+names(group.labs) <- c("Harvaan asuttu maaseutu","Kaupungit","Kaupunkien läh. maaseutu", "Ydinmaaseutu")
+```
+
+```{r}
+plot1<-ggplot(pop_category, aes(Year, weight=value, fill=Variable))+ 
+  geom_bar(binwidth=1, color="gray", size=0.25) + 
+  facet_wrap(~Category, scales = "free_y", ncol = 2, labeller = labeller(Group.2=group.labs)) +
+  theme_minimal() +
+  scale_fill_tableau("Tableau 20", labels=c("Natural population change","Net immigration","Net migration")) +
+  theme(legend.position = "bottom") + guides(col=guide_legend(ncol=2))+
+  theme(axis.text.x = element_text(color = "grey20", size = 10, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+        axis.text.y = element_text(color = "grey20", size = 12, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+        axis.title.x = element_text(color = "grey20", size = 12, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+        axis.title.y = element_text(color = "grey20", size = 12, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+        strip.text = element_text(size = 14)) +
+  theme(legend.text=element_text(size=14)) +
+  labs(fill="Population development")+
+  labs(title="Population development in municipality categories", 
+       x="Year", y="Change, person",
+       caption="Data: Statistics Finland 2023") +
+  scale_x_continuous(breaks = seq(1993,2022,1))+
+  theme(legend.title = element_text(size=14)) + theme(plot.title = element_text(size = 16))
+```
+
+Let's call plot1 object:
+
+```{r}
+plot1
+```
+
+## Adding a simple map to the plot
+
+Load packages used in this example:
+
+```{r, eval=FALSE}
+library(ggplot2)
+library(geofi)
+library(dplyr)
+```
+
+Let’s load data from different regional divisions.
+
+```{r, eval=FALSE}
+data(aluejaot2)
+names(aluejaot2)
+```
+
+Let’s download a municipality data set with geofi package:
+
+```{r}
+municipalities <- geofi::get_municipalities(year = 2021)
+municipalities <- municipalities %>% 
+  select(kunta, kunta_name)
+```
+
+Next we will join data sets with function right_join because it maintains the class of municipality as sf. 
+
+```{r}
+muni <- dplyr::right_join(x = municipalities, y = aluejaot2, by=c("kunta" = "tunnus"))
+```
+
+Let's define colors for plots:
+
+```{r}
+red<-"#F8766D"
+green <- "#00BA38"
+blue <- "#619CFF"
+purple <- "#C77CFF"
+blue_gray <- "#464a62"
+mid_gray <- "#ccd0dd"
+light_gray <- "#f9f9fd"
+```
+
+and set some global theme defaults
+
+```{r}
+theme_set(theme_minimal())
+theme_update(text = element_text(family = "sans", color = "#464a62"))
+theme_update(plot.title = element_text(hjust = 0.5, face = "bold"))
+theme_update(plot.subtitle = element_text(hjust = 0.5))
+```
+
+Finally we are to draw a map by using ggplot:
+
+```{r}
+map<-ggplot(muni) +
+  geom_sf(aes(fill = Alueluokka_eng), color = light_gray, lwd = 0.08) +
+  scale_fill_manual(values = c(red, green, blue, purple), name = "", guide = guide_legend(direction = "horizontal", label.position = "top", keywidth = 3, keyheight = 0.5)) +
+  labs(title = "", color="black") +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text = element_blank(),
+        axis.title = element_blank(),
+        legend.position = c(0.25,0.60))+
+  guides(fill=guide_legend(nrow=4, byrow=T)) +
+  theme(legend.text=element_text(size=11)) +
+  theme(plot.margin=margin(0,0,0,0,"cm")) 
+```
+
+## Combining a map and a graph
+
+```{r, eval=FALSE}
+library(patchwork)
+map + plot1
+```
+
+
 # Working with ggplot2: Population development of the municipalities
 
 ## 1. Installing and loading R packages
@@ -442,7 +706,7 @@ Note! This requires the remotes package to be installed.
 library(spatialcourseOL)
 ```
 
-Reading a CSV file
+Reading datasets:
 ```{r, eval=FALSE}
 data(aluejaot2)
 head(aluejaot2)
