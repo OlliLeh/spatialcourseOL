@@ -724,7 +724,7 @@ names(group.labs) <- c("Harvaan asuttu maaseutu","Kaupungit","Kaupunkien läh. m
 ``` r
 plot1<-ggplot(pop_category, aes(Year, weight=value, fill=Variable))+ 
   geom_bar(binwidth=1, color="gray", size=0.25) + 
-  facet_wrap(~Category, scales = "free_y", ncol = 2, labeller = labeller(Group.2=group.labs)) +
+  facet_wrap(~Category, scales = "free_y", ncol = 2, labeller = labeller(Category=group.labs)) +
   theme_minimal() +
   scale_fill_tableau("Tableau 20", labels=c("Natural population change","Net immigration","Net migration")) +
   theme(legend.position = "bottom") + guides(col=guide_legend(ncol=2))+
@@ -832,9 +832,12 @@ map<-ggplot(muni) +
 ### Combining a map and a graph
 
 ``` r
-library(patchwork)
 map + plot1
 ```
+
+![ggplot2 logo](figures/kartta_bar.png)
+
+ggplot2 logo
 
 ## Working with ggplot2: Population development of the municipalities
 
