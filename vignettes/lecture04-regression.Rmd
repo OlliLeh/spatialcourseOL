@@ -41,7 +41,7 @@ where
 - $X_1, X_2, X_3$ are explanatory variables  
 - $\varepsilon$ is the error term
 
-#### Estimation of the model
+## Estimation of the model
 
 The regression coefficients $\beta_0, \beta_1, \beta_2, \beta_3$ are usually estimated using ordinary least squares (OLS).
 
@@ -70,7 +70,7 @@ Each regression coefficient has a clear interpretation:
 
 This *“all else equal”* interpretation is central to multiple regression analysis.
 
-#### Model assumptions
+## Model assumptions
 
 For the linear regression model to be valid, the following assumptions are commonly made:
 
@@ -91,7 +91,7 @@ For the linear regression model to be valid, the following assumptions are commo
 
 Violations of these assumptions can lead to biased estimates or invalid inference.
 
-#### Goodness of fit
+## Goodness of fit
 
 Two commonly used measures are:
 
@@ -116,7 +116,7 @@ Possible extensions of the basic linear regression framework include:
 - generalized linear models
 - spatial regression models
 
-### Examples of regression models 
+## Examples of regression models 
 
 #### Faithfull data
 Apply the simple linear regression model for the data set faithful, and estimate the next eruption duration if the waiting time since the last eruption has been 80 minutes.
@@ -240,7 +240,7 @@ mdls$r.squared
 
 ```
 
-### Hypothesis Testing for Comparing Regression Models
+## Hypothesis Testing for Comparing Regression Models
 
 In regression analysis, we often want to **test whether a subset of predictors is statistically relevant**.
 This can be formulated as a hypothesis test comparing:
@@ -377,7 +377,7 @@ anova(g3, g)
 
 These tools are essential for principled model selection in regression analysis.
 
-### Variable selection in regression models
+## Variable selection in regression models
 
 In multiple regression analysis, we often face the question of **which predictors should be included in the model**. Including too many variables may lead to over fitting, while excluding relevant predictors can bias results.
 
@@ -472,7 +472,7 @@ Different variable selection techniques may lead to different models. In practic
 
 Variable selection should always be guided by statistical reasoning, theoretical understanding, and substantive knowledge, not automatic procedures alone.
 
-### Regression diagnostic
+## Regression diagnostic
 
 Regression diagnostics are used to evaluate whether the assumptions of the linear regression model are reasonably satisfied and to identify potentially influential observations.
 
@@ -799,6 +799,8 @@ model2<-glm(kasvu_voima~tyottom+korkk+alkut+elak+as_tih+he_kika+ra_as_kpa, data=
 ```{r}
 summary(model2)
 ```
+
+
 And then we can save the model2 results for a new variable called as model2_res:
 
 ```{r}
@@ -978,7 +980,7 @@ Curvature suggests you may need:
 
 Spatial interpolation is the activity of estimating values of spatially continuous variables at locations where they have not been observed, based on measurements at known locations.
 
-### 1. Introduction
+## 1. Introduction
 
 In this exercise, a continuous surface is created using interpolation to describe the probability of growth in the number of jobs across Finland. In this way, we visualise the results of the regression model developed in the previous exercise.
 
@@ -991,7 +993,7 @@ In these lecture notes we:
 
 The analysis relies mainly on the gstat package together with modern spatial packages in R.
 
-### 2. Packages and Data
+## 2. Packages and Data
 
 We begin by loading the required packages.
 
@@ -1012,10 +1014,10 @@ library(stars)
 Municipality boundaries are used for visualisation and spatial aggregation of results.
 
 ```{r}
-municipalities <- geofi::get_municipalities(year = 2021)
+municipalities <- geofi::get_municipalities(year = 2024)
 ```
 
-### 3. Preparing Point Data
+## 3. Preparing Point Data
 
 This exercise continues an earlier analysis. We assume the object p25_data already exists in the workspace.
 
@@ -1052,7 +1054,7 @@ int.sf <- st_as_sf(
   st_transform(crs)
 ```
 
-### 4. Creating a Prediction Grid
+## 4. Creating a Prediction Grid
 
 To perform kriging, we define a regular prediction grid (pixels) covering Finland. Here we use a resolution of 10 km × 10 km.
 
@@ -1064,7 +1066,7 @@ grd <- st_bbox(municipalities) %>%
 grd
 ```
 
-### 5. Variogram Analysis
+## 5. Variogram Analysis
 
 A variogram describes how similar (or dissimilar) values of a spatial variable are as a function of the distance between locations.
 
@@ -1132,7 +1134,7 @@ v0 <- variogram(
 plot(v0, plot.numbers = TRUE)
 ```
 
-### 6. Fitting a Variogram Model
+## 6. Fitting a Variogram Model
 
 A variogram is a function that quantifies how spatial similarity decreases with distance and is the core model behind geostatistical interpolation methods such as kriging.
 
@@ -1146,7 +1148,7 @@ v.m <- fit.variogram(
 plot(v, v.m, plot.numbers = TRUE)
 ```
 
-### 7. Ordinary Kriging
+## 7. Ordinary Kriging
 
 With a fitted variogram model, we can now perform ordinary kriging. At a high level, kriging interpolation answers the question:
 
@@ -1173,11 +1175,11 @@ k <- krige(
 
 The result is a stars object containing predicted values (var1.pred) and kriging variance (var1.var).
 
-### 8. Visualising the Interpolation Surface with ggplot2
+## 8. Visualising the Interpolation Surface with ggplot2
 
 We overlay the kriging surface with municipality boundaries.
 
-```{r}
+```{r, fig.width=14, fig.height=10, dpi=150}
 ggplot(municipalities) +
   geom_stars(data = k, aes(fill = var1.pred, x = x, y = y)) +
   geom_sf(
@@ -1216,7 +1218,7 @@ ggplot(municipalities) +
     plot.margin = unit(c(1.5, 1.5, 1, 1), "cm"))
 ```
 
-### 9. Exporting Results
+## 9. Exporting Results
 
 **Saving the interpolation surface**
 
@@ -1251,7 +1253,7 @@ t2 <- t[, c(2, 3, 70, 71)]
 st_write(t2, "test_keh2.shp")
 ```
 
-### 10. Summary
+## 10. Summary
 
 In this exercise we:
 
