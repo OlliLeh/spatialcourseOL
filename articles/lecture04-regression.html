@@ -87,9 +87,9 @@ are explanatory variables<br>
 -
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ε</mi><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math>
 is the error term</p>
-<div class="section level5">
-<h5 id="estimation-of-the-model">Estimation of the model<a class="anchor" aria-label="anchor" href="#estimation-of-the-model"></a>
-</h5>
+<div class="section level3">
+<h3 id="estimation-of-the-model">Estimation of the model<a class="anchor" aria-label="anchor" href="#estimation-of-the-model"></a>
+</h3>
 <p>The regression coefficients
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>0</mn></msub><mo>,</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><msub><mi>β</mi><mn>2</mn></msub><mo>,</mo><msub><mi>β</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\beta_0, \beta_1, \beta_2, \beta_3</annotation></semantics></math>
 are usually estimated using ordinary least squares (OLS).</p>
@@ -106,7 +106,6 @@ for observation
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>.</p>
 <p>Under standard assumptions, the OLS estimators are unbiased and
 efficient.</p>
-</div>
 <div class="section level5">
 <h5 id="interpretation-of-coefficients">Interpretation of coefficients<a class="anchor" aria-label="anchor" href="#interpretation-of-coefficients"></a>
 </h5>
@@ -136,9 +135,10 @@ and
 <p>This <em>“all else equal”</em> interpretation is central to multiple
 regression analysis.</p>
 </div>
-<div class="section level5">
-<h5 id="model-assumptions">Model assumptions<a class="anchor" aria-label="anchor" href="#model-assumptions"></a>
-</h5>
+</div>
+<div class="section level3">
+<h3 id="model-assumptions">Model assumptions<a class="anchor" aria-label="anchor" href="#model-assumptions"></a>
+</h3>
 <p>For the linear regression model to be valid, the following
 assumptions are commonly made:</p>
 <ol style="list-style-type: decimal">
@@ -161,9 +161,9 @@ Predictors are not perfectly correlated with each other.</p></li>
 <p>Violations of these assumptions can lead to biased estimates or
 invalid inference.</p>
 </div>
-<div class="section level5">
-<h5 id="goodness-of-fit">Goodness of fit<a class="anchor" aria-label="anchor" href="#goodness-of-fit"></a>
-</h5>
+<div class="section level3">
+<h3 id="goodness-of-fit">Goodness of fit<a class="anchor" aria-label="anchor" href="#goodness-of-fit"></a>
+</h3>
 <p>Two commonly used measures are:</p>
 <ul>
 <li><p><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math></strong><br>
@@ -181,7 +181,6 @@ models.</p></li>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>R</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>−</mo><mfrac><mtext mathvariant="normal">Residual Sum of Squares</mtext><mtext mathvariant="normal">Total Sum of Squares</mtext></mfrac></mrow><annotation encoding="application/x-tex">
 R^2 = 1 - \frac{\text{Residual Sum of Squares}}{\text{Total Sum of Squares}}
 </annotation></semantics></math></p>
-</div>
 <div class="section level5">
 <h5 id="extensions">Extensions<a class="anchor" aria-label="anchor" href="#extensions"></a>
 </h5>
@@ -195,9 +194,10 @@ include:</p>
 <li>spatial regression models</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="examples-of-regression-models">Examples of regression models<a class="anchor" aria-label="anchor" href="#examples-of-regression-models"></a>
-</h4>
+</div>
+<div class="section level3">
+<h3 id="examples-of-regression-models">Examples of regression models<a class="anchor" aria-label="anchor" href="#examples-of-regression-models"></a>
+</h3>
 <div class="section level5">
 <h5 id="faithfull-data">Faithfull data<a class="anchor" aria-label="anchor" href="#faithfull-data"></a>
 </h5>
@@ -384,9 +384,9 @@ for the coefficients:</p>
 <pre><code><span><span class="co">## [1] 0.7658469</span></span></code></pre>
 </div>
 </div>
-<div class="section level4">
-<h4 id="hypothesis-testing-for-comparing-regression-models">Hypothesis Testing for Comparing Regression Models<a class="anchor" aria-label="anchor" href="#hypothesis-testing-for-comparing-regression-models"></a>
-</h4>
+<div class="section level3">
+<h3 id="hypothesis-testing-for-comparing-regression-models">Hypothesis Testing for Comparing Regression Models<a class="anchor" aria-label="anchor" href="#hypothesis-testing-for-comparing-regression-models"></a>
+</h3>
 <p>In regression analysis, we often want to <strong>test whether a
 subset of predictors is statistically relevant</strong>. This can be
 formulated as a hypothesis test comparing:</p>
@@ -553,9 +553,9 @@ implementation</li>
 regression analysis.</p>
 </div>
 </div>
-<div class="section level4">
-<h4 id="variable-selection-in-regression-models">Variable selection in regression models<a class="anchor" aria-label="anchor" href="#variable-selection-in-regression-models"></a>
-</h4>
+<div class="section level3">
+<h3 id="variable-selection-in-regression-models">Variable selection in regression models<a class="anchor" aria-label="anchor" href="#variable-selection-in-regression-models"></a>
+</h3>
 <p>In multiple regression analysis, we often face the question of
 <strong>which predictors should be included in the model</strong>.
 Including too many variables may lead to over fitting, while excluding
@@ -792,9 +792,9 @@ theoretical understanding, and substantive knowledge, not automatic
 procedures alone.</p>
 </div>
 </div>
-<div class="section level4">
-<h4 id="regression-diagnostic">Regression diagnostic<a class="anchor" aria-label="anchor" href="#regression-diagnostic"></a>
-</h4>
+<div class="section level3">
+<h3 id="regression-diagnostic">Regression diagnostic<a class="anchor" aria-label="anchor" href="#regression-diagnostic"></a>
+</h3>
 <p>Regression diagnostics are used to evaluate whether the assumptions
 of the linear regression model are reasonably satisfied and to identify
 potentially influential observations.</p>
@@ -1218,6 +1218,58 @@ change.</p>
 <span><span class="co">## AIC: 2054.1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Number of Fisher Scoring iterations: 6</span></span></code></pre>
+<p><strong>Interpretation of results</strong></p>
+<ul>
+<li><p>Model fit</p></li>
+<li><p>Null deviance: 3343.3</p></li>
+<li><p>Residual deviance: 2038.1</p></li>
+<li><p>AIC: 2054.1</p></li>
+</ul>
+<p>The large deviance reduction indicates that the model explains a
+substantial share of variation in strong growth outcomes.</p>
+<p><strong>Interpretation of coefficients</strong></p>
+<p>Strong negative effects</p>
+<ul>
+<li><p>Unemployment (tyottom)</p></li>
+<li><p>Areas with high unemployment are much less likely to experience
+strong growth.</p></li>
+<li><p>Average age of inhabitants (he_kika)</p></li>
+<li><p>The negative effect indicates that postal code areas with an
+older population are significantly less likely to experience strong job
+growth.</p></li>
+<li><p>Housing space per capita (ra_as_kpa)</p></li>
+<li><p>Strongly negative effect indicates that dense housing
+environments are central to rapid growth.</p></li>
+<li><p>Higher education (korkk)</p></li>
+<li><p>Negative effect may reflect that strong growth occurs in emerging
+urban zones, rather than already highly educated cores.</p></li>
+</ul>
+<p>Strong positive effect</p>
+<ul>
+<li><p>Share of pensioners (elak)</p></li>
+<li><p>Positive and significant</p></li>
+<li><p>Suggests some regions experiencing strong growth may be
+retirement‑oriented destinations or benefit from aging‑related
+in‑migration.</p></li>
+</ul>
+<p>Non‑effect</p>
+<ul>
+<li><p>Population density (as_tih)</p></li>
+<li><p>No statistically meaningful effect once other variables are
+controlled for.</p></li>
+</ul>
+<p><strong>Substantive interpretation</strong></p>
+<p>Strong job growth follows a distinctly different logic than general
+growth:</p>
+<ul>
+<li>It concentrates in economically robust areas</li>
+<li>It is associated with low unemployment</li>
+<li>It favours compact housing structures</li>
+<li>It is less dependent on youth concentration alone</li>
+</ul>
+<p>This suggests a polarised growth regime, where a small number of
+highly competitive regions attract a disproportionate share of jobs
+increases.</p>
 <p>And then we can save the model2 results for a new variable called as
 model2_res:</p>
 <div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
@@ -1425,9 +1477,9 @@ related to the log‑odds, not to the outcome itself.</p>
 <p>Spatial interpolation is the activity of estimating values of
 spatially continuous variables at locations where they have not been
 observed, based on measurements at known locations.</p>
-<div class="section level4">
-<h4 id="introduction">1. Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h4>
+<div class="section level3">
+<h3 id="introduction">1. Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h3>
 <p>In this exercise, a continuous surface is created using interpolation
 to describe the probability of growth in the number of jobs across
 Finland. In this way, we visualise the results of the regression model
@@ -1442,9 +1494,9 @@ developed in the previous exercise.</p>
 <p>The analysis relies mainly on the gstat package together with modern
 spatial packages in R.</p>
 </div>
-<div class="section level4">
-<h4 id="packages-and-data">2. Packages and Data<a class="anchor" aria-label="anchor" href="#packages-and-data"></a>
-</h4>
+<div class="section level3">
+<h3 id="packages-and-data">2. Packages and Data<a class="anchor" aria-label="anchor" href="#packages-and-data"></a>
+</h3>
 <p>We begin by loading the required packages.</p>
 <div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ropengov.github.io/geofi/" class="external-link">geofi</a></span><span class="op">)</span></span>
@@ -1460,8 +1512,8 @@ spatial packages in R.</p>
 <p>Municipality boundaries are used for visualisation and spatial
 aggregation of results.</p>
 <div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">municipalities</span> <span class="op">&lt;-</span> <span class="fu">geofi</span><span class="fu">::</span><span class="fu"><a href="https://ropengov.github.io/geofi/reference/get_municipalities.html" class="external-link">get_municipalities</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2021</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&amp;version=1.0.0&amp;request=getFeature&amp;typename=tilastointialueet%3Akunta4500k_2021</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">municipalities</span> <span class="op">&lt;-</span> <span class="fu">geofi</span><span class="fu">::</span><span class="fu"><a href="https://ropengov.github.io/geofi/reference/get_municipalities.html" class="external-link">get_municipalities</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&amp;version=1.0.0&amp;request=getFeature&amp;typename=tilastointialueet%3Akunta4500k_2024</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## geofi R package: tools for open GIS data for Finland.</span></span>
@@ -1469,9 +1521,9 @@ aggregation of results.</p>
 <span><span class="co">## Version 1.2.1</span></span></code></pre>
 <pre><code><span><span class="co">## Data is licensed under: Attribution 4.0 International (CC BY 4.0)</span></span></code></pre>
 </div>
-<div class="section level4">
-<h4 id="preparing-point-data">3. Preparing Point Data<a class="anchor" aria-label="anchor" href="#preparing-point-data"></a>
-</h4>
+<div class="section level3">
+<h3 id="preparing-point-data">3. Preparing Point Data<a class="anchor" aria-label="anchor" href="#preparing-point-data"></a>
+</h3>
 <p>This exercise continues an earlier analysis. We assume the object
 p25_data already exists in the workspace.</p>
 <p><strong>Selecting variables</strong></p>
@@ -1532,9 +1584,9 @@ p25_data already exists in the workspace.</p>
 <span>  crs <span class="op">=</span> <span class="st">"EPSG:3067"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">crs</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="creating-a-prediction-grid">4. Creating a Prediction Grid<a class="anchor" aria-label="anchor" href="#creating-a-prediction-grid"></a>
-</h4>
+<div class="section level3">
+<h3 id="creating-a-prediction-grid">4. Creating a Prediction Grid<a class="anchor" aria-label="anchor" href="#creating-a-prediction-grid"></a>
+</h3>
 <p>To perform kriging, we define a regular prediction grid (pixels)
 covering Finland. Here we use a resolution of 10 km × 10 km.</p>
 <div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
@@ -1552,9 +1604,9 @@ covering Finland. Here we use a resolution of 10 km × 10 km.</p>
 <span><span class="co">## x    1  65   83748  10000 ETRS89 / TM35FIN(E,N) [x]</span></span>
 <span><span class="co">## y    1 114 7776431 -10000 ETRS89 / TM35FIN(E,N) [y]</span></span></code></pre>
 </div>
-<div class="section level4">
-<h4 id="variogram-analysis">5. Variogram Analysis<a class="anchor" aria-label="anchor" href="#variogram-analysis"></a>
-</h4>
+<div class="section level3">
+<h3 id="variogram-analysis">5. Variogram Analysis<a class="anchor" aria-label="anchor" href="#variogram-analysis"></a>
+</h3>
 <p>A variogram describes how similar (or dissimilar) values of a spatial
 variable are as a function of the distance between locations.</p>
 <p>In simple terms:</p>
@@ -1611,9 +1663,9 @@ dependence using a variogram.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">v0</span>, plot.numbers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="lecture04-regression_files/figure-html/unnamed-chunk-79-1.png" class="r-plt" alt="" width="700"></p>
 </div>
-<div class="section level4">
-<h4 id="fitting-a-variogram-model">6. Fitting a Variogram Model<a class="anchor" aria-label="anchor" href="#fitting-a-variogram-model"></a>
-</h4>
+<div class="section level3">
+<h3 id="fitting-a-variogram-model">6. Fitting a Variogram Model<a class="anchor" aria-label="anchor" href="#fitting-a-variogram-model"></a>
+</h3>
 <p>A variogram is a function that quantifies how spatial similarity
 decreases with distance and is the core model behind geostatistical
 interpolation methods such as kriging.</p>
@@ -1629,9 +1681,9 @@ empirical variogram. Here we use an exponential model.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">v</span>, <span class="va">v.m</span>, plot.numbers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="lecture04-regression_files/figure-html/unnamed-chunk-80-1.png" class="r-plt" alt="" width="700"></p>
 </div>
-<div class="section level4">
-<h4 id="ordinary-kriging">7. Ordinary Kriging<a class="anchor" aria-label="anchor" href="#ordinary-kriging"></a>
-</h4>
+<div class="section level3">
+<h3 id="ordinary-kriging">7. Ordinary Kriging<a class="anchor" aria-label="anchor" href="#ordinary-kriging"></a>
+</h3>
 <p>With a fitted variogram model, we can now perform ordinary kriging.
 At a high level, kriging interpolation answers the question:</p>
 <ul>
@@ -1663,9 +1715,9 @@ grid cell.</p>
 <p>The result is a stars object containing predicted values (var1.pred)
 and kriging variance (var1.var).</p>
 </div>
-<div class="section level4">
-<h4 id="visualising-the-interpolation-surface-with-ggplot2">8. Visualising the Interpolation Surface with ggplot2<a class="anchor" aria-label="anchor" href="#visualising-the-interpolation-surface-with-ggplot2"></a>
-</h4>
+<div class="section level3">
+<h3 id="visualising-the-interpolation-surface-with-ggplot2">8. Visualising the Interpolation Surface with ggplot2<a class="anchor" aria-label="anchor" href="#visualising-the-interpolation-surface-with-ggplot2"></a>
+</h3>
 <p>We overlay the kriging surface with municipality boundaries.</p>
 <div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">municipalities</span><span class="op">)</span> <span class="op">+</span></span>
@@ -1704,11 +1756,11 @@ and kriging variance (var1.var).</p>
 <span>    legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,</span>
 <span>    legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span>,</span>
 <span>    plot.margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.5</span>, <span class="fl">1.5</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture04-regression_files/figure-html/unnamed-chunk-82-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture04-regression_files/figure-html/unnamed-chunk-82-1.png" class="r-plt" alt="" width="2100"></p>
 </div>
-<div class="section level4">
-<h4 id="exporting-results">9. Exporting Results<a class="anchor" aria-label="anchor" href="#exporting-results"></a>
-</h4>
+<div class="section level3">
+<h3 id="exporting-results">9. Exporting Results<a class="anchor" aria-label="anchor" href="#exporting-results"></a>
+</h3>
 <p><strong>Saving the interpolation surface</strong></p>
 <p>The kriging surface is saved as a GeoTIFF raster</p>
 <div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
@@ -1724,13 +1776,13 @@ and kriging variance (var1.var).</p>
 <p><strong>Joining results back to municipality data</strong></p>
 <div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">municipalities</span>, <span class="va">k2</span>, join <span class="op">=</span> <span class="va">st_equals</span>, left <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">t2</span> <span class="op">&lt;-</span> <span class="va">t</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">70</span>, <span class="fl">71</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<span><span class="va">t2</span> <span class="op">&lt;-</span> <span class="va">t</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">69</span>, <span class="fl">70</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 <div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_write.html" class="external-link">st_write</a></span><span class="op">(</span><span class="va">t2</span>, <span class="st">"test_keh2.shp"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="summary-1">10. Summary<a class="anchor" aria-label="anchor" href="#summary-1"></a>
-</h4>
+<div class="section level3">
+<h3 id="summary-1">10. Summary<a class="anchor" aria-label="anchor" href="#summary-1"></a>
+</h3>
 <p>In this exercise we:</p>
 <ul>
 <li>explored spatial dependence using variograms,</li>

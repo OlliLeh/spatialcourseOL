@@ -30,7 +30,7 @@ Please, take a look also to this webpage:
 
 <https://github.com/erikgahner/awesome-ggplot2>
 
-#### Core idea: “Grammar of Graphics”
+### Core idea: “Grammar of Graphics”
 
 Instead of choosing a plot type (like “bar plot” or “scatter plot”)
 directly, ggplot2 builds plots by combining components (“layers”):
@@ -106,7 +106,7 @@ ggplot2 is:
 - more consistent
 - easier to build complex plots incrementally
 
-#### An introduction to data visualization using R programming
+### An introduction to data visualization using R programming
 
 ## Creating maps with ggplot2
 
@@ -145,7 +145,7 @@ class(world)
 #> [1] "sf"         "data.frame"
 ```
 
-#### Basic plot
+### Basic plot
 
 First, let us start with creating a base map of the world using ggplot2.
 This base map will then be extended with different map elements, as well
@@ -334,7 +334,7 @@ best quality, and a PNG version of it for web purposes:
 ggsave("map_web.png", width = 6, height = 6, dpi = "screen")
 ```
 
-#### Add another data
+### Add another data
 
 Let´s load required packages:
 
@@ -462,7 +462,7 @@ ggplot() +
 
 ## Working with ggplot2: Population development of the municipalities
 
-#### 1. Installing and loading R packages
+### 1. Installing and loading R packages
 
 What is an R package? An R package is a collection of functions,
 datasets, and documentation that extends what R can do. Base R is fairly
@@ -527,7 +527,7 @@ Explanation:
 
 Note! This requires the remotes package to be installed.
 
-#### 2. Reading data into R
+### 2. Reading data into R
 
 ``` r
 library(spatialcourseOL)
@@ -556,7 +556,7 @@ data(data_vakie3)
 head(data_vakie3)
 ```
 
-#### 3. Merging datasets
+### 3. Merging datasets
 
 ``` r
 x2 <- merge(data_vakie3, aluejaot2, by.x="tunnus", by.y="tunnus",all.x=T)
@@ -569,7 +569,7 @@ Explanation:
   datasets (here id is tunnus)
 - all.x = TRUE keeps all rows from data (left join)
 
-#### 4. Reshaping the data (wide → long)
+### 4. Reshaping the data (wide → long)
 
 ``` r
 data2 <- melt(data = x2, id.vars = c("tunnus", "nimi","Maakunta"), measure.vars = c(3:43))
@@ -586,7 +586,7 @@ melt():
 
 As a results, data2 is suitable for ggplot2 and time‑series analysis.
 
-#### 5. Creating a time variable
+### 5. Creating a time variable
 
 ``` r
 aika <- seq(2000,2040,1)
@@ -608,7 +608,7 @@ This vector can be used as:
 - A reference for plotting
 - Indexing years
 
-#### 6. Creating a repeated time variable
+### 6. Creating a repeated time variable
 
 ``` r
 b <- rep(aika,310)
@@ -631,7 +631,7 @@ Conceptually:
 - Each region has values for every year
 - b assigns the correct year to each observation
 
-#### 7. Sorting the data by region name
+### 7. Sorting the data by region name
 
 ``` r
 data3 <- data2[order(data2$nimi),]
@@ -650,7 +650,7 @@ Why this matters?
 
 This step is crucial for correct time–region alignment.
 
-#### 8. Adding the time variable to the data
+### 8. Adding the time variable to the data
 
 ``` r
 data4 <- cbind(data3,b)
@@ -664,7 +664,7 @@ Explanation:
 - The new column b represents time (years)
 - names(data4) checks that the column was added correctly
 
-#### 9. Converting values to numeric
+### 9. Converting values to numeric
 
 ``` r
 data4$value <- as.numeric(data4$value)
@@ -680,7 +680,7 @@ Why this is important?
 - Mathematical operations (sum, mean, plots) require numeric data
 - Without this step, aggregation would fail or give errors
 
-#### 10. Aggregating data by year, region, and province
+### 10. Aggregating data by year, region, and province
 
 ``` r
 data5 <- aggregate(data4$value, by=list(data4$b,data4$nimi, data4$Maakunta),FUN=sum)
@@ -713,7 +713,7 @@ The output columns will be named:
 - Group.3 → province
 - x → aggregated value
 
-#### 11. Checking dataset dimensions
+### 11. Checking dataset dimensions
 
 ``` r
 dim(data5)
@@ -732,7 +732,7 @@ Why this matters?
 - Confirms that aggregation worked as expected
 - Useful for sanity checking before analysis or plotting
 
-#### 12. Subsetting one province
+### 12. Subsetting one province
 
 ``` r
 vs <- subset(data5, Group.3=="Pohjois-Karjala")
@@ -751,7 +751,7 @@ Ready for:
 - comparisons
 - focused analysis
 
-#### 13. Visualising regional population development with ggplot2
+### 13. Visualising regional population development with ggplot2
 
 #### Facetting
 
@@ -775,7 +775,7 @@ In ggplot2, the two main faceting functions are:
 - facet_wrap() - One grouping variable
 - facet_grid() - Two grouping variables (rows × columns)
 
-##### What is faceting in ggplot2?
+### 14. What is faceting in ggplot2?
 
 Faceting means splitting one plot into multiple small plots, each
 showing a subset of the data, but:
@@ -853,7 +853,7 @@ Basically, the code draws a separate line plot for each value of
 Group.2, arranged automatically on the page, with each plot showing how
 x changes over Group.1 and using its own y-axis scale.
 
-#### facet_geo()
+### 15. facet_geo()
 
 Standard faceting (facet_wrap(), facet_grid()) arranges panels
 
@@ -948,7 +948,7 @@ as_tibble(d$results) |>
 #> 22 grid_varsinais_suomi   custom geofacet grid for Varsinais-Suomi region
 ```
 
-##### Why it’s good for teaching and research
+##### Why it’s good for research
 
 Advantages
 

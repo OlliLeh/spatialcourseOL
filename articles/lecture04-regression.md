@@ -16,7 +16,7 @@ where
 - $X_{1},X_{2},X_{3}$ are explanatory variables  
 - $\varepsilon$ is the error term
 
-##### Estimation of the model
+### Estimation of the model
 
 The regression coefficients $\beta_{0},\beta_{1},\beta_{2},\beta_{3}$
 are usually estimated using ordinary least squares (OLS).
@@ -48,7 +48,7 @@ Each regression coefficient has a clear interpretation:
 This *“all else equal”* interpretation is central to multiple regression
 analysis.
 
-##### Model assumptions
+### Model assumptions
 
 For the linear regression model to be valid, the following assumptions
 are commonly made:
@@ -73,7 +73,7 @@ are commonly made:
 Violations of these assumptions can lead to biased estimates or invalid
 inference.
 
-##### Goodness of fit
+### Goodness of fit
 
 Two commonly used measures are:
 
@@ -97,7 +97,7 @@ Possible extensions of the basic linear regression framework include:
 - generalized linear models
 - spatial regression models
 
-#### Examples of regression models
+### Examples of regression models
 
 ##### Faithfull data
 
@@ -355,7 +355,7 @@ mdls$r.squared
 
     ## [1] 0.7658469
 
-#### Hypothesis Testing for Comparing Regression Models
+### Hypothesis Testing for Comparing Regression Models
 
 In regression analysis, we often want to **test whether a subset of
 predictors is statistically relevant**. This can be formulated as a
@@ -570,7 +570,7 @@ anova(g3, g)
 These tools are essential for principled model selection in regression
 analysis.
 
-#### Variable selection in regression models
+### Variable selection in regression models
 
 In multiple regression analysis, we often face the question of **which
 predictors should be included in the model**. Including too many
@@ -823,7 +823,7 @@ Variable selection should always be guided by statistical reasoning,
 theoretical understanding, and substantive knowledge, not automatic
 procedures alone.
 
-#### Regression diagnostic
+### Regression diagnostic
 
 Regression diagnostics are used to evaluate whether the assumptions of
 the linear regression model are reasonably satisfied and to identify
@@ -1324,6 +1324,74 @@ summary(model2)
     ## 
     ## Number of Fisher Scoring iterations: 6
 
+**Interpretation of results**
+
+- Model fit
+
+- Null deviance: 3343.3
+
+- Residual deviance: 2038.1
+
+- AIC: 2054.1
+
+The large deviance reduction indicates that the model explains a
+substantial share of variation in strong growth outcomes.
+
+**Interpretation of coefficients**
+
+Strong negative effects
+
+- Unemployment (tyottom)
+
+- Areas with high unemployment are much less likely to experience strong
+  growth.
+
+- Average age of inhabitants (he_kika)
+
+- The negative effect indicates that postal code areas with an older
+  population are significantly less likely to experience strong job
+  growth.
+
+- Housing space per capita (ra_as_kpa)
+
+- Strongly negative effect indicates that dense housing environments are
+  central to rapid growth.
+
+- Higher education (korkk)
+
+- Negative effect may reflect that strong growth occurs in emerging
+  urban zones, rather than already highly educated cores.
+
+Strong positive effect
+
+- Share of pensioners (elak)
+
+- Positive and significant
+
+- Suggests some regions experiencing strong growth may be
+  retirement‑oriented destinations or benefit from aging‑related
+  in‑migration.
+
+Non‑effect
+
+- Population density (as_tih)
+
+- No statistically meaningful effect once other variables are controlled
+  for.
+
+**Substantive interpretation**
+
+Strong job growth follows a distinctly different logic than general
+growth:
+
+- It concentrates in economically robust areas
+- It is associated with low unemployment
+- It favours compact housing structures
+- It is less dependent on youth concentration alone
+
+This suggests a polarised growth regime, where a small number of highly
+competitive regions attract a disproportionate share of jobs increases.
+
 And then we can save the model2 results for a new variable called as
 model2_res:
 
@@ -1571,7 +1639,7 @@ Spatial interpolation is the activity of estimating values of spatially
 continuous variables at locations where they have not been observed,
 based on measurements at known locations.
 
-#### 1. Introduction
+### 1. Introduction
 
 In this exercise, a continuous surface is created using interpolation to
 describe the probability of growth in the number of jobs across Finland.
@@ -1588,7 +1656,7 @@ In these lecture notes we:
 The analysis relies mainly on the gstat package together with modern
 spatial packages in R.
 
-#### 2. Packages and Data
+### 2. Packages and Data
 
 We begin by loading the required packages.
 
@@ -1610,10 +1678,10 @@ Municipality boundaries are used for visualisation and spatial
 aggregation of results.
 
 ``` r
-municipalities <- geofi::get_municipalities(year = 2021)
+municipalities <- geofi::get_municipalities(year = 2024)
 ```
 
-    ## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2021
+    ## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2024
 
     ## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
 
@@ -1624,7 +1692,7 @@ municipalities <- geofi::get_municipalities(year = 2021)
 
     ## Data is licensed under: Attribution 4.0 International (CC BY 4.0)
 
-#### 3. Preparing Point Data
+### 3. Preparing Point Data
 
 This exercise continues an earlier analysis. We assume the object
 p25_data already exists in the workspace.
@@ -1701,7 +1769,7 @@ int.sf <- st_as_sf(
   st_transform(crs)
 ```
 
-#### 4. Creating a Prediction Grid
+### 4. Creating a Prediction Grid
 
 To perform kriging, we define a regular prediction grid (pixels)
 covering Finland. Here we use a resolution of 10 km × 10 km.
@@ -1723,7 +1791,7 @@ grd
     ## x    1  65   83748  10000 ETRS89 / TM35FIN(E,N) [x]
     ## y    1 114 7776431 -10000 ETRS89 / TM35FIN(E,N) [y]
 
-#### 5. Variogram Analysis
+### 5. Variogram Analysis
 
 A variogram describes how similar (or dissimilar) values of a spatial
 variable are as a function of the distance between locations.
@@ -1797,7 +1865,7 @@ plot(v0, plot.numbers = TRUE)
 
 ![](lecture04-regression_files/figure-html/unnamed-chunk-79-1.png)
 
-#### 6. Fitting a Variogram Model
+### 6. Fitting a Variogram Model
 
 A variogram is a function that quantifies how spatial similarity
 decreases with distance and is the core model behind geostatistical
@@ -1821,7 +1889,7 @@ plot(v, v.m, plot.numbers = TRUE)
 
 ![](lecture04-regression_files/figure-html/unnamed-chunk-80-1.png)
 
-#### 7. Ordinary Kriging
+### 7. Ordinary Kriging
 
 With a fitted variogram model, we can now perform ordinary kriging. At a
 high level, kriging interpolation answers the question:
@@ -1860,7 +1928,7 @@ k <- krige(
 The result is a stars object containing predicted values (var1.pred) and
 kriging variance (var1.var).
 
-#### 8. Visualising the Interpolation Surface with ggplot2
+### 8. Visualising the Interpolation Surface with ggplot2
 
 We overlay the kriging surface with municipality boundaries.
 
@@ -1905,7 +1973,7 @@ ggplot(municipalities) +
 
 ![](lecture04-regression_files/figure-html/unnamed-chunk-82-1.png)
 
-#### 9. Exporting Results
+### 9. Exporting Results
 
 **Saving the interpolation surface**
 
@@ -1933,14 +2001,14 @@ st_write(k2, "test_keh2.shp")
 
 ``` r
 t <- st_join(municipalities, k2, join = st_equals, left = TRUE)
-t2 <- t[, c(2, 3, 70, 71)]
+t2 <- t[, c(2, 3, 69, 70)]
 ```
 
 ``` r
 st_write(t2, "test_keh2.shp")
 ```
 
-#### 10. Summary
+### 10. Summary
 
 In this exercise we:
 

@@ -84,9 +84,9 @@ here:</p>
 <p><a href="https://exts.ggplot2.tidyverse.org/ggiraph.html" class="external-link uri">https://exts.ggplot2.tidyverse.org/ggiraph.html</a></p>
 <p>Please, take a look also to this webpage:</p>
 <p><a href="https://github.com/erikgahner/awesome-ggplot2" class="external-link uri">https://github.com/erikgahner/awesome-ggplot2</a></p>
-<div class="section level4">
-<h4 id="core-idea-grammar-of-graphics">Core idea: “Grammar of Graphics”<a class="anchor" aria-label="anchor" href="#core-idea-grammar-of-graphics"></a>
-</h4>
+<div class="section level3">
+<h3 id="core-idea-grammar-of-graphics">Core idea: “Grammar of Graphics”<a class="anchor" aria-label="anchor" href="#core-idea-grammar-of-graphics"></a>
+</h3>
 <p>Instead of choosing a plot type (like “bar plot” or “scatter plot”)
 directly, ggplot2 builds plots by combining components (“layers”):</p>
 <ul>
@@ -154,9 +154,9 @@ directly, ggplot2 builds plots by combining components (“layers”):</p>
 </ul>
 </div>
 </div>
-<div class="section level4">
-<h4 id="an-introduction-to-data-visualization-using-r-programming">An introduction to data visualization using R programming<a class="anchor" aria-label="anchor" href="#an-introduction-to-data-visualization-using-r-programming"></a>
-</h4>
+<div class="section level3">
+<h3 id="an-introduction-to-data-visualization-using-r-programming">An introduction to data visualization using R programming<a class="anchor" aria-label="anchor" href="#an-introduction-to-data-visualization-using-r-programming"></a>
+</h3>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/HPJn1CMvtmI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
 </div>
@@ -192,9 +192,9 @@ argument return class:</p>
 <span><span class="va">world</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="st">"medium"</span>, returnclass <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">world</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "sf"         "data.frame"</span></span></code></pre></div>
-<div class="section level4">
-<h4 id="basic-plot">Basic plot<a class="anchor" aria-label="anchor" href="#basic-plot"></a>
-</h4>
+<div class="section level3">
+<h3 id="basic-plot">Basic plot<a class="anchor" aria-label="anchor" href="#basic-plot"></a>
+</h3>
 <p>First, let us start with creating a base map of the world using
 ggplot2. This base map will then be extended with different map
 elements, as well as zoomed in to an area of interest. We can check that
@@ -211,7 +211,6 @@ sign, which indicates that the call is not complete yet, and each
 subsequent line correspond to another layer or scale.</p>
 <p>In this case, we use the geom_sf function, which simply adds a
 geometry stored in a sf object.</p>
-</div>
 <div class="section level4">
 <h4 id="title-subtitle-and-axis-labels">Title, subtitle, and axis labels<a class="anchor" aria-label="anchor" href="#title-subtitle-and-axis-labels"></a>
 </h4>
@@ -348,9 +347,10 @@ best quality, and a PNG version of it for web purposes:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"map_web.png"</span>, width <span class="op">=</span> <span class="fl">6</span>, height <span class="op">=</span> <span class="fl">6</span>, dpi <span class="op">=</span> <span class="st">"screen"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="add-another-data">Add another data<a class="anchor" aria-label="anchor" href="#add-another-data"></a>
-</h4>
+</div>
+<div class="section level3">
+<h3 id="add-another-data">Add another data<a class="anchor" aria-label="anchor" href="#add-another-data"></a>
+</h3>
 <p>Let´s load required packages:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -452,9 +452,9 @@ left_join() function:</p>
 <h2 id="working-with-ggplot2-population-development-of-the-municipalities">Working with ggplot2: Population development of the
 municipalities<a class="anchor" aria-label="anchor" href="#working-with-ggplot2-population-development-of-the-municipalities"></a>
 </h2>
-<div class="section level4">
-<h4 id="installing-and-loading-r-packages">1. Installing and loading R packages<a class="anchor" aria-label="anchor" href="#installing-and-loading-r-packages"></a>
-</h4>
+<div class="section level3">
+<h3 id="installing-and-loading-r-packages">1. Installing and loading R packages<a class="anchor" aria-label="anchor" href="#installing-and-loading-r-packages"></a>
+</h3>
 <p>What is an R package? An R package is a collection of functions,
 datasets, and documentation that extends what R can do. Base R is fairly
 minimal; most real data analysis uses packages.</p>
@@ -503,9 +503,9 @@ out like a map).</p>
 </ul>
 <p>Note! This requires the remotes package to be installed.</p>
 </div>
-<div class="section level4">
-<h4 id="reading-data-into-r">2. Reading data into R<a class="anchor" aria-label="anchor" href="#reading-data-into-r"></a>
-</h4>
+<div class="section level3">
+<h3 id="reading-data-into-r">2. Reading data into R<a class="anchor" aria-label="anchor" href="#reading-data-into-r"></a>
+</h3>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/OlliLeh/spatialcourseOL" class="external-link">spatialcourseOL</a></span><span class="op">)</span></span></code></pre></div>
 <p>Reading a CSV file</p>
@@ -527,9 +527,9 @@ strings</li>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_vakie3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_vakie3</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="merging-datasets">3. Merging datasets<a class="anchor" aria-label="anchor" href="#merging-datasets"></a>
-</h4>
+<div class="section level3">
+<h3 id="merging-datasets">3. Merging datasets<a class="anchor" aria-label="anchor" href="#merging-datasets"></a>
+</h3>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">data_vakie3</span>, <span class="va">aluejaot2</span>, by.x<span class="op">=</span><span class="st">"tunnus"</span>, by.y<span class="op">=</span><span class="st">"tunnus"</span>,all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <p>Explanation:</p>
@@ -540,9 +540,9 @@ datasets (here id is tunnus)</li>
 <li>all.x = TRUE keeps all rows from data (left join)</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="reshaping-the-data-wide-long">4. Reshaping the data (wide → long)<a class="anchor" aria-label="anchor" href="#reshaping-the-data-wide-long"></a>
-</h4>
+<div class="section level3">
+<h3 id="reshaping-the-data-wide-long">4. Reshaping the data (wide → long)<a class="anchor" aria-label="anchor" href="#reshaping-the-data-wide-long"></a>
+</h3>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/melt.html" class="external-link">melt</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">x2</span>, id.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tunnus"</span>, <span class="st">"nimi"</span>,<span class="st">"Maakunta"</span><span class="op">)</span>, measure.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">43</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Many datasets are initially in wide format:</p>
@@ -556,9 +556,9 @@ column</li>
 <p>As a results, data2 is suitable for ggplot2 and time‑series
 analysis.</p>
 </div>
-<div class="section level4">
-<h4 id="creating-a-time-variable">5. Creating a time variable<a class="anchor" aria-label="anchor" href="#creating-a-time-variable"></a>
-</h4>
+<div class="section level3">
+<h3 id="creating-a-time-variable">5. Creating a time variable<a class="anchor" aria-label="anchor" href="#creating-a-time-variable"></a>
+</h3>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">aika</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2000</span>,<span class="fl">2040</span>,<span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">aika</span></span>
@@ -578,9 +578,9 @@ analysis.</p>
 <li>Indexing years</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="creating-a-repeated-time-variable">6. Creating a repeated time variable<a class="anchor" aria-label="anchor" href="#creating-a-repeated-time-variable"></a>
-</h4>
+<div class="section level3">
+<h3 id="creating-a-repeated-time-variable">6. Creating a repeated time variable<a class="anchor" aria-label="anchor" href="#creating-a-repeated-time-variable"></a>
+</h3>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">aika</span>,<span class="fl">310</span><span class="op">)</span></span></code></pre></div>
 <p>Explanation:</p>
@@ -599,9 +599,9 @@ that matches the number of rows in the dataset.</p>
 <li>b assigns the correct year to each observation</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="sorting-the-data-by-region-name">7. Sorting the data by region name<a class="anchor" aria-label="anchor" href="#sorting-the-data-by-region-name"></a>
-</h4>
+<div class="section level3">
+<h3 id="sorting-the-data-by-region-name">7. Sorting the data by region name<a class="anchor" aria-label="anchor" href="#sorting-the-data-by-region-name"></a>
+</h3>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data3</span> <span class="op">&lt;-</span> <span class="va">data2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">data2</span><span class="op">$</span><span class="va">nimi</span><span class="op">)</span>,<span class="op">]</span></span></code></pre></div>
 <p>Explanation:</p>
@@ -618,9 +618,9 @@ that matches the number of rows in the dataset.</p>
 </ul>
 <p>This step is crucial for correct time–region alignment.</p>
 </div>
-<div class="section level4">
-<h4 id="adding-the-time-variable-to-the-data">8. Adding the time variable to the data<a class="anchor" aria-label="anchor" href="#adding-the-time-variable-to-the-data"></a>
-</h4>
+<div class="section level3">
+<h3 id="adding-the-time-variable-to-the-data">8. Adding the time variable to the data<a class="anchor" aria-label="anchor" href="#adding-the-time-variable-to-the-data"></a>
+</h3>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">data3</span>,<span class="va">b</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data4</span><span class="op">)</span></span>
@@ -632,9 +632,9 @@ that matches the number of rows in the dataset.</p>
 <li>names(data4) checks that the column was added correctly</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="converting-values-to-numeric">9. Converting values to numeric<a class="anchor" aria-label="anchor" href="#converting-values-to-numeric"></a>
-</h4>
+<div class="section level3">
+<h3 id="converting-values-to-numeric">9. Converting values to numeric<a class="anchor" aria-label="anchor" href="#converting-values-to-numeric"></a>
+</h3>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data4</span><span class="op">$</span><span class="va">value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">data4</span><span class="op">$</span><span class="va">value</span><span class="op">)</span></span></code></pre></div>
 <p>Explanation:</p>
@@ -648,9 +648,9 @@ that matches the number of rows in the dataset.</p>
 <li>Without this step, aggregation would fail or give errors</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="aggregating-data-by-year-region-and-province">10. Aggregating data by year, region, and province<a class="anchor" aria-label="anchor" href="#aggregating-data-by-year-region-and-province"></a>
-</h4>
+<div class="section level3">
+<h3 id="aggregating-data-by-year-region-and-province">10. Aggregating data by year, region, and province<a class="anchor" aria-label="anchor" href="#aggregating-data-by-year-region-and-province"></a>
+</h3>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">data4</span><span class="op">$</span><span class="va">value</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">data4</span><span class="op">$</span><span class="va">b</span>,<span class="va">data4</span><span class="op">$</span><span class="va">nimi</span>, <span class="va">data4</span><span class="op">$</span><span class="va">Maakunta</span><span class="op">)</span>,FUN<span class="op">=</span><span class="va">sum</span><span class="op">)</span></span></code></pre></div>
 <p>Explanation: This step summarizes the data.</p>
@@ -677,9 +677,9 @@ for:</p>
 <li>x → aggregated value</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="checking-dataset-dimensions">11. Checking dataset dimensions<a class="anchor" aria-label="anchor" href="#checking-dataset-dimensions"></a>
-</h4>
+<div class="section level3">
+<h3 id="checking-dataset-dimensions">11. Checking dataset dimensions<a class="anchor" aria-label="anchor" href="#checking-dataset-dimensions"></a>
+</h3>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">data5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 12669     4</span></span></code></pre></div>
@@ -695,9 +695,9 @@ for:</p>
 <li>Useful for sanity checking before analysis or plotting</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="subsetting-one-province">12. Subsetting one province<a class="anchor" aria-label="anchor" href="#subsetting-one-province"></a>
-</h4>
+<div class="section level3">
+<h3 id="subsetting-one-province">12. Subsetting one province<a class="anchor" aria-label="anchor" href="#subsetting-one-province"></a>
+</h3>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">data5</span>, <span class="va">Group.3</span><span class="op">==</span><span class="st">"Pohjois-Karjala"</span><span class="op">)</span></span></code></pre></div>
 <p>Explanation:</p>
@@ -713,10 +713,9 @@ for:</p>
 <li>focused analysis</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="visualising-regional-population-development-with-ggplot2">13. Visualising regional population development with ggplot2<a class="anchor" aria-label="anchor" href="#visualising-regional-population-development-with-ggplot2"></a>
-</h4>
-</div>
+<div class="section level3">
+<h3 id="visualising-regional-population-development-with-ggplot2">13. Visualising regional population development with ggplot2<a class="anchor" aria-label="anchor" href="#visualising-regional-population-development-with-ggplot2"></a>
+</h3>
 <div class="section level4">
 <h4 id="facetting">Facetting<a class="anchor" aria-label="anchor" href="#facetting"></a>
 </h4>
@@ -740,9 +739,11 @@ group.”</p>
 <li>facet_wrap() - One grouping variable</li>
 <li>facet_grid() - Two grouping variables (rows × columns)</li>
 </ul>
-<div class="section level5">
-<h5 id="what-is-faceting-in-ggplot2">What is faceting in ggplot2?<a class="anchor" aria-label="anchor" href="#what-is-faceting-in-ggplot2"></a>
-</h5>
+</div>
+</div>
+<div class="section level3">
+<h3 id="what-is-faceting-in-ggplot2">14. What is faceting in ggplot2?<a class="anchor" aria-label="anchor" href="#what-is-faceting-in-ggplot2"></a>
+</h3>
 <p>Faceting means splitting one plot into multiple small plots, each
 showing a subset of the data, but:</p>
 <ul>
@@ -804,10 +805,9 @@ showing a subset of the data, but:</p>
 Group.2, arranged automatically on the page, with each plot showing how
 x changes over Group.1 and using its own y-axis scale.</p>
 </div>
-</div>
-<div class="section level4">
-<h4 id="facet_geo">facet_geo()<a class="anchor" aria-label="anchor" href="#facet_geo"></a>
-</h4>
+<div class="section level3">
+<h3 id="facet_geo">15. facet_geo()<a class="anchor" aria-label="anchor" href="#facet_geo"></a>
+</h3>
 <p>Standard faceting (facet_wrap(), facet_grid()) arranges panels</p>
 <ul>
 <li>alphabetically</li>
@@ -891,7 +891,7 @@ Turku   Helsinki</code></pre>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">22</span> grid_varsinais_suomi   custom geofacet grid for Varsinais-Suomi region</span></span></code></pre></div>
 </div>
 <div class="section level5">
-<h5 id="why-its-good-for-teaching-and-research">Why it’s good for teaching and research<a class="anchor" aria-label="anchor" href="#why-its-good-for-teaching-and-research"></a>
+<h5 id="why-its-good-for-research">Why it’s good for research<a class="anchor" aria-label="anchor" href="#why-its-good-for-research"></a>
 </h5>
 <p>Advantages</p>
 <ul>
