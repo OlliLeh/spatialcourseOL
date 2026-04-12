@@ -44,7 +44,15 @@ directly, ggplot2 builds plots by combining components (“layers”):
 
 You add these components together using +.
 
-##### A simple example
+### A simple example
+
+Every ggplot2 plot has three key components:
+
+- data,
+- A set of aesthetic mappings between variables in the data and visual
+  properties, and
+- At least one layer which describes how to render each observation.
+  Layers are usually created with a geom function.
 
 ``` r
 library(ggplot2)
@@ -54,14 +62,28 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 
 ![](lecture03-ggplot2_files/figure-html/unnamed-chunk-1-1.png)
 
-This means:
+This produces a scatterplot defined by:
 
-- Data: mtcars
-- x-axis: weight (wt)
-- y-axis: miles per gallon (mpg)
-- Geom: points (scatter plot)
+- Data - mtcars
+- Aesthetic mapping: engine size mapped to x position (wt), fuel economy
+  to y position (mpg).
+- Layer - Geom: points (scatter plot)
 
-##### Adding more layers
+Pay attention to the structure of this function call: data and aesthetic
+mappings are supplied in ggplot(), then layers are added on with +. This
+is an important pattern, and as you learn more about ggplot2 you’ll
+construct increasingly sophisticated plots by adding on more types of
+components.
+
+Almost every plot maps a variable to x and y, so naming these aesthetics
+is tedious, so the first two unnamed arguments to aes() will be mapped
+to x and y. This means that the following code is identical to the
+example above:
+
+    ggplot(mpg, aes(displ, hwy)) +
+      geom_point()
+
+### Adding more layers
 
 ``` r
 ggplot(mtcars, aes(wt, mpg)) +
@@ -70,8 +92,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   labs(
     title = "Fuel efficiency vs car weight",
     x = "Weight",
-    y = "Miles per gallon"
-  )
+    y = "Miles per gallon")
 #> `geom_smooth()` using formula = 'y ~ x'
 ```
 
@@ -82,7 +103,228 @@ Here you extend the same plot by:
 - adding a regression line
 - adding labels
 
-##### How it differs from base R plots
+Plot geoms
+
+- geom_smooth() fits a smoother to the data and displays the smooth and
+  its standard error.
+- geom_boxplot() produces a box-and-whisker plot to summarise the
+  distribution of a set of points.
+- geom_histogram() and geom_freqpoly() show the distribution of
+  continuous variables.
+- geom_bar() shows the distribution of categorical variables.
+- geom_path() and geom_line() draw lines between the data points. A line
+  plot is constrained to produce lines that travel from left to right,
+  while paths can go in any direction. Lines are typically used to
+  explore how things change over time.
+
+Note that different geoms can use the same data and aesthetics! Multiple
+geoms can be layered like in this example:
+
+``` r
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point() + 
+  geom_smooth()
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-3-1.png)
+
+``` r
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+```
+
+This overlays the scatterplot with a smooth curve, including an
+assessment of uncertainty in the form of point-wise confidence intervals
+shown in grey. If you’re not interested in the confidence interval, turn
+it off with geom_smooth(se = FALSE).
+
+An important argument to geom_smooth() is the method, which allows you
+to choose which type of model is used to fit the smooth curve:
+
+- method = “loess”, the default for small n, uses a smooth local
+  regression (as described in ?loess). The wiggliness of the line is
+  controlled by the span parameter, which ranges from 0 (exceedingly
+  wiggly) to 1 (not so wiggly).
+
+``` r
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point() + 
+  geom_smooth(span = 0.2)
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-4-1.png)
+
+``` r
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+```
+
+``` r
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point() + 
+  geom_smooth(span = 1)
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-5-1.png)
+
+``` r
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+```
+
+- method = “gam” fits a generalised additive model provided by the mgcv
+  package. You need to first load mgcv, then use a formula like formula
+  = y ~ s(x) or y ~ s(x, bs = “cs”) (for large data). This is what
+  ggplot2 uses when there are more than 1,000 points.
+
+``` r
+library(mgcv)
+#> Loading required package: nlme
+#> 
+#> Attaching package: 'nlme'
+#> The following object is masked from 'package:dplyr':
+#> 
+#>     collapse
+#> This is mgcv 1.9-4. For overview type '?mgcv'.
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point() + 
+  geom_smooth(method = "gam", formula = y ~ s(x))
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-6-1.png)
+
+### Boxplots and jittered points
+
+When a set of data includes a categorical variable and one or more
+continuous variables, you will probably be interested to know how the
+values of the continuous variables vary with the levels of the
+categorical variable.
+
+There are three useful techniques that help to visualise a categorical
+variable and one continuous variable:
+
+- Jittering, geom_jitter(), adds a little random noise to the data which
+  can help avoid overplotting.
+- Boxplots, geom_boxplot(), summarise the shape of the distribution with
+  a handful of summary statistics.
+- Violin plots, geom_violin(), show a compact representation of the
+  “density” of the distribution, highlighting the areas where more
+  points are found.
+
+These are illustrated below:
+
+``` r
+ggplot(mpg, aes(drv, hwy)) + geom_jitter()
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-7-1.png)
+
+``` r
+ggplot(mpg, aes(drv, hwy)) + geom_boxplot()
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-8-1.png)
+
+``` r
+ggplot(mpg, aes(drv, hwy)) + geom_violin()
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-9-1.png)
+
+### Histograms and frequency polygons
+
+Histograms and frequency polygons show the distribution of a single
+numeric variable. They provide more information about the distribution
+of a single group than boxplots do, at the expense of needing more
+space.
+
+``` r
+ggplot(mpg, aes(hwy)) + geom_histogram()
+#> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-10-1.png)
+
+``` r
+#> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+```
+
+``` r
+ggplot(mpg, aes(hwy)) + geom_freqpoly()
+#> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-11-1.png)
+
+``` r
+#> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+```
+
+Both histograms and frequency polygons work in the same way: they bin
+the data, then count the number of observations in each bin. The only
+difference is the display: histograms use bars and frequency polygons
+use lines.
+
+### Bar charts
+
+The discrete analogue of the histogram is the bar chart, geom_bar().
+It’s easy to use:
+
+``` r
+ggplot(mpg, aes(manufacturer)) + 
+  geom_bar()
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-12-1.png)
+
+### Time series with line
+
+Line and path plots are typically used for time series data. Line plots
+join the points from left to right, while path plots join them in the
+order that they appear in the dataset (in other words, a line plot is a
+path plot of the data sorted by x value). Line plots usually have time
+on the x-axis, showing how a single variable has changed over time. Path
+plots show how two variables have simultaneously changed over time, with
+time encoded in the way that observations are connected.
+
+Because the year variable in the mpg dataset only has two values, we’ll
+show some time series plots using the economics dataset, which contains
+economic data on the US measured over the last 40 years.
+
+The figures below shows two plots of unemployment over time, both
+produced using geom_line(). The first shows the unemployment rate while
+the second shows the median number of weeks unemployed. We can already
+see some differences in these two variables, particularly in the last
+peak, where the unemployment percentage is lower than it was in the
+preceding peaks, but the length of unemployment is high.
+
+``` r
+ggplot(economics, aes(date, unemploy / pop)) +
+  geom_line()
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-13-1.png)
+
+``` r
+ggplot(economics, aes(date, uempmed)) +
+  geom_line()
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-14-1.png)
+
+### How it differs from base R plots
+
+Base R plotting
+
+- Procedural
+- “Draw now, modify later”
+- Plot type chosen first (plot, hist, boxplot)
+
+ggplot2
+
+- Declarative
+- “Describe what to plot”
+- Visualization built from components
 
 Base R:
 
@@ -90,7 +332,7 @@ Base R:
 plot(mtcars$wt, mtcars$mpg)
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-3-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-15-1.png)
 
 ggplot2:
 
@@ -98,13 +340,22 @@ ggplot2:
 ggplot(mtcars, aes(wt, mpg)) + geom_point()
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-4-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-16-1.png)
 
 ggplot2 is:
 
 - more structured
 - more consistent
 - easier to build complex plots incrementally
+
+See more information about ggplot2 from this fantastic book: “ggplot2:
+elegant graphics for data analysis”
+
+<https://ggplot2-book.org/>
+
+![ggplot2 logo](figures/ggplot2_book.png)
+
+ggplot2 logo
 
 ### An introduction to data visualization using R programming
 
@@ -145,7 +396,7 @@ class(world)
 #> [1] "sf"         "data.frame"
 ```
 
-### Basic plot
+#### Basic plot
 
 First, let us start with creating a base map of the world using ggplot2.
 This base map will then be extended with different map elements, as well
@@ -158,7 +409,7 @@ ggplot(data = world) +
     geom_sf()
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-7-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-19-1.png)
 
 This call nicely introduces the structure of a ggplot call: The first
 part ggplot(data = world) initiates the ggplot graph, and indicates that
@@ -169,7 +420,7 @@ subsequent line correspond to another layer or scale.
 In this case, we use the geom_sf function, which simply adds a geometry
 stored in a sf object.
 
-#### Title, subtitle, and axis labels
+### Title, subtitle, and axis labels
 
 A title and a subtitle can be added to the map using the function
 ggtitle, passing any valid character string (e.g. with quotation marks)
@@ -184,9 +435,9 @@ ggplot(data = world) +
     ggtitle("World map", subtitle = paste0("(", length(unique(world$NAME)), " countries)"))
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-8-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-20-1.png)
 
-#### Map color
+### Map color
 
 In many ways, sf geometries are no different than regular geometries,
 and can be displayed with the same level of control on their attributes.
@@ -199,7 +450,7 @@ ggplot(data = world) +
     geom_sf(color = "black", fill = "lightgreen")
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-9-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-21-1.png)
 
 The package ggplot2 allows the use of more complex color schemes, such
 as a gradient on one variable of the data. Here is another example that
@@ -215,9 +466,9 @@ ggplot(data = world) +
     scale_fill_viridis_c(option = "plasma", trans = "sqrt")
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-10-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-22-1.png)
 
-#### Projection and extent
+### Projection and extent
 
 The function coord_sf allows to deal with the coordinate system, which
 includes both projection and extent of the map. By default, the map will
@@ -235,9 +486,9 @@ ggplot(data = world) +
     coord_sf(crs = "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs ")
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-11-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-23-1.png)
 
-#### Scale bar and North arrow
+### Scale bar and North arrow
 
 Scale bar and north arrow can be added on map with the package
 ggspatial, which provides easy-to-use functions for this purpose.
@@ -254,7 +505,7 @@ ggplot(data = world) +
 #> Scale on map varies by more than 10%, scale bar may be inaccurate
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-12-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-24-1.png)
 
 These lines add a scale bar:
 
@@ -320,7 +571,7 @@ This part of the code:
 - Uses longitude (xlim) and latitude (ylim)
 - Does not change the data itself, only what you see
 
-#### Saving the map
+### Saving the map
 
 Saving of the map is very easy by using ggsave. This function allows a
 graphic (typically the last plot displayed) to be saved in a variety of
@@ -355,8 +606,7 @@ name. (note that we create here a new dataset HDI_data2)
 
 ``` r
 HDI_data2 <- HDI_data %>%
-  mutate(iso3 = countrycode(Country, "country.name", "iso3c")
-  )
+  mutate(iso3 = countrycode(Country, "country.name", "iso3c"))
 #> Warning: There was 1 warning in `mutate()`.
 #> ℹ In argument: `iso3 = countrycode(Country, "country.name", "iso3c")`.
 #> Caused by warning:
@@ -397,7 +647,7 @@ ggplot() +
   theme_minimal()
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-18-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-30-1.png)
 
 Remove Antarctica and make a new map:
 
@@ -421,7 +671,7 @@ ggplot() +
   theme_minimal() 
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-20-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-32-1.png)
 
 The coordinate reference system is improved by adding coord_sf(crs =
 “+proj=robin”).
@@ -438,7 +688,7 @@ ggplot() +
   theme_minimal()
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-21-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-33-1.png)
 
 You can also add title and caption:
 
@@ -458,7 +708,133 @@ ggplot() +
   theme(plot.caption = element_text(size=16) )
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-22-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-34-1.png)
+
+## Working with ggplot2: Population development of the municipality categories
+
+``` r
+data(pop_category)
+```
+
+``` r
+group.labs <- c("Sparsely populate", "Urban", "Rural close to urban", "Core rural")
+names(group.labs) <- c("Harvaan asuttu maaseutu","Kaupungit","Kaupunkien läh. maaseutu", "Ydinmaaseutu")
+```
+
+``` r
+plot1<-ggplot(pop_category, aes(Year, weight=value, fill=Variable))+ 
+  geom_bar(binwidth=1, color="gray", size=0.25) + 
+  facet_wrap(~Category, scales = "free_y", ncol = 2, labeller = labeller(Group.2=group.labs)) +
+  theme_minimal() +
+  scale_fill_tableau("Tableau 20", labels=c("Natural population change","Net immigration","Net migration")) +
+  theme(legend.position = "bottom") + guides(col=guide_legend(ncol=2))+
+  theme(axis.text.x = element_text(color = "grey20", size = 10, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+        axis.text.y = element_text(color = "grey20", size = 12, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+        axis.title.x = element_text(color = "grey20", size = 12, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+        axis.title.y = element_text(color = "grey20", size = 12, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+        strip.text = element_text(size = 14)) +
+  theme(legend.text=element_text(size=14)) +
+  labs(fill="Population development")+
+  labs(title="Population development in municipality categories", 
+       x="Year", y="Change, person",
+       caption="Data: Statistics Finland 2023") +
+  scale_x_continuous(breaks = seq(1993,2022,1))+
+  theme(legend.title = element_text(size=14)) + theme(plot.title = element_text(size = 16))
+#> Warning in geom_bar(binwidth = 1, color = "gray", size = 0.25): Ignoring
+#> unknown parameters: `binwidth` and `size`
+```
+
+Let’s call plot1 object:
+
+``` r
+plot1
+```
+
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-38-1.png)
+
+### Adding a simple map to the plot
+
+Load packages used in this example:
+
+``` r
+library(ggplot2)
+library(geofi)
+library(dplyr)
+```
+
+Let’s load data from different regional divisions.
+
+``` r
+data(aluejaot2)
+names(aluejaot2)
+```
+
+Let’s download a municipality data set with geofi package:
+
+``` r
+municipalities <- geofi::get_municipalities(year = 2021)
+#> Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2021
+#> Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
+#> 
+#> geofi R package: tools for open GIS data for Finland.
+#> Part of rOpenGov <ropengov.org>.
+#> Version 1.2.1
+#> Data is licensed under: Attribution 4.0 International (CC BY 4.0)
+municipalities <- municipalities %>% 
+  select(kunta, kunta_name)
+```
+
+Next we will join data sets with function right_join because it
+maintains the class of municipality as sf.
+
+``` r
+muni <- dplyr::right_join(x = municipalities, y = aluejaot2, by=c("kunta" = "tunnus"))
+```
+
+Let’s define colors for plots:
+
+``` r
+red<-"#F8766D"
+green <- "#00BA38"
+blue <- "#619CFF"
+purple <- "#C77CFF"
+blue_gray <- "#464a62"
+mid_gray <- "#ccd0dd"
+light_gray <- "#f9f9fd"
+```
+
+and set some global theme defaults
+
+``` r
+theme_set(theme_minimal())
+theme_update(text = element_text(family = "sans", color = "#464a62"))
+theme_update(plot.title = element_text(hjust = 0.5, face = "bold"))
+theme_update(plot.subtitle = element_text(hjust = 0.5))
+```
+
+Finally we are to draw a map by using ggplot:
+
+``` r
+map<-ggplot(muni) +
+  geom_sf(aes(fill = Alueluokka_eng), color = light_gray, lwd = 0.08) +
+  scale_fill_manual(values = c(red, green, blue, purple), name = "", guide = guide_legend(direction = "horizontal", label.position = "top", keywidth = 3, keyheight = 0.5)) +
+  labs(title = "", color="black") +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text = element_blank(),
+        axis.title = element_blank(),
+        legend.position = c(0.25,0.60))+
+  guides(fill=guide_legend(nrow=4, byrow=T)) +
+  theme(legend.text=element_text(size=11)) +
+  theme(plot.margin=margin(0,0,0,0,"cm")) 
+```
+
+### Combining a map and a graph
+
+``` r
+library(patchwork)
+map + plot1
+```
 
 ## Working with ggplot2: Population development of the municipalities
 
@@ -472,6 +848,11 @@ Loading commonly used packages
 
 ``` r
 library(forecast)
+#> 
+#> Attaching package: 'forecast'
+#> The following object is masked from 'package:nlme':
+#> 
+#>     getResponse
 library(foreign)
 library(reshape2)
 library(ggplot2)
@@ -513,10 +894,6 @@ remotes::install_github("ropengov/geofi")
 
 ``` r
 library(geofi)
-#> 
-#> geofi R package: tools for open GIS data for Finland.
-#> Part of rOpenGov <ropengov.org>.
-#> Version 1.2.1
 ```
 
 Explanation:
@@ -533,7 +910,7 @@ Note! This requires the remotes package to be installed.
 library(spatialcourseOL)
 ```
 
-Reading a CSV file
+Reading datasets:
 
 ``` r
 data(aluejaot2)
@@ -791,7 +1168,7 @@ ggplot(vs, aes(x=Group.1, y=x))+
   facet_wrap(facets = ~Group.2, scales = "free_y") 
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-42-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-66-1.png)
 
 Above code, explained line by line:
 
@@ -1016,7 +1393,7 @@ ggplot(vs, aes(x=Group.1, y=x, group=Group.2))+
 #>   grid_submit(__grid_df_name__)
 ```
 
-![](lecture03-ggplot2_files/figure-html/unnamed-chunk-46-1.png)
+![](lecture03-ggplot2_files/figure-html/unnamed-chunk-70-1.png)
 
 You can see, that facet_geo() is a geographic faceting method that
 arranges small ggplot panels to resemble a map, making regional

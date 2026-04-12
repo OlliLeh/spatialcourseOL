@@ -139,6 +139,8 @@ are pushed to the repository.
   : Regional classification data for Finland
 - [`data_vakie3`](https://ollileh.github.io/spatialcourseOL/reference/data_vakie3.md)
   : Population data by municipality
+- [`pop_category`](https://ollileh.github.io/spatialcourseOL/reference/pop_category.md)
+  : Population development by municipality category
 
 # Articles
 

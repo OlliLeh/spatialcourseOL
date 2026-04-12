@@ -67,7 +67,7 @@ you create clear, powerful, and customizable plots using a consistent
 and logical system called the Grammar of Graphics.</p>
 <p>More details: <a href="https://ggplot2.tidyverse.org/" class="external-link uri">https://ggplot2.tidyverse.org/</a></p>
 <div class="float">
-<img src="figures/ggplot2_figure.png" style="width:70.0%" alt="ggplot2 logo"><div class="figcaption">ggplot2 logo</div>
+<img src="figures/ggplot2_figure.png" style="width:90.0%" alt="ggplot2 logo"><div class="figcaption">ggplot2 logo</div>
 </div>
 <p>Why ggplot2 is so popular:</p>
 <ul>
@@ -99,34 +99,53 @@ directly, ggplot2 builds plots by combining components (“layers”):</p>
 <li>Themes – visual appearance (fonts, background, gridlines)</li>
 </ul>
 <p>You add these components together using +.</p>
-<div class="section level5">
-<h5 id="a-simple-example">A simple example<a class="anchor" aria-label="anchor" href="#a-simple-example"></a>
-</h5>
+</div>
+<div class="section level3">
+<h3 id="a-simple-example">A simple example<a class="anchor" aria-label="anchor" href="#a-simple-example"></a>
+</h3>
+<p>Every ggplot2 plot has three key components:</p>
+<ul>
+<li>data,</li>
+<li>A set of aesthetic mappings between variables in the data and visual
+properties, and</li>
+<li>At least one layer which describes how to render each observation.
+Layers are usually created with a geom function.</li>
+</ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">wt</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-1-1.png" class="r-plt" alt="" width="700"></p>
-<p>This means:</p>
+<p>This produces a scatterplot defined by:</p>
 <ul>
-<li>Data: mtcars</li>
-<li>x-axis: weight (wt)</li>
-<li>y-axis: miles per gallon (mpg)</li>
-<li>Geom: points (scatter plot)</li>
+<li>Data - mtcars</li>
+<li>Aesthetic mapping: engine size mapped to x position (wt), fuel
+economy to y position (mpg).</li>
+<li>Layer - Geom: points (scatter plot)</li>
 </ul>
+<p>Pay attention to the structure of this function call: data and
+aesthetic mappings are supplied in ggplot(), then layers are added on
+with +. This is an important pattern, and as you learn more about
+ggplot2 you’ll construct increasingly sophisticated plots by adding on
+more types of components.</p>
+<p>Almost every plot maps a variable to x and y, so naming these
+aesthetics is tedious, so the first two unnamed arguments to aes() will
+be mapped to x and y. This means that the following code is identical to
+the example above:</p>
+<pre><code><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="section level5">
-<h5 id="adding-more-layers">Adding more layers<a class="anchor" aria-label="anchor" href="#adding-more-layers"></a>
-</h5>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="section level3">
+<h3 id="adding-more-layers">Adding more layers<a class="anchor" aria-label="anchor" href="#adding-more-layers"></a>
+</h3>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Fuel efficiency vs car weight"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Weight"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Miles per gallon"</span></span>
-<span>  <span class="op">)</span></span>
+<span>    y <span class="op">=</span> <span class="st">"Miles per gallon"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre></div>
 <p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" alt="" width="700"></p>
 <p>Here you extend the same plot by:</p>
@@ -134,30 +153,209 @@ directly, ggplot2 builds plots by combining components (“layers”):</p>
 <li>adding a regression line</li>
 <li>adding labels</li>
 </ul>
-</div>
-<div class="section level5">
-<h5 id="how-it-differs-from-base-r-plots">How it differs from base R plots<a class="anchor" aria-label="anchor" href="#how-it-differs-from-base-r-plots"></a>
-</h5>
-<p>Base R:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">wt</span>, <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="" width="700"></p>
-<p>ggplot2:</p>
+<p>Plot geoms</p>
+<ul>
+<li>geom_smooth() fits a smoother to the data and displays the smooth
+and its standard error.</li>
+<li>geom_boxplot() produces a box-and-whisker plot to summarise the
+distribution of a set of points.</li>
+<li>geom_histogram() and geom_freqpoly() show the distribution of
+continuous variables.</li>
+<li>geom_bar() shows the distribution of categorical variables.</li>
+<li>geom_path() and geom_line() draw lines between the data points. A
+line plot is constrained to produce lines that travel from left to
+right, while paths can go in any direction. Lines are typically used to
+explore how things change over time.</li>
+</ul>
+<p>Note that different geoms can use the same data and aesthetics!
+Multiple geoms can be layered like in this example:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code></pre></div>
+<p>This overlays the scatterplot with a smooth curve, including an
+assessment of uncertainty in the form of point-wise confidence intervals
+shown in grey. If you’re not interested in the confidence interval, turn
+it off with geom_smooth(se = FALSE).</p>
+<p>An important argument to geom_smooth() is the method, which allows
+you to choose which type of model is used to fit the smooth curve:</p>
+<ul>
+<li>method = “loess”, the default for small n, uses a smooth local
+regression (as described in ?loess). The wiggliness of the line is
+controlled by the span parameter, which ranges from 0 (exceedingly
+wiggly) to 1 (not so wiggly).</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>span <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code></pre></div>
 <p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>span <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code></pre></div>
+<ul>
+<li>method = “gam” fits a generalised additive model provided by the
+mgcv package. You need to first load mgcv, then use a formula like
+formula = y ~ s(x) or y ~ s(x, bs = “cs”) (for large data). This is what
+ggplot2 uses when there are more than 1,000 points.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">mgcv</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: nlme</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'nlme'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     collapse</span></span>
+<span><span class="co">#&gt; This is mgcv 1.9-4. For overview type '?mgcv'.</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/s.html" class="external-link">s</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+<div class="section level3">
+<h3 id="boxplots-and-jittered-points">Boxplots and jittered points<a class="anchor" aria-label="anchor" href="#boxplots-and-jittered-points"></a>
+</h3>
+<p>When a set of data includes a categorical variable and one or more
+continuous variables, you will probably be interested to know how the
+values of the continuous variables vary with the levels of the
+categorical variable.</p>
+<p>There are three useful techniques that help to visualise a
+categorical variable and one continuous variable:</p>
+<ul>
+<li>Jittering, geom_jitter(), adds a little random noise to the data
+which can help avoid overplotting.</li>
+<li>Boxplots, geom_boxplot(), summarise the shape of the distribution
+with a handful of summary statistics.</li>
+<li>Violin plots, geom_violin(), show a compact representation of the
+“density” of the distribution, highlighting the areas where more points
+are found.</li>
+</ul>
+<p>These are illustrated below:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">drv</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html" class="external-link">geom_jitter</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">drv</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">drv</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_violin.html" class="external-link">geom_violin</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+<div class="section level3">
+<h3 id="histograms-and-frequency-polygons">Histograms and frequency polygons<a class="anchor" aria-label="anchor" href="#histograms-and-frequency-polygons"></a>
+</h3>
+<p>Histograms and frequency polygons show the distribution of a single
+numeric variable. They provide more information about the distribution
+of a single group than boxplots do, at the expense of needing more
+space.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value `binwidth`.</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value `binwidth`.</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_freqpoly</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value `binwidth`.</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value `binwidth`.</span></span></code></pre></div>
+<p>Both histograms and frequency polygons work in the same way: they bin
+the data, then count the number of observations in each bin. The only
+difference is the display: histograms use bars and frequency polygons
+use lines.</p>
+</div>
+<div class="section level3">
+<h3 id="bar-charts">Bar charts<a class="anchor" aria-label="anchor" href="#bar-charts"></a>
+</h3>
+<p>The discrete analogue of the histogram is the bar chart, geom_bar().
+It’s easy to use:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">manufacturer</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+<div class="section level3">
+<h3 id="time-series-with-line">Time series with line<a class="anchor" aria-label="anchor" href="#time-series-with-line"></a>
+</h3>
+<p>Line and path plots are typically used for time series data. Line
+plots join the points from left to right, while path plots join them in
+the order that they appear in the dataset (in other words, a line plot
+is a path plot of the data sorted by x value). Line plots usually have
+time on the x-axis, showing how a single variable has changed over time.
+Path plots show how two variables have simultaneously changed over time,
+with time encoded in the way that observations are connected.</p>
+<p>Because the year variable in the mpg dataset only has two values,
+we’ll show some time series plots using the economics dataset, which
+contains economic data on the US measured over the last 40 years.</p>
+<p>The figures below shows two plots of unemployment over time, both
+produced using geom_line(). The first shows the unemployment rate while
+the second shows the median number of weeks unemployed. We can already
+see some differences in these two variables, particularly in the last
+peak, where the unemployment percentage is lower than it was in the
+preceding peaks, but the length of unemployment is high.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">economics</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">unemploy</span> <span class="op">/</span> <span class="va">pop</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">economics</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">uempmed</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+<div class="section level3">
+<h3 id="how-it-differs-from-base-r-plots">How it differs from base R plots<a class="anchor" aria-label="anchor" href="#how-it-differs-from-base-r-plots"></a>
+</h3>
+<p>Base R plotting</p>
+<ul>
+<li>Procedural</li>
+<li>“Draw now, modify later”</li>
+<li>Plot type chosen first (plot, hist, boxplot)</li>
+</ul>
+<p>ggplot2</p>
+<ul>
+<li>Declarative</li>
+<li>“Describe what to plot”</li>
+<li>Visualization built from components</li>
+</ul>
+<p>Base R:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">wt</span>, <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="700"></p>
+<p>ggplot2:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" alt="" width="700"></p>
 <p>ggplot2 is:</p>
 <ul>
 <li>more structured</li>
 <li>more consistent</li>
 <li>easier to build complex plots incrementally</li>
 </ul>
+<p>See more information about ggplot2 from this fantastic book:
+“ggplot2: elegant graphics for data analysis”</p>
+<p><a href="https://ggplot2-book.org/" class="external-link uri">https://ggplot2-book.org/</a></p>
+<div class="float">
+<img src="figures/ggplot2_book.png" style="width:90.0%" alt="ggplot2 logo"><div class="figcaption">ggplot2 logo</div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="an-introduction-to-data-visualization-using-r-programming">An introduction to data visualization using R programming<a class="anchor" aria-label="anchor" href="#an-introduction-to-data-visualization-using-r-programming"></a>
 </h3>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/HPJn1CMvtmI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+<iframe width="600" height="360" src="https://www.youtube.com/embed/HPJn1CMvtmI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
 </div>
 </div>
@@ -171,7 +369,7 @@ of graphics, just as informative or visually appealing as traditional
 GIS software.</p>
 <p>Let´s start by loading the basic packages necessary for all maps,
 i.e. ggplot2 and sf.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://r-spatial.github.io/sf/" class="external-link">"sf"</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</span></span></code></pre></div>
@@ -180,7 +378,7 @@ world. Use ne_countries to pull country data and choose the scale
 (rnaturalearthhires is necessary for scale = “large”). The function can
 return sp classes (default) or directly sf classes, as defined in the
 argument return class:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/rnaturalearth/" class="external-link">"rnaturalearth"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/rnaturalearthdata/" class="external-link">"rnaturalearthdata"</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -192,18 +390,18 @@ argument return class:</p>
 <span><span class="va">world</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="st">"medium"</span>, returnclass <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">world</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "sf"         "data.frame"</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="basic-plot">Basic plot<a class="anchor" aria-label="anchor" href="#basic-plot"></a>
-</h3>
+<div class="section level4">
+<h4 id="basic-plot">Basic plot<a class="anchor" aria-label="anchor" href="#basic-plot"></a>
+</h4>
 <p>First, let us start with creating a base map of the world using
 ggplot2. This base map will then be extended with different map
 elements, as well as zoomed in to an area of interest. We can check that
 the world map was properly retrieved and converted into an sf object,
 and plot it with ggplot2:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">world</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" alt="" width="700"></p>
 <p>This call nicely introduces the structure of a ggplot call: The first
 part ggplot(data = world) initiates the ggplot graph, and indicates that
 the main data is stored in the world object. The line ends up with a +
@@ -211,33 +409,34 @@ sign, which indicates that the call is not complete yet, and each
 subsequent line correspond to another layer or scale.</p>
 <p>In this case, we use the geom_sf function, which simply adds a
 geometry stored in a sf object.</p>
-<div class="section level4">
-<h4 id="title-subtitle-and-axis-labels">Title, subtitle, and axis labels<a class="anchor" aria-label="anchor" href="#title-subtitle-and-axis-labels"></a>
-</h4>
+</div>
+<div class="section level3">
+<h3 id="title-subtitle-and-axis-labels">Title, subtitle, and axis labels<a class="anchor" aria-label="anchor" href="#title-subtitle-and-axis-labels"></a>
+</h3>
 <p>A title and a subtitle can be added to the map using the function
 ggtitle, passing any valid character string (e.g. with quotation marks)
 as arguments. Axis names are absent by default on a map, but can be
 changed to something more suitable (e.g. “Longitude” and “Latitude”),
 depending on the map:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">world</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Longitude"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Latitude"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"World map"</span>, subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"("</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">world</span><span class="op">$</span><span class="va">NAME</span><span class="op">)</span><span class="op">)</span>, <span class="st">" countries)"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="" width="700"></p>
 </div>
-<div class="section level4">
-<h4 id="map-color">Map color<a class="anchor" aria-label="anchor" href="#map-color"></a>
-</h4>
+<div class="section level3">
+<h3 id="map-color">Map color<a class="anchor" aria-label="anchor" href="#map-color"></a>
+</h3>
 <p>In many ways, sf geometries are no different than regular geometries,
 and can be displayed with the same level of control on their attributes.
 Here is an example with the polygons of the countries filled with a
 green color (argument fill), using black for the outline of the
 countries (argument color):</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">world</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, fill <span class="op">=</span> <span class="st">"lightgreen"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="" width="700"></p>
 <p>The package ggplot2 allows the use of more complex color schemes,
 such as a gradient on one variable of the data. Here is another example
 that shows the population of each country. In this example, we use the
@@ -245,15 +444,15 @@ that shows the population of each country. In this example, we use the
 option = “plasma” for the plasma variant), using the square root of the
 population (which is stored in the variable POP_EST of the world
 object):</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">world</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">pop_est</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"plasma"</span>, trans <span class="op">=</span> <span class="st">"sqrt"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-22-1.png" class="r-plt" alt="" width="700"></p>
 </div>
-<div class="section level4">
-<h4 id="projection-and-extent">Projection and extent<a class="anchor" aria-label="anchor" href="#projection-and-extent"></a>
-</h4>
+<div class="section level3">
+<h3 id="projection-and-extent">Projection and extent<a class="anchor" aria-label="anchor" href="#projection-and-extent"></a>
+</h3>
 <p>The function coord_sf allows to deal with the coordinate system,
 which includes both projection and extent of the map. By default, the
 map will use the coordinate system of the first layer that defines one
@@ -263,18 +462,18 @@ argument crs, it is possible to override this setting, and project on
 the fly to any projection. This can be achieved using any valid PROJ4
 string (here, the European-centric ETRS89 Lambert Azimuthal Equal-Area
 projection):</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">world</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="st">"+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs "</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" alt="" width="700"></p>
 </div>
-<div class="section level4">
-<h4 id="scale-bar-and-north-arrow">Scale bar and North arrow<a class="anchor" aria-label="anchor" href="#scale-bar-and-north-arrow"></a>
-</h4>
+<div class="section level3">
+<h3 id="scale-bar-and-north-arrow">Scale bar and North arrow<a class="anchor" aria-label="anchor" href="#scale-bar-and-north-arrow"></a>
+</h3>
 <p>Scale bar and north arrow can be added on map with the package
 ggspatial, which provides easy-to-use functions for this purpose.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://paleolimbot.github.io/ggspatial/" class="external-link">"ggspatial"</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">world</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -284,7 +483,7 @@ ggspatial, which provides easy-to-use functions for this purpose.</p>
 <span>        style <span class="op">=</span> <span class="va">north_arrow_fancy_orienteering</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">102.15</span>, <span class="op">-</span><span class="fl">74.12</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7.65</span>, <span class="fl">33.97</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Scale on map varies by more than 10%, scale bar may be inaccurate</span></span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" alt="" width="700"></p>
 <p>These lines add a scale bar:</p>
 <pre><code>annotation_scale(location = "bl", width_hint = 0.5) +</code></pre>
 <p>Arguments explained:</p>
@@ -334,9 +533,9 @@ ggspatial, which provides easy-to-use functions for this purpose.</p>
 <li>Does not change the data itself, only what you see</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="saving-the-map">Saving the map<a class="anchor" aria-label="anchor" href="#saving-the-map"></a>
-</h4>
+<div class="section level3">
+<h3 id="saving-the-map">Saving the map<a class="anchor" aria-label="anchor" href="#saving-the-map"></a>
+</h3>
 <p>Saving of the map is very easy by using ggsave. This function allows
 a graphic (typically the last plot displayed) to be saved in a variety
 of formats, including the most common PNG (raster bitmap) and PDF
@@ -344,28 +543,26 @@ of formats, including the most common PNG (raster bitmap) and PDF
 outcome.</p>
 <p>For instance here, we save a PDF version of the map, which keeps the
 best quality, and a PNG version of it for web purposes:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"map_web.png"</span>, width <span class="op">=</span> <span class="fl">6</span>, height <span class="op">=</span> <span class="fl">6</span>, dpi <span class="op">=</span> <span class="st">"screen"</span><span class="op">)</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level3">
 <h3 id="add-another-data">Add another data<a class="anchor" aria-label="anchor" href="#add-another-data"></a>
 </h3>
 <p>Let´s load required packages:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://vincentarelbundock.github.io/countrycode/" class="external-link">countrycode</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/OlliLeh/spatialcourseOL" class="external-link">spatialcourseOL</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">HDI_data</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">HDI_data</span><span class="op">)</span></span></code></pre></div>
 <p>The ISO3C code is appended to the HDI_data2 dataset based on the
 country name. (note that we create here a new dataset HDI_data2)</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">HDI_data2</span> <span class="op">&lt;-</span> <span class="va">HDI_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>iso3 <span class="op">=</span> <span class="fu"><a href="https://vincentarelbundock.github.io/countrycode/man/countrycode.html" class="external-link">countrycode</a></span><span class="op">(</span><span class="va">Country</span>, <span class="st">"country.name"</span>, <span class="st">"iso3c"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>iso3 <span class="op">=</span> <span class="fu"><a href="https://vincentarelbundock.github.io/countrycode/man/countrycode.html" class="external-link">countrycode</a></span><span class="op">(</span><span class="va">Country</span>, <span class="st">"country.name"</span>, <span class="st">"iso3c"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: There was 1 warning in `mutate()`.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `iso3 = countrycode(Country, "country.name", "iso3c")`.</span></span>
 <span><span class="co">#&gt; Caused by warning:</span></span>
@@ -373,7 +570,7 @@ country name. (note that we create here a new dataset HDI_data2)</p>
 <span><span class="co">#&gt; To fix unmatched values, please use the `custom_match` argument. If you think the default matching rules should be improved, please file an issue at https://github.com/vincentarelbundock/countrycode/issues</span></span></code></pre></div>
 <p>Next, the world and hdi_country2 datasets are merged by using
 left_join() function:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">joined</span> <span class="op">&lt;-</span> <span class="va">world</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
 <span>    <span class="va">HDI_data2</span>,</span>
@@ -384,7 +581,7 @@ left_join() function:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> If a many-to-many relationship is expected, set `relationship =</span></span>
 <span><span class="co">#&gt;   "many-to-many"` to silence this warning.</span></span></code></pre></div>
 <p>Let´s then make a new map:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">joined</span>,</span>
@@ -398,11 +595,11 @@ left_join() function:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Human Development Index by countries"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-30-1.png" class="r-plt" alt="" width="700"></p>
 <p>Remove Antarctica and make a new map:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">joined2</span><span class="op">&lt;-</span><span class="va">joined</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">continent</span> <span class="op">!=</span> <span class="st">"Antarctica"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">joined2</span>,</span>
@@ -416,10 +613,10 @@ left_join() function:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Human Development Index by countries"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-32-1.png" class="r-plt" alt="" width="700"></p>
 <p>The coordinate reference system is improved by adding coord_sf(crs =
 “+proj=robin”).</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">joined</span>,</span>
@@ -429,9 +626,9 @@ left_join() function:</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="st">"+proj=eqearth"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-33-1.png" class="r-plt" alt="" width="700"></p>
 <p>You can also add title and caption:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">joined2</span>,</span>
@@ -445,7 +642,107 @@ left_join() function:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>caption<span class="op">=</span><span class="st">"Digital Geosciences, UEF"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">16</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.caption <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">16</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-22-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-34-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="working-with-ggplot2-population-development-of-the-municipality-categories">Working with ggplot2: Population development of the municipality
+categories<a class="anchor" aria-label="anchor" href="#working-with-ggplot2-population-development-of-the-municipality-categories"></a>
+</h2>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pop_category</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">group.labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sparsely populate"</span>, <span class="st">"Urban"</span>, <span class="st">"Rural close to urban"</span>, <span class="st">"Core rural"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group.labs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Harvaan asuttu maaseutu"</span>,<span class="st">"Kaupungit"</span>,<span class="st">"Kaupunkien läh. maaseutu"</span>, <span class="st">"Ydinmaaseutu"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plot1</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">pop_category</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">Year</span>, weight<span class="op">=</span><span class="va">value</span>, fill<span class="op">=</span><span class="va">Variable</span><span class="op">)</span><span class="op">)</span><span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>binwidth<span class="op">=</span><span class="fl">1</span>, color<span class="op">=</span><span class="st">"gray"</span>, size<span class="op">=</span><span class="fl">0.25</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">Category</span>, scales <span class="op">=</span> <span class="st">"free_y"</span>, ncol <span class="op">=</span> <span class="fl">2</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labeller.html" class="external-link">labeller</a></span><span class="op">(</span>Group.2<span class="op">=</span><span class="va">group.labs</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_fill_tableau</span><span class="op">(</span><span class="st">"Tableau 20"</span>, labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Natural population change"</span>,<span class="st">"Net immigration"</span>,<span class="st">"Net migration"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>col<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"grey20"</span>, size <span class="op">=</span> <span class="fl">10</span>, angle <span class="op">=</span> <span class="fl">90</span>, hjust <span class="op">=</span> <span class="fl">.5</span>, vjust <span class="op">=</span> <span class="fl">.5</span>, face <span class="op">=</span> <span class="st">"plain"</span><span class="op">)</span>,</span>
+<span>        axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"grey20"</span>, size <span class="op">=</span> <span class="fl">12</span>, angle <span class="op">=</span> <span class="fl">0</span>, hjust <span class="op">=</span> <span class="fl">1</span>, vjust <span class="op">=</span> <span class="fl">0</span>, face <span class="op">=</span> <span class="st">"plain"</span><span class="op">)</span>,  </span>
+<span>        axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"grey20"</span>, size <span class="op">=</span> <span class="fl">12</span>, angle <span class="op">=</span> <span class="fl">0</span>, hjust <span class="op">=</span> <span class="fl">.5</span>, vjust <span class="op">=</span> <span class="fl">0</span>, face <span class="op">=</span> <span class="st">"plain"</span><span class="op">)</span>,</span>
+<span>        axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"grey20"</span>, size <span class="op">=</span> <span class="fl">12</span>, angle <span class="op">=</span> <span class="fl">90</span>, hjust <span class="op">=</span> <span class="fl">.5</span>, vjust <span class="op">=</span> <span class="fl">.5</span>, face <span class="op">=</span> <span class="st">"plain"</span><span class="op">)</span>,</span>
+<span>        strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>fill<span class="op">=</span><span class="st">"Population development"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title<span class="op">=</span><span class="st">"Population development in municipality categories"</span>, </span>
+<span>       x<span class="op">=</span><span class="st">"Year"</span>, y<span class="op">=</span><span class="st">"Change, person"</span>,</span>
+<span>       caption<span class="op">=</span><span class="st">"Data: Statistics Finland 2023"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1993</span>,<span class="fl">2022</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">14</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in geom_bar(binwidth = 1, color = "gray", size = 0.25): Ignoring</span></span>
+<span><span class="co">#&gt; unknown parameters: `binwidth` and `size`</span></span></code></pre></div>
+<p>Let’s call plot1 object:</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plot1</span></span></code></pre></div>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-38-1.png" class="r-plt" alt="" width="700"></p>
+<div class="section level3">
+<h3 id="adding-a-simple-map-to-the-plot">Adding a simple map to the plot<a class="anchor" aria-label="anchor" href="#adding-a-simple-map-to-the-plot"></a>
+</h3>
+<p>Load packages used in this example:</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ropengov.github.io/geofi/" class="external-link">geofi</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
+<p>Let’s load data from different regional divisions.</p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">aluejaot2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">aluejaot2</span><span class="op">)</span></span></code></pre></div>
+<p>Let’s download a municipality data set with geofi package:</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">municipalities</span> <span class="op">&lt;-</span> <span class="fu">geofi</span><span class="fu">::</span><span class="fu"><a href="https://ropengov.github.io/geofi/reference/get_municipalities.html" class="external-link">get_municipalities</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2021</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&amp;version=1.0.0&amp;request=getFeature&amp;typename=tilastointialueet%3Akunta4500k_2021</span></span>
+<span><span class="co">#&gt; Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; geofi R package: tools for open GIS data for Finland.</span></span>
+<span><span class="co">#&gt; Part of rOpenGov &lt;ropengov.org&gt;.</span></span>
+<span><span class="co">#&gt; Version 1.2.1</span></span>
+<span><span class="co">#&gt; Data is licensed under: Attribution 4.0 International (CC BY 4.0)</span></span>
+<span><span class="va">municipalities</span> <span class="op">&lt;-</span> <span class="va">municipalities</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">kunta</span>, <span class="va">kunta_name</span><span class="op">)</span></span></code></pre></div>
+<p>Next we will join data sets with function right_join because it
+maintains the class of municipality as sf.</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">muni</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">right_join</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">municipalities</span>, y <span class="op">=</span> <span class="va">aluejaot2</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kunta"</span> <span class="op">=</span> <span class="st">"tunnus"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Let’s define colors for plots:</p>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">red</span><span class="op">&lt;-</span><span class="st">"#F8766D"</span></span>
+<span><span class="va">green</span> <span class="op">&lt;-</span> <span class="st">"#00BA38"</span></span>
+<span><span class="va">blue</span> <span class="op">&lt;-</span> <span class="st">"#619CFF"</span></span>
+<span><span class="va">purple</span> <span class="op">&lt;-</span> <span class="st">"#C77CFF"</span></span>
+<span><span class="va">blue_gray</span> <span class="op">&lt;-</span> <span class="st">"#464a62"</span></span>
+<span><span class="va">mid_gray</span> <span class="op">&lt;-</span> <span class="st">"#ccd0dd"</span></span>
+<span><span class="va">light_gray</span> <span class="op">&lt;-</span> <span class="st">"#f9f9fd"</span></span></code></pre></div>
+<p>and set some global theme defaults</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html" class="external-link">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html" class="external-link">theme_update</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"sans"</span>, color <span class="op">=</span> <span class="st">"#464a62"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html" class="external-link">theme_update</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html" class="external-link">theme_update</a></span><span class="op">(</span>plot.subtitle <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Finally we are to draw a map by using ggplot:</p>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">map</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">muni</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Alueluokka_eng</span><span class="op">)</span>, color <span class="op">=</span> <span class="va">light_gray</span>, lwd <span class="op">=</span> <span class="fl">0.08</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">red</span>, <span class="va">green</span>, <span class="va">blue</span>, <span class="va">purple</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">""</span>, guide <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>direction <span class="op">=</span> <span class="st">"horizontal"</span>, label.position <span class="op">=</span> <span class="st">"top"</span>, keywidth <span class="op">=</span> <span class="fl">3</span>, keyheight <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">""</span>, color<span class="op">=</span><span class="st">"black"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>panel.grid.major <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        panel.grid.minor <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>,<span class="fl">0.60</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>fill<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>nrow<span class="op">=</span><span class="fl">4</span>, byrow<span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">11</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.margin<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">margin</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="st">"cm"</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="combining-a-map-and-a-graph">Combining a map and a graph<a class="anchor" aria-label="anchor" href="#combining-a-map-and-a-graph"></a>
+</h3>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
+<span><span class="va">map</span> <span class="op">+</span> <span class="va">plot1</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -459,8 +756,13 @@ municipalities<a class="anchor" aria-label="anchor" href="#working-with-ggplot2-
 datasets, and documentation that extends what R can do. Base R is fairly
 minimal; most real data analysis uses packages.</p>
 <p>Loading commonly used packages</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pkg.robjhyndman.com/forecast/" class="external-link">forecast</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'forecast'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:nlme':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     getResponse</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/foreign/" class="external-link">foreign</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/reshape" class="external-link">reshape2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -474,9 +776,9 @@ minimal; most real data analysis uses packages.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jrnold.github.io/ggthemes/" class="external-link">ggthemes</a></span><span class="op">)</span></span></code></pre></div>
 <p>Installing and loading additional packages</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geofacet"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hafen/geofacet" class="external-link">geofacet</a></span><span class="op">)</span></span></code></pre></div>
 <p>geofacet is used for geographical faceting (e.g. small multiples laid
 out like a map).</p>
@@ -487,14 +789,10 @@ out like a map).</p>
 <li>library() must be run every session</li>
 </ul>
 <p>Installing a package from GitHub</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ropengov/geofi"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ropengov.github.io/geofi/" class="external-link">geofi</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; geofi R package: tools for open GIS data for Finland.</span></span>
-<span><span class="co">#&gt; Part of rOpenGov &lt;ropengov.org&gt;.</span></span>
-<span><span class="co">#&gt; Version 1.2.1</span></span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ropengov.github.io/geofi/" class="external-link">geofi</a></span><span class="op">)</span></span></code></pre></div>
 <p>Explanation:</p>
 <ul>
 <li>Some packages are not on CRAN</li>
@@ -506,10 +804,10 @@ out like a map).</p>
 <div class="section level3">
 <h3 id="reading-data-into-r">2. Reading data into R<a class="anchor" aria-label="anchor" href="#reading-data-into-r"></a>
 </h3>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/OlliLeh/spatialcourseOL" class="external-link">spatialcourseOL</a></span><span class="op">)</span></span></code></pre></div>
-<p>Reading a CSV file</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<p>Reading datasets:</p>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">aluejaot2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">aluejaot2</span><span class="op">)</span></span></code></pre></div>
 <p>Explanation:</p>
@@ -523,14 +821,14 @@ strings</li>
 <li>names(dat) shows column names of the dat object</li>
 </ul>
 <p>Reading a second dataset</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_vakie3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_vakie3</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="merging-datasets">3. Merging datasets<a class="anchor" aria-label="anchor" href="#merging-datasets"></a>
 </h3>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">data_vakie3</span>, <span class="va">aluejaot2</span>, by.x<span class="op">=</span><span class="st">"tunnus"</span>, by.y<span class="op">=</span><span class="st">"tunnus"</span>,all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <p>Explanation:</p>
 <ul>
@@ -543,7 +841,7 @@ datasets (here id is tunnus)</li>
 <div class="section level3">
 <h3 id="reshaping-the-data-wide-long">4. Reshaping the data (wide → long)<a class="anchor" aria-label="anchor" href="#reshaping-the-data-wide-long"></a>
 </h3>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/melt.html" class="external-link">melt</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">x2</span>, id.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tunnus"</span>, <span class="st">"nimi"</span>,<span class="st">"Maakunta"</span><span class="op">)</span>, measure.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">43</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Many datasets are initially in wide format:</p>
 <p><img src="figures/wide_long.png" class="r-plt" alt="" width="70%"></p>
@@ -559,7 +857,7 @@ analysis.</p>
 <div class="section level3">
 <h3 id="creating-a-time-variable">5. Creating a time variable<a class="anchor" aria-label="anchor" href="#creating-a-time-variable"></a>
 </h3>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">aika</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2000</span>,<span class="fl">2040</span>,<span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">aika</span></span>
 <span><span class="co">#&gt;  [1] 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014</span></span>
@@ -581,7 +879,7 @@ analysis.</p>
 <div class="section level3">
 <h3 id="creating-a-repeated-time-variable">6. Creating a repeated time variable<a class="anchor" aria-label="anchor" href="#creating-a-repeated-time-variable"></a>
 </h3>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">aika</span>,<span class="fl">310</span><span class="op">)</span></span></code></pre></div>
 <p>Explanation:</p>
 <ul>
@@ -602,7 +900,7 @@ that matches the number of rows in the dataset.</p>
 <div class="section level3">
 <h3 id="sorting-the-data-by-region-name">7. Sorting the data by region name<a class="anchor" aria-label="anchor" href="#sorting-the-data-by-region-name"></a>
 </h3>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data3</span> <span class="op">&lt;-</span> <span class="va">data2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">data2</span><span class="op">$</span><span class="va">nimi</span><span class="op">)</span>,<span class="op">]</span></span></code></pre></div>
 <p>Explanation:</p>
 <ul>
@@ -621,7 +919,7 @@ that matches the number of rows in the dataset.</p>
 <div class="section level3">
 <h3 id="adding-the-time-variable-to-the-data">8. Adding the time variable to the data<a class="anchor" aria-label="anchor" href="#adding-the-time-variable-to-the-data"></a>
 </h3>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">data3</span>,<span class="va">b</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data4</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "tunnus"   "nimi"     "Maakunta" "variable" "value"    "b"</span></span></code></pre></div>
@@ -635,7 +933,7 @@ that matches the number of rows in the dataset.</p>
 <div class="section level3">
 <h3 id="converting-values-to-numeric">9. Converting values to numeric<a class="anchor" aria-label="anchor" href="#converting-values-to-numeric"></a>
 </h3>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data4</span><span class="op">$</span><span class="va">value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">data4</span><span class="op">$</span><span class="va">value</span><span class="op">)</span></span></code></pre></div>
 <p>Explanation:</p>
 <ul>
@@ -651,7 +949,7 @@ that matches the number of rows in the dataset.</p>
 <div class="section level3">
 <h3 id="aggregating-data-by-year-region-and-province">10. Aggregating data by year, region, and province<a class="anchor" aria-label="anchor" href="#aggregating-data-by-year-region-and-province"></a>
 </h3>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">data4</span><span class="op">$</span><span class="va">value</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">data4</span><span class="op">$</span><span class="va">b</span>,<span class="va">data4</span><span class="op">$</span><span class="va">nimi</span>, <span class="va">data4</span><span class="op">$</span><span class="va">Maakunta</span><span class="op">)</span>,FUN<span class="op">=</span><span class="va">sum</span><span class="op">)</span></span></code></pre></div>
 <p>Explanation: This step summarizes the data.</p>
 <ul>
@@ -680,7 +978,7 @@ for:</p>
 <div class="section level3">
 <h3 id="checking-dataset-dimensions">11. Checking dataset dimensions<a class="anchor" aria-label="anchor" href="#checking-dataset-dimensions"></a>
 </h3>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">data5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 12669     4</span></span></code></pre></div>
 <p>Explanation:</p>
@@ -698,7 +996,7 @@ for:</p>
 <div class="section level3">
 <h3 id="subsetting-one-province">12. Subsetting one province<a class="anchor" aria-label="anchor" href="#subsetting-one-province"></a>
 </h3>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">data5</span>, <span class="va">Group.3</span><span class="op">==</span><span class="st">"Pohjois-Karjala"</span><span class="op">)</span></span></code></pre></div>
 <p>Explanation:</p>
 <ul>
@@ -751,12 +1049,12 @@ showing a subset of the data, but:</p>
 <li>the same geoms</li>
 <li>the same aesthetics</li>
 </ul>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">vs</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Group.1</span>, y<span class="op">=</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle<span class="op">=</span><span class="fl">90</span>, vjust<span class="op">=</span><span class="fl">0.5</span>,hjust<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span>facets <span class="op">=</span> <span class="op">~</span><span class="va">Group.2</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-42-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-66-1.png" class="r-plt" alt="" width="700"></p>
 <p>Above code, explained line by line:</p>
 <pre><code>ggplot(vs, aes(x = Group.1, y = x)) +</code></pre>
 <p>This initializes the plot</p>
@@ -849,7 +1147,7 @@ Turku   Helsinki</code></pre>
 <li>column</li>
 </ul>
 <p>Example of a grid (simplified):</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grid_finland</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  municipality <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Helsinki"</span>, <span class="st">"Turku"</span>, <span class="st">"Oulu"</span><span class="op">)</span>,</span>
 <span>  row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span>,</span>
@@ -858,7 +1156,7 @@ Turku   Helsinki</code></pre>
 <p>This grid tells facet_geo() where each panel should go.</p>
 <p>Predefined grids for Finland are available in the geofi package:</p>
 <p><a href="https://ropengov.github.io/geofi/articles/geofi_datasets.html" class="external-link uri">https://ropengov.github.io/geofi/articles/geofi_datasets.html</a></p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"geofi"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">results</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Item</span>,<span class="va">Title</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -931,10 +1229,10 @@ Turku   Helsinki</code></pre>
 with older versions of geofacet, leading to misaligned grids or empty
 plots. If you do not see your figure correctly, install older version of
 the ggplot2 by following code:</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_version</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"ggplot2"</span>, version <span class="op">=</span> <span class="st">"3.5.2"</span>, repos <span class="op">=</span> <span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span></span></code></pre></div>
 <p>The complete plotting code</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">vs</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Group.1</span>, y<span class="op">=</span><span class="va">x</span>, group<span class="op">=</span><span class="va">Group.2</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle<span class="op">=</span><span class="fl">90</span>, vjust<span class="op">=</span><span class="fl">0.5</span>,hjust<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -955,7 +1253,7 @@ the ggplot2 by following code:</p>
 <span><span class="co">#&gt;   grid, please consider submitting it to become a part of the geofacet</span></span>
 <span><span class="co">#&gt;   package. You can do this easily by calling:</span></span>
 <span><span class="co">#&gt;   grid_submit(__grid_df_name__)</span></span></code></pre></div>
-<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-46-1.png" class="r-plt" alt="" width="1800"></p>
+<p><img src="lecture03-ggplot2_files/figure-html/unnamed-chunk-70-1.png" class="r-plt" alt="" width="1800"></p>
 <p>You can see, that facet_geo() is a geographic faceting method that
 arranges small ggplot panels to resemble a map, making regional
 comparisons easier while showing detailed plots for each area.</p>
