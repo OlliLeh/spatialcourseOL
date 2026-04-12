@@ -799,6 +799,59 @@ model2<-glm(kasvu_voima~tyottom+korkk+alkut+elak+as_tih+he_kika+ra_as_kpa, data=
 ```{r}
 summary(model2)
 ```
+**Interpretation of results**
+
+- Model fit
+
++ Null deviance: 3343.3
++ Residual deviance: 2038.1
++ AIC: 2054.1
+
+The large deviance reduction indicates that the model explains a substantial share of variation in strong growth outcomes.
+
+**Interpretation of coefficients**
+
+Strong negative effects
+
+- Unemployment (tyottom)
+
++ Areas with high unemployment are much less likely to experience strong growth.
+
+- Average age of inhabitants (he_kika)
+
++ The negative effect indicates that postal code areas with an older population are significantly less likely to experience strong job growth. 
+
+- Housing space per capita (ra_as_kpa)
+
++ Strongly negative effect indicates that dense housing environments are central to rapid growth.
+
+- Higher education (korkk)
+
++ Negative effect may reflect that strong growth occurs in emerging urban zones, rather than already highly educated cores.
+
+Strong positive effect
+
+- Share of pensioners (elak)
+
++ Positive and significant
++ Suggests some regions experiencing strong growth may be retirement‑oriented destinations or benefit from aging‑related in‑migration.
+
+Non‑effect
+
+- Population density (as_tih)
+
++ No statistically meaningful effect once other variables are controlled for.
+
+**Substantive interpretation**
+
+Strong job growth follows a distinctly different logic than general growth:
+
+- It concentrates in economically robust areas
+- It is associated with low unemployment
+- It favours compact housing structures
+- It is less dependent on youth concentration alone
+
+This suggests a polarised growth regime, where a small number of highly competitive regions attract a disproportionate share of jobs increases.
 
 
 And then we can save the model2 results for a new variable called as model2_res:
@@ -1244,9 +1297,9 @@ st_write(k2, "test_keh2.shp")
 
 **Joining results back to municipality data**
 
-```{r}
+```{r, eval=FALSE}
 t <- st_join(municipalities, k2, join = st_equals, left = TRUE)
-t2 <- t[, c(2, 3, 70, 71)]
+t2 <- t[, c(2, 3, 69, 70)]
 ```
 
 ```{r, eval=FALSE}
