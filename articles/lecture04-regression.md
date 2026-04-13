@@ -97,7 +97,20 @@ Possible extensions of the basic linear regression framework include:
 - generalized linear models
 - spatial regression models
 
+Look at this webpage for
+
+<https://www.geeksforgeeks.org/r-language/regression-analysis-in-r-programming/>
+
+![types of regressio](figures/types_of_regression.png)
+
+types of regressio
+
 ### Examples of regression models
+
+**Linear Regression in R, Step-by-Step**
+
+**R programming for beginners – statistic with R (t-test and linear
+regression) and dplyr and ggplot**
 
 ##### Faithfull data
 
