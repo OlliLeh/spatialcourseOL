@@ -59,9 +59,122 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/OlliLeh/spatialcourseOL" class="external-link">spatialcourseOL</a></span><span class="op">)</span></span></code></pre></div>
-  </main>
+<div class="section level2">
+<h2 id="assignment-02-ggplot2-and-regression-analysis">Assignment 02: ggplot2 and regression analysis<a class="anchor" aria-label="anchor" href="#assignment-02-ggplot2-and-regression-analysis"></a>
+</h2>
+<div class="section level3">
+<h3 id="ggplot-lecture-03">ggplot (Lecture 03)<a class="anchor" aria-label="anchor" href="#ggplot-lecture-03"></a>
+</h3>
+<div class="section level4">
+<h4 id="section">1.<a class="anchor" aria-label="anchor" href="#section"></a>
+</h4>
+<p>Describe the PAAVO dataset for the year 2025. In this exercise, use
+the following variables:</p>
+<ul>
+<li>pt_tyott (unemployed persons)</li>
+<li>pt_vakiy (total population)</li>
+<li>hr_mtu (median income of residents)</li>
+</ul>
+<p>Using these variables, create the following visualizations with the
+ggplot2 package:</p>
+<ol style="list-style-type: lower-alpha">
+<li>A histogram of the unemployment rate in postal code areas</li>
+<li>A scatter plot showing the relationship between the unemployment
+rate and residents’ median income</li>
+</ol>
+</div>
+<div class="section level4">
+<h4 id="section-1">2.<a class="anchor" aria-label="anchor" href="#section-1"></a>
+</h4>
+<p>Add a regression line and a non‑parametric smoothing curve to the
+scatter plot created above (unemployment rate and median income).</p>
+<p>Based on visual interpretation:</p>
+<ul>
+<li>How are these related to each other?</li>
+<li>What can you conclude about the differences between the fitted
+curves?</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="section-2">3.<a class="anchor" aria-label="anchor" href="#section-2"></a>
+</h4>
+<p>Create a map of postal code areas and add the figures created in the
+previous tasks to it.</p>
+<p>You may use the patchwork package to compose the figure. Guidance on
+loading the data into R can be found in Lecture 04 (Regression
+analysis).</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="regression-analysis-lecture-04">Regression analysis (Lecture 04)<a class="anchor" aria-label="anchor" href="#regression-analysis-lecture-04"></a>
+</h3>
+<div class="section level4">
+<h4 id="section-3">4.<a class="anchor" aria-label="anchor" href="#section-3"></a>
+</h4>
+<p>The dataset teengamb (available in the faraway package) concerns a
+study of teenage gambling in Britain.</p>
+<p>Create numerical and graphical summaries of the data and comment on
+any features you find interesting. Limit the output to a level that a
+busy reader would find sufficient for gaining a basic understanding of
+the dataset.</p>
+<p>You can load the data using:</p>
+<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/julianfaraway/faraway" class="external-link">faraway</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">teengamb</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="section-4">5.<a class="anchor" aria-label="anchor" href="#section-4"></a>
+</h4>
+<p>Using the teengamb dataset, fit a regression model with gambling
+expenditure as the response variable and sex, status, income, and verbal
+score as predictors.</p>
+<p>Present the output and answer the following questions:</p>
+<ol style="list-style-type: lower-alpha">
+<li>What percentage of variation in the response is explained by these
+predictors?</li>
+<li>Which observation has the largest (positive) residual? Give the case
+number.</li>
+<li>Compute the mean and median of the residuals.</li>
+</ol>
+</div>
+<div class="section level4">
+<h4 id="section-5">6.<a class="anchor" aria-label="anchor" href="#section-5"></a>
+</h4>
+<p>Continue by fitting a model with income only as a predictor.</p>
+<p>Use an F-test to compare this model to the full model.</p>
+</div>
+<div class="section level4">
+<h4 id="section-6">7.<a class="anchor" aria-label="anchor" href="#section-6"></a>
+</h4>
+<p>Use the PAAVO dataset loaded in Task 1 and fit a regression model
+explaining the unemployment rate of postal code areas using median
+income and the share of highly educated individuals among the educated
+population.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Fit the model using basic regression with the lm() function and
+interpret the results.</li>
+<li>Evaluate and interpret the model diagnostics. Repeat the diagnostic
+procedures from the section “Regression diagnostics” (Lecture 04).</li>
+<li>Visualize the model fitted values on a map.</li>
+</ol>
+</div>
+<div class="section level4">
+<h4 id="section-7">8.<a class="anchor" aria-label="anchor" href="#section-7"></a>
+</h4>
+<p>Continue the interpolation example provided in the course materials
+by creating an interpolated surface from a binomial model, where the
+response variable is Moderate Growth (More Than 100 Jobs).</p>
+<p>Construct the binomial model in the same way as in the example
+(Regression analysis and open postcode area data) and repeat the
+interpolation code using this model.</p>
+<p>Briefly explain what you can conclude from the interpolated
+surface.</p>
+<p>After completing the exercises, save your solutions (including code)
+to your portfolio.</p>
+</div>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

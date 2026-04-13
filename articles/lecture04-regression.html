@@ -576,8 +576,7 @@ and fit a full regression model including all predictors.</p>
 <span><span class="va">statedata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  <span class="va">state.x77</span>,</span>
 <span>  row.names <span class="op">=</span> <span class="va">state.abb</span>,</span>
-<span>  check.names <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
+<span>  check.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Life.Exp</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">statedata</span><span class="op">)</span></span></code></pre></div>
 <p>Stepwise variable selection using AIC</p>
@@ -761,8 +760,8 @@ statistic is commonly used to assess model adequacy and complexity.</p>
 <div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/julianfaraway/faraway" class="external-link">faraway</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/faraway/man/Cpplot.html" class="external-link">Cpplot</a></span><span class="op">(</span><span class="va">g_leaps</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture04-regression_files/figure-html/unnamed-chunk-36-1.png" class="r-plt" alt="" width="700">
-Interpretation:</p>
+<p><img src="lecture04-regression_files/figure-html/unnamed-chunk-36-1.png" class="r-plt" alt="" width="700"></p>
+<p>Interpretation:</p>
 <ul>
 <li>Models with low
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>p</mi></msub><annotation encoding="application/x-tex">C_p</annotation></semantics></math>

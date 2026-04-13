@@ -595,8 +595,7 @@ data(state)
 statedata <- data.frame(
   state.x77,
   row.names = state.abb,
-  check.names = TRUE
-)
+  check.names = TRUE)
 
 g <- lm(Life.Exp ~ ., data = statedata)
 ```
@@ -799,6 +798,7 @@ Cpplot(g_leaps)
 ```
 
 ![](lecture04-regression_files/figure-html/unnamed-chunk-36-1.png)
+
 Interpretation:
 
 - Models with low $C_{p}$ values are preferred.

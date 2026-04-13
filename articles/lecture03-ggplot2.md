@@ -712,14 +712,47 @@ ggplot() +
 
 ## Working with ggplot2: Population development of the municipality categories
 
+These notes explain an R script that produces a faceted bar chart
+describing population development across different municipality
+categories in Finland.
+
 ``` r
 data(pop_category)
 ```
+
+Explanation:
+
+- data() loads a dataset that is already available in the R environment
+  or from a loaded package.
+
+- pop_category contains longitudinal population data, structured by:
+
+- Year
+
+- Municipality category
+
+- Population change components (e.g. natural change, migration)
+
+This dataset is in long-format and will be the foundation for the
+visualization.
 
 ``` r
 group.labs <- c("Sparsely populate", "Urban", "Rural close to urban", "Core rural")
 names(group.labs) <- c("Harvaan asuttu maaseutu","Kaupungit","Kaupunkien läh. maaseutu", "Ydinmaaseutu")
 ```
+
+Explanation:
+
+- This code creates a named character vector for relabeling factor
+  levels.
+- The names correspond to original category labels in the data
+  (Finnish).
+- The values are English translations used in the plot.
+- This vector will later be passed to labeller() to improve readability
+  in facet titles.
+
+Next, we will draw a plot visualising population development in Finnish
+municipality categories.
 
 ``` r
 plot1<-ggplot(pop_category, aes(Year, weight=value, fill=Variable))+ 
@@ -744,13 +777,139 @@ plot1<-ggplot(pop_category, aes(Year, weight=value, fill=Variable))+
 #> unknown parameters: `binwidth` and `size`
 ```
 
-Let’s call plot1 object:
+Let’s call plot1 object to see the plot we just created:
 
 ``` r
 plot1
 ```
 
 ![](lecture03-ggplot2_files/figure-html/unnamed-chunk-38-1.png)
+
+### Step by step explanation of the ggplot object
+
+#### 1. Initializing the ggplot object
+
+    plot1 <- ggplot(pop_category,
+                    aes(Year, weight = value, fill = Variable))
+
+Explanation:
+
+- ggplot() initializes a plotting object using pop_category as the data
+  source.
+
+- Aesthetic mappings:
+
+- Year - x-axis
+
+- value - bar height (via weight)
+
+- Variable - fill color (different population components)
+
+- Using weight=value allows us to stack contributions within each year.
+
+#### 2. Creating stacked bar charts
+
+    geom_bar(binwidth = 1, color = "gray", size = 0.25)
+
+Explanation:
+
+- geom_bar() creates bar charts using the count/statistic logic.
+- binwidth = 1 ensures one bar per year.
+- Bars are stacked automatically because a fill aesthetic is defined.
+- A light gray border improves visual separation between stacked
+  components.
+
+#### 3. Faceting by municipality category
+
+    facet_wrap(~Category,
+               scales = "free_y",
+               ncol = 2,
+               labeller = labeller(Category = group.labs))
+
+Explanation:
+
+- facet_wrap() creates one subplot for each municipality category.
+- scales = “free_y” allows each panel to have its own y-axis range.
+- ncol = 2 arranges the panels into two columns.
+- labeller() applies the English labels defined earlier.
+
+#### 4. Base theme and color palette
+
+    theme_minimal() +
+    scale_fill_tableau("Tableau 20",
+                       labels = c("Natural population change",
+                                  "Net immigration",
+                                  "Net migration"))
+
+Explanation:
+
+- theme_minimal() provides a clean, distraction-free look.
+- scale_fill_tableau() applies a professional color palette.
+- Custom labels clarify what each stacked bar segment represents.
+
+#### 5. Legend positioning and layout
+
+    theme(legend.position = "bottom") +
+    guides(col = guide_legend(ncol = 2))
+
+Explanation:
+
+- Moves the legend to the bottom to improve balance.
+- Splits the legend items into two columns for compactness.
+
+#### 6. Customizing axis text and titles
+
+    theme(
+      axis.text.x = element_text(angle = 90, size = 10),
+      axis.text.y = element_text(size = 12),
+      axis.title.x = element_text(size = 12),
+      axis.title.y = element_text(size = 12),
+      strip.text = element_text(size = 14))
+
+Explanation:
+
+- X-axis labels are rotated vertically to avoid overlap.
+- Font sizes are increased for lecture or presentation use.
+- Facet strip titles are emphasized for easy comparison.
+
+#### 7. Legend and title styling
+
+    theme(legend.text = element_text(size = 14)) +
+    theme(legend.title = element_text(size = 14)) +
+    theme(plot.title = element_text(size = 16))
+
+Explanation:
+
+- Improves readability of legend text.
+- Makes the plot title more prominent.
+
+#### 8. Adding labels and annotations
+
+    labs(fill = "Population development",
+      title = "Population development in municipality categories",
+      x = "Year",
+      y = "Change, person",
+      caption = "Data: Statistics Finland 2023")
+
+Explanation
+
+- Labels clarify:
+
+- What the colors mean
+
+- What is shown on each axis
+
+- The caption documents the data source, which is essential in academic
+  work.
+
+#### 9. Customizing the x-axis scale
+
+    scale_x_continuous(breaks = seq(1993, 2022, 1))
+
+Explanation:
+
+- Explicitly defines year breaks from 1993 to 2022.
+- Ensures no years are skipped or aggregated unintentionally.
 
 ### Adding a simple map to the plot
 
@@ -812,7 +971,7 @@ theme_update(plot.title = element_text(hjust = 0.5, face = "bold"))
 theme_update(plot.subtitle = element_text(hjust = 0.5))
 ```
 
-Finally we are to draw a map by using ggplot:
+Finally we are able to draw a map by using ggplot:
 
 ``` r
 map<-ggplot(muni) +
