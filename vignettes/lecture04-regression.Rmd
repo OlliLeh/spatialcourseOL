@@ -237,7 +237,6 @@ Finally, we may compute or extract R2:
 ```{r}
 1-deviance(mdl)/sum((y-mean(y))^2)
 mdls$r.squared
-
 ```
 
 ## Hypothesis Testing for Comparing Regression Models
@@ -395,8 +394,7 @@ data(state)
 statedata <- data.frame(
   state.x77,
   row.names = state.abb,
-  check.names = TRUE
-)
+  check.names = TRUE)
 
 g <- lm(Life.Exp ~ ., data = statedata)
 ```
@@ -456,6 +454,7 @@ Mallows’ $C_p$ statistic is commonly used to assess model adequacy and complex
 library(faraway)
 Cpplot(g_leaps)
 ```
+
 Interpretation:
 
 - Models with low $C_p$ values are preferred.
