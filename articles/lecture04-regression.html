@@ -1010,7 +1010,7 @@ associated attributes, including the number of jobs.</p>
 <li>the total number of jobs in 2016</li>
 </ul>
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p16data</span><span class="op">&lt;-</span><span class="va">p16</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">79</span><span class="op">)</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">p16data</span><span class="op">&lt;-</span><span class="va">p16</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">79</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">p16data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">p16data</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">p16data</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"posti_alue"</span>,<span class="st">"tyopy16"</span><span class="op">)</span> <span class="co">#postcode &amp; total number of jobs</span></span></code></pre></div>
 <ul>
@@ -1069,28 +1069,28 @@ job growth.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##    0    1 </span></span>
-<span><span class="co">##   87 2939</span></span></code></pre>
+<span><span class="co">## 1932 1094</span></span></code></pre>
 <p>Weak Growth (More Than 10 Jobs)</p>
 <div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_heikko</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m25_16</span><span class="op">&gt;</span><span class="fl">10</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_heikko</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##    0    1 </span></span>
-<span><span class="co">##  465 2561</span></span></code></pre>
+<span><span class="co">## 2287  739</span></span></code></pre>
 <p>Moderate Growth (More Than 100 Jobs)</p>
 <div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_kohtal</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m25_16</span><span class="op">&gt;</span><span class="fl">100</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_kohtal</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##    0    1 </span></span>
-<span><span class="co">## 1661 1365</span></span></code></pre>
+<span><span class="co">## 2673  353</span></span></code></pre>
 <p>Strong Growth (More Than 500 Jobs)</p>
 <div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_voima</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m25_16</span><span class="op">&gt;</span><span class="fl">500</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu_voima</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##    0    1 </span></span>
-<span><span class="co">## 2271  755</span></span></code></pre>
+<span><span class="co">## 2893  133</span></span></code></pre>
 <p>These classifications allow us to define different employment growth
 scenarios at the postcode level.</p>
 <p>Total Number of Jobs (2022)</p>
@@ -1106,16 +1106,16 @@ different growth intensities. The denominator 2,150,025 represents the
 total number of jobs nationally.</p>
 <div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t1</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">p25_data</span>, <span class="va">kasvu_voima</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">t1</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span> </span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.8932697</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 0.3726055</span></span></code></pre>
 <div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">p25_data</span>, <span class="va">kasvu_kohtal</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">t2</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span> </span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.9629485</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 0.5158832</span></span></code></pre>
 <div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t3</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">p25_data</span>, <span class="va">kasvu_heikko</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">t3</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span> </span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.9856363</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 0.5937043</span></span></code></pre>
 <div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t4</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">p25_data</span>, <span class="va">kasvu</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">t4</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span> </span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.9871004</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 0.6052728</span></span></code></pre>
 <p>These indicators help quantify how concentrated employment growth is
 geographically.</p>
 </div>
@@ -1161,25 +1161,25 @@ significance levels.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
 <span><span class="co">##              Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span><span class="co">## (Intercept)  0.056489   1.732366   0.033 0.973987    </span></span>
-<span><span class="co">## tyottom      0.094105   0.020760   4.533 5.81e-06 ***</span></span>
-<span><span class="co">## korkk       -0.037865   0.011464  -3.303 0.000957 ***</span></span>
-<span><span class="co">## alkut        0.018137   0.009200   1.971 0.048667 *  </span></span>
-<span><span class="co">## elak        -0.004182   0.019561  -0.214 0.830719    </span></span>
-<span><span class="co">## as_tih      -0.140686   0.071850  -1.958 0.050222 .  </span></span>
-<span><span class="co">## he_kika      0.104873   0.033860   3.097 0.001953 ** </span></span>
-<span><span class="co">## ra_as_kpa   -0.006897   0.009889  -0.697 0.485508    </span></span>
+<span><span class="co">## (Intercept)  4.273897   0.502507   8.505  &lt; 2e-16 ***</span></span>
+<span><span class="co">## tyottom     -0.040544   0.004742  -8.549  &lt; 2e-16 ***</span></span>
+<span><span class="co">## korkk        0.001043   0.004656   0.224 0.822714    </span></span>
+<span><span class="co">## alkut       -0.002325   0.001593  -1.460 0.144409    </span></span>
+<span><span class="co">## elak        -0.016733   0.003474  -4.817 1.46e-06 ***</span></span>
+<span><span class="co">## as_tih       0.007729   0.042394   0.182 0.855338    </span></span>
+<span><span class="co">## he_kika     -0.055771   0.007655  -7.285 3.21e-13 ***</span></span>
+<span><span class="co">## ra_as_kpa   -0.010629   0.002905  -3.659 0.000253 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##     Null deviance: 389.09  on 2961  degrees of freedom</span></span>
-<span><span class="co">## Residual deviance: 322.43  on 2954  degrees of freedom</span></span>
+<span><span class="co">##     Null deviance: 3888.5  on 2961  degrees of freedom</span></span>
+<span><span class="co">## Residual deviance: 3599.2  on 2954  degrees of freedom</span></span>
 <span><span class="co">##   (64 observations deleted due to missingness)</span></span>
-<span><span class="co">## AIC: 338.43</span></span>
+<span><span class="co">## AIC: 3615.2</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Number of Fisher Scoring iterations: 8</span></span></code></pre>
+<span><span class="co">## Number of Fisher Scoring iterations: 4</span></span></code></pre>
 <p>Note: At this stage, you should carefully analyse the model
 diagnostics (e.g. goodness-of-fit, influential observations, and
 multicollinearity).</p>
@@ -1210,25 +1210,25 @@ change.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
 <span><span class="co">##              Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span><span class="co">## (Intercept) 18.483913   1.012472  18.256  &lt; 2e-16 ***</span></span>
-<span><span class="co">## tyottom     -0.133090   0.009484 -14.033  &lt; 2e-16 ***</span></span>
-<span><span class="co">## korkk       -0.034420   0.008369  -4.113 3.91e-05 ***</span></span>
-<span><span class="co">## alkut       -0.023206   0.002763  -8.398  &lt; 2e-16 ***</span></span>
-<span><span class="co">## elak         0.025238   0.006332   3.986 6.73e-05 ***</span></span>
-<span><span class="co">## as_tih      -0.001754   0.071426  -0.025     0.98    </span></span>
-<span><span class="co">## he_kika     -0.167041   0.015137 -11.035  &lt; 2e-16 ***</span></span>
-<span><span class="co">## ra_as_kpa   -0.114281   0.005840 -19.568  &lt; 2e-16 ***</span></span>
+<span><span class="co">## (Intercept) 10.512921   1.324784   7.936 2.10e-15 ***</span></span>
+<span><span class="co">## tyottom     -0.117887   0.013440  -8.771  &lt; 2e-16 ***</span></span>
+<span><span class="co">## korkk       -0.008111   0.010146  -0.799   0.4240    </span></span>
+<span><span class="co">## alkut       -0.013869   0.006103  -2.272   0.0231 *  </span></span>
+<span><span class="co">## elak        -0.010439   0.009340  -1.118   0.2637    </span></span>
+<span><span class="co">## as_tih       0.013914   0.053423   0.260   0.7945    </span></span>
+<span><span class="co">## he_kika     -0.134070   0.022253  -6.025 1.69e-09 ***</span></span>
+<span><span class="co">## ra_as_kpa   -0.066380   0.007284  -9.114  &lt; 2e-16 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##     Null deviance: 3343.3  on 2961  degrees of freedom</span></span>
-<span><span class="co">## Residual deviance: 2038.1  on 2954  degrees of freedom</span></span>
+<span><span class="co">##     Null deviance: 1048.43  on 2961  degrees of freedom</span></span>
+<span><span class="co">## Residual deviance:  710.62  on 2954  degrees of freedom</span></span>
 <span><span class="co">##   (64 observations deleted due to missingness)</span></span>
-<span><span class="co">## AIC: 2054.1</span></span>
+<span><span class="co">## AIC: 726.62</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Number of Fisher Scoring iterations: 6</span></span></code></pre>
+<span><span class="co">## Number of Fisher Scoring iterations: 7</span></span></code></pre>
 <p><strong>Interpretation of results</strong></p>
 <ul>
 <li><p>Model fit</p></li>
@@ -1315,25 +1315,25 @@ variance, but it does rely on other important assumptions.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
 <span><span class="co">##              Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span><span class="co">## (Intercept)  0.056489   1.732366   0.033 0.973987    </span></span>
-<span><span class="co">## tyottom      0.094105   0.020760   4.533 5.81e-06 ***</span></span>
-<span><span class="co">## korkk       -0.037865   0.011464  -3.303 0.000957 ***</span></span>
-<span><span class="co">## alkut        0.018137   0.009200   1.971 0.048667 *  </span></span>
-<span><span class="co">## elak        -0.004182   0.019561  -0.214 0.830719    </span></span>
-<span><span class="co">## as_tih      -0.140686   0.071850  -1.958 0.050222 .  </span></span>
-<span><span class="co">## he_kika      0.104873   0.033860   3.097 0.001953 ** </span></span>
-<span><span class="co">## ra_as_kpa   -0.006897   0.009889  -0.697 0.485508    </span></span>
+<span><span class="co">## (Intercept)  4.273897   0.502507   8.505  &lt; 2e-16 ***</span></span>
+<span><span class="co">## tyottom     -0.040544   0.004742  -8.549  &lt; 2e-16 ***</span></span>
+<span><span class="co">## korkk        0.001043   0.004656   0.224 0.822714    </span></span>
+<span><span class="co">## alkut       -0.002325   0.001593  -1.460 0.144409    </span></span>
+<span><span class="co">## elak        -0.016733   0.003474  -4.817 1.46e-06 ***</span></span>
+<span><span class="co">## as_tih       0.007729   0.042394   0.182 0.855338    </span></span>
+<span><span class="co">## he_kika     -0.055771   0.007655  -7.285 3.21e-13 ***</span></span>
+<span><span class="co">## ra_as_kpa   -0.010629   0.002905  -3.659 0.000253 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##     Null deviance: 389.09  on 2961  degrees of freedom</span></span>
-<span><span class="co">## Residual deviance: 322.43  on 2954  degrees of freedom</span></span>
+<span><span class="co">##     Null deviance: 3888.5  on 2961  degrees of freedom</span></span>
+<span><span class="co">## Residual deviance: 3599.2  on 2954  degrees of freedom</span></span>
 <span><span class="co">##   (64 observations deleted due to missingness)</span></span>
-<span><span class="co">## AIC: 338.43</span></span>
+<span><span class="co">## AIC: 3615.2</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Number of Fisher Scoring iterations: 8</span></span></code></pre>
+<span><span class="co">## Number of Fisher Scoring iterations: 4</span></span></code></pre>
 <p>Key quantities:</p>
 <ul>
 <li>Null deviance: model with no predictors</li>
@@ -1362,14 +1362,14 @@ is better than the null model:</li>
 <span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##           Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    </span></span>
-<span><span class="co">## NULL                       2961     389.09              </span></span>
-<span><span class="co">## tyottom    1    7.909      2960     381.18 0.0049183 ** </span></span>
-<span><span class="co">## korkk      1   34.726      2959     346.45 3.795e-09 ***</span></span>
-<span><span class="co">## alkut      1    4.209      2958     342.24 0.0402124 *  </span></span>
-<span><span class="co">## elak       1    1.972      2957     340.27 0.1601979    </span></span>
-<span><span class="co">## as_tih     1    5.128      2956     335.14 0.0235446 *  </span></span>
-<span><span class="co">## he_kika    1   12.228      2955     322.92 0.0004708 ***</span></span>
-<span><span class="co">## ra_as_kpa  1    0.487      2954     322.43 0.4854138    </span></span>
+<span><span class="co">## NULL                       2961     3888.5              </span></span>
+<span><span class="co">## tyottom    1   12.878      2960     3875.7 0.0003325 ***</span></span>
+<span><span class="co">## korkk      1  111.598      2959     3764.1 &lt; 2.2e-16 ***</span></span>
+<span><span class="co">## alkut      1   15.278      2958     3748.8 9.281e-05 ***</span></span>
+<span><span class="co">## elak       1   81.310      2957     3667.5 &lt; 2.2e-16 ***</span></span>
+<span><span class="co">## as_tih     1    5.266      2956     3662.2 0.0217453 *  </span></span>
+<span><span class="co">## he_kika    1   49.486      2955     3612.7 1.998e-12 ***</span></span>
+<span><span class="co">## ra_as_kpa  1   13.553      2954     3599.2 0.0002319 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
 <p>A small p‑value indicates that the model improves fit relative to an
@@ -1398,8 +1398,8 @@ binary (0/1):</li>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">pred_class</span>, <span class="va">p25_data</span><span class="op">$</span><span class="va">kasvu</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##           </span></span>
 <span><span class="co">## pred_class    0    1</span></span>
-<span><span class="co">##          0    0    1</span></span>
-<span><span class="co">##          1   36 2925</span></span></code></pre>
+<span><span class="co">##          0 1687  729</span></span>
+<span><span class="co">##          1  193  353</span></span></code></pre>
 <p>This helps evaluate prediction accuracy, but should not replace
 statistical diagnostics.</p>
 <p><strong>3. Residual diagnostics</strong></p>
@@ -1573,12 +1573,12 @@ p25_data already exists in the workspace.</p>
 <span><span class="va">pdata3</span> <span class="op">&lt;-</span> <span class="va">p25_data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">129</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">pdata3</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    posti_alue       euref_x          euref_y          model2_res      </span></span>
-<span><span class="co">##  Min.   :  100   Min.   : 90361   Min.   :6639963   Min.   :0.000001  </span></span>
-<span><span class="co">##  1st Qu.:25438   1st Qu.:321052   1st Qu.:6753730   1st Qu.:0.036578  </span></span>
-<span><span class="co">##  Median :51770   Median :399308   Median :6883752   Median :0.125017  </span></span>
-<span><span class="co">##  Mean   :51257   Mean   :410317   Mean   :6924968   Mean   :0.251857  </span></span>
-<span><span class="co">##  3rd Qu.:77752   3rd Qu.:499228   3rd Qu.:7021408   3rd Qu.:0.386879  </span></span>
-<span><span class="co">##  Max.   :99990   Max.   :720123   Max.   :7750572   Max.   :0.999912  </span></span>
+<span><span class="co">##  Min.   :  100   Min.   : 90361   Min.   :6639963   Min.   :0.000000  </span></span>
+<span><span class="co">##  1st Qu.:25438   1st Qu.:321052   1st Qu.:6753730   1st Qu.:0.003936  </span></span>
+<span><span class="co">##  Median :51770   Median :399308   Median :6883752   Median :0.010473  </span></span>
+<span><span class="co">##  Mean   :51257   Mean   :410317   Mean   :6924968   Mean   :0.042876  </span></span>
+<span><span class="co">##  3rd Qu.:77752   3rd Qu.:499228   3rd Qu.:7021408   3rd Qu.:0.031151  </span></span>
+<span><span class="co">##  Max.   :99990   Max.   :720123   Max.   :7750572   Max.   :0.986536  </span></span>
 <span><span class="co">##                                                     NA's   :64</span></span></code></pre>
 <p><strong>Handling missing values</strong></p>
 <div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
@@ -1686,9 +1686,18 @@ empirical variogram. Here we use an exponential model.</p>
 <code class="sourceCode R"><span><span class="va">v.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/gstat/reference/fit.variogram.html" class="external-link">fit.variogram</a></span><span class="op">(</span></span>
 <span>  <span class="va">v</span>, </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/gstat/reference/vgm.html" class="external-link">vgm</a></span><span class="op">(</span>psill <span class="op">=</span> <span class="fl">1</span>, model <span class="op">=</span> <span class="st">"Exp"</span>, range <span class="op">=</span> <span class="fl">5000</span>, nugget <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, : No</span></span>
-<span><span class="co">## convergence after 200 iterations: try different initial values?</span></span></code></pre>
-<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :</span></span>
+<span><span class="co">## linear model has singular covariance matrix</span></span>
+<span><span class="co">## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :</span></span>
+<span><span class="co">## linear model has singular covariance matrix</span></span>
+<span><span class="co">## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :</span></span>
+<span><span class="co">## linear model has singular covariance matrix</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :</span></span>
+<span><span class="co">## singular model in variogram fit</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in fit.variogram(object, model, fit.sills = fit.sills, fit.ranges =</span></span>
+<span><span class="co">## fit.ranges, : No convergence after 200 iterations: try different initial</span></span>
+<span><span class="co">## values?</span></span></code></pre>
+<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">v</span>, <span class="va">v.m</span>, plot.numbers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="lecture04-regression_files/figure-html/unnamed-chunk-80-1.png" class="r-plt" alt="" width="700"></p>
 </div>
@@ -1716,7 +1725,7 @@ space</p></li>
 combining a constant-mean model with a fitted variogram to predict
 spatially continuous values of tulos3 and quantify uncertainty at each
 grid cell.</p>
-<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/gstat/reference/krige.html" class="external-link">krige</a></span><span class="op">(</span></span>
 <span>  <span class="va">model2_res</span> <span class="op">~</span> <span class="fl">1</span>,</span>
 <span>  <span class="va">int.sf</span>,</span>
@@ -1730,7 +1739,7 @@ and kriging variance (var1.var).</p>
 <h3 id="visualising-the-interpolation-surface-with-ggplot2">8. Visualising the Interpolation Surface with ggplot2<a class="anchor" aria-label="anchor" href="#visualising-the-interpolation-surface-with-ggplot2"></a>
 </h3>
 <p>We overlay the kriging surface with municipality boundaries.</p>
-<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">municipalities</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/stars/reference/geom_stars.html" class="external-link">geom_stars</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">k</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">var1.pred</span>, x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span></span>
@@ -1774,21 +1783,21 @@ and kriging variance (var1.var).</p>
 </h3>
 <p><strong>Saving the interpolation surface</strong></p>
 <p>The kriging surface is saved as a GeoTIFF raster</p>
-<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="st">"C:/Data kansio"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/write_stars.html" class="external-link">write_stars</a></span><span class="op">(</span><span class="va">k</span>, <span class="st">"interpolointipinta.tif"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Aggregating predictions by municipalities</strong></p>
 <p>We compute the mean predicted value within each municipality.</p>
-<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">k2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">k</span>, <span class="va">municipalities</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_write.html" class="external-link">st_write</a></span><span class="op">(</span><span class="va">k2</span>, <span class="st">"test_keh2.shp"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Joining results back to municipality data</strong></p>
-<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">st_join</a></span><span class="op">(</span><span class="va">municipalities</span>, <span class="va">k2</span>, join <span class="op">=</span> <span class="va">st_equals</span>, left <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">t2</span> <span class="op">&lt;-</span> <span class="va">t</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">69</span>, <span class="fl">70</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_write.html" class="external-link">st_write</a></span><span class="op">(</span><span class="va">t2</span>, <span class="st">"test_keh2.shp"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">

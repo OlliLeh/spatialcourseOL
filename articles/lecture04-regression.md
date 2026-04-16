@@ -1056,7 +1056,7 @@ We extract:
 - the total number of jobs in 2016
 
 ``` r
-p16data<-p16[,c(2,79)]
+p16data<-p16[,c(3,79)]
 p16data<-as.data.frame(p16data[,1:2])
 colnames(p16data)<-c("posti_alue","tyopy16") #postcode & total number of jobs
 ```
@@ -1121,7 +1121,7 @@ table(p25_data$kasvu)
 
     ## 
     ##    0    1 
-    ##   87 2939
+    ## 1932 1094
 
 Weak Growth (More Than 10 Jobs)
 
@@ -1132,7 +1132,7 @@ table(p25_data$kasvu_heikko)
 
     ## 
     ##    0    1 
-    ##  465 2561
+    ## 2287  739
 
 Moderate Growth (More Than 100 Jobs)
 
@@ -1143,7 +1143,7 @@ table(p25_data$kasvu_kohtal)
 
     ## 
     ##    0    1 
-    ## 1661 1365
+    ## 2673  353
 
 Strong Growth (More Than 500 Jobs)
 
@@ -1154,7 +1154,7 @@ table(p25_data$kasvu_voima)
 
     ## 
     ##    0    1 
-    ## 2271  755
+    ## 2893  133
 
 These classifications allow us to define different employment growth
 scenarios at the postcode level.
@@ -1177,25 +1177,25 @@ total number of jobs nationally.
 t1<-subset(p25_data, kasvu_voima>0); sum(t1$tp_tyopy)/sum(p25_data$tp_tyopy) 
 ```
 
-    ## [1] 0.8932697
+    ## [1] 0.3726055
 
 ``` r
 t2<-subset(p25_data, kasvu_kohtal>0); sum(t2$tp_tyopy)/sum(p25_data$tp_tyopy) 
 ```
 
-    ## [1] 0.9629485
+    ## [1] 0.5158832
 
 ``` r
 t3<-subset(p25_data, kasvu_heikko>0); sum(t3$tp_tyopy)/sum(p25_data$tp_tyopy) 
 ```
 
-    ## [1] 0.9856363
+    ## [1] 0.5937043
 
 ``` r
 t4<-subset(p25_data, kasvu>0); sum(t4$tp_tyopy)/sum(p25_data$tp_tyopy) 
 ```
 
-    ## [1] 0.9871004
+    ## [1] 0.6052728
 
 These indicators help quantify how concentrated employment growth is
 geographically.
@@ -1253,25 +1253,25 @@ summary(model1)
     ## 
     ## Coefficients:
     ##              Estimate Std. Error z value Pr(>|z|)    
-    ## (Intercept)  0.056489   1.732366   0.033 0.973987    
-    ## tyottom      0.094105   0.020760   4.533 5.81e-06 ***
-    ## korkk       -0.037865   0.011464  -3.303 0.000957 ***
-    ## alkut        0.018137   0.009200   1.971 0.048667 *  
-    ## elak        -0.004182   0.019561  -0.214 0.830719    
-    ## as_tih      -0.140686   0.071850  -1.958 0.050222 .  
-    ## he_kika      0.104873   0.033860   3.097 0.001953 ** 
-    ## ra_as_kpa   -0.006897   0.009889  -0.697 0.485508    
+    ## (Intercept)  4.273897   0.502507   8.505  < 2e-16 ***
+    ## tyottom     -0.040544   0.004742  -8.549  < 2e-16 ***
+    ## korkk        0.001043   0.004656   0.224 0.822714    
+    ## alkut       -0.002325   0.001593  -1.460 0.144409    
+    ## elak        -0.016733   0.003474  -4.817 1.46e-06 ***
+    ## as_tih       0.007729   0.042394   0.182 0.855338    
+    ## he_kika     -0.055771   0.007655  -7.285 3.21e-13 ***
+    ## ra_as_kpa   -0.010629   0.002905  -3.659 0.000253 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## (Dispersion parameter for binomial family taken to be 1)
     ## 
-    ##     Null deviance: 389.09  on 2961  degrees of freedom
-    ## Residual deviance: 322.43  on 2954  degrees of freedom
+    ##     Null deviance: 3888.5  on 2961  degrees of freedom
+    ## Residual deviance: 3599.2  on 2954  degrees of freedom
     ##   (64 observations deleted due to missingness)
-    ## AIC: 338.43
+    ## AIC: 3615.2
     ## 
-    ## Number of Fisher Scoring iterations: 8
+    ## Number of Fisher Scoring iterations: 4
 
 Note: At this stage, you should carefully analyse the model diagnostics
 (e.g. goodness-of-fit, influential observations, and multicollinearity).
@@ -1317,25 +1317,25 @@ summary(model2)
     ## 
     ## Coefficients:
     ##              Estimate Std. Error z value Pr(>|z|)    
-    ## (Intercept) 18.483913   1.012472  18.256  < 2e-16 ***
-    ## tyottom     -0.133090   0.009484 -14.033  < 2e-16 ***
-    ## korkk       -0.034420   0.008369  -4.113 3.91e-05 ***
-    ## alkut       -0.023206   0.002763  -8.398  < 2e-16 ***
-    ## elak         0.025238   0.006332   3.986 6.73e-05 ***
-    ## as_tih      -0.001754   0.071426  -0.025     0.98    
-    ## he_kika     -0.167041   0.015137 -11.035  < 2e-16 ***
-    ## ra_as_kpa   -0.114281   0.005840 -19.568  < 2e-16 ***
+    ## (Intercept) 10.512921   1.324784   7.936 2.10e-15 ***
+    ## tyottom     -0.117887   0.013440  -8.771  < 2e-16 ***
+    ## korkk       -0.008111   0.010146  -0.799   0.4240    
+    ## alkut       -0.013869   0.006103  -2.272   0.0231 *  
+    ## elak        -0.010439   0.009340  -1.118   0.2637    
+    ## as_tih       0.013914   0.053423   0.260   0.7945    
+    ## he_kika     -0.134070   0.022253  -6.025 1.69e-09 ***
+    ## ra_as_kpa   -0.066380   0.007284  -9.114  < 2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## (Dispersion parameter for binomial family taken to be 1)
     ## 
-    ##     Null deviance: 3343.3  on 2961  degrees of freedom
-    ## Residual deviance: 2038.1  on 2954  degrees of freedom
+    ##     Null deviance: 1048.43  on 2961  degrees of freedom
+    ## Residual deviance:  710.62  on 2954  degrees of freedom
     ##   (64 observations deleted due to missingness)
-    ## AIC: 2054.1
+    ## AIC: 726.62
     ## 
-    ## Number of Fisher Scoring iterations: 6
+    ## Number of Fisher Scoring iterations: 7
 
 **Interpretation of results**
 
@@ -1445,25 +1445,25 @@ summary(model1)
     ## 
     ## Coefficients:
     ##              Estimate Std. Error z value Pr(>|z|)    
-    ## (Intercept)  0.056489   1.732366   0.033 0.973987    
-    ## tyottom      0.094105   0.020760   4.533 5.81e-06 ***
-    ## korkk       -0.037865   0.011464  -3.303 0.000957 ***
-    ## alkut        0.018137   0.009200   1.971 0.048667 *  
-    ## elak        -0.004182   0.019561  -0.214 0.830719    
-    ## as_tih      -0.140686   0.071850  -1.958 0.050222 .  
-    ## he_kika      0.104873   0.033860   3.097 0.001953 ** 
-    ## ra_as_kpa   -0.006897   0.009889  -0.697 0.485508    
+    ## (Intercept)  4.273897   0.502507   8.505  < 2e-16 ***
+    ## tyottom     -0.040544   0.004742  -8.549  < 2e-16 ***
+    ## korkk        0.001043   0.004656   0.224 0.822714    
+    ## alkut       -0.002325   0.001593  -1.460 0.144409    
+    ## elak        -0.016733   0.003474  -4.817 1.46e-06 ***
+    ## as_tih       0.007729   0.042394   0.182 0.855338    
+    ## he_kika     -0.055771   0.007655  -7.285 3.21e-13 ***
+    ## ra_as_kpa   -0.010629   0.002905  -3.659 0.000253 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## (Dispersion parameter for binomial family taken to be 1)
     ## 
-    ##     Null deviance: 389.09  on 2961  degrees of freedom
-    ## Residual deviance: 322.43  on 2954  degrees of freedom
+    ##     Null deviance: 3888.5  on 2961  degrees of freedom
+    ## Residual deviance: 3599.2  on 2954  degrees of freedom
     ##   (64 observations deleted due to missingness)
-    ## AIC: 338.43
+    ## AIC: 3615.2
     ## 
-    ## Number of Fisher Scoring iterations: 8
+    ## Number of Fisher Scoring iterations: 4
 
 Key quantities:
 
@@ -1493,14 +1493,14 @@ anova(model1, test = "Chisq")
     ## 
     ## 
     ##           Df Deviance Resid. Df Resid. Dev  Pr(>Chi)    
-    ## NULL                       2961     389.09              
-    ## tyottom    1    7.909      2960     381.18 0.0049183 ** 
-    ## korkk      1   34.726      2959     346.45 3.795e-09 ***
-    ## alkut      1    4.209      2958     342.24 0.0402124 *  
-    ## elak       1    1.972      2957     340.27 0.1601979    
-    ## as_tih     1    5.128      2956     335.14 0.0235446 *  
-    ## he_kika    1   12.228      2955     322.92 0.0004708 ***
-    ## ra_as_kpa  1    0.487      2954     322.43 0.4854138    
+    ## NULL                       2961     3888.5              
+    ## tyottom    1   12.878      2960     3875.7 0.0003325 ***
+    ## korkk      1  111.598      2959     3764.1 < 2.2e-16 ***
+    ## alkut      1   15.278      2958     3748.8 9.281e-05 ***
+    ## elak       1   81.310      2957     3667.5 < 2.2e-16 ***
+    ## as_tih     1    5.266      2956     3662.2 0.0217453 *  
+    ## he_kika    1   49.486      2955     3612.7 1.998e-12 ***
+    ## ra_as_kpa  1   13.553      2954     3599.2 0.0002319 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -1536,8 +1536,8 @@ table(pred_class, p25_data$kasvu)
 
     ##           
     ## pred_class    0    1
-    ##          0    0    1
-    ##          1   36 2925
+    ##          0 1687  729
+    ##          1  193  353
 
 This helps evaluate prediction accuracy, but should not replace
 statistical diagnostics.
@@ -1753,12 +1753,12 @@ summary(pdata3)
 ```
 
     ##    posti_alue       euref_x          euref_y          model2_res      
-    ##  Min.   :  100   Min.   : 90361   Min.   :6639963   Min.   :0.000001  
-    ##  1st Qu.:25438   1st Qu.:321052   1st Qu.:6753730   1st Qu.:0.036578  
-    ##  Median :51770   Median :399308   Median :6883752   Median :0.125017  
-    ##  Mean   :51257   Mean   :410317   Mean   :6924968   Mean   :0.251857  
-    ##  3rd Qu.:77752   3rd Qu.:499228   3rd Qu.:7021408   3rd Qu.:0.386879  
-    ##  Max.   :99990   Max.   :720123   Max.   :7750572   Max.   :0.999912  
+    ##  Min.   :  100   Min.   : 90361   Min.   :6639963   Min.   :0.000000  
+    ##  1st Qu.:25438   1st Qu.:321052   1st Qu.:6753730   1st Qu.:0.003936  
+    ##  Median :51770   Median :399308   Median :6883752   Median :0.010473  
+    ##  Mean   :51257   Mean   :410317   Mean   :6924968   Mean   :0.042876  
+    ##  3rd Qu.:77752   3rd Qu.:499228   3rd Qu.:7021408   3rd Qu.:0.031151  
+    ##  Max.   :99990   Max.   :720123   Max.   :7750572   Max.   :0.986536  
     ##                                                     NA's   :64
 
 **Handling missing values**
@@ -1893,8 +1893,19 @@ v.m <- fit.variogram(
   vgm(psill = 1, model = "Exp", range = 5000, nugget = 1))
 ```
 
-    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, : No
-    ## convergence after 200 iterations: try different initial values?
+    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
+    ## linear model has singular covariance matrix
+    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
+    ## linear model has singular covariance matrix
+    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
+    ## linear model has singular covariance matrix
+
+    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
+    ## singular model in variogram fit
+
+    ## Warning in fit.variogram(object, model, fit.sills = fit.sills, fit.ranges =
+    ## fit.ranges, : No convergence after 200 iterations: try different initial
+    ## values?
 
 ``` r
 plot(v, v.m, plot.numbers = TRUE)
