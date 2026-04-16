@@ -366,7 +366,9 @@ p25 <-st_read(request)
 Next, we load average housing prices per square meter for each postal code area in Joensuu, based on housing advertisements.
 
 ```{r}
-etuo<-read.csv("D:/UEF 2018/Opetukset/MONIMENETELMÄ2026/markkinointi2014_2023.csv", check.names=FALSE, sep=",")
+etuo <- read.csv(
+  system.file("extdata", "keskineliohinta2014_2023.csv",
+              package = "spatialcourseOL"), sep=",", check.names = FALSE)
 ```
 
 #### 2. Prepare spatial data and calculate distances
@@ -764,7 +766,9 @@ Let’s first fit a GAM model and visualize its smooth terms. We begin by readin
 the input data that will be used in the analysis.
 
 ```{r}
-x<-read.csv("D:/UEF 2018/Opetukset/Applied geospatial analysi and research 2026/Data_regression_tree2.csv", header=T, sep=";")
+x <- read.csv(
+  system.file("extdata", "Data_regression_tree2.csv",
+              package = "spatialcourseOL"),sep=",", check.names = FALSE)
 ```
 
 Next, we load the required packages. The mgcv package is used to fit the
