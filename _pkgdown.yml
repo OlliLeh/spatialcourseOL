@@ -20,6 +20,7 @@ articles:
   - title: "Week3"
     contents:
       - lecture05-nonparametric-regression
+      - lecture06-multivariate
 
   - title: "Week4"
     contents:
