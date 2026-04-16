@@ -55,7 +55,9 @@ Imports:
     mgcv,
     party,
     rpart,
-    geosphere
+    geosphere,
+    NbClust,
+    sotkanet
 Depends: 
     R (>= 2.10)
 LazyData: true

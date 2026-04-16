@@ -16,6 +16,7 @@ library(geofi)
 library(ggplot2)
 library(dplyr)
 library(car)
+library(NbClust)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -282,6 +283,8 @@ In this section, we:
 PCA is a powerful exploratory tool for simplifying complex datasets and revealing hidden structures in multivariate data.
 
 # Cluster analysis
+
+
 
 ### 11. Cluster Analysis
 
