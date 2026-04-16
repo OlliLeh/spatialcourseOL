@@ -20,6 +20,7 @@ library(sf)
 library(httr)
 library(data.table)
 library(ows4R)
+library(geosphere)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```

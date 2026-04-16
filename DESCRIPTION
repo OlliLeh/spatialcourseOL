@@ -54,7 +54,8 @@ Imports:
     sm,
     mgcv,
     party,
-    rpart
+    rpart,
+    geosphere
 Depends: 
     R (>= 2.10)
 LazyData: true
