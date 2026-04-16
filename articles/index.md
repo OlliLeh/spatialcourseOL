@@ -20,6 +20,8 @@
 
 - [Lecture 5: Nonparametric
   regression](https://ollileh.github.io/spatialcourseOL/articles/lecture05-nonparametric-regression.md):
+- [Lecture 6: Multivariate
+  analysis](https://ollileh.github.io/spatialcourseOL/articles/lecture06-multivariate.md):
 
 ### Week4
 
