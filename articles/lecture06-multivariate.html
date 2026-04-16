@@ -62,8 +62,118 @@
 <div class="section level2">
 <h2 id="multivariate-analysis">Multivariate analysis<a class="anchor" aria-label="anchor" href="#multivariate-analysis"></a>
 </h2>
+<p>R provides a versatile and powerful environment for multivariate data
+analysis. Due to its open-source nature and active user community, R
+offers a wide selection of packages that implement both classical and
+modern multivariate methods. These methods enable the simultaneous
+analysis of multiple variables, making it possible to uncover complex
+structures, relationships, and patterns in high-dimensional data.</p>
+<p>Commonly used multivariate methods in R include principal component
+analysis (PCA), factor analysis, cluster analysis, discriminant
+analysis, and multidimensional scaling. These techniques are often
+applied for data reduction, classification, grouping, and visualization,
+especially when dealing with large and correlated datasets. Packages
+such as stats, psych, FactoMineR, and cluster provide well-established
+tools for these purposes and are widely used in teaching and
+research.</p>
+<p><img src="figures/multivariate.png" class="r-plt" alt="" width="90%"></p>
+<p>In addition to classical techniques, R also supports more advanced
+multivariate approaches, such as canonical correlation analysis,
+correspondence analysis, structural equation modeling, and multivariate
+regression. Furthermore, modern machine learning–oriented multivariate
+methods, including random forests, support vector machines, and neural
+networks, are available through packages such as caret, tidymodels, and
+mlr3. These methods are particularly useful when the primary aim is
+prediction rather than explanation.</p>
+<p>One of R’s key strengths in multivariate analysis lies in its
+visualization capabilities. Packages like ggplot2, factoextra, and
+GGally allow researchers to explore multivariate relationships
+graphically, which greatly aids interpretation and communication of
+results. Visual tools such as biplots, scatterplot matrices, and cluster
+dendrograms are especially valuable in understanding the structure of
+complex datasets.</p>
+<p>For instance, factoextra is an R package making easy to extract and
+visualize the output of exploratory multivariate data analyses,
+including:</p>
+<ul>
+<li><p>Principal Component Analysis (PCA), which is used to summarize
+the information contained in a continuous (i.e, quantitative)
+multivariate data by reducing the dimensionality of the data without
+loosing important information.</p></li>
+<li><p>Correspondence Analysis (CA), which is an extension of the
+principal component analysis suited to analyse a large contingency table
+formed by two qualitative variables (or categorical data).</p></li>
+<li><p>Multiple Correspondence Analysis (MCA), which is an adaptation of
+CA to a data table containing more than two categorical
+variables.</p></li>
+<li><p>Multiple Factor Analysis (MFA) dedicated to datasets where
+variables are organized into groups (qualitative and/or quantitative
+variables).</p></li>
+<li><p>Hierarchical Multiple Factor Analysis (HMFA): An extension of MFA
+in a situation where the data are organized into a hierarchical
+structure.</p></li>
+<li><p>Factor Analysis of Mixed Data (FAMD), a particular case of the
+MFA, dedicated to analyze a data set containing both quantitative and
+qualitative variables.</p></li>
+</ul>
+<p><img src="figures/factoextra.png" class="r-plt" alt="" width="90%"></p>
+<p>You can find more information about factoextra here:</p>
+<p><a href="https://rpkgs.datanovia.com/factoextra/index.html" class="external-link uri">https://rpkgs.datanovia.com/factoextra/index.html</a></p>
+<p>In this lecture, we will go through principal component analysis and
+cluster analysis.</p>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="principal-component-analysis">Principal component analysis<a class="anchor" aria-label="anchor" href="#principal-component-analysis"></a>
+</h2>
+<p>The idea of principal component analysis (PCA) is to identify linear
+combinations of the original variables that describe the variability of
+the variables included in the linear combination. In principal component
+analysis, new variables are constructed in such a way that each
+component explains as much of the variation in the variables as
+possible. The first principal component explains as much of the total
+variation in the variables as possible, the second principal component
+explains as much as possible of the remaining variation, and so on. The
+resulting principal components are uncorrelated with one another.</p>
+<p>In principal component analysis, the extracted components generally
+take the form</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><msup><mi>C</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo>=</mo><msubsup><mi>w</mi><mn>1</mn><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><msubsup><mi>w</mi><mn>2</mn><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><msub><mi>X</mi><mn>2</mn></msub><mo>+</mo><mi>…</mi><mo>+</mo><msubsup><mi>w</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><msub><mi>X</mi><mi>p</mi></msub></mrow><annotation encoding="application/x-tex">
+PC^{(m)} = w^{(m)}_1 X_1 + w^{(m)}_2 X_2 + \dots + w^{(m)}_p X_p
+</annotation></semantics></math></p>
+<p>and they have the largest variance among those linear combinations
+that are uncorrelated with the previously extracted principal
+components. In general, the coefficients (w) are chosen so as to
+maximize the ratio of the variance of the principal component to the
+total variance.</p>
+<p>Idea of PCA:
+<img src="figures/pca_idea.png" class="r-plt" alt="" width="90%"></p>
+<p>In principal component analysis, it is possible to extract as many
+components as there are variables. However, when analyzing empirical
+data, one is usually not interested in all principal components but
+rather in a “sufficient number” that adequately describes the original
+variables used in the analysis. Generally, the number of components is
+selected using the same criteria as in factor analysis, namely based on
+eigenvalues and explained variance. In principal component analysis, the
+eigenvalue criterion has a sensible justification. Since eigenvalues
+correspond to the variances of the principal components, it is
+reasonable to interpret only those components whose eigenvalue is
+greater than one, because the variances of individual standardized
+variables are equal to one. Thus, it is not sensible to include in the
+analysis components whose variance is smaller than that of a single
+variable.</p>
+<p>Principal component analysis is conducted in the same way as factor
+analysis. Rotation can be applied to principal components just as it is
+to factors. Rotation facilitates the interpretation of components, as in
+factor analysis. In interpretation, the aim is to name the components in
+a way that indicates the source of the correlations between variables.
+In interpreting correlations among variables, the objective is not to
+infer causal relationships.</p>
+</div>
+<div class="section level2">
+<h2 id="cluster-analysis">Cluster analysis<a class="anchor" aria-label="anchor" href="#cluster-analysis"></a>
+</h2>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
