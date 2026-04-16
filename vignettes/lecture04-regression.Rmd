@@ -652,7 +652,7 @@ We extract:
 - the total number of jobs in 2016
 
 ```{r}
-p16data<-p16[,c(2,79)]
+p16data<-p16[,c(3,79)]
 p16data<-as.data.frame(p16data[,1:2])
 colnames(p16data)<-c("posti_alue","tyopy16") #postcode & total number of jobs
 ```
