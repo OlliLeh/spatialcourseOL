@@ -10,8 +10,8 @@ articles:
   lecture02-dplyr: lecture02-dplyr.html
   lecture03-ggplot2: lecture03-ggplot2.html
   lecture04-regression: lecture04-regression.html
-  lecture05-multivariate: lecture05-multivariate.html
-last_built: 2026-04-16T05:51Z
+  lecture05-nonparametric-regression: lecture05-nonparametric-regression.html
+last_built: 2026-04-16T13:20Z
 urls:
   reference: https://ollileh.github.io/spatialcourseOL/reference
   article: https://ollileh.github.io/spatialcourseOL/articles
