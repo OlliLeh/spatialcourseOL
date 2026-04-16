@@ -1,0 +1,18 @@
+---
+title: "Lecture 6: Multivariate analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Lecture 6: Multivariate analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(spatialcourseOL)
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Multivariate analysis
+
+
