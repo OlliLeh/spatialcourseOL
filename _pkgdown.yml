@@ -7,25 +7,25 @@ template:
 articles:
   - title: "Week1"
     contents:
-      - lecture01-intro
-      - lecture02-dplyr
-      - assignment01-week1
+      - "lecture01-intro"
+      - "lecture02-dplyr"
+      - "assignment01-week1"
 
   - title: "Week2"
     contents:
-      - lecture03-ggplot2
-      - lecture04-regression
-      - assignment02-week2
+      - "lecture03-ggplot2"
+      - "lecture04-regression"
+      - "assignment02-week2"
 
   - title: "Week3"
     contents:
-      - lecture05-nonparametric-regression
-      - lecture06-multivariate
+      - "lecture05-nonparametric-regression"
+      - "lecture06-multivariate"
 
   - title: "Week4"
     contents:
-      - assignment04-week4
+      - "assignment04-week4"
 
   - title: "Week5"
     contents:
-      - assignment05-week5
+      - "assignment05-week5"
