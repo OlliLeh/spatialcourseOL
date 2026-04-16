@@ -167,10 +167,797 @@ factor analysis. In interpretation, the aim is to name the components in
 a way that indicates the source of the correlations between variables.
 In interpreting correlations among variables, the objective is not to
 infer causal relationships.</p>
+<div class="section level3">
+<h3 id="example-principal-component-analysis-with-r">Example: Principal component analysis with R<a class="anchor" aria-label="anchor" href="#example-principal-component-analysis-with-r"></a>
+</h3>
+<div class="section level4">
+<h4 id="introduction">1. Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h4>
+<p>In this example, we demonstrate how to download municipal-level data
+from <strong>Sotkanet</strong>, reshape and clean the data, join it with
+spatial municipality data, visualize it on a map, and finally explore
+relationships between variables using multivariate methods.</p>
+</div>
+<div class="section level4">
+<h4 id="downloading-data-from-sotkanet">2. Downloading Data from Sotkanet<a class="anchor" aria-label="anchor" href="#downloading-data-from-sotkanet"></a>
+</h4>
+<p>We begin by downloading indicator data from the Sotkanet
+database.<br>
+Sotkanet provides a wide range of socioeconomic and health-related
+indicators for Finland.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load the sotkanet package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ropengov.github.io/sotkanet/" class="external-link">sotkanet</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Download selected indicators for year 2019 at municipality level</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ropengov.github.io/sotkanet/reference/GetDataSotkanet.html" class="external-link">GetDataSotkanet</a></span><span class="op">(</span></span>
+<span>  indicators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">181</span>, <span class="fl">3562</span>, <span class="fl">5</span>, <span class="fl">1275</span>, <span class="fl">3099</span>, <span class="fl">182</span>, <span class="fl">761</span>, <span class="fl">3195</span>,</span>
+<span>    <span class="fl">3076</span>, <span class="fl">453</span>, <span class="fl">179</span>, <span class="fl">304</span>, <span class="fl">313</span>, <span class="fl">2320</span>, <span class="fl">2343</span>, <span class="fl">3126</span><span class="op">)</span>,</span>
+<span>  years <span class="op">=</span> <span class="fl">2019</span>,  region.category <span class="op">=</span> <span class="st">"KUNTA"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="selecting-and-reshaping-the-data">3. Selecting and Reshaping the Data<a class="anchor" aria-label="anchor" href="#selecting-and-reshaping-the-data"></a>
+</h4>
+<p>Next, we select only the relevant columns and reshape the data from
+long format to wide format so that each indicator becomes its own
+variable.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data2</span><span class="op">&lt;-</span><span class="va">data</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">7</span>,<span class="fl">9</span><span class="op">)</span><span class="op">]</span> <span class="co">#select only some columns from data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">data2</span><span class="op">$</span><span class="va">indicator.title.fi</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##                   Avioeroja 25 - 64-vuotiailla / 1 000 vastaavan ikäistä naimisissa olevaa </span></span>
+<span><span class="co">##                                                                                        308 </span></span>
+<span><span class="co">##                                                   Gini-kerroin, käytettävissä olevat tulot </span></span>
+<span><span class="co">##                                                                                        308 </span></span>
+<span><span class="co">##                                                                  Huoltosuhde, demografinen </span></span>
+<span><span class="co">##                                                                                        308 </span></span>
+<span><span class="co">##                                Korkea-asteen koulutuksen saaneet, % 20 vuotta täyttäneistä </span></span>
+<span><span class="co">##                                                                                        308 </span></span>
+<span><span class="co">##                                                          Kunnan yleinen pienituloisuusaste </span></span>
+<span><span class="co">##                                                                                        305 </span></span>
+<span><span class="co">##                                                                  Lapsiperheet, % perheistä </span></span>
+<span><span class="co">##                                                                                        308 </span></span>
+<span><span class="co">##                                                        Pitkäaikaistyöttömät, % työvoimasta </span></span>
+<span><span class="co">##                                                                                        296 </span></span>
+<span><span class="co">##                                                 Ruotsinkielinen väestö, % väestöstä 31.12. </span></span>
+<span><span class="co">##                                                                                        250 </span></span>
+<span><span class="co">##                                                                  Taloudellinen huoltosuhde </span></span>
+<span><span class="co">##                                                                                        308 </span></span>
+<span><span class="co">##        Täyttä kansaneläkettä saaneet 65 vuotta täyttäneet, % vastaavan ikäisestä väestöstä </span></span>
+<span><span class="co">##                                                                                        296 </span></span>
+<span><span class="co">## Toimeentulotukea pitkäaikaisesti saaneet 18 - 24-vuotiaat, % vastaavan ikäisestä väestöstä </span></span>
+<span><span class="co">##                                                                                        143 </span></span>
+<span><span class="co">##                 Toimeentulotukea saaneet 25 - 64-vuotiaat, % vastaavan ikäisestä väestöstä </span></span>
+<span><span class="co">##                                                                                        302 </span></span>
+<span><span class="co">##                                                            Toimeentulotuki, euroa / asukas </span></span>
+<span><span class="co">##                                                                                        305 </span></span>
+<span><span class="co">##                                                                   Työttömät, % työvoimasta </span></span>
+<span><span class="co">##                                                                                        303 </span></span>
+<span><span class="co">##                                     Yleistä asumistukea saaneet yhteensä, % asuntokunnista </span></span>
+<span><span class="co">##                                                                                        302</span></span></code></pre>
+<p>We use the reshape2 package to perform the transformation.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">?</span><span class="fu">reshape2</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">data2</span>,  <span class="va">region.code</span> <span class="op">~</span> <span class="va">indicator.title.fi</span>, value.var <span class="op">=</span> <span class="st">"primary.value"</span><span class="op">)</span></span>
+<span><span class="va">dat</span><span class="op">$</span><span class="va">region.code</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">region.code</span><span class="op">)</span> <span class="co">#change code to numeric</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "data.frame"</span></span></code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] "region.code"                                                                               </span></span>
+<span><span class="co">##  [2] "Avioeroja 25 - 64-vuotiailla / 1 000 vastaavan ikäistä naimisissa olevaa"                  </span></span>
+<span><span class="co">##  [3] "Gini-kerroin, käytettävissä olevat tulot"                                                  </span></span>
+<span><span class="co">##  [4] "Huoltosuhde, demografinen"                                                                 </span></span>
+<span><span class="co">##  [5] "Korkea-asteen koulutuksen saaneet, % 20 vuotta täyttäneistä"                               </span></span>
+<span><span class="co">##  [6] "Kunnan yleinen pienituloisuusaste"                                                         </span></span>
+<span><span class="co">##  [7] "Lapsiperheet, % perheistä"                                                                 </span></span>
+<span><span class="co">##  [8] "Pitkäaikaistyöttömät, % työvoimasta"                                                       </span></span>
+<span><span class="co">##  [9] "Ruotsinkielinen väestö, % väestöstä 31.12."                                                </span></span>
+<span><span class="co">## [10] "Taloudellinen huoltosuhde"                                                                 </span></span>
+<span><span class="co">## [11] "Täyttä kansaneläkettä saaneet 65 vuotta täyttäneet, % vastaavan ikäisestä väestöstä"       </span></span>
+<span><span class="co">## [12] "Toimeentulotukea pitkäaikaisesti saaneet 18 - 24-vuotiaat, % vastaavan ikäisestä väestöstä"</span></span>
+<span><span class="co">## [13] "Toimeentulotukea saaneet 25 - 64-vuotiaat, % vastaavan ikäisestä väestöstä"                </span></span>
+<span><span class="co">## [14] "Toimeentulotuki, euroa / asukas"                                                           </span></span>
+<span><span class="co">## [15] "Työttömät, % työvoimasta"                                                                  </span></span>
+<span><span class="co">## [16] "Yleistä asumistukea saaneet yhteensä, % asuntokunnista"</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="cleaning-variable-names-and-data-types">4. Cleaning Variable Names and Data Types<a class="anchor" aria-label="anchor" href="#cleaning-variable-names-and-data-types"></a>
+</h4>
+<p>To make variable names easier to work with, we clean them and ensure
+that all variables are numeric.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat</span><span class="op">&lt;-</span><span class="fu"><a href="https://sfirke.github.io/janitor/reference/clean_names.html" class="external-link">clean_names</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span> <span class="co"># clean column names of our dataframe</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] "region_code"                                                                                  </span></span>
+<span><span class="co">##  [2] "avioeroja_25_64_vuotiailla_1_000_vastaavan_ikaista_naimisissa_olevaa"                         </span></span>
+<span><span class="co">##  [3] "gini_kerroin_kaytettavissa_olevat_tulot"                                                      </span></span>
+<span><span class="co">##  [4] "huoltosuhde_demografinen"                                                                     </span></span>
+<span><span class="co">##  [5] "korkea_asteen_koulutuksen_saaneet_percent_20_vuotta_tayttaneista"                             </span></span>
+<span><span class="co">##  [6] "kunnan_yleinen_pienituloisuusaste"                                                            </span></span>
+<span><span class="co">##  [7] "lapsiperheet_percent_perheista"                                                               </span></span>
+<span><span class="co">##  [8] "pitkaaikaistyottomat_percent_tyovoimasta"                                                     </span></span>
+<span><span class="co">##  [9] "ruotsinkielinen_vaesto_percent_vaestosta_31_12"                                               </span></span>
+<span><span class="co">## [10] "taloudellinen_huoltosuhde"                                                                    </span></span>
+<span><span class="co">## [11] "taytta_kansanelaketta_saaneet_65_vuotta_tayttaneet_percent_vastaavan_ikaisesta_vaestosta"     </span></span>
+<span><span class="co">## [12] "toimeentulotukea_pitkaaikaisesti_saaneet_18_24_vuotiaat_percent_vastaavan_ikaisesta_vaestosta"</span></span>
+<span><span class="co">## [13] "toimeentulotukea_saaneet_25_64_vuotiaat_percent_vastaavan_ikaisesta_vaestosta"                </span></span>
+<span><span class="co">## [14] "toimeentulotuki_euroa_asukas"                                                                 </span></span>
+<span><span class="co">## [15] "tyottomat_percent_tyovoimasta"                                                                </span></span>
+<span><span class="co">## [16] "yleista_asumistukea_saaneet_yhteensa_percent_asuntokunnista"</span></span></code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">dat</span>,<span class="va">as.numeric</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="loading-spatial-municipality-data">5. Loading Spatial Municipality Data<a class="anchor" aria-label="anchor" href="#loading-spatial-municipality-data"></a>
+</h4>
+<p>To visualize the indicators spatially, we download municipality
+boundaries.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">municipalities23</span> <span class="op">&lt;-</span> <span class="fu">geofi</span><span class="fu">::</span><span class="fu"><a href="https://ropengov.github.io/geofi/reference/get_municipalities.html" class="external-link">get_municipalities</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2023</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&amp;version=1.0.0&amp;request=getFeature&amp;typename=tilastointialueet%3Akunta4500k_2023</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)</span></span></code></pre>
+<pre><code><span><span class="co">## Data is licensed under: Attribution 4.0 International (CC BY 4.0)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="joining-attribute-data-with-spatial-data">6. Joining Attribute Data with Spatial Data<a class="anchor" aria-label="anchor" href="#joining-attribute-data-with-spatial-data"></a>
+</h4>
+<p>We join the Sotkanet indicators to the municipality geometry using a
+left join. This keeps all spatial units even if some attribute values
+are missing.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">municipalities23</span>,<span class="va">dat2</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kunta"</span> <span class="op">=</span> <span class="st">"region_code"</span><span class="op">)</span><span class="op">)</span> <span class="co"># why we use left_join?</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="visualizing-the-data">7. Visualizing the Data<a class="anchor" aria-label="anchor" href="#visualizing-the-data"></a>
+</h4>
+<p>We can now visualize the spatial data using ggplot2 and simple
+maps.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">map</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture06-multivariate_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">map</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">taloudellinen_huoltosuhde</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture06-multivariate_files/figure-html/unnamed-chunk-10-2.png" class="r-plt" alt="" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="preparing-data-for-multivariate-analysis">8. Preparing Data for Multivariate Analysis<a class="anchor" aria-label="anchor" href="#preparing-data-for-multivariate-analysis"></a>
+</h4>
+<p>Before performing multivariate analysis, we select a subset of
+variables and inspect their distributions.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">map2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">map</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">73</span><span class="op">:</span><span class="fl">87</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">map2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##        id      gini_kerroin_kaytettavissa_olevat_tulot huoltosuhde_demografinen</span></span>
+<span><span class="co">##  Min.   :  1   Min.   :20.9                            Min.   : 46.10          </span></span>
+<span><span class="co">##  1st Qu.: 78   1st Qu.:23.5                            1st Qu.: 70.00          </span></span>
+<span><span class="co">##  Median :155   Median :24.6                            Median : 77.55          </span></span>
+<span><span class="co">##  Mean   :155   Mean   :24.9                            Mean   : 78.11          </span></span>
+<span><span class="co">##  3rd Qu.:232   3rd Qu.:25.6                            3rd Qu.: 86.50          </span></span>
+<span><span class="co">##  Max.   :309   Max.   :42.7                            Max.   :110.10          </span></span>
+<span><span class="co">##                NA's   :1                               NA's   :1               </span></span>
+<span><span class="co">##  korkea_asteen_koulutuksen_saaneet_percent_20_vuotta_tayttaneista</span></span>
+<span><span class="co">##  Min.   :12.10                                                   </span></span>
+<span><span class="co">##  1st Qu.:19.38                                                   </span></span>
+<span><span class="co">##  Median :22.65                                                   </span></span>
+<span><span class="co">##  Mean   :23.91                                                   </span></span>
+<span><span class="co">##  3rd Qu.:27.15                                                   </span></span>
+<span><span class="co">##  Max.   :58.60                                                   </span></span>
+<span><span class="co">##  NA's   :1                                                       </span></span>
+<span><span class="co">##  kunnan_yleinen_pienituloisuusaste lapsiperheet_percent_perheista</span></span>
+<span><span class="co">##  Min.   : 5.00                     Min.   : 9.50                 </span></span>
+<span><span class="co">##  1st Qu.:11.30                     1st Qu.:29.07                 </span></span>
+<span><span class="co">##  Median :14.60                     Median :33.70                 </span></span>
+<span><span class="co">##  Mean   :14.25                     Mean   :33.83                 </span></span>
+<span><span class="co">##  3rd Qu.:17.20                     3rd Qu.:38.33                 </span></span>
+<span><span class="co">##  Max.   :24.10                     Max.   :61.40                 </span></span>
+<span><span class="co">##  NA's   :4                         NA's   :1                     </span></span>
+<span><span class="co">##  pitkaaikaistyottomat_percent_tyovoimasta</span></span>
+<span><span class="co">##  Min.   :0.000                           </span></span>
+<span><span class="co">##  1st Qu.:1.300                           </span></span>
+<span><span class="co">##  Median :1.900                           </span></span>
+<span><span class="co">##  Mean   :1.975                           </span></span>
+<span><span class="co">##  3rd Qu.:2.600                           </span></span>
+<span><span class="co">##  Max.   :4.300                           </span></span>
+<span><span class="co">##  NA's   :13                              </span></span>
+<span><span class="co">##  ruotsinkielinen_vaesto_percent_vaestosta_31_12 taloudellinen_huoltosuhde</span></span>
+<span><span class="co">##  Min.   : 0.000                                 Min.   : 89.0            </span></span>
+<span><span class="co">##  1st Qu.: 0.200                                 1st Qu.:132.5            </span></span>
+<span><span class="co">##  Median : 0.300                                 Median :156.8            </span></span>
+<span><span class="co">##  Mean   :11.724                                 Mean   :158.7            </span></span>
+<span><span class="co">##  3rd Qu.: 1.375                                 3rd Qu.:182.7            </span></span>
+<span><span class="co">##  Max.   :95.500                                 Max.   :244.5            </span></span>
+<span><span class="co">##  NA's   :59                                     NA's   :1                </span></span>
+<span><span class="co">##  taytta_kansanelaketta_saaneet_65_vuotta_tayttaneet_percent_vastaavan_ikaisesta_vaestosta</span></span>
+<span><span class="co">##  Min.   :0.600                                                                           </span></span>
+<span><span class="co">##  1st Qu.:1.300                                                                           </span></span>
+<span><span class="co">##  Median :1.700                                                                           </span></span>
+<span><span class="co">##  Mean   :1.796                                                                           </span></span>
+<span><span class="co">##  3rd Qu.:2.200                                                                           </span></span>
+<span><span class="co">##  Max.   :4.800                                                                           </span></span>
+<span><span class="co">##  NA's   :13                                                                              </span></span>
+<span><span class="co">##  toimeentulotukea_pitkaaikaisesti_saaneet_18_24_vuotiaat_percent_vastaavan_ikaisesta_vaestosta</span></span>
+<span><span class="co">##  Min.   :0.700                                                                                </span></span>
+<span><span class="co">##  1st Qu.:1.900                                                                                </span></span>
+<span><span class="co">##  Median :2.600                                                                                </span></span>
+<span><span class="co">##  Mean   :2.669                                                                                </span></span>
+<span><span class="co">##  3rd Qu.:3.350                                                                                </span></span>
+<span><span class="co">##  Max.   :5.700                                                                                </span></span>
+<span><span class="co">##  NA's   :166                                                                                  </span></span>
+<span><span class="co">##  toimeentulotukea_saaneet_25_64_vuotiaat_percent_vastaavan_ikaisesta_vaestosta</span></span>
+<span><span class="co">##  Min.   : 0.800                                                               </span></span>
+<span><span class="co">##  1st Qu.: 5.300                                                               </span></span>
+<span><span class="co">##  Median : 6.600                                                               </span></span>
+<span><span class="co">##  Mean   : 6.821                                                               </span></span>
+<span><span class="co">##  3rd Qu.: 8.275                                                               </span></span>
+<span><span class="co">##  Max.   :13.900                                                               </span></span>
+<span><span class="co">##  NA's   :7                                                                    </span></span>
+<span><span class="co">##  toimeentulotuki_euroa_asukas tyottomat_percent_tyovoimasta</span></span>
+<span><span class="co">##  Min.   :  0.60               Min.   : 1.900               </span></span>
+<span><span class="co">##  1st Qu.: 52.50               1st Qu.: 6.600               </span></span>
+<span><span class="co">##  Median : 73.50               Median : 8.200               </span></span>
+<span><span class="co">##  Mean   : 78.93               Mean   : 8.525               </span></span>
+<span><span class="co">##  3rd Qu.: 93.20               3rd Qu.:10.300               </span></span>
+<span><span class="co">##  Max.   :239.40               Max.   :17.400               </span></span>
+<span><span class="co">##  NA's   :4                    NA's   :6                    </span></span>
+<span><span class="co">##  yleista_asumistukea_saaneet_yhteensa_percent_asuntokunnista</span></span>
+<span><span class="co">##  Min.   : 1.400                                             </span></span>
+<span><span class="co">##  1st Qu.: 4.225                                             </span></span>
+<span><span class="co">##  Median : 5.600                                             </span></span>
+<span><span class="co">##  Mean   : 6.607                                             </span></span>
+<span><span class="co">##  3rd Qu.: 7.475                                             </span></span>
+<span><span class="co">##  Max.   :25.800                                             </span></span>
+<span><span class="co">##  NA's   :7                                                  </span></span>
+<span><span class="co">##             geom    </span></span>
+<span><span class="co">##  MULTIPOLYGON :309  </span></span>
+<span><span class="co">##  epsg:3067    :  0  </span></span>
+<span><span class="co">##  +proj=utm ...:  0  </span></span>
+<span><span class="co">##                     </span></span>
+<span><span class="co">##                     </span></span>
+<span><span class="co">##                     </span></span>
+<span><span class="co">## </span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="exploring-relationships-between-variables">9. Exploring Relationships Between Variables<a class="anchor" aria-label="anchor" href="#exploring-relationships-between-variables"></a>
+</h4>
+<p>Scatterplot matrices help us explore correlations and relationships
+between variables, which is a key step before applying methods such as
+principal component analysis or cluster analysis.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">map3</span><span class="op">&lt;-</span><span class="va">map2</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="fl">14</span>,<span class="fl">15</span>,<span class="fl">16</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/scatterplotMatrix.html" class="external-link">scatterplotMatrix</a></span><span class="op">(</span><span class="va">map3</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture06-multivariate_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="principal-component-analysis-pca">10. Principal Component Analysis (PCA)<a class="anchor" aria-label="anchor" href="#principal-component-analysis-pca"></a>
+</h4>
+<p>Next, we apply <strong>principal component analysis (PCA)</strong> to
+reduce the dimensionality of the data and to identify the main latent
+dimensions underlying the socioeconomic variables.</p>
+<p>PCA transforms a set of correlated variables into a smaller number of
+uncorrelated components that explain as much of the total variance as
+possible.</p>
+<div class="section level5">
+<h5 id="preparing-data-for-pca">10.1 Preparing Data for PCA<a class="anchor" aria-label="anchor" href="#preparing-data-for-pca"></a>
+</h5>
+<p>We select the variables to be included in the PCA. The first column
+is an identifier, so it is excluded from the analysis.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Select variables for PCA</span></span>
+<span><span class="va">data_pca</span> <span class="op">&lt;-</span> <span class="va">map3</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">13</span><span class="op">]</span></span></code></pre></div>
+<p>Before performing PCA, missing values must be handled. Here, we
+replace missing values with the mean of each variable, which is a common
+and simple imputation approach for exploratory analysis.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_pca2</span><span class="op">&lt;-</span><span class="va">data_pca</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html" class="external-link">mutate_all</a></span><span class="op">(</span><span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span>,<span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.x</span>,na.rm<span class="op">=</span><span class="cn">T</span><span class="op">)</span>,<span class="va">.x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">data_pca2</span> <span class="op">&lt;-</span> <span class="va">data_pca2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">geom</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level5">
+<h5 id="running-the-pca">10.2 Running the PCA<a class="anchor" aria-label="anchor" href="#running-the-pca"></a>
+</h5>
+<p>We use the prcomp() function to perform PCA. The variables are
+standardized (scale = TRUE) so that they contribute equally to the
+analysis.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sotkanet_pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/prcomp.html" class="external-link">prcomp</a></span><span class="op">(</span><span class="va">data_pca2</span>, scale<span class="op">=</span><span class="cn">T</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">sotkanet_pca</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Importance of components:</span></span>
+<span><span class="co">##                           PC1    PC2     PC3    PC4     PC5     PC6     PC7</span></span>
+<span><span class="co">## Standard deviation     2.2108 1.4748 1.04589 0.8655 0.83808 0.64151 0.61040</span></span>
+<span><span class="co">## Proportion of Variance 0.4443 0.1977 0.09944 0.0681 0.06385 0.03741 0.03387</span></span>
+<span><span class="co">## Cumulative Proportion  0.4443 0.6421 0.74151 0.8096 0.87346 0.91087 0.94475</span></span>
+<span><span class="co">##                            PC8     PC9    PC10    PC11</span></span>
+<span><span class="co">## Standard deviation     0.54626 0.42515 0.28980 0.21130</span></span>
+<span><span class="co">## Proportion of Variance 0.02713 0.01643 0.00764 0.00406</span></span>
+<span><span class="co">## Cumulative Proportion  0.97187 0.98831 0.99594 1.00000</span></span></code></pre>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sotkanet_pca</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "sdev"     "rotation" "center"   "scale"    "x"</span></span></code></pre>
+</div>
+<div class="section level5">
+<h5 id="choosing-the-number-of-components">10.3 Choosing the Number of Components<a class="anchor" aria-label="anchor" href="#choosing-the-number-of-components"></a>
+</h5>
+<p>A scree plot helps determine how many components should be retained
+by visualizing the eigenvalues.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/screeplot.html" class="external-link">screeplot</a></span><span class="op">(</span><span class="va">sotkanet_pca</span>, type<span class="op">=</span><span class="st">"lines"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture06-multivariate_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" alt="" width="700"></p>
+<p>Typically, components with eigenvalues greater than one or those
+before the “elbow” in the scree plot are selected for
+interpretation.</p>
+</div>
+<div class="section level5">
+<h5 id="interpreting-component-loadings">10.4 Interpreting Component Loadings<a class="anchor" aria-label="anchor" href="#interpreting-component-loadings"></a>
+</h5>
+<p>Component loadings show how strongly each variable contributes to a
+principal component.</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sotkanet_pca</span><span class="op">$</span><span class="va">rotation</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="co"># Socioeconomic wellbeing</span></span></code></pre></div>
+<pre><code><span><span class="co">##                                                  gini_kerroin_kaytettavissa_olevat_tulot </span></span>
+<span><span class="co">##                                                                               0.09551678 </span></span>
+<span><span class="co">##                                                                 huoltosuhde_demografinen </span></span>
+<span><span class="co">##                                                                              -0.36489578 </span></span>
+<span><span class="co">##                         korkea_asteen_koulutuksen_saaneet_percent_20_vuotta_tayttaneista </span></span>
+<span><span class="co">##                                                                               0.35119868 </span></span>
+<span><span class="co">##                                                        kunnan_yleinen_pienituloisuusaste </span></span>
+<span><span class="co">##                                                                              -0.39976752 </span></span>
+<span><span class="co">##                                                           lapsiperheet_percent_perheista </span></span>
+<span><span class="co">##                                                                               0.35249230 </span></span>
+<span><span class="co">##                                                 pitkaaikaistyottomat_percent_tyovoimasta </span></span>
+<span><span class="co">##                                                                              -0.21704459 </span></span>
+<span><span class="co">##                                           ruotsinkielinen_vaesto_percent_vaestosta_31_12 </span></span>
+<span><span class="co">##                                                                               0.14637741 </span></span>
+<span><span class="co">##                                                                taloudellinen_huoltosuhde </span></span>
+<span><span class="co">##                                                                              -0.42391491 </span></span>
+<span><span class="co">## taytta_kansanelaketta_saaneet_65_vuotta_tayttaneet_percent_vastaavan_ikaisesta_vaestosta </span></span>
+<span><span class="co">##                                                                              -0.30519614 </span></span>
+<span><span class="co">##                                                            tyottomat_percent_tyovoimasta </span></span>
+<span><span class="co">##                                                                              -0.32215778 </span></span>
+<span><span class="co">##                              yleista_asumistukea_saaneet_yhteensa_percent_asuntokunnista </span></span>
+<span><span class="co">##                                                                               0.07178681</span></span></code></pre>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sotkanet_pca</span><span class="op">$</span><span class="va">rotation</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="co"># Labour market disadvantage</span></span></code></pre></div>
+<pre><code><span><span class="co">##                                                  gini_kerroin_kaytettavissa_olevat_tulot </span></span>
+<span><span class="co">##                                                                              0.203621044 </span></span>
+<span><span class="co">##                                                                 huoltosuhde_demografinen </span></span>
+<span><span class="co">##                                                                             -0.288142127 </span></span>
+<span><span class="co">##                         korkea_asteen_koulutuksen_saaneet_percent_20_vuotta_tayttaneista </span></span>
+<span><span class="co">##                                                                              0.269501425 </span></span>
+<span><span class="co">##                                                        kunnan_yleinen_pienituloisuusaste </span></span>
+<span><span class="co">##                                                                              0.115563937 </span></span>
+<span><span class="co">##                                                           lapsiperheet_percent_perheista </span></span>
+<span><span class="co">##                                                                              0.078378808 </span></span>
+<span><span class="co">##                                                 pitkaaikaistyottomat_percent_tyovoimasta </span></span>
+<span><span class="co">##                                                                              0.433718217 </span></span>
+<span><span class="co">##                                           ruotsinkielinen_vaesto_percent_vaestosta_31_12 </span></span>
+<span><span class="co">##                                                                             -0.306052157 </span></span>
+<span><span class="co">##                                                                taloudellinen_huoltosuhde </span></span>
+<span><span class="co">##                                                                              0.005877142 </span></span>
+<span><span class="co">## taytta_kansanelaketta_saaneet_65_vuotta_tayttaneet_percent_vastaavan_ikaisesta_vaestosta </span></span>
+<span><span class="co">##                                                                             -0.079502654 </span></span>
+<span><span class="co">##                                                            tyottomat_percent_tyovoimasta </span></span>
+<span><span class="co">##                                                                              0.389774011 </span></span>
+<span><span class="co">##                              yleista_asumistukea_saaneet_yhteensa_percent_asuntokunnista </span></span>
+<span><span class="co">##                                                                              0.585939330</span></span></code></pre>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sotkanet_pca</span><span class="op">$</span><span class="va">rotation</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span> <span class="co"># Inequality–language structure</span></span></code></pre></div>
+<pre><code><span><span class="co">##                                                  gini_kerroin_kaytettavissa_olevat_tulot </span></span>
+<span><span class="co">##                                                                               0.77777582 </span></span>
+<span><span class="co">##                                                                 huoltosuhde_demografinen </span></span>
+<span><span class="co">##                                                                               0.12423430 </span></span>
+<span><span class="co">##                         korkea_asteen_koulutuksen_saaneet_percent_20_vuotta_tayttaneista </span></span>
+<span><span class="co">##                                                                               0.14319815 </span></span>
+<span><span class="co">##                                                        kunnan_yleinen_pienituloisuusaste </span></span>
+<span><span class="co">##                                                                               0.10359157 </span></span>
+<span><span class="co">##                                                           lapsiperheet_percent_perheista </span></span>
+<span><span class="co">##                                                                              -0.30341102 </span></span>
+<span><span class="co">##                                                 pitkaaikaistyottomat_percent_tyovoimasta </span></span>
+<span><span class="co">##                                                                               0.05165542 </span></span>
+<span><span class="co">##                                           ruotsinkielinen_vaesto_percent_vaestosta_31_12 </span></span>
+<span><span class="co">##                                                                               0.48232097 </span></span>
+<span><span class="co">##                                                                taloudellinen_huoltosuhde </span></span>
+<span><span class="co">##                                                                              -0.02186488 </span></span>
+<span><span class="co">## taytta_kansanelaketta_saaneet_65_vuotta_tayttaneet_percent_vastaavan_ikaisesta_vaestosta </span></span>
+<span><span class="co">##                                                                               0.10409846 </span></span>
+<span><span class="co">##                                                            tyottomat_percent_tyovoimasta </span></span>
+<span><span class="co">##                                                                              -0.09233098 </span></span>
+<span><span class="co">##                              yleista_asumistukea_saaneet_yhteensa_percent_asuntokunnista </span></span>
+<span><span class="co">##                                                                               0.03455537</span></span></code></pre>
+<p>Based on the loadings, the components can be interpreted, for example
+as:</p>
+<ul>
+<li>PC1: “Socioeconomic wellbeing” component</li>
+<li>PC2: “Labour market disadvantage” component</li>
+<li>PC3: “Inequality–language structure” component</li>
+</ul>
+<p>Note that:</p>
+<ul>
+<li>the naming of components is not unambiguous</li>
+<li>the interpretation of components is data-dependent</li>
+<li>different researchers may arrive at slightly different names, as
+long as the interpretations are well justified</li>
+</ul>
+<p>It is important to emphasize that the naming of principal components
+is not unique or objective. Component interpretation is always dependent
+on the dataset, the variables included, and the research context. As a
+result, different researchers may assign slightly different names to the
+same components. This is not a problem, provided that the naming is
+clearly justified by the loadings and supported by substantive reasoning
+rather than imposed arbitrarily.</p>
+</div>
+<div class="section level5">
+<h5 id="component-scores">10.5 Component Scores<a class="anchor" aria-label="anchor" href="#component-scores"></a>
+</h5>
+<p>Component scores describe how each municipality is positioned along
+the principal components.</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sotkanet_pca</span><span class="op">$</span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">sotkanet_pca</span><span class="op">$</span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   [1] -0.855602370  0.157472034 -0.387307872 -0.338238849  1.819452451</span></span>
+<span><span class="co">##   [6]  2.402040141  1.103471725  2.266306999  2.408364113 -2.888037377</span></span>
+<span><span class="co">##  [11] -0.941026532  4.505935112  0.706171644  1.777555249 -0.232375950</span></span>
+<span><span class="co">##  [16]  3.393451504 -0.545769495 -1.513981958  1.066740810  1.725761100</span></span>
+<span><span class="co">##  [21] -0.654860439 -0.807410994 -1.125964464 -1.084561819 -0.362426531</span></span>
+<span><span class="co">##  [26]  2.882739952 -1.962227704  0.323948511 -0.624320544 -2.540640538</span></span>
+<span><span class="co">##  [31]  2.535903598  2.773388685 -3.631169367  3.548055347  3.288599148</span></span>
+<span><span class="co">##  [36] -1.989247856 -4.091513051  1.668070809  0.588156034 -0.266602835</span></span>
+<span><span class="co">##  [41] -3.653208813  2.311176519  1.355167414  1.139661101 -1.519952253</span></span>
+<span><span class="co">##  [46] -0.510831201 -0.514238441 -0.555641262 -0.141571868  2.060053800</span></span>
+<span><span class="co">##  [51] -4.727736716  0.538120074  1.162002639  2.943128315 -1.035825036</span></span>
+<span><span class="co">##  [56]  0.798757507 -1.057012229  1.661768598  0.103085783  1.083171333</span></span>
+<span><span class="co">##  [61]  5.518658475  0.300108112 -2.883828222 -4.915573534 -0.204085863</span></span>
+<span><span class="co">##  [66] -1.631406681  1.522798372 -0.034314979 -1.357995713  3.189628901</span></span>
+<span><span class="co">##  [71]  3.767128144  0.931245557  2.976762569 -1.997974188 -0.733133105</span></span>
+<span><span class="co">##  [76] -2.739828390  0.584846604 -1.667300189  0.493075613 -2.310789900</span></span>
+<span><span class="co">##  [81] -1.596464351 -1.102673525  0.017946673  0.508226632  5.358952398</span></span>
+<span><span class="co">##  [86]  1.395873942 -2.269169036 -1.438577543  1.650021914  3.511294139</span></span>
+<span><span class="co">##  [91]  2.686936528 -0.986369362 -3.543760162  4.088482034 -2.918866659</span></span>
+<span><span class="co">##  [96]  2.014223764 -2.116460973 -4.674615578 -0.950045790  1.652604171</span></span>
+<span><span class="co">## [101]  0.265379849 -2.038408498  2.444449522  2.196284391 -0.473482751</span></span>
+<span><span class="co">## [106] -0.634805446 -2.411280663 -0.304251540 -2.387847418 -0.260888681</span></span>
+<span><span class="co">## [111]  0.178935227  2.566723220 -3.065918904 -3.936849493  0.849576054</span></span>
+<span><span class="co">## [116]  1.409074719  0.054420213 -0.040106750 -1.191586909 -0.325455674</span></span>
+<span><span class="co">## [121] -3.235520289  2.717494713 -0.748441666 -2.448384599  0.098956749</span></span>
+<span><span class="co">## [126]  0.163419708  2.058146976  1.584594723 -1.148274994 -1.120383424</span></span>
+<span><span class="co">## [131]  1.093430762  0.126758770  1.537347414  1.088465157  0.738894388</span></span>
+<span><span class="co">## [136]  4.553038833  3.552926111  0.647567557 -0.447356582 -1.182949270</span></span>
+<span><span class="co">## [141] -3.801490110  3.713114609  3.028920372  0.675667152 -0.089192285</span></span>
+<span><span class="co">## [146]  1.507837174  0.553916427 -2.125653297  0.084060835  1.504660149</span></span>
+<span><span class="co">## [151]  3.654881171 -1.154061326  1.756073189  2.508237597  1.872056047</span></span>
+<span><span class="co">## [156]  4.027588241 -0.007355454  3.624823897 -2.684246586 -3.350700147</span></span>
+<span><span class="co">## [161] -2.685012554  0.690609943 -2.365502372  0.245825841  3.836292035</span></span>
+<span><span class="co">## [166]  3.612427382  1.464274003 -1.222294286  2.829610072 -2.258703096</span></span>
+<span><span class="co">## [171] -1.000027774  2.962945058  0.212339263 -0.363116539  2.300123901</span></span>
+<span><span class="co">## [176] -2.998780972  3.657185933  2.184864896  0.529340530  0.627766405</span></span>
+<span><span class="co">## [181]  0.125992276 -0.979782170  1.840013562 -3.009079461  3.035907833</span></span>
+<span><span class="co">## [186] -2.698642598 -2.896072111 -1.260182810 -2.046198733 -1.727270349</span></span>
+<span><span class="co">## [191]  0.000000000 -0.532741042 -3.193865045 -0.639863937 -3.126754826</span></span>
+<span><span class="co">## [196]  1.818789966  3.769863120 -2.374341345  4.158212578 -3.786985234</span></span>
+<span><span class="co">## [201] -1.888658437  0.335919202  3.462371204 -4.298818778 -3.416128669</span></span>
+<span><span class="co">## [206]  0.632998329 -0.824328044 -4.155404843 -2.275029560 -0.519258495</span></span>
+<span><span class="co">## [211]  0.929018136 -0.577903662 -2.611298239 -0.651051394  1.315409332</span></span>
+<span><span class="co">## [216]  0.218085862  0.893758737  2.552047802 -0.362101783  2.530797654</span></span>
+<span><span class="co">## [221] -1.506824361 -2.858269690  1.416631026 -2.216554318 -4.720224393</span></span>
+<span><span class="co">## [226]  2.048353805 -2.395411682  1.947078772 -0.841532074 -1.526595730</span></span>
+<span><span class="co">## [231]  3.714069547 -4.945970707  1.309605363 -2.732727066 -3.091785889</span></span>
+<span><span class="co">## [236]  0.412789019  3.009715245  1.804978954 -2.011821436 -0.979777478</span></span>
+<span><span class="co">## [241] -3.135812471  2.737990909 -0.127509543 -3.608700068 -0.625961817</span></span>
+<span><span class="co">## [246]  2.397703136 -0.501010159  4.103023788  3.543736596  0.989566987</span></span>
+<span><span class="co">## [251] -1.521793133 -0.166943265 -2.218249118  0.717877747  0.998373003</span></span>
+<span><span class="co">## [256] -2.998124538  2.385600370 -3.082687765 -0.801610234 -2.943373734</span></span>
+<span><span class="co">## [261]  0.682364183 -3.089867091  0.101994869 -1.892227381  2.160748907</span></span>
+<span><span class="co">## [266] -2.448002443 -0.196483108  1.343627886  1.948122465 -3.253977224</span></span>
+<span><span class="co">## [271] -1.504379922 -0.841162570 -2.880442996 -0.698236472  0.103630958</span></span>
+<span><span class="co">## [276]  0.799723702  1.390880659 -2.677582451 -3.293325129  3.841632424</span></span>
+<span><span class="co">## [281]  0.754521880  1.148031476 -1.637729215 -2.192283644  0.738078465</span></span>
+<span><span class="co">## [286]  0.417210400  2.612533072  1.058836987  2.487630306  0.758286351</span></span>
+<span><span class="co">## [291] -1.254342411  0.422373405 -3.855967353  2.435908846 -0.126887431</span></span>
+<span><span class="co">## [296]  0.110862534  2.793339842 -2.185255580  0.670435454 -1.733043687</span></span>
+<span><span class="co">## [301] -1.403098210  1.787810439  2.664568087 -3.108331478  1.277486855</span></span>
+<span><span class="co">## [306]  2.888405389 -0.017120626 -0.994747353 -1.576751006</span></span></code></pre>
+<p><img src="lecture06-multivariate_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+<div class="section level5">
+<h5 id="saving-pca-results-to-spatial-data">10.6 Saving PCA Results to Spatial Data<a class="anchor" aria-label="anchor" href="#saving-pca-results-to-spatial-data"></a>
+</h5>
+<p>Finally, we attach the first three principal component scores to the
+spatial dataset. This allows the components to be visualized on maps or
+used in further spatial analysis.</p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">map3</span><span class="op">$</span><span class="va">pca1</span><span class="op">&lt;-</span><span class="va">sotkanet_pca</span><span class="op">$</span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">map3</span><span class="op">$</span><span class="va">pca2</span><span class="op">&lt;-</span><span class="va">sotkanet_pca</span><span class="op">$</span><span class="va">x</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">map3</span><span class="op">$</span><span class="va">pca3</span><span class="op">&lt;-</span><span class="va">sotkanet_pca</span><span class="op">$</span><span class="va">x</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span></span></code></pre></div>
+</div>
+<div class="section level5">
+<h5 id="summary">10.7 Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h5>
+<p>In this section, we:</p>
+<ul>
+<li>Prepared multivariate data for PCA</li>
+<li>Handled missing values</li>
+<li>Performed principal component analysis</li>
+<li>Selected and interpreted principal components</li>
+<li>Stored component scores for further analysis and mapping</li>
+</ul>
+<p>PCA is a powerful exploratory tool for simplifying complex datasets
+and revealing hidden structures in multivariate data.</p>
+</div>
+</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="cluster-analysis">Cluster analysis<a class="anchor" aria-label="anchor" href="#cluster-analysis"></a>
 </h2>
+<div class="section level4">
+<h4 id="cluster-analysis-1">11. Cluster Analysis<a class="anchor" aria-label="anchor" href="#cluster-analysis-1"></a>
+</h4>
+<p>After reducing the dimensionality of the data using principal
+component analysis, we proceed with <strong>cluster
+analysis</strong>.<br>
+Clustering allows us to group municipalities into internally similar but
+mutually distinct groups based on their socioeconomic profiles.</p>
+<p>In this example, we use <strong>k-means clustering</strong> applied
+to the first three principal components.</p>
+<div class="section level5">
+<h5 id="preparing-data-for-clustering">11.1 Preparing Data for Clustering<a class="anchor" aria-label="anchor" href="#preparing-data-for-clustering"></a>
+</h5>
+<p>We select the PCA scores that were previously added to the spatial
+data object.</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Select PCA scores for clustering</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">map3</span><span class="op">[</span>, <span class="fl">14</span><span class="op">:</span><span class="fl">16</span><span class="op">]</span></span></code></pre></div>
+</div>
+<div class="section level5">
+<h5 id="choosing-the-number-of-clusters">11.2 Choosing the Number of Clusters<a class="anchor" aria-label="anchor" href="#choosing-the-number-of-clusters"></a>
+</h5>
+<p>Before running k-means clustering, we explore an appropriate number
+of clusters using the NbClust package. This package evaluates multiple
+statistical criteria to suggest an optimal number of clusters.</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#install.packages("NbClust") #factoextra</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sites.google.com/site/malikacharrad/research/nbclust-package" class="external-link">NbClust</a></span><span class="op">)</span></span>
+<span><span class="co">#set.seed(1234)</span></span></code></pre></div>
+<p>We examine how often different cluster numbers are recommended.</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/NbClust/man/NbClust.html" class="external-link">NbClust</a></span><span class="op">(</span><span class="va">df</span>, min.nc<span class="op">=</span><span class="fl">2</span>, max.nc<span class="op">=</span><span class="fl">15</span>, method<span class="op">=</span><span class="st">"kmeans"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture06-multivariate_files/figure-html/unnamed-chunk-22-1.png" class="r-plt" alt="" width="700"></p>
+<pre><code><span><span class="co">## *** : The Hubert index is a graphical method of determining the number of clusters.</span></span>
+<span><span class="co">##                 In the plot of Hubert index, we seek a significant knee that corresponds to a </span></span>
+<span><span class="co">##                 significant increase of the value of the measure i.e the significant peak in Hubert</span></span>
+<span><span class="co">##                 index second differences plot. </span></span>
+<span><span class="co">## </span></span></code></pre>
+<p><img src="lecture06-multivariate_files/figure-html/unnamed-chunk-22-2.png" class="r-plt" alt="" width="700"></p>
+<pre><code><span><span class="co">## *** : The D index is a graphical method of determining the number of clusters. </span></span>
+<span><span class="co">##                 In the plot of D index, we seek a significant knee (the significant peak in Dindex</span></span>
+<span><span class="co">##                 second differences plot) that corresponds to a significant increase of the value of</span></span>
+<span><span class="co">##                 the measure. </span></span>
+<span><span class="co">##  </span></span>
+<span><span class="co">## ******************************************************************* </span></span>
+<span><span class="co">## * Among all indices:                                                </span></span>
+<span><span class="co">## * 6 proposed 2 as the best number of clusters </span></span>
+<span><span class="co">## * 1 proposed 3 as the best number of clusters </span></span>
+<span><span class="co">## * 4 proposed 4 as the best number of clusters </span></span>
+<span><span class="co">## * 6 proposed 5 as the best number of clusters </span></span>
+<span><span class="co">## * 1 proposed 7 as the best number of clusters </span></span>
+<span><span class="co">## * 2 proposed 10 as the best number of clusters </span></span>
+<span><span class="co">## * 1 proposed 12 as the best number of clusters </span></span>
+<span><span class="co">## * 1 proposed 14 as the best number of clusters </span></span>
+<span><span class="co">## * 1 proposed 15 as the best number of clusters </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##                    ***** Conclusion *****                            </span></span>
+<span><span class="co">##  </span></span>
+<span><span class="co">## * According to the majority rule, the best number of clusters is  2 </span></span>
+<span><span class="co">##  </span></span>
+<span><span class="co">##  </span></span>
+<span><span class="co">## *******************************************************************</span></span></code></pre>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">nc</span><span class="op">$</span><span class="va">Best.n</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  0  1  2  3  4  5  7 10 12 14 15 </span></span>
+<span><span class="co">##  2  1  6  1  4  6  1  2  1  1  1</span></span></code></pre>
+<p>The following bar plot summarizes the results across all
+criteria.</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">nc</span><span class="op">$</span><span class="va">Best.n</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span>, xlab<span class="op">=</span><span class="st">"Numer of Clusters"</span>, </span>
+<span>        ylab<span class="op">=</span><span class="st">"Number of Criteria"</span>, main<span class="op">=</span><span class="st">"Number of Clusters Chosen by 26 Criteria"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture06-multivariate_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" alt="" width="700"></p>
+<p>Based on this evaluation, we proceed with four clusters.</p>
+</div>
+<div class="section level5">
+<h5 id="performing-k-means-clustering">11.3 Performing k-Means Clustering<a class="anchor" aria-label="anchor" href="#performing-k-means-clustering"></a>
+</h5>
+<p>We apply k-means clustering with four clusters. Multiple random
+starts are used to improve solution stability.</p>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html" class="external-link">kmeans</a></span><span class="op">(</span><span class="va">df</span>, <span class="fl">4</span>, nstart<span class="op">=</span><span class="fl">25</span><span class="op">)</span>    </span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fit.km</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss"</span></span>
+<span><span class="co">## [6] "betweenss"    "size"         "iter"         "ifault"</span></span></code></pre>
+<p>Cluster sizes and cluster centers provide insight into the structure
+of the solution.</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit.km</span><span class="op">$</span><span class="va">size</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1]  25 124  73  87</span></span></code></pre>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit.km</span><span class="op">$</span><span class="va">centers</span>   </span></code></pre></div>
+<pre><code><span><span class="co">##          pca1        pca2        pca3</span></span>
+<span><span class="co">## 1  2.03466909  3.32239145  0.53500740</span></span>
+<span><span class="co">## 2 -0.06249417 -0.25828424 -0.25037615</span></span>
+<span><span class="co">## 3  2.64403006 -0.78610682  0.01308459</span></span>
+<span><span class="co">## 4 -2.71415683  0.07302595  0.19214118</span></span></code></pre>
+<p>We can also compute the mean values of the input variables by
+cluster.</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">df</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>cluster<span class="op">=</span><span class="va">fit.km</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span>, <span class="va">mean</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   cluster        pca1        pca2        pca3</span></span>
+<span><span class="co">## 1       1  2.03466909  3.32239145  0.53500740</span></span>
+<span><span class="co">## 2       2 -0.06249417 -0.25828424 -0.25037615</span></span>
+<span><span class="co">## 3       3  2.64403006 -0.78610682  0.01308459</span></span>
+<span><span class="co">## 4       4 -2.71415683  0.07302595  0.19214118</span></span></code></pre>
+</div>
+<div class="section level5">
+<h5 id="interpreting-the-clusters">11.4 Interpreting the Clusters<a class="anchor" aria-label="anchor" href="#interpreting-the-clusters"></a>
+</h5>
+<p>Reminder: What the PCA components represent Based on your earlier
+interpretation:</p>
+<p>PC1 - Socioeconomic well‑being</p>
+<ul>
+<li>High values: high education, low unemployment, low dependency
+ratios</li>
+<li>Low values: socioeconomically disadvantaged municipalities</li>
+</ul>
+<p>PC2 - Labour‑market disadvantage / welfare dependency</p>
+<ul>
+<li>High values: unemployment, long‑term unemployment, housing
+benefits</li>
+<li>Low values: stronger labour-market position</li>
+</ul>
+<p>PC3 - Income inequality &amp; linguistic structure</p>
+<ul>
+<li>High values: high Gini coefficient, higher share of Swedish
+speakers</li>
+<li>Low values: more equal income distribution, more family‑oriented
+structure</li>
+</ul>
+<p>Interpreting and naming the clusters</p>
+<p>**Cluster 1* (High PC1, very high PC2, moderately high PC3)</p>
+<p>Profile</p>
+<ul>
+<li>Strong overall socioeconomic structure</li>
+<li>At the same time, high unemployment / welfare dependency</li>
+<li>Some inequality / linguistic‑structural features</li>
+</ul>
+<p>Interpretation</p>
+<ul>
+<li>These are structurally strong municipalities that nevertheless face
+labour‑market or social policy challenges — often larger urban
+municipalities.</li>
+</ul>
+<p>Suggested names</p>
+<ul>
+<li>“Structurally strong but socially vulnerable municipalities”</li>
+<li>“Urban welfare‑dependent municipalities”</li>
+</ul>
+<p><strong>Cluster 2</strong> (Near zero on all components)</p>
+<p>Profile</p>
+<ul>
+<li>Close to the national average on all dimensions</li>
+<li>No dominant structural feature</li>
+</ul>
+<p>Interpretation</p>
+<ul>
+<li>These municipalities represent a baseline or reference group.</li>
+</ul>
+<p>Suggested names</p>
+<ul>
+<li>“Average municipalities”</li>
+<li>“Middle‑of‑the‑spectrum municipalities”</li>
+</ul>
+<p><strong>Cluster 3</strong> (Very high PC1, low PC2, neutral PC3)</p>
+<p>Profile</p>
+<ul>
+<li>Very strong socioeconomic position</li>
+<li>Low unemployment and low welfare dependency</li>
+<li>No strong inequality or linguistic signal</li>
+</ul>
+<p>Interpretation - These are the most advantaged municipalities, with
+strong labour‑market integration.</p>
+<p>Suggested names</p>
+<ul>
+<li>“Socioeconomically advantaged municipalities”</li>
+<li>“High‑performing municipalities”</li>
+<li>“Affluent and well‑integrated municipalities”</li>
+</ul>
+<p><strong>Cluster 4</strong> (Very low PC1, near‑zero PC2, slightly
+positive PC3)</p>
+<p>Profile</p>
+<ul>
+<li>Clear socioeconomic disadvantage</li>
+<li>Not primarily driven by labour‑market stress</li>
+<li>Some inequality / demographic vulnerability</li>
+</ul>
+<p>Interpretation</p>
+<ul>
+<li>These are structurally weak municipalities, often rural or
+peripheral, with long‑term socioeconomic challenges rather than acute
+unemployment.</li>
+</ul>
+<p>Suggested names</p>
+<ul>
+<li>“Structurally disadvantaged municipalities”</li>
+<li>“Low socioeconomic status municipalities”</li>
+</ul>
+<p>These interpretations are illustrative and depend on the specific
+variables included in the analysis. Remember that cluster names are
+interpretative summaries, not objective truths. The aim is to describe
+the dominant position of each group along the principal components, not
+to label individual municipalities rigidly.</p>
+</div>
+<div class="section level5">
+<h5 id="saving-cluster-membership">11.5 Saving Cluster Membership<a class="anchor" aria-label="anchor" href="#saving-cluster-membership"></a>
+</h5>
+<p>Next, we store the cluster membership for each municipality in the
+spatial dataset.</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cluster</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">fit.km</span><span class="op">$</span><span class="va">clus</span><span class="op">)</span></span>
+<span><span class="va">map</span><span class="op">$</span><span class="va">cluster</span><span class="op">&lt;-</span> <span class="va">cluster</span></span></code></pre></div>
+<p>This enables further statistical analysis and spatial
+visualization.</p>
+</div>
+<div class="section level5">
+<h5 id="mapping-the-clusters">11.6 Mapping the Clusters<a class="anchor" aria-label="anchor" href="#mapping-the-clusters"></a>
+</h5>
+<p>Finally, we visualize the spatial distribution of the clusters on a
+map.</p>
+<p>Clusters are categorical, so convert them to a factor.</p>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">map</span><span class="op">$</span><span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">map</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cluster_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"1"</span> <span class="op">=</span> <span class="st">"Structurally strong,\nbut socially vulnerable"</span>,</span>
+<span>  <span class="st">"2"</span> <span class="op">=</span> <span class="st">"Average municipalities"</span>,</span>
+<span>  <span class="st">"3"</span> <span class="op">=</span> <span class="st">"Socioeconomically advantaged"</span>,</span>
+<span>  <span class="st">"4"</span> <span class="op">=</span> <span class="st">"Structurally disadvantaged"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>(Using line breaks makes long names readable in the legend.)</p>
+<p>Now use scale_fill_brewer() (or viridis, both are good for maps).</p>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">map</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"white"</span>, linewidth <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_brewer</a></span><span class="op">(</span></span>
+<span>    palette <span class="op">=</span> <span class="st">"Set2"</span>,</span>
+<span>    name <span class="op">=</span> <span class="st">"Municipality type"</span>,</span>
+<span>    labels <span class="op">=</span> <span class="va">cluster_labels</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"right"</span>,</span>
+<span>    legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span>,</span>
+<span>    legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>    panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Municipality Clusters Based on Socioeconomic Structure"</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="st">"Cluster analysis based on principal components"</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Source: Sotkanet, Statistics Finland"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture06-multivariate_files/figure-html/unnamed-chunk-30-1.png" class="r-plt" alt="" width="700"></p>
+<p>This map reveals clear spatial patterns in the socioeconomic
+structure of municipalities.</p>
+</div>
+<div class="section level5">
+<h5 id="summary-1">11.7 Summary<a class="anchor" aria-label="anchor" href="#summary-1"></a>
+</h5>
+<p>In this section, we:</p>
+<ul>
+<li>Selected PCA scores for clustering</li>
+<li>Determined an appropriate number of clusters</li>
+<li>Performed k-means clustering</li>
+<li>Interpreted and saved cluster memberships</li>
+<li>Tested differences between clusters</li>
+<li>Visualized the results spatially</li>
+</ul>
+<p>Cluster analysis, especially when combined with PCA, is a powerful
+tool for identifying meaningful regional typologies in multivariate
+data.</p>
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
