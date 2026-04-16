@@ -2,7 +2,7 @@
 title: "Lecture 3: ggplot2"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Lecture 3: ggplot2 (test)}
+  %\VignetteIndexEntry{Lecture 3: ggplot2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

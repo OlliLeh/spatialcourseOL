@@ -2,7 +2,7 @@
 title: "Lecture 1: An Introduction to R"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{lecture01-An Introduction to R}
+  %\VignetteIndexEntry{Lecture 1: An Introduction to R}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
