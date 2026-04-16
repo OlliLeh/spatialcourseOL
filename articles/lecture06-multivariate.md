@@ -682,6 +682,30 @@ revealing hidden structures in multivariate data.
 
 ## Cluster analysis
 
+R has an amazing variety of functions for cluster analysis. In this
+section, we will go through only the basics of K-means clustering. For
+instance, hierarchical agglomerative, partitioning, and model based
+clustering can be get to known from here:
+[http://www.statmethods.net/advstats/cluster.html](http://www.statmethods.net/advstats/cluster.md)
+Remember that those all just a little part of the clustering
+possibilities of R!
+
+The principle of cluster analysis is that observations belonging to the
+same group should be as close to one another as possible, while
+observations belonging to different groups should be as far apart from
+one another as possible. In order for observations within the same group
+to be as similar as possible, the within‑group variation (dispersion)
+must be small. Correspondingly, for the groups to differ from one
+another as much as possible, the between‑group variation (dispersion)
+must be as large as possible.
+
+The basic principle of clustering is that observations within the same
+group should be as similar as possible and as different as possible from
+observations in other groups; that is, the groups should be internally
+homogeneous and externally heterogeneous, ensuring that the clustering
+of the data is valid. The method is based on measuring similarity or
+distance between observations.
+
 #### 11. Cluster Analysis
 
 After reducing the dimensionality of the data using principal component
