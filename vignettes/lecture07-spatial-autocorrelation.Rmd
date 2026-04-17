@@ -1,0 +1,17 @@
+---
+title: "Lecture 7: Spatial autocorrelation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Lecture 7: Spatial autocorrelation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(spatialcourseOL)
+
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Spatial autocorrelation

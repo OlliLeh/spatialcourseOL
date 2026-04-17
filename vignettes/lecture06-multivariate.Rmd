@@ -90,10 +90,13 @@ and finally explore relationships between variables using multivariate methods.
 
 ### 2. Downloading Data from Sotkanet
 
-We begin by downloading indicator data from the Sotkanet database.  
+We begin by downloading indicator data from the Sotkanet database. 
+
 Sotkanet provides a wide range of socioeconomic and health-related indicators for Finland.
 
-```{r message=FALSE}
+For reproducibility reasons, this code is **shown for demonstration purposes only** and is not executed when building the package documentation.
+
+```{r, eval=FALSE}
 # Load the sotkanet package
 library(sotkanet)
 
@@ -102,6 +105,16 @@ data <- GetDataSotkanet(
   indicators = c(181, 3562, 5, 1275, 3099, 182, 761, 3195,
     3076, 453, 179, 304, 313, 2320, 2343, 3126),
   years = 2019,  region.category = "KUNTA")
+```
+
+In practice, the data used in this lecture are stored locally in the package to ensure
+reproducibility, avoid external API dependencies, and guarantee successful package building.
+The data are read from the package’s extdata directory as follows:
+
+```{r}
+data <- readRDS(
+  system.file("extdata", "sotkanet_2019.rds",
+              package = "spatialcourseOL"))
 ```
 
 ### 3. Selecting and Reshaping the Data

@@ -1,0 +1,17 @@
+---
+title: "Lecture 8: Spatial regression"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Lecture 8: Spatial regression}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(spatialcourseOL)
+
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Spatial regression
