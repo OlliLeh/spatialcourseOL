@@ -21,9 +21,12 @@ articles:
     contents:
       - "lecture05-nonparametric-regression"
       - "lecture06-multivariate"
+      - "assignment02-week2"
 
   - title: "Week4"
     contents:
+      - "lecture07-spatial-autocorrelation"
+      - "lecture08-spatial-regression"
       - "assignment04-week4"
 
   - title: "Week5"
