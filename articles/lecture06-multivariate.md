@@ -129,9 +129,14 @@ relationships between variables using multivariate methods.
 
 #### 2. Downloading Data from Sotkanet
 
-We begin by downloading indicator data from the Sotkanet database.  
+We begin by downloading indicator data from the Sotkanet database.
+
 Sotkanet provides a wide range of socioeconomic and health-related
 indicators for Finland.
+
+For reproducibility reasons, this code is **shown for demonstration
+purposes only** and is not executed when building the package
+documentation.
 
 ``` r
 # Load the sotkanet package
@@ -142,6 +147,17 @@ data <- GetDataSotkanet(
   indicators = c(181, 3562, 5, 1275, 3099, 182, 761, 3195,
     3076, 453, 179, 304, 313, 2320, 2343, 3126),
   years = 2019,  region.category = "KUNTA")
+```
+
+In practice, the data used in this lecture are stored locally in the
+package to ensure reproducibility, avoid external API dependencies, and
+guarantee successful package building. The data are read from the
+package’s extdata directory as follows:
+
+``` r
+data <- readRDS(
+  system.file("extdata", "sotkanet_2019.rds",
+              package = "spatialcourseOL"))
 ```
 
 #### 3. Selecting and Reshaping the Data
@@ -283,13 +299,13 @@ We can now visualize the spatial data using ggplot2 and simple maps.
 ggplot(map)+geom_sf()
 ```
 
-![](lecture06-multivariate_files/figure-html/unnamed-chunk-10-1.png)
+![](lecture06-multivariate_files/figure-html/unnamed-chunk-11-1.png)
 
 ``` r
 ggplot(map, aes(fill = taloudellinen_huoltosuhde)) + geom_sf()
 ```
 
-![](lecture06-multivariate_files/figure-html/unnamed-chunk-10-2.png)
+![](lecture06-multivariate_files/figure-html/unnamed-chunk-11-2.png)
 
 #### 8. Preparing Data for Multivariate Analysis
 
@@ -401,7 +417,7 @@ map3<-map2[,c(1:10,14,15,16)]
 scatterplotMatrix(map3[,2:8])
 ```
 
-![](lecture06-multivariate_files/figure-html/unnamed-chunk-12-1.png)
+![](lecture06-multivariate_files/figure-html/unnamed-chunk-13-1.png)
 
 #### 10. Principal Component Analysis (PCA)
 
@@ -468,7 +484,7 @@ visualizing the eigenvalues.
 screeplot(sotkanet_pca, type="lines")
 ```
 
-![](lecture06-multivariate_files/figure-html/unnamed-chunk-16-1.png)
+![](lecture06-multivariate_files/figure-html/unnamed-chunk-17-1.png)
 
 Typically, components with eigenvalues greater than one or those before
 the “elbow” in the scree plot are selected for interpretation.
@@ -653,7 +669,7 @@ sotkanet_pca$x[,1]; hist(sotkanet_pca$x[,1])
     ## [301] -1.403098210  1.787810439  2.664568087 -3.108331478  1.277486855
     ## [306]  2.888405389 -0.017120626 -0.994747353 -1.576751006
 
-![](lecture06-multivariate_files/figure-html/unnamed-chunk-18-1.png)
+![](lecture06-multivariate_files/figure-html/unnamed-chunk-19-1.png)
 
 ##### 10.6 Saving PCA Results to Spatial Data
 
@@ -744,7 +760,7 @@ We examine how often different cluster numbers are recommended.
 nc <- NbClust(df, min.nc=2, max.nc=15, method="kmeans")
 ```
 
-![](lecture06-multivariate_files/figure-html/unnamed-chunk-22-1.png)
+![](lecture06-multivariate_files/figure-html/unnamed-chunk-23-1.png)
 
     ## *** : The Hubert index is a graphical method of determining the number of clusters.
     ##                 In the plot of Hubert index, we seek a significant knee that corresponds to a 
@@ -752,7 +768,7 @@ nc <- NbClust(df, min.nc=2, max.nc=15, method="kmeans")
     ##                 index second differences plot. 
     ## 
 
-![](lecture06-multivariate_files/figure-html/unnamed-chunk-22-2.png)
+![](lecture06-multivariate_files/figure-html/unnamed-chunk-23-2.png)
 
     ## *** : The D index is a graphical method of determining the number of clusters. 
     ##                 In the plot of D index, we seek a significant knee (the significant peak in Dindex
@@ -793,7 +809,7 @@ barplot(table(nc$Best.n[1,]), xlab="Numer of Clusters",
         ylab="Number of Criteria", main="Number of Clusters Chosen by 26 Criteria")
 ```
 
-![](lecture06-multivariate_files/figure-html/unnamed-chunk-23-1.png)
+![](lecture06-multivariate_files/figure-html/unnamed-chunk-24-1.png)
 
 Based on this evaluation, we proceed with four clusters.
 
@@ -994,7 +1010,7 @@ ggplot(map) +
   caption = "Source: Sotkanet, Statistics Finland")
 ```
 
-![](lecture06-multivariate_files/figure-html/unnamed-chunk-30-1.png)
+![](lecture06-multivariate_files/figure-html/unnamed-chunk-31-1.png)
 
 This map reveals clear spatial patterns in the socioeconomic structure
 of municipalities.

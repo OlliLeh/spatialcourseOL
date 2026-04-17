@@ -166,9 +166,14 @@ are pushed to the repository.
   regression](https://ollileh.github.io/spatialcourseOL/articles/lecture05-nonparametric-regression.md):
 - [Lecture 6: Multivariate
   analysis](https://ollileh.github.io/spatialcourseOL/articles/lecture06-multivariate.md):
+- [assignment03-data](https://ollileh.github.io/spatialcourseOL/articles/assignment03-week3.md):
 
 ### Week4
 
+- [Lecture 7: Spatial
+  autocorrelation](https://ollileh.github.io/spatialcourseOL/articles/lecture07-spatial-autocorrelation.md):
+- [Lecture 8: Spatial
+  regression](https://ollileh.github.io/spatialcourseOL/articles/lecture08-spatial-regression.md):
 - [assignment04-week4](https://ollileh.github.io/spatialcourseOL/articles/assignment04-week4.md):
 
 ### Week5
