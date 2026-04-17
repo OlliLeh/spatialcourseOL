@@ -176,6 +176,8 @@ Interpretation (for teaching)
 
 ## Example: Moran I and function
 
+In this exercise, you will calculate global spatial autocorrelation for municipal net migration using a simple function. The aim is to analyse how spatial autocorrelation has changed between 1990 and 2024. The dataset used in the exercise is sourced from the Sotkanet database.
+
 ### 1. Reading the attribute data from the package
 
 We first read a CSV file stored inside the R package.

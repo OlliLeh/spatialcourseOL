@@ -58,7 +58,7 @@ Imports:
     geosphere,
     NbClust,
     sotkanet,
-    sfdep
+    sfdep,
     spdep
 Depends: 
     R (>= 2.10)
