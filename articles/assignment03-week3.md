@@ -4,7 +4,7 @@
 library(spatialcourseOL)
 ```
 
-## Assignment 03: Working with Spatial Data
+## Assignment 03: Multivariate analysis
 
 ### 1. Nonparametric regression (lecture05):
 
