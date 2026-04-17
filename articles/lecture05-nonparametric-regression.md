@@ -1079,6 +1079,8 @@ with recovery.
 You can read the full article here:
 <https://journal.fi/maaseutututkimus/article/view/144094>
 
+![](figures/mua.png)
+
 Let’s first fit a GAM model and visualize its smooth terms. We begin by
 reading the input data that will be used in the analysis.
 
@@ -1137,7 +1139,7 @@ response variable.
 plot(y_gam,pages=1,ylim=c(-5,5))
 ```
 
-![](lecture05-nonparametric-regression_files/figure-html/unnamed-chunk-42-1.png)
+![](lecture05-nonparametric-regression_files/figure-html/unnamed-chunk-43-1.png)
 
 Next, we use the fitted probabilities from the GAM as the response
 variable in a regression tree. This allows us to explore how the
@@ -1149,4 +1151,4 @@ fit2=ctree(y_gam$fit~x$DIS456+x$DIS20+x$DIS6,control=ccont)
 plot(fit2)
 ```
 
-![](lecture05-nonparametric-regression_files/figure-html/unnamed-chunk-43-1.png)
+![](lecture05-nonparametric-regression_files/figure-html/unnamed-chunk-44-1.png)

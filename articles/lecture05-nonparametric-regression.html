@@ -1045,6 +1045,7 @@ emerged in the declining areas of Eastern Finland that would have slowed
 the pace of decline or generated new competitiveness factors associated
 with recovery.</p>
 <p>You can read the full article here: <a href="https://journal.fi/maaseutututkimus/article/view/144094" class="external-link uri">https://journal.fi/maaseutututkimus/article/view/144094</a></p>
+<p><img src="figures/mua.png" class="r-plt" alt="" width="90%"></p>
 <p>Let’s first fit a GAM model and visualize its smooth terms. We begin
 by reading the input data that will be used in the analysis.</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
@@ -1092,7 +1093,7 @@ predictor, illustrating their potentially nonlinear effects on the
 response variable.</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">y_gam</span>,pages<span class="op">=</span><span class="fl">1</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture05-nonparametric-regression_files/figure-html/unnamed-chunk-42-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture05-nonparametric-regression_files/figure-html/unnamed-chunk-43-1.png" class="r-plt" alt="" width="700"></p>
 <p>Next, we use the fitted probabilities from the GAM as the response
 variable in a regression tree. This allows us to explore how the
 predictors interact in explaining the GAM-based probabilities.</p>
@@ -1100,7 +1101,7 @@ predictors interact in explaining the GAM-based probabilities.</p>
 <code class="sourceCode R"><span><span class="va">ccont</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/party/man/ctree_control.html" class="external-link">ctree_control</a></span><span class="op">(</span>maxdepth<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">fit2</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/party/man/ctree.html" class="external-link">ctree</a></span><span class="op">(</span><span class="va">y_gam</span><span class="op">$</span><span class="va">fit</span><span class="op">~</span><span class="va">x</span><span class="op">$</span><span class="va">DIS456</span><span class="op">+</span><span class="va">x</span><span class="op">$</span><span class="va">DIS20</span><span class="op">+</span><span class="va">x</span><span class="op">$</span><span class="va">DIS6</span>,control<span class="op">=</span><span class="va">ccont</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture05-nonparametric-regression_files/figure-html/unnamed-chunk-43-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture05-nonparametric-regression_files/figure-html/unnamed-chunk-44-1.png" class="r-plt" alt="" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

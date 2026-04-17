@@ -1,3 +1,157 @@
 # Lecture 8: Spatial regression
 
 ## Spatial regression
+
+Spatial autocorrelation is one specific aspect in statistical modeling.
+These features of spatial data create needs for special analytical
+techniques and should be considered every time a project involving
+geography (i.e., location) is attempted. In geography, the use of
+geospatial analyze has had a minor role in the research of regional
+development in Finland. Partly, this is due to the fact that these
+methods have been available for geographers for a little time. Methods
+require specific software and programming skills that are designed for
+specialist statisticians. However, the use of geospatial methods is
+advantageous, because traditional models, such as ordinary least squares
+regression, might give biased or in-efficient estimators for regression
+coefficients if spatial autocorrelation is omitted .
+
+When to use regression analysis: - Prediction of future observations -
+Assessment of the effect of, or relationship between, explanatory
+variables on the response. - General description of data structure
+
+Assumptions to regression analysis: - the ramdom error has mean zero -
+the random error terms are uncorrelated and have a constant variance
+(homoskedastic) - the random error term follows a normal distribution
+
+#### Ordinary least squares regression (OLS-regression):
+
+**Linear regression analysis** aims to identify and quantify the
+relationship between a dependent variable and a set of explanatory
+variables. In its most common form, ordinary least squares (OLS)
+regression can be written as:
+
+$$y = {\mathbf{β}}X + \varepsilon,$$
+
+or equivalently,
+
+$$y = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + \cdots + \beta_{n}x_{n} + \varepsilon,$$
+
+where  
+- $y$ is the response variable,  
+- $X$ represents the predictor variable(s),  
+- $\mathbf{β}$ are the unknown regression parameters, and  
+- $\varepsilon$ is the error term.
+
+#### Spatial dependence
+
+Spatial dependence exists when the value observed in a region $i$
+depends on values observed in neighbouring regions. Previously, spatial
+dependence was examined using spatial autocorrelation statistics. In
+regression modelling, spatial dependence may occur either in the
+variables themselves or in the error terms.
+
+#### Spatial lag model
+
+In a **spatial lag model**, the dependent variable at location $i$ is
+influenced not only by the explanatory variables at $i$, but also by
+values of the dependent variable at neighbouring locations $j$. The
+spatial lag model is defined as:
+
+$$y = \rho Wy + X{\mathbf{β}} + \varepsilon,$$
+
+where  
+- $y$ is an $N \times 1$ vector of observations of the dependent
+variable,  
+- $Wy$ is the spatially lagged dependent variable based on the spatial
+weight matrix $W$,  
+- $X$ is an $N \times K$ matrix of explanatory variables,  
+- $\varepsilon$ is an $N \times 1$ vector of error terms,  
+- $\rho$ is the spatial autoregressive parameter, and  
+- $\mathbf{β}$ is a $K \times 1$ vector of regression coefficients.
+
+A statistically significant autoregressive coefficient $\rho$ indicates
+the presence of **spatial spillovers**, such as diffusion or copy‑cat
+effects.
+
+Predicted values are calculated as
+
+$$\widehat{y} = \left( I - \widehat{\rho}W \right)^{- 1}X\widehat{\mathbf{β}},$$
+
+and residuals as
+
+$$\left( I - \widehat{\rho}W \right)y - X\widehat{\mathbf{β}}.$$
+
+#### Spatial error model
+
+In a **spatial error model**, spatial dependence exists in the error
+terms rather than directly in the dependent variable. The model is
+defined as:
+
+$$y = X{\mathbf{β}} + \varepsilon,$$
+
+with
+
+$$\varepsilon = \lambda W\varepsilon + \xi,$$
+
+where  
+- $\lambda$ is the spatial autoregressive coefficient for the error
+term,  
+- $W\varepsilon$ is the spatially lagged error component, and  
+- $\xi$ is an uncorrelated and homoskedastic error term.
+
+Spatial error dependence is often interpreted as a **nuisance process**,
+reflecting spatial autocorrelation in omitted variables or measurement
+errors rather than substantive spatial interaction.
+
+In this model, predicted values are calculated as
+
+$$\widehat{y} = X\widehat{\mathbf{β}},$$
+
+and residuals as
+
+$$\left( I - \widehat{\lambda}W \right)\widehat{\varepsilon}.$$
+
+With spatial error in OLS-regression, the assumption of uncorrelated
+error terms is violated. As a result, the estimates are inefficient.
+
+![](figures/spatial_regression.png)
+
+## Research example: Spatial double polarization of incomes in North Karelia 1996-2003
+
+Lehtonen, Olli & Markku Tykkyläinen (2010). Tulotason spatiaalinen
+kaksoispolarisaatio Pohjois-Karjalassa 1996–2003 \[Spatial double
+polarization of incomes in North Karelia, 1996–2003\]. Terra 122: 2,
+63–74.
+
+Abstract: This study analyzes how a rapid period of growth of the
+Finnish economy affected taxable incomes by postcode area in a
+core-periphery setting. To investigate the extent of the spread of
+growth and the hypotheses of spatial polarization of incomes, we
+analyzed the change of both income gradients and surfaces in North
+Karelia in 1996 and 2003. Median taxable incomes of private individuals
+polarized between the regional growth center with its adjacent zone of
+influence and the declining rural periphery, as well as between the
+central district and its thriving adjacent settlement ring of 5–38
+kilometers. A relative decline in incomes in natural-resource towns and
+sparsely-populated areas prevailed. Small towns and rural areas cannot
+successfully compete in conditions where economic growth is based on
+external and internal scale economies and urban-centered uni-nodal
+growth strategy. The geographically narrow spread effects challenges all
+involved actors to develop new technologies to overcome the friction of
+distance with less costs and to develop small-town and rural
+environments where industries not hooked on agglomeration economies can
+operate on a profitable basis.
+
+![](figures/gradient.png)
+
+In this example we make analysis in 6 steps:
+
+- Step1: Importing shapefiles into R and constructing neighborhood sets
+- Step2: Creating spatial weights matrices using neighborhood lists
+- Step3: Using spatial weights matrices, run statistical tests of
+  spatial autocorrelation
+- Step4: Moving on to spatial regression
+- Step5: Plotting the results
+- Step6: Interpretation of the results
+
+to be continue…
