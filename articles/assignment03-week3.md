@@ -6,7 +6,7 @@ library(spatialcourseOL)
 
 ## Assignment 03: Working with Spatial Data
 
-### Nonparametric regression (lecture05):
+### 1. Nonparametric regression (lecture05):
 
 Create a nonparametric regression model to explain the median income of
 residents in postal code areas (variable hr_mtu) as a function of
@@ -26,7 +26,7 @@ from Statistics Finland’s WFS service.
 Add to your portfolio the code you used, the figure showing the
 nonparametric model results, and your interpretation of the results.
 
-### PCA and cluster analysis (Multivariate analysis (lecture06)):
+### 2. PCA and cluster analysis (Multivariate analysis (lecture06)):
 
 In this exercise, you will examine different multivariate methods using
 your own dataset. You may freely choose the dataset that you use, but it

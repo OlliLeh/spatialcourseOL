@@ -1894,6 +1894,13 @@ v.m <- fit.variogram(
 ```
 
     ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
+    ## linear model has singular covariance matrix
+    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
+    ## linear model has singular covariance matrix
+    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
+    ## linear model has singular covariance matrix
+
+    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
     ## singular model in variogram fit
 
     ## Warning in fit.variogram(object, model, fit.sills = fit.sills, fit.ranges =
