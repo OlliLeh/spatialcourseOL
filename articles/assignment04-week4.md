@@ -1,32 +1,82 @@
 # assignment04-week4
 
-## R Markdown
+## Assignment 04: Spatial autocorrelation and spatial regression
 
-This is an R Markdown document. Markdown is a simple formatting syntax
-for authoring HTML, PDF, and MS Word documents. For more details on
-using R Markdown see <http://rmarkdown.rstudio.com>.
+Use a data from PAAVO (postcode area data) and download data from the
+server of Statistics Finland (help: see lecture notes).
 
-When you click the **Knit** button a document will be generated that
-includes both content as well as the output of any embedded R code
-chunks within the document. You can embed an R code chunk like this:
+In this exercise set, you will use PAAVO postcode area data provided by
+Statistics Finland. The data should be downloaded directly from the
+Statistics Finland server (for guidance, see the lecture notes).
+
+More information about the PAAVO data can be found here:
+<https://stat.fi/en/services/statistical-data-services/statistical-databases/paavo>
+
+### 1. Global spatial autocorrelation
+
+Investigate the global spatial autocorrelation of household median
+income in 2025 (variable tr_mtu) across Finnish postcode areas.
+
+- Construct three spatial weight matrices based on k nearest neighbours:
+- 6 nearest neighbours
+- 10 nearest neighbours
+- 15 nearest neighbours
+- For each weight matrix, calculate Moran’s I.
+
+Tasks:
+
+- Compare the values of Moran’s I across the different weight matrices.
+- Explain how and why the level of spatial autocorrelation changes when
+  the number of neighbours increases.
+
+### 2. Local spatial autocorrelation
+
+Calculate the local spatial autocorrelation of household median income
+in 2025 using Local Moran’s I.
+
+- Use the local_moran() function.
+- Visualize the results using a map (see lecture notes for instructions
+  on mapping Local Moran’s I results).
+
+Tasks: - Interpret the resulting clusters (e.g. high–high, low–low). -
+Explain what these clusters reveal about the spatial distribution of
+household income.
+
+### 3. Linear regression and spatial dependence
+
+Estimate a linear regression model (OLS) where household median income
+in 2025 is explained by:
+
+- the proportion of highly educated people
+- the unemployment rate
+
+Construct the explanatory variables as relative proportions as
+demonstrated in the lecture notes:
 
 ``` r
-summary(cars)
+p25_data$tyottom <- (p25_data$pt_tyott / p25_data$pt_tyoll) * 100
+p25_data$korkk   <- (p25_data$ko_yl_kork / p25_data$ko_koul) * 100
 ```
 
-    ##      speed           dist       
-    ##  Min.   : 4.0   Min.   :  2.00  
-    ##  1st Qu.:12.0   1st Qu.: 26.00  
-    ##  Median :15.0   Median : 36.00  
-    ##  Mean   :15.4   Mean   : 42.98  
-    ##  3rd Qu.:19.0   3rd Qu.: 56.00  
-    ##  Max.   :25.0   Max.   :120.00
+(Unemployment rate = number of unemployed / number of employed) (Share
+of highly educated = number with academic degrees / number of educated
+people)
 
-## Including Plots
+Tasks: - Interpret the regression coefficients. - Evaluate whether the
+results are consistent with economic intuition. - Investigate the
+spatial autocorrelation of the model residuals (e.g. using Moran’s I). -
+Explain what the residual spatial autocorrelation indicates about the
+adequacy of the OLS model.
 
-You can also embed plots, for example:
+### 4. Spatial regression model (continuation of Exercise 3)
 
-![](assignment04-week4_files/figure-html/pressure-1.png)
+Extend Exercise 3 by estimating an appropriate spatial regression model
+(e.g. spatial lag or spatial error model).
 
-Note that the `echo = FALSE` parameter was added to the code chunk to
-prevent printing of the R code that generated the plot.
+Tasks:
+
+- Explain the results of the spatial regression model.
+- Compare the spatial regression model with the OLS model from Exercise
+  3.
+- Assess whether the spatial model provides an improvement over the OLS
+  model and justify your conclusion.

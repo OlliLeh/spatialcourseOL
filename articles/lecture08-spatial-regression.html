@@ -214,6 +214,489 @@ interaction.</p>
 error terms is violated. As a result, the estimates are inefficient.</p>
 <p><img src="figures/spatial_regression.png" class="r-plt" alt="" width="90%"></p>
 </div>
+<div class="section level4">
+<h4 id="spatial-regession-in-r-1-the-four-simplest-models">Spatial Regession in R 1: The Four Simplest Models<a class="anchor" aria-label="anchor" href="#spatial-regession-in-r-1-the-four-simplest-models"></a>
+</h4>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/b3HtV2Mhmvk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</div>
+</div>
+<div class="section level2">
+<h2 id="exampe-spatial-regression-analysis-of-finnish-postal-code-areas">Exampe: Spatial Regression Analysis of Finnish Postal Code
+Areas<a class="anchor" aria-label="anchor" href="#exampe-spatial-regression-analysis-of-finnish-postal-code-areas"></a>
+</h2>
+<div class="section level3">
+<h3 id="required-packages">1. Required packages<a class="anchor" aria-label="anchor" href="#required-packages"></a>
+</h3>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/" class="external-link">httr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/eblondel/ows4R" class="external-link">ows4R</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="downloading-spatial-data-from-statistics-finland-wfs">2. Downloading spatial data from Statistics Finland (WFS)<a class="anchor" aria-label="anchor" href="#downloading-spatial-data-from-statistics-finland-wfs"></a>
+</h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>hostname <span class="op">=</span><span class="st">"geo.stat.fi/geoserver/postialue/wfs"</span>,</span>
+<span>           scheme <span class="op">=</span><span class="st">"https"</span>,</span>
+<span>           query <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>service <span class="op">=</span><span class="st">"WFS"</span>,</span>
+<span>                       version <span class="op">=</span><span class="st">"2.0.0"</span>,</span>
+<span>                       request <span class="op">=</span><span class="st">"GetFeature"</span>,</span>
+<span>                       typename <span class="op">=</span><span class="st">"postialue:pno_tilasto_2025"</span>,</span>
+<span>                       outputFormat <span class="op">=</span><span class="st">"json"</span><span class="op">)</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/setattr.html" class="external-link">setattr</a></span><span class="op">(</span><span class="st">"class"</span>,<span class="st">"url"</span><span class="op">)</span></span>
+<span><span class="va">request</span> <span class="op">&lt;-</span><span class="fu"><a href="https://httr.r-lib.org/reference/parse_url.html" class="external-link">build_url</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span>
+<span><span class="va">p25</span> <span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Reading layer `OGRGeoJSON' from data source </span></span>
+<span><span class="co">##   `https://geo.stat.fi/geoserver/postialue/wfs/?service=WFS&amp;version=2.0.0&amp;request=GetFeature&amp;typename=postialue%3Apno_tilasto_2025&amp;outputFormat=json' </span></span>
+<span><span class="co">##   using driver `GeoJSON'</span></span>
+<span><span class="co">## Simple feature collection with 3026 features and 113 fields</span></span>
+<span><span class="co">## Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">## Dimension:     XY</span></span>
+<span><span class="co">## Bounding box:  xmin: 83748.43 ymin: 6629044 xmax: 732907.7 ymax: 7776450</span></span>
+<span><span class="co">## Projected CRS: ETRS89 / TM35FIN(E,N)</span></span></code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>hostname <span class="op">=</span><span class="st">"geo.stat.fi/geoserver/postialue/wfs"</span>,</span>
+<span>           scheme <span class="op">=</span><span class="st">"https"</span>,</span>
+<span>           query <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>service <span class="op">=</span><span class="st">"WFS"</span>,</span>
+<span>                       version <span class="op">=</span><span class="st">"2.0.0"</span>,</span>
+<span>                       request <span class="op">=</span><span class="st">"GetFeature"</span>,</span>
+<span>                       typename <span class="op">=</span><span class="st">"postialue:pno_tilasto_2016"</span>,</span>
+<span>                       outputFormat <span class="op">=</span><span class="st">"json"</span><span class="op">)</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/setattr.html" class="external-link">setattr</a></span><span class="op">(</span><span class="st">"class"</span>,<span class="st">"url"</span><span class="op">)</span></span>
+<span><span class="va">request</span> <span class="op">&lt;-</span><span class="fu"><a href="https://httr.r-lib.org/reference/parse_url.html" class="external-link">build_url</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span>
+<span><span class="va">p16</span> <span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Reading layer `OGRGeoJSON' from data source </span></span>
+<span><span class="co">##   `https://geo.stat.fi/geoserver/postialue/wfs/?service=WFS&amp;version=2.0.0&amp;request=GetFeature&amp;typename=postialue%3Apno_tilasto_2016&amp;outputFormat=json' </span></span>
+<span><span class="co">##   using driver `GeoJSON'</span></span>
+<span><span class="co">## Simple feature collection with 3036 features and 113 fields</span></span>
+<span><span class="co">## Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">## Dimension:     XY</span></span>
+<span><span class="co">## Bounding box:  xmin: 83748.43 ymin: 6629044 xmax: 732907.7 ymax: 7776450</span></span>
+<span><span class="co">## Projected CRS: ETRS89 / TM35FIN(E,N)</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="data-preparation-and-merging">3. Data preparation and merging<a class="anchor" aria-label="anchor" href="#data-preparation-and-merging"></a>
+</h3>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">p16</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   [1] "id"         "gid"        "posti_alue" "nimi"       "namn"      </span></span>
+<span><span class="co">##   [6] "euref_x"    "euref_y"    "pinta_ala"  "vuosi"      "kunta"     </span></span>
+<span><span class="co">##  [11] "he_vakiy"   "he_naiset"  "he_miehet"  "he_kika"    "he_0_2"    </span></span>
+<span><span class="co">##  [16] "he_3_6"     "he_7_12"    "he_13_15"   "he_16_17"   "he_18_19"  </span></span>
+<span><span class="co">##  [21] "he_20_24"   "he_25_29"   "he_30_34"   "he_35_39"   "he_40_44"  </span></span>
+<span><span class="co">##  [26] "he_45_49"   "he_50_54"   "he_55_59"   "he_60_64"   "he_65_69"  </span></span>
+<span><span class="co">##  [31] "he_70_74"   "he_75_79"   "he_80_84"   "he_85_"     "ko_ika18y" </span></span>
+<span><span class="co">##  [36] "ko_perus"   "ko_koul"    "ko_yliop"   "ko_ammat"   "ko_al_kork"</span></span>
+<span><span class="co">##  [41] "ko_yl_kork" "hr_tuy"     "hr_ktu"     "hr_mtu"     "hr_pi_tul" </span></span>
+<span><span class="co">##  [46] "hr_ke_tul"  "hr_hy_tul"  "hr_ovy"     "te_taly"    "te_takk"   </span></span>
+<span><span class="co">##  [51] "te_as_valj" "te_nuor"    "te_eil_np"  "te_laps"    "te_plap"   </span></span>
+<span><span class="co">##  [56] "te_aklap"   "te_klap"    "te_teini"   "te_aik"     "te_elak"   </span></span>
+<span><span class="co">##  [61] "te_omis_as" "te_vuok_as" "te_muu_as"  "tr_kuty"    "tr_ktu"    </span></span>
+<span><span class="co">##  [66] "tr_mtu"     "tr_pi_tul"  "tr_ke_tul"  "tr_hy_tul"  "tr_ovy"    </span></span>
+<span><span class="co">##  [71] "ra_ke"      "ra_raky"    "ra_muut"    "ra_asrak"   "ra_asunn"  </span></span>
+<span><span class="co">##  [76] "ra_as_kpa"  "ra_pt_as"   "ra_kt_as"   "tp_tyopy"   "tp_alku_a" </span></span>
+<span><span class="co">##  [81] "tp_jalo_bf" "tp_palv_gu" "tp_a_maat"  "tp_b_kaiv"  "tp_c_teol" </span></span>
+<span><span class="co">##  [86] "tp_d_ener"  "tp_e_vesi"  "tp_f_rake"  "tp_g_kaup"  "tp_h_kulj" </span></span>
+<span><span class="co">##  [91] "tp_i_majo"  "tp_j_info"  "tp_k_raho"  "tp_l_kiin"  "tp_m_erik" </span></span>
+<span><span class="co">##  [96] "tp_n_hall"  "tp_o_julk"  "tp_p_koul"  "tp_q_terv"  "tp_r_taid" </span></span>
+<span><span class="co">## [101] "tp_s_muup"  "tp_t_koti"  "tp_u_kans"  "tp_x_tunt"  "pt_vakiy"  </span></span>
+<span><span class="co">## [106] "pt_tyovy"   "pt_tyoll"   "pt_tyott"   "pt_tyovu"   "pt_0_14"   </span></span>
+<span><span class="co">## [111] "pt_opisk"   "pt_elakel"  "pt_muut"    "geometry"</span></span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p16data</span><span class="op">&lt;-</span><span class="va">p16</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">79</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">p16data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">p16data</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">p16data</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"posti_alue"</span>,<span class="st">"tyopy16"</span><span class="op">)</span></span>
+<span><span class="va">p16data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">p16data</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># merge 2016 and 2025 data</span></span>
+<span><span class="va">p25_data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">right_join</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">p16data</span>, y <span class="op">=</span> <span class="va">p25</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"posti_alue"</span> <span class="op">=</span> <span class="st">"postinumeroalue"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="creating-change-variables-and-indicators">4. Creating change variables and indicators<a class="anchor" aria-label="anchor" href="#creating-change-variables-and-indicators"></a>
+</h3>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># calculate changes</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m22_16</span><span class="op">&lt;-</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">-</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m22_16p</span><span class="op">&lt;-</span><span class="op">(</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">-</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span><span class="op">/</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span>
+<span></span>
+<span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyottom</span><span class="op">&lt;-</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">pt_tyott</span><span class="op">/</span><span class="va">p25_data</span><span class="op">$</span><span class="va">pt_tyoll</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">korkk</span><span class="op">&lt;-</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">ko_yl_kork</span><span class="op">/</span><span class="va">p25_data</span><span class="op">$</span><span class="va">ko_koul</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">alkut</span><span class="op">&lt;-</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_alku_a</span><span class="op">/</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">elak</span><span class="op">&lt;-</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">te_elak</span><span class="op">/</span><span class="va">p25_data</span><span class="op">$</span><span class="va">te_taly</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span>
+<span><span class="va">p25_data</span><span class="op">$</span><span class="va">as_tih</span><span class="op">&lt;-</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">he_vakiy</span><span class="op">/</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">pinta_ala</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="data-cleaning">5. Data cleaning<a class="anchor" aria-label="anchor" href="#data-cleaning"></a>
+</h3>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># create a new dataframe from part of the data</span></span>
+<span><span class="va">p25_data2</span><span class="op">&lt;-</span><span class="va">p25_data</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">14</span>,<span class="fl">67</span>,<span class="fl">78</span>,<span class="fl">118</span><span class="op">:</span><span class="fl">122</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># remove na and inf</span></span>
+<span><span class="va">p25_data3</span><span class="op">&lt;-</span><span class="va">p25_data2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter_all.html" class="external-link">filter_all</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/all_vars.html" class="external-link">all_vars</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html" class="external-link">is.infinite</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">p25_data4</span><span class="op">&lt;-</span><span class="va">p25_data3</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter_all.html" class="external-link">filter_all</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/all_vars.html" class="external-link">all_vars</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="join-attribute-data-back-to-spatial-data">6. Join attribute data back to spatial data<a class="anchor" aria-label="anchor" href="#join-attribute-data-back-to-spatial-data"></a>
+</h3>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data</span><span class="op">&lt;-</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">p25</span>, y <span class="op">=</span> <span class="va">p25_data4</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"postinumeroalue"</span> <span class="op">=</span> <span class="st">"posti_alue"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">he_kika.y</span><span class="op">)</span>,<span class="op">]</span> <span class="co"># if we don't remove NAs, we cannot join results</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="spatial-weights-matrix-knearest-neighbours">7. Spatial weights matrix (k‑nearest neighbours)<a class="anchor" aria-label="anchor" href="#spatial-weights-matrix-knearest-neighbours"></a>
+</h3>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/spdep/" class="external-link">spdep</a></span><span class="op">)</span></span>
+<span><span class="va">data.coords</span><span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_centroid</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span>, of_largest_polygon<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Extracts the coordinates of each postcode area</span></span>
+<span><span class="va">p25_kn6</span><span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/knn2nb.html" class="external-link">knn2nb</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/knearneigh.html" class="external-link">knearneigh</a></span><span class="op">(</span><span class="va">data.coords</span>,k<span class="op">=</span><span class="fl">6</span>,longlat <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span> <span class="co"># Returns a matrix with the indices of points belonging to the set of the k nearest neighbours of each other</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in knearneigh(data.coords, k = 6, longlat = F): dnearneigh: longlat</span></span>
+<span><span class="co">## argument overrides object</span></span></code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p25_kn6_w</span><span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/nb2listw.html" class="external-link">nb2listw</a></span><span class="op">(</span><span class="va">p25_kn6</span><span class="op">)</span></span></code></pre></div>
+<p>Step 1: centroids</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_centroid</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Each postal code area:</p>
+<ul>
+<li>Has an irregular polygon</li>
+<li>Is reduced to one coordinate</li>
+</ul>
+<p>Step 2: k‑nearest neighbors</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/knn2nb.html" class="external-link">knn2nb</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/knearneigh.html" class="external-link">knearneigh</a></span><span class="op">(</span><span class="va">...</span>, k<span class="op">=</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Each area:</p>
+<ul>
+<li>Is connected to its 6 nearest neighbors</li>
+</ul>
+<p>Step 3: weights list</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/nb2listw.html" class="external-link">nb2listw</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<p>Converts neighbors into a form usable by models.</p>
+<p>Why k‑NN?</p>
+<ul>
+<li>Ensures every area has neighbors</li>
+<li>Avoids isolated rural polygons</li>
+<li>Common in regional and urban studies</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="ordinary-least-squares-baseline-model">8. Ordinary Least Squares (baseline model)<a class="anchor" aria-label="anchor" href="#ordinary-least-squares-baseline-model"></a>
+</h3>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">m_ols</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">tyottom</span><span class="op">~</span> <span class="va">korkk</span><span class="op">+</span><span class="va">alkut</span><span class="op">+</span><span class="va">elak</span><span class="op">+</span><span class="va">as_tih</span><span class="op">+</span><span class="va">he_kika.x</span><span class="op">+</span><span class="va">ra_as_kpa.y</span>,</span>
+<span>          data<span class="op">=</span><span class="va">data2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m_ols</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## lm(formula = tyottom ~ korkk + alkut + elak + as_tih + he_kika.x + </span></span>
+<span><span class="co">##     ra_as_kpa.y, data = data2)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residuals:</span></span>
+<span><span class="co">##     Min      1Q  Median      3Q     Max </span></span>
+<span><span class="co">## -49.855  -5.061  -1.280   3.452  73.922 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">##              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept) 39.674072   1.935040  20.503  &lt; 2e-16 ***</span></span>
+<span><span class="co">## korkk        0.412926   0.018719  22.059  &lt; 2e-16 ***</span></span>
+<span><span class="co">## alkut       -0.032116   0.006403  -5.016 5.59e-07 ***</span></span>
+<span><span class="co">## elak         0.110485   0.014850   7.440 1.31e-13 ***</span></span>
+<span><span class="co">## as_tih      -3.353124   0.172852 -19.399  &lt; 2e-16 ***</span></span>
+<span><span class="co">## he_kika.x   -0.170552   0.032218  -5.294 1.29e-07 ***</span></span>
+<span><span class="co">## ra_as_kpa.y -0.268296   0.011576 -23.177  &lt; 2e-16 ***</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residual standard error: 9.472 on 2955 degrees of freedom</span></span>
+<span><span class="co">## Multiple R-squared:  0.3939, Adjusted R-squared:  0.3926 </span></span>
+<span><span class="co">## F-statistic:   320 on 6 and 2955 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
+<p>Purpose</p>
+<p>This is your baseline, non‑spatial model.</p>
+<p>You use it to:</p>
+<ul>
+<li>Understand relationships</li>
+<li>Generate residuals</li>
+<li>Test whether spatial models are needed</li>
+</ul>
+<p>Key idea:</p>
+<ul>
+<li>OLS assumes independent observations — spatial data usually violates
+this.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="testing-for-spatial-autocorrelation-morans-i">9. Testing for spatial autocorrelation (Moran’s I)<a class="anchor" aria-label="anchor" href="#testing-for-spatial-autocorrelation-morans-i"></a>
+</h3>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">moran1</span><span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/lm.morantest.html" class="external-link">lm.morantest</a></span><span class="op">(</span>model<span class="op">=</span><span class="va">m_ols</span>, <span class="va">p25_kn6_w</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">moran1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Global Moran I for regression residuals</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  </span></span>
+<span><span class="co">## model: lm(formula = tyottom ~ korkk + alkut + elak + as_tih + he_kika.x</span></span>
+<span><span class="co">## + ra_as_kpa.y, data = data2)</span></span>
+<span><span class="co">## weights: p25_kn6_w</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Moran I statistic standard deviate = 24.676, p-value &lt; 2.2e-16</span></span>
+<span><span class="co">## alternative hypothesis: greater</span></span>
+<span><span class="co">## sample estimates:</span></span>
+<span><span class="co">## Observed Moran I      Expectation         Variance </span></span>
+<span><span class="co">##     2.458400e-01    -8.906051e-04     9.997406e-05</span></span></code></pre>
+<p>What does this test?</p>
+<ul>
+<li>“Are the residuals spatially clustered?”</li>
+</ul>
+<p>Result:</p>
+<ul>
+<li>Strong, significant spatial autocorrelation</li>
+</ul>
+<p>Interpretation</p>
+<ul>
+<li><p>OLS is misspecified because:</p></li>
+<li><p>Nearby areas behave similarly</p></li>
+<li><p>Independence assumption is violated</p></li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="lagrange-multiplier-lm-tests">10. Lagrange Multiplier (LM) tests<a class="anchor" aria-label="anchor" href="#lagrange-multiplier-lm-tests"></a>
+</h3>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#Next, we employ the LM tests for spatial lag (LMlag) and errors (LMerr)</span></span>
+<span><span class="va">LMtest1</span><span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/lm.RStests.html" class="external-link">lm.RStests</a></span><span class="op">(</span><span class="va">m_ols</span>, <span class="va">p25_kn6_w</span>, zero.policy <span class="op">=</span> <span class="cn">T</span>, test<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RSlag"</span>, <span class="st">"RSerr"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">LMtest1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Rao's score (a.k.a Lagrange multiplier) diagnostics for spatial</span></span>
+<span><span class="co">##  dependence</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  </span></span>
+<span><span class="co">## model: lm(formula = tyottom ~ korkk + alkut + elak + as_tih + he_kika.x</span></span>
+<span><span class="co">## + ra_as_kpa.y, data = data2)</span></span>
+<span><span class="co">## test weights: p25_kn6_w</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## RSlag = 242.35, df = 1, p-value &lt; 2.2e-16</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##  Rao's score (a.k.a Lagrange multiplier) diagnostics for spatial</span></span>
+<span><span class="co">##  dependence</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  </span></span>
+<span><span class="co">## model: lm(formula = tyottom ~ korkk + alkut + elak + as_tih + he_kika.x</span></span>
+<span><span class="co">## + ra_as_kpa.y, data = data2)</span></span>
+<span><span class="co">## test weights: p25_kn6_w</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## RSerr = 600.46, df = 1, p-value &lt; 2.2e-16</span></span></code></pre>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#The LMlag statistic is 264.07, whilst the LMerr statistic is 555,77. Both have p-values under .001, indicating that</span></span>
+<span><span class="co">#both the spatial lag and error models would be preferred over the OLS model.</span></span>
+<span></span>
+<span><span class="va">LMtest2</span><span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/lm.RStests.html" class="external-link">lm.RStests</a></span><span class="op">(</span><span class="va">m_ols</span>, <span class="va">p25_kn6_w</span>, zero.policy <span class="op">=</span> <span class="cn">T</span>, test<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"adjRSlag"</span>, <span class="st">"adjRSerr"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">LMtest2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Rao's score (a.k.a Lagrange multiplier) diagnostics for spatial</span></span>
+<span><span class="co">##  dependence</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  </span></span>
+<span><span class="co">## model: lm(formula = tyottom ~ korkk + alkut + elak + as_tih + he_kika.x</span></span>
+<span><span class="co">## + ra_as_kpa.y, data = data2)</span></span>
+<span><span class="co">## test weights: p25_kn6_w</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## adjRSlag = 47.591, df = 1, p-value = 5.252e-12</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##  Rao's score (a.k.a Lagrange multiplier) diagnostics for spatial</span></span>
+<span><span class="co">##  dependence</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  </span></span>
+<span><span class="co">## model: lm(formula = tyottom ~ korkk + alkut + elak + as_tih + he_kika.x</span></span>
+<span><span class="co">## + ra_as_kpa.y, data = data2)</span></span>
+<span><span class="co">## test weights: p25_kn6_w</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## adjRSerr = 405.71, df = 1, p-value &lt; 2.2e-16</span></span></code></pre>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># both test statistics are significant which indicates that both models could be used.</span></span></code></pre></div>
+<p>These answer:</p>
+<p>Should spatial dependence be modeled as:</p>
+<ul>
+<li>Lag (spillovers)?</li>
+<li>Error (unobserved spatial factors)?</li>
+</ul>
+<p>Key insight</p>
+<ul>
+<li>Both lag and error are significant</li>
+<li>Robust tests also significant</li>
+</ul>
+<p><strong>Interpretation</strong></p>
+<p>The standard LM tests (RSlag and RSerr) strongly reject the null
+hypothesis of no spatial dependence, indicating that the OLS model is
+misspecified. The robust LM tests (adjRSlag and adjRSerr) are also both
+significant, meaning that both spatial lag and spatial error
+specifications are plausible. Consequently, both SAR and SEM models are
+estimated.</p>
+<p>The substantially larger robust error statistic suggests that spatial
+dependence is more likely to operate through the disturbance term rather
+than through direct spatial spillovers. This strongly hints that the
+spatial error model may fit better to our data.</p>
+</div>
+<div class="section level3">
+<h3 id="spatial-error-model-sem">11. Spatial Error Model (SEM)<a class="anchor" aria-label="anchor" href="#spatial-error-model-sem"></a>
+</h3>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/spatialreg/" class="external-link">spatialreg</a></span><span class="op">)</span></span>
+<span><span class="va">m2e</span> <span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/spatialreg/reference/ML_models.html" class="external-link">errorsarlm</a></span><span class="op">(</span><span class="va">tyottom</span><span class="op">~</span> <span class="va">korkk</span><span class="op">+</span><span class="va">alkut</span><span class="op">+</span><span class="va">elak</span><span class="op">+</span><span class="va">as_tih</span><span class="op">+</span><span class="va">he_kika.x</span><span class="op">+</span><span class="va">ra_as_kpa.y</span>, data<span class="op">=</span><span class="va">data2</span>, <span class="va">p25_kn6_w</span>, tol.solve<span class="op">=</span><span class="fl">1.0e-30</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># call a summary to see the results</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m2e</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:errorsarlm(formula = tyottom ~ korkk + alkut + elak + as_tih + </span></span>
+<span><span class="co">##     he_kika.x + ra_as_kpa.y, data = data2, listw = p25_kn6_w, </span></span>
+<span><span class="co">##     tol.solve = 1e-30)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residuals:</span></span>
+<span><span class="co">##       Min        1Q    Median        3Q       Max </span></span>
+<span><span class="co">## -47.05553  -4.46375  -0.94192   3.11477  60.89011 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Type: error </span></span>
+<span><span class="co">## Coefficients: (asymptotic standard errors) </span></span>
+<span><span class="co">##               Estimate Std. Error  z value  Pr(&gt;|z|)</span></span>
+<span><span class="co">## (Intercept) 57.0953852  1.9127290  29.8502 &lt; 2.2e-16</span></span>
+<span><span class="co">## korkk        0.3388572  0.0172780  19.6121 &lt; 2.2e-16</span></span>
+<span><span class="co">## alkut       -0.0335142  0.0055793  -6.0069 1.892e-09</span></span>
+<span><span class="co">## elak         0.0480779  0.0125449   3.8325 0.0001269</span></span>
+<span><span class="co">## as_tih      -0.6700998  0.2249769  -2.9785 0.0028964</span></span>
+<span><span class="co">## he_kika.x   -0.5075504  0.0308752 -16.4388 &lt; 2.2e-16</span></span>
+<span><span class="co">## ra_as_kpa.y -0.2500985  0.0105866 -23.6240 &lt; 2.2e-16</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Lambda: 0.6882, LR test value: 665.04, p-value: &lt; 2.22e-16</span></span>
+<span><span class="co">## Asymptotic standard error: 0.017061</span></span>
+<span><span class="co">##     z-value: 40.337, p-value: &lt; 2.22e-16</span></span>
+<span><span class="co">## Wald statistic: 1627.1, p-value: &lt; 2.22e-16</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Log likelihood: -10526.41 for error model</span></span>
+<span><span class="co">## ML residual variance (sigma squared): 65.462, (sigma: 8.0908)</span></span>
+<span><span class="co">## Number of observations: 2962 </span></span>
+<span><span class="co">## Number of parameters estimated: 9 </span></span>
+<span><span class="co">## AIC: 21071, (AIC for lm: 21734)</span></span></code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hausman</span><span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/spatialreg/reference/sarlm_tests.html" class="external-link">Hausman.test</a></span><span class="op">(</span><span class="va">m2e</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">hausman</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Spatial Hausman test (asymptotic)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  NULL</span></span>
+<span><span class="co">## Hausman test = 74.076, df = 7, p-value = 2.208e-13</span></span></code></pre>
+<p>What does SEM assume?</p>
+<p>Spatial dependence comes from:</p>
+<ul>
+<li>Omitted variables</li>
+<li>Measurement error</li>
+<li>Region‑wide shocks</li>
+</ul>
+<p>Why SEM often fits well</p>
+<ul>
+<li>Captures unobserved spatial processes</li>
+<li>Often removes residual autocorrelation</li>
+</ul>
+<p>Moran I test confirms this.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data2</span><span class="op">$</span><span class="va">residuals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">m2e</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/moran.mc.html" class="external-link">moran.mc</a></span><span class="op">(</span><span class="va">data2</span><span class="op">$</span><span class="va">residuals</span>, <span class="va">p25_kn6_w</span>,<span class="fl">999</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Monte-Carlo simulation of Moran I</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  data2$residuals </span></span>
+<span><span class="co">## weights: p25_kn6_w  </span></span>
+<span><span class="co">## number of simulations + 1: 1000 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## statistic = -0.055526, observed rank = 1, p-value = 0.999</span></span>
+<span><span class="co">## alternative hypothesis: greater</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="spatial-lag-model-slm">12. Spatial Lag Model (SLM)<a class="anchor" aria-label="anchor" href="#spatial-lag-model-slm"></a>
+</h3>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">m2lag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/spatialreg/reference/ML_models.html" class="external-link">lagsarlm</a></span><span class="op">(</span><span class="va">tyottom</span><span class="op">~</span> <span class="va">korkk</span><span class="op">+</span><span class="va">alkut</span><span class="op">+</span><span class="va">elak</span><span class="op">+</span><span class="va">as_tih</span><span class="op">+</span><span class="va">he_kika.x</span><span class="op">+</span><span class="va">ra_as_kpa.y</span>, data<span class="op">=</span><span class="va">data2</span>, <span class="va">p25_kn6_w</span>, tol.solve<span class="op">=</span><span class="fl">1.0e-30</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># call a summary to see the results</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m2lag</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:lagsarlm(formula = tyottom ~ korkk + alkut + elak + as_tih + </span></span>
+<span><span class="co">##     he_kika.x + ra_as_kpa.y, data = data2, listw = p25_kn6_w, </span></span>
+<span><span class="co">##     tol.solve = 1e-30)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residuals:</span></span>
+<span><span class="co">##      Min       1Q   Median       3Q      Max </span></span>
+<span><span class="co">## -49.0059  -4.7046  -1.0960   3.2695  63.6558 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Type: lag </span></span>
+<span><span class="co">## Coefficients: (asymptotic standard errors) </span></span>
+<span><span class="co">##               Estimate Std. Error  z value  Pr(&gt;|z|)</span></span>
+<span><span class="co">## (Intercept) 36.5771816  1.9216355  19.0344 &lt; 2.2e-16</span></span>
+<span><span class="co">## korkk        0.3938082  0.0178837  22.0205 &lt; 2.2e-16</span></span>
+<span><span class="co">## alkut       -0.0257826  0.0061369  -4.2012 2.655e-05</span></span>
+<span><span class="co">## elak         0.1049687  0.0142032   7.3905 1.463e-13</span></span>
+<span><span class="co">## as_tih      -3.0787403  0.1651841 -18.6382 &lt; 2.2e-16</span></span>
+<span><span class="co">## he_kika.x   -0.2541911  0.0307810  -8.2580 2.220e-16</span></span>
+<span><span class="co">## ra_as_kpa.y -0.2417156  0.0111692 -21.6413 &lt; 2.2e-16</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Rho: 0.34911, LR test value: 212.19, p-value: &lt; 2.22e-16</span></span>
+<span><span class="co">## Asymptotic standard error: 0.02102</span></span>
+<span><span class="co">##     z-value: 16.609, p-value: &lt; 2.22e-16</span></span>
+<span><span class="co">## Wald statistic: 275.85, p-value: &lt; 2.22e-16</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Log likelihood: -10752.84 for lag model</span></span>
+<span><span class="co">## ML residual variance (sigma squared): 81.807, (sigma: 9.0447)</span></span>
+<span><span class="co">## Number of observations: 2962 </span></span>
+<span><span class="co">## Number of parameters estimated: 9 </span></span>
+<span><span class="co">## AIC: 21524, (AIC for lm: 21734)</span></span>
+<span><span class="co">## LM test for residual autocorrelation</span></span>
+<span><span class="co">## test value: 230.78, p-value: &lt; 2.22e-16</span></span></code></pre>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data2</span><span class="op">$</span><span class="va">residuals_lag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">m2lag</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/moran.mc.html" class="external-link">moran.mc</a></span><span class="op">(</span><span class="va">data2</span><span class="op">$</span><span class="va">residuals_lag</span>, <span class="va">p25_kn6_w</span>,<span class="fl">999</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Monte-Carlo simulation of Moran I</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  data2$residuals_lag </span></span>
+<span><span class="co">## weights: p25_kn6_w  </span></span>
+<span><span class="co">## number of simulations + 1: 1000 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## statistic = 0.098238, observed rank = 1000, p-value = 0.001</span></span>
+<span><span class="co">## alternative hypothesis: greater</span></span></code></pre>
+<p>What does SLM assume?</p>
+<p>Unemployment in one area:</p>
+<ul>
+<li>directly affects nearby areas</li>
+<li>Spillover effects exist</li>
+</ul>
+<p>Useful when:</p>
+<ul>
+<li>Policy diffusion exists</li>
+<li>Labor markets overlap strongly</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="model-comparison-via-residuals">13. Model comparison via residuals<a class="anchor" aria-label="anchor" href="#model-comparison-via-residuals"></a>
+</h3>
+<p>Decision logic:</p>
+<ul>
+<li>Good model → no spatial autocorrelation left in residuals</li>
+</ul>
+<p>Results show:</p>
+<ul>
+<li>Error model removes autocorrelation better</li>
+<li>Lag model leaves some dependence</li>
+</ul>
+</div>
 </div>
 <div class="section level2">
 <h2 id="research-example-spatial-double-polarization-of-incomes-in-north-karelia-1996-2003">Research example: Spatial double polarization of incomes in North

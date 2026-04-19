@@ -27,7 +27,7 @@ community is noted for its active contributions in terms of packages.
 ``` r
 # Number of R Packages
 length(available.packages(repos = "http://cran.us.r-project.org")[, 1])
-#> [1] 23616
+#> [1] 23615
 ```
 
 #### Installing R and RStudio on Windows
