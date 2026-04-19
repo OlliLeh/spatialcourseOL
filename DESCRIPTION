@@ -59,7 +59,8 @@ Imports:
     NbClust,
     sotkanet,
     sfdep,
-    spdep
+    spdep,
+    spatialreg
 Depends: 
     R (>= 2.10)
 LazyData: true

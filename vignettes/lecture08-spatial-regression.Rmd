@@ -9,7 +9,14 @@ vignette: >
 
 ```{r setup, include=FALSE}
 library(spatialcourseOL)
-
+library(spatialreg)
+library(dplyr)
+library(purrr)
+library(sf)
+library(httr)
+library(data.table)
+library(ows4R)
+library(spdep)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -120,6 +127,292 @@ With spatial error in OLS-regression, the assumption of uncorrelated error terms
 ```{r, echo=FALSE, out.width="90%"}
 knitr::include_graphics("figures/spatial_regression.png")
 ```
+
+### Spatial Regession in R 1: The Four Simplest Models
+
+<iframe width="560" height="315"
+        src="https://www.youtube.com/embed/b3HtV2Mhmvk"
+        frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+</iframe>
+
+
+# Exampe: Spatial Regression Analysis of Finnish Postal Code Areas
+
+## 1. Required packages
+
+```{r, eval=FALSE}
+library(dplyr)
+library(purrr)
+library(sf)
+library(httr)
+library(data.table)
+library(ows4R)
+```
+
+## 2. Downloading spatial data from Statistics Finland (WFS)
+
+```{r}
+url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
+           scheme ="https",
+           query =list(service ="WFS",
+                       version ="2.0.0",
+                       request ="GetFeature",
+                       typename ="postialue:pno_tilasto_2025",
+                       outputFormat ="json"))%>%
+  setattr("class","url")
+request <-build_url(url)
+p25 <-st_read(request)
+```
+
+```{r}
+url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
+           scheme ="https",
+           query =list(service ="WFS",
+                       version ="2.0.0",
+                       request ="GetFeature",
+                       typename ="postialue:pno_tilasto_2016",
+                       outputFormat ="json"))%>%
+  setattr("class","url")
+request <-build_url(url)
+p16 <-st_read(request)
+```
+
+## 3. Data preparation and merging
+
+```{r}
+names(p16)
+p16data<-p16[,c(3,79)]
+p16data<-as.data.frame(p16data[,1:2])
+colnames(p16data)<-c("posti_alue","tyopy16")
+p16data<-as.data.frame(p16data[,1:2])
+
+# merge 2016 and 2025 data
+p25_data <- dplyr::right_join(x = p16data, y = p25, by=c("posti_alue" = "postinumeroalue"))
+p25_data$tyopy16[is.na(p25_data$tyopy16)] <- 0
+```
+
+## 4. Creating change variables and indicators
+
+```{r}
+# calculate changes
+p25_data$tp_m22_16<-(p25_data$tp_tyopy-p25_data$tyopy16)
+p25_data$tp_m22_16p<-((p25_data$tp_tyopy-p25_data$tyopy16)/p25_data$tyopy16)*100
+
+
+p25_data$tyottom<-(p25_data$pt_tyott/p25_data$pt_tyoll)*100
+p25_data$korkk<-(p25_data$ko_yl_kork/p25_data$ko_koul)*100
+p25_data$alkut<-(p25_data$tp_alku_a/p25_data$tp_tyopy)*100
+p25_data$elak<-(p25_data$te_elak/p25_data$te_taly)*100
+p25_data$as_tih<-(p25_data$he_vakiy/(p25_data$pinta_ala/1000))
+```
+
+## 5. Data cleaning
+
+```{r}
+# create a new dataframe from part of the data
+p25_data2<-p25_data[,c(1,14,67,78,118:122)]
+
+# remove na and inf
+p25_data3<-p25_data2 %>%
+  filter_all(all_vars(!is.infinite(.)))
+p25_data4<-p25_data3 %>%
+  filter_all(all_vars(!is.na(.)))
+```
+
+## 6. Join attribute data back to spatial data
+
+```{r}
+data<-dplyr::left_join(x = p25, y = p25_data4, by=c("postinumeroalue" = "posti_alue"))
+data2 <- data[!is.na(data$he_kika.y),] # if we don't remove NAs, we cannot join results
+```
+
+## 7. Spatial weights matrix (k‑nearest neighbours)
+
+```{r}
+library(spdep)
+data.coords<-st_centroid(st_geometry(data2), of_largest_polygon=TRUE) # Extracts the coordinates of each postcode area
+p25_kn6<-knn2nb(knearneigh(data.coords,k=6,longlat = F)) # Returns a matrix with the indices of points belonging to the set of the k nearest neighbours of each other
+p25_kn6_w<-nb2listw(p25_kn6)
+```
+
+Step 1: centroids
+```{r, eval=FALSE}
+st_centroid(st_geometry(data2))
+```
+
+Each postal code area:
+
+- Has an irregular polygon
+- Is reduced to one coordinate
+
+Step 2: k‑nearest neighbors
+```{r, eval=FALSE}
+knn2nb(knearneigh(..., k=6))
+```
+
+Each area:
+
+- Is connected to its 6 nearest neighbors
+
+Step 3: weights list
+```{r, eval=FALSE}
+nb2listw(...)
+```
+Converts neighbors into a form usable by models.
+
+Why k‑NN?
+
+- Ensures every area has neighbors
+- Avoids isolated rural polygons
+- Common in regional and urban studies
+
+## 8. Ordinary Least Squares (baseline model)
+
+```{r}
+m_ols<-lm(tyottom~ korkk+alkut+elak+as_tih+he_kika.x+ra_as_kpa.y,
+          data=data2)
+summary(m_ols)
+```
+Purpose
+
+This is your baseline, non‑spatial model.
+
+You use it to:
+
+- Understand relationships
+- Generate residuals
+- Test whether spatial models are needed
+
+Key idea:
+
++ OLS assumes independent observations — spatial data usually violates this.
+
+## 9. Testing for spatial autocorrelation (Moran’s I)
+
+```{r}
+moran1<-lm.morantest(model=m_ols, p25_kn6_w)
+print(moran1)
+```
+
+What does this test?
+
++ “Are the residuals spatially clustered?”
+
+Result:
+
+- Strong, significant spatial autocorrelation
+
+Interpretation
+
+- OLS is misspecified because:
+
++ Nearby areas behave similarly
++ Independence assumption is violated
+
+## 10. Lagrange Multiplier (LM) tests
+
+```{r}
+#Next, we employ the LM tests for spatial lag (LMlag) and errors (LMerr)
+LMtest1<-lm.RStests(m_ols, p25_kn6_w, zero.policy = T, test=c("RSlag", "RSerr"))
+print(LMtest1)
+
+#The LMlag statistic is 264.07, whilst the LMerr statistic is 555,77. Both have p-values under .001, indicating that
+#both the spatial lag and error models would be preferred over the OLS model.
+
+LMtest2<-lm.RStests(m_ols, p25_kn6_w, zero.policy = T, test=c("adjRSlag", "adjRSerr"))
+print(LMtest2)
+
+# both test statistics are significant which indicates that both models could be used.
+```
+These answer:
+
+Should spatial dependence be modeled as:
+
+- Lag (spillovers)?
+- Error (unobserved spatial factors)?
+
+Key insight
+
+- Both lag and error are significant
+- Robust tests also significant
+
+**Interpretation**
+
+The standard LM tests (RSlag and RSerr) strongly reject the null hypothesis of no spatial dependence, indicating that the OLS model is misspecified. The robust LM tests (adjRSlag and adjRSerr) are also both significant, meaning that both spatial lag and spatial error specifications are plausible. Consequently, both SAR and SEM models are estimated. 
+
+The substantially larger robust error statistic suggests that spatial dependence is more likely to operate through the disturbance term rather than through direct spatial spillovers. This strongly hints that the spatial error model may fit better to our data.
+
+## 11. Spatial Error Model (SEM)
+
+```{r}
+library(spatialreg)
+m2e <-errorsarlm(tyottom~ korkk+alkut+elak+as_tih+he_kika.x+ra_as_kpa.y, data=data2, p22_kn6_w, tol.solve=1.0e-30)
+
+# call a summary to see the results
+summary(m2e)
+
+hausman<-Hausman.test(m2e)
+print(hausman)
+```
+
+What does SEM assume?
+
+Spatial dependence comes from:
+
+- Omitted variables
+- Measurement error
+- Region‑wide shocks
+
+Why SEM often fits well
+
+- Captures unobserved spatial processes
+- Often removes residual autocorrelation
+
+Moran I test confirms this.
+
+```{r}
+data2$residuals <- residuals(m2e)
+moran.mc(data2$residuals, p22_kn6_w,999)
+```
+
+## 12. Spatial Lag Model (SLM)
+
+```{r}
+m2lag <- lagsarlm(tyottom~ korkk+alkut+elak+as_tih+he_kika.x+ra_as_kpa.y, data=data2, p22_kn6_w, tol.solve=1.0e-30)
+
+# call a summary to see the results
+summary(m2lag)
+```
+
+```{r}
+data2$residuals_lag <- residuals(m2lag)
+moran.mc(data2$residuals_lag, p22_kn6_w,999)
+```
+
+What does SLM assume?
+
+Unemployment in one area:
+
+- directly affects nearby areas
+- Spillover effects exist
+
+Useful when:
+
+- Policy diffusion exists
+- Labor markets overlap strongly
+
+## 13. Model comparison via residuals
+
+Decision logic:
+
+- Good model → no spatial autocorrelation left in residuals
+
+Results show:
+
+- Error model removes autocorrelation better
+- Lag model leaves some dependence
 
 # Research example: Spatial double polarization of incomes in North Karelia 1996-2003
 

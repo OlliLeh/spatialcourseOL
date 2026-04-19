@@ -80,7 +80,7 @@ library(spdep)
 data(columbus)
 
 # Inspect the data
-columbus
+columbus[1:5,]
 ```
 
 More information about the dataset can be found by typing:
