@@ -348,7 +348,7 @@ The substantially larger robust error statistic suggests that spatial dependence
 
 ```{r}
 library(spatialreg)
-m2e <-errorsarlm(tyottom~ korkk+alkut+elak+as_tih+he_kika.x+ra_as_kpa.y, data=data2, p22_kn6_w, tol.solve=1.0e-30)
+m2e <-errorsarlm(tyottom~ korkk+alkut+elak+as_tih+he_kika.x+ra_as_kpa.y, data=data2, p25_kn6_w, tol.solve=1.0e-30)
 
 # call a summary to see the results
 summary(m2e)
@@ -374,13 +374,13 @@ Moran I test confirms this.
 
 ```{r}
 data2$residuals <- residuals(m2e)
-moran.mc(data2$residuals, p22_kn6_w,999)
+moran.mc(data2$residuals, p25_kn6_w,999)
 ```
 
 ## 12. Spatial Lag Model (SLM)
 
 ```{r}
-m2lag <- lagsarlm(tyottom~ korkk+alkut+elak+as_tih+he_kika.x+ra_as_kpa.y, data=data2, p22_kn6_w, tol.solve=1.0e-30)
+m2lag <- lagsarlm(tyottom~ korkk+alkut+elak+as_tih+he_kika.x+ra_as_kpa.y, data=data2, p25_kn6_w, tol.solve=1.0e-30)
 
 # call a summary to see the results
 summary(m2lag)
@@ -388,7 +388,7 @@ summary(m2lag)
 
 ```{r}
 data2$residuals_lag <- residuals(m2lag)
-moran.mc(data2$residuals_lag, p22_kn6_w,999)
+moran.mc(data2$residuals_lag, p25_kn6_w,999)
 ```
 
 What does SLM assume?
