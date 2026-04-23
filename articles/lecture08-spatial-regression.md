@@ -500,11 +500,11 @@ summary(m2e)
     ## Type: error 
     ## Coefficients: (asymptotic standard errors) 
     ##               Estimate Std. Error  z value  Pr(>|z|)
-    ## (Intercept) 57.0953852  1.9127290  29.8502 < 2.2e-16
+    ## (Intercept) 57.0953845  1.9127290  29.8502 < 2.2e-16
     ## korkk        0.3388572  0.0172780  19.6121 < 2.2e-16
     ## alkut       -0.0335142  0.0055793  -6.0069 1.892e-09
     ## elak         0.0480779  0.0125449   3.8325 0.0001269
-    ## as_tih      -0.6700998  0.2249769  -2.9785 0.0028964
+    ## as_tih      -0.6700999  0.2249769  -2.9785 0.0028964
     ## he_kika.x   -0.5075504  0.0308752 -16.4388 < 2.2e-16
     ## ra_as_kpa.y -0.2500985  0.0105866 -23.6240 < 2.2e-16
     ## 
@@ -581,7 +581,7 @@ summary(m2lag)
     ## Type: lag 
     ## Coefficients: (asymptotic standard errors) 
     ##               Estimate Std. Error  z value  Pr(>|z|)
-    ## (Intercept) 36.5771816  1.9216355  19.0344 < 2.2e-16
+    ## (Intercept) 36.5771818  1.9216355  19.0344 < 2.2e-16
     ## korkk        0.3938082  0.0178837  22.0205 < 2.2e-16
     ## alkut       -0.0257826  0.0061369  -4.2012 2.655e-05
     ## elak         0.1049687  0.0142032   7.3905 1.463e-13

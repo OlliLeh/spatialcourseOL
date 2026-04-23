@@ -63,33 +63,55 @@ Lehtonen</h4>
     
     
 <div class="section level2">
-<h2 id="r-markdown">R Markdown<a class="anchor" aria-label="anchor" href="#r-markdown"></a>
+<h2 id="assignment-05-geographically-weighted-regression">Assignment 05: Geographically weighted regression<a class="anchor" aria-label="anchor" href="#assignment-05-geographically-weighted-regression"></a>
 </h2>
-<p>This is an R Markdown document. Markdown is a simple formatting
-syntax for authoring HTML, PDF, and MS Word documents. For more details
-on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="external-link uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be
-generated that includes both content as well as the output of any
-embedded R code chunks within the document. You can embed an R code
-chunk like this:</p>
+<p>Use Statistics Finland’s Key Figures of Municipalities dataset in
+this exercise. Download the entire dataset with all variables for a
+single statistical year for all Finnish municipalities from the
+Statistics Finland website:</p>
+<p><a href="https://pxdata.stat.fi/PxWeb/pxweb/en/Kuntien_avainluvut/" class="external-link uri">https://pxdata.stat.fi/PxWeb/pxweb/en/Kuntien_avainluvut/</a></p>
+<p>When downloading the data, select the format “Comma delimited with
+heading”, so that the data are downloaded as a CSV table using a comma
+as the separator.</p>
+<p>Join this dataset in R with the municipality dataset downloaded from
+the geofi package. You can save the key figures as a CSV table in your
+own directory and then import the data into R. You can import the CSV
+table into R, for example, using the read.csv function:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##      speed           dist       </span></span>
-<span><span class="co">##  Min.   : 4.0   Min.   :  2.00  </span></span>
-<span><span class="co">##  1st Qu.:12.0   1st Qu.: 26.00  </span></span>
-<span><span class="co">##  Median :15.0   Median : 36.00  </span></span>
-<span><span class="co">##  Mean   :15.4   Mean   : 42.98  </span></span>
-<span><span class="co">##  3rd Qu.:19.0   3rd Qu.: 56.00  </span></span>
-<span><span class="co">##  Max.   :25.0   Max.   :120.00</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">data_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"data/mydata.csv"</span><span class="op">)</span></span></code></pre></div>
+<p>The municipality dataset can be downloaded in R as follows:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">municipalities25</span> <span class="op">&lt;-</span> <span class="fu">geofi</span><span class="fu">::</span><span class="fu"><a href="https://ropengov.github.io/geofi/reference/get_municipalities.html" class="external-link">get_municipalities</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2025</span><span class="op">)</span></span></code></pre></div>
+<p>After this, you can join the downloaded table to the municipality
+dataset (<strong>remember change variables names to correspond your
+data</strong>):</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">left_join</span><span class="op">(</span><span class="va">municipalities25</span>, <span class="va">data_csv</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kunta"</span> <span class="op">=</span> <span class="st">"region"</span><span class="op">)</span><span class="op">)</span> <span class="co"># why we use left_join?</span></span></code></pre></div>
+<p>Use the Key Figures of Municipalities dataset in the tasks.</p>
 </div>
 <div class="section level2">
-<h2 id="including-plots">Including Plots<a class="anchor" aria-label="anchor" href="#including-plots"></a>
+<h2 id="task-1-linear-model">Task 1: Linear model<a class="anchor" aria-label="anchor" href="#task-1-linear-model"></a>
 </h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="assignment05-week5_files/figure-html/pressure-1.png" class="r-plt" alt="" width="700"></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the
-code chunk to prevent printing of the R code that generated the
-plot.</p>
+<p>Create a linear regression model using the lm function where you
+explain the municipal unemployment rate using:</p>
+<p>degree of urbanisation (%), workplace self-sufficiency, and share of
+persons with tertiary-level education (persons aged 15 or over, %).</p>
+<p>Include the code you used in your answer and interpret the results of
+the model.</p>
+</div>
+<div class="section level2">
+<h2 id="task-2-spatial-autocorrelation">Task 2: Spatial autocorrelation<a class="anchor" aria-label="anchor" href="#task-2-spatial-autocorrelation"></a>
+</h2>
+<p>Continue from the previous task and test the residual spatial
+autocorrelation of the global linear model. How do you interpret the
+result?</p>
+</div>
+<div class="section level2">
+<h2 id="task-3-geographically-weighted-regression">Task 3: Geographically weighted regression<a class="anchor" aria-label="anchor" href="#task-3-geographically-weighted-regression"></a>
+</h2>
+<p>Fit a GWR model corresponding to the model in Task 1. Visualise the
+locally estimated regression coefficients on a map and provide an
+interpretation of the results.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

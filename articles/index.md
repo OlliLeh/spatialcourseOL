@@ -34,4 +34,6 @@
 
 ### Week5
 
+- [Lecture 9: Geographically weighted
+  regression](https://ollileh.github.io/spatialcourseOL/articles/lecture09-gwr.md):
 - [assignment05-week5](https://ollileh.github.io/spatialcourseOL/articles/assignment05-week5.md):
