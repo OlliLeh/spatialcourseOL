@@ -60,7 +60,8 @@ Imports:
     sotkanet,
     sfdep,
     spdep,
-    spatialreg
+    spatialreg,
+    spgwr
 Depends: 
     R (>= 2.10)
 LazyData: true
