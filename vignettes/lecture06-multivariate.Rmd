@@ -182,7 +182,7 @@ Before performing multivariate analysis, we select a subset of variables and ins
 their distributions.
 
 ```{r}
-map2<-data.frame(map[,c(2,73:87)])
+map2<-data.frame(map[,c(3,73:87)])
 summary(map2)
 ```
 
