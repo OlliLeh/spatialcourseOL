@@ -313,18 +313,26 @@ Before performing multivariate analysis, we select a subset of variables
 and inspect their distributions.
 
 ``` r
-map2<-data.frame(map[,c(2,73:87)])
+map2<-data.frame(map[,c(3,73:87)])
 summary(map2)
 ```
 
-    ##        id      gini_kerroin_kaytettavissa_olevat_tulot huoltosuhde_demografinen
-    ##  Min.   :  1   Min.   :20.9                            Min.   : 46.10          
-    ##  1st Qu.: 78   1st Qu.:23.5                            1st Qu.: 70.00          
-    ##  Median :155   Median :24.6                            Median : 77.55          
-    ##  Mean   :155   Mean   :24.9                            Mean   : 78.11          
-    ##  3rd Qu.:232   3rd Qu.:25.6                            3rd Qu.: 86.50          
-    ##  Max.   :309   Max.   :42.7                            Max.   :110.10          
-    ##                NA's   :1                               NA's   :1               
+    ##      kunta       gini_kerroin_kaytettavissa_olevat_tulot
+    ##  Min.   :  5.0   Min.   :20.9                           
+    ##  1st Qu.:224.0   1st Qu.:23.5                           
+    ##  Median :480.0   Median :24.6                           
+    ##  Mean   :469.5   Mean   :24.9                           
+    ##  3rd Qu.:707.0   3rd Qu.:25.6                           
+    ##  Max.   :992.0   Max.   :42.7                           
+    ##                  NA's   :1                              
+    ##  huoltosuhde_demografinen
+    ##  Min.   : 46.10          
+    ##  1st Qu.: 70.00          
+    ##  Median : 77.55          
+    ##  Mean   : 78.11          
+    ##  3rd Qu.: 86.50          
+    ##  Max.   :110.10          
+    ##  NA's   :1               
     ##  korkea_asteen_koulutuksen_saaneet_percent_20_vuotta_tayttaneista
     ##  Min.   :12.10                                                   
     ##  1st Qu.:19.38                                                   

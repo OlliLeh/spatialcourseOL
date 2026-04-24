@@ -338,16 +338,24 @@ maps.</p>
 <p>Before performing multivariate analysis, we select a subset of
 variables and inspect their distributions.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">map2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">map</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">73</span><span class="op">:</span><span class="fl">87</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">map2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">map</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">73</span><span class="op">:</span><span class="fl">87</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">map2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##        id      gini_kerroin_kaytettavissa_olevat_tulot huoltosuhde_demografinen</span></span>
-<span><span class="co">##  Min.   :  1   Min.   :20.9                            Min.   : 46.10          </span></span>
-<span><span class="co">##  1st Qu.: 78   1st Qu.:23.5                            1st Qu.: 70.00          </span></span>
-<span><span class="co">##  Median :155   Median :24.6                            Median : 77.55          </span></span>
-<span><span class="co">##  Mean   :155   Mean   :24.9                            Mean   : 78.11          </span></span>
-<span><span class="co">##  3rd Qu.:232   3rd Qu.:25.6                            3rd Qu.: 86.50          </span></span>
-<span><span class="co">##  Max.   :309   Max.   :42.7                            Max.   :110.10          </span></span>
-<span><span class="co">##                NA's   :1                               NA's   :1               </span></span>
+<pre><code><span><span class="co">##      kunta       gini_kerroin_kaytettavissa_olevat_tulot</span></span>
+<span><span class="co">##  Min.   :  5.0   Min.   :20.9                           </span></span>
+<span><span class="co">##  1st Qu.:224.0   1st Qu.:23.5                           </span></span>
+<span><span class="co">##  Median :480.0   Median :24.6                           </span></span>
+<span><span class="co">##  Mean   :469.5   Mean   :24.9                           </span></span>
+<span><span class="co">##  3rd Qu.:707.0   3rd Qu.:25.6                           </span></span>
+<span><span class="co">##  Max.   :992.0   Max.   :42.7                           </span></span>
+<span><span class="co">##                  NA's   :1                              </span></span>
+<span><span class="co">##  huoltosuhde_demografinen</span></span>
+<span><span class="co">##  Min.   : 46.10          </span></span>
+<span><span class="co">##  1st Qu.: 70.00          </span></span>
+<span><span class="co">##  Median : 77.55          </span></span>
+<span><span class="co">##  Mean   : 78.11          </span></span>
+<span><span class="co">##  3rd Qu.: 86.50          </span></span>
+<span><span class="co">##  Max.   :110.10          </span></span>
+<span><span class="co">##  NA's   :1               </span></span>
 <span><span class="co">##  korkea_asteen_koulutuksen_saaneet_percent_20_vuotta_tayttaneista</span></span>
 <span><span class="co">##  Min.   :12.10                                                   </span></span>
 <span><span class="co">##  1st Qu.:19.38                                                   </span></span>

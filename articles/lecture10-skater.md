@@ -88,7 +88,7 @@ the regional structure in Finland:
 
 ![](figures/skater_terra.png)
 
-### Example: Prepare data for SKATER
+## Example: Running SKATER analysis with R
 
 Next, we will carry out an exercise using SKATER analysis on the same
 Sotkanet dataset as in the previous grouping analysis example. The data
@@ -99,6 +99,8 @@ The objective of this exercise is to demonstrate how SKATER analysis can
 be applied in the analysis of municipal-level data. Using the same
 dataset also facilitates comparison and understanding of the differences
 between the methods.
+
+### Prepare data for SKATER
 
 First, let´s load needed packages:
 
