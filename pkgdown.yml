@@ -16,7 +16,8 @@ articles:
   lecture07-spatial-autocorrelation: lecture07-spatial-autocorrelation.html
   lecture08-spatial-regression: lecture08-spatial-regression.html
   lecture09-gwr: lecture09-gwr.html
-last_built: 2026-04-23T12:56Z
+  lecture10-skater: lecture10-skater.html
+last_built: 2026-04-24T08:05Z
 urls:
   reference: https://ollileh.github.io/spatialcourseOL/reference
   article: https://ollileh.github.io/spatialcourseOL/articles
