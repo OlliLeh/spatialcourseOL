@@ -1572,14 +1572,14 @@ p25_data already exists in the workspace.</p>
 <code class="sourceCode R"><span><span class="co"># select relevant columns</span></span>
 <span><span class="va">pdata3</span> <span class="op">&lt;-</span> <span class="va">p25_data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">129</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">pdata3</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##    posti_alue       euref_x          euref_y          model2_res      </span></span>
-<span><span class="co">##  Min.   :  100   Min.   : 90361   Min.   :6639963   Min.   :0.000000  </span></span>
-<span><span class="co">##  1st Qu.:25438   1st Qu.:321052   1st Qu.:6753730   1st Qu.:0.003936  </span></span>
-<span><span class="co">##  Median :51770   Median :399308   Median :6883752   Median :0.010473  </span></span>
-<span><span class="co">##  Mean   :51257   Mean   :410317   Mean   :6924968   Mean   :0.042876  </span></span>
-<span><span class="co">##  3rd Qu.:77752   3rd Qu.:499228   3rd Qu.:7021408   3rd Qu.:0.031151  </span></span>
-<span><span class="co">##  Max.   :99990   Max.   :720123   Max.   :7750572   Max.   :0.986536  </span></span>
-<span><span class="co">##                                                     NA's   :64</span></span></code></pre>
+<pre><code><span><span class="co">##    posti_alue       euref_x          euref_y          model2_res       </span></span>
+<span><span class="co">##  Min.   :  100   Min.   : 90361   Min.   :6639963   Min.   :3.400e-07  </span></span>
+<span><span class="co">##  1st Qu.:25438   1st Qu.:321052   1st Qu.:6753730   1st Qu.:3.936e-03  </span></span>
+<span><span class="co">##  Median :51770   Median :399308   Median :6883752   Median :1.047e-02  </span></span>
+<span><span class="co">##  Mean   :51257   Mean   :410317   Mean   :6924968   Mean   :4.288e-02  </span></span>
+<span><span class="co">##  3rd Qu.:77752   3rd Qu.:499228   3rd Qu.:7021408   3rd Qu.:3.115e-02  </span></span>
+<span><span class="co">##  Max.   :99990   Max.   :720123   Max.   :7750572   Max.   :9.865e-01  </span></span>
+<span><span class="co">##                                                     NAs    :64</span></span></code></pre>
 <p><strong>Handling missing values</strong></p>
 <div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pdata4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">pdata3</span><span class="op">)</span></span></code></pre></div>
@@ -1608,7 +1608,7 @@ covering Finland. Here we use a resolution of 10 km × 10 km.</p>
 <span><span class="va">grd</span></span></code></pre></div>
 <pre><code><span><span class="co">## stars object with 2 dimensions and 1 attribute</span></span>
 <span><span class="co">## attribute(s):</span></span>
-<span><span class="co">##         Min. 1st Qu. Median Mean 3rd Qu. Max. NA's</span></span>
+<span><span class="co">##         Min. 1st Qu. Median Mean 3rd Qu. Max.  NAs</span></span>
 <span><span class="co">## values     0       0      0    0       0    0 4024</span></span>
 <span><span class="co">## dimension(s):</span></span>
 <span><span class="co">##   from  to  offset  delta                refsys x/y</span></span>

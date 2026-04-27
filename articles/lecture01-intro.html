@@ -85,9 +85,7 @@ packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Number of R Packages</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/available.packages.html" class="external-link">available.packages</a></span><span class="op">(</span>repos <span class="op">=</span> <span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: unable to access index for repository http://cran.us.r-project.org/src/contrib:</span></span>
-<span><span class="co">#&gt;   cannot open URL 'http://cran.us.r-project.org/src/contrib/PACKAGES'</span></span>
-<span><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 23731</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="installing-r-and-rstudio-on-windows">Installing R and RStudio on Windows<a class="anchor" aria-label="anchor" href="#installing-r-and-rstudio-on-windows"></a>
@@ -1468,7 +1466,7 @@ frame. This can be accomplished by typing</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rsqlite.r-dbi.org" class="external-link">RSQLite</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"database.db"</span><span class="op">)</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">SQLite</span><span class="op">(</span><span class="op">)</span>, <span class="st">"database.db"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Read table</span></span>
 <span><span class="va">data_db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbReadTable.html" class="external-link">dbReadTable</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"table_name"</span><span class="op">)</span></span>

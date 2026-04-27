@@ -1752,14 +1752,14 @@ pdata3 <- p25_data[, c(1, 7, 8, 129)]
 summary(pdata3)
 ```
 
-    ##    posti_alue       euref_x          euref_y          model2_res      
-    ##  Min.   :  100   Min.   : 90361   Min.   :6639963   Min.   :0.000000  
-    ##  1st Qu.:25438   1st Qu.:321052   1st Qu.:6753730   1st Qu.:0.003936  
-    ##  Median :51770   Median :399308   Median :6883752   Median :0.010473  
-    ##  Mean   :51257   Mean   :410317   Mean   :6924968   Mean   :0.042876  
-    ##  3rd Qu.:77752   3rd Qu.:499228   3rd Qu.:7021408   3rd Qu.:0.031151  
-    ##  Max.   :99990   Max.   :720123   Max.   :7750572   Max.   :0.986536  
-    ##                                                     NA's   :64
+    ##    posti_alue       euref_x          euref_y          model2_res       
+    ##  Min.   :  100   Min.   : 90361   Min.   :6639963   Min.   :3.400e-07  
+    ##  1st Qu.:25438   1st Qu.:321052   1st Qu.:6753730   1st Qu.:3.936e-03  
+    ##  Median :51770   Median :399308   Median :6883752   Median :1.047e-02  
+    ##  Mean   :51257   Mean   :410317   Mean   :6924968   Mean   :4.288e-02  
+    ##  3rd Qu.:77752   3rd Qu.:499228   3rd Qu.:7021408   3rd Qu.:3.115e-02  
+    ##  Max.   :99990   Max.   :720123   Max.   :7750572   Max.   :9.865e-01  
+    ##                                                     NAs    :64
 
 **Handling missing values**
 
@@ -1797,7 +1797,7 @@ grd
 
     ## stars object with 2 dimensions and 1 attribute
     ## attribute(s):
-    ##         Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
+    ##         Min. 1st Qu. Median Mean 3rd Qu. Max.  NAs
     ## values     0       0      0    0       0    0 4024
     ## dimension(s):
     ##   from  to  offset  delta                refsys x/y

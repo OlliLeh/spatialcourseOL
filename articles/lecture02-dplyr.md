@@ -121,6 +121,9 @@ library(data.table)
 #> The following objects are masked from 'package:dplyr':
 #> 
 #>     between, first, last
+#> The following object is masked from 'package:base':
+#> 
+#>     %notin%
 library(ows4R)
 #> Loading ISO 19139 XML schemas...
 #> Loading ISO 19115-3 XML schemas...

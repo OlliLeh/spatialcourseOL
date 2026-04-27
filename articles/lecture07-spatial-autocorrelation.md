@@ -577,8 +577,6 @@ to exhibit spatial autocorrelation if the local indicators reveal
 statistically significant positive autocorrelation. For further details
 on LISA statistics, see Anselin (1995).
 
-### Sa
-
 #### 1Loading required packages
 
 We first load the packages needed for spatial data handling, spatial
@@ -588,7 +586,6 @@ statistics, data manipulation, and visualisation.
 library(sf)
 library(rgeoda)
 library(ggplot2)
-library(reshape)
 library(dplyr)
 library(janitor)
 ```

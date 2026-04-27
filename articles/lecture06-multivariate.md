@@ -324,7 +324,7 @@ summary(map2)
     ##  Mean   :469.5   Mean   :24.9                           
     ##  3rd Qu.:707.0   3rd Qu.:25.6                           
     ##  Max.   :992.0   Max.   :42.7                           
-    ##                  NA's   :1                              
+    ##                  NAs    :1                              
     ##  huoltosuhde_demografinen
     ##  Min.   : 46.10          
     ##  1st Qu.: 70.00          
@@ -332,7 +332,7 @@ summary(map2)
     ##  Mean   : 78.11          
     ##  3rd Qu.: 86.50          
     ##  Max.   :110.10          
-    ##  NA's   :1               
+    ##  NAs    :1               
     ##  korkea_asteen_koulutuksen_saaneet_percent_20_vuotta_tayttaneista
     ##  Min.   :12.10                                                   
     ##  1st Qu.:19.38                                                   
@@ -340,7 +340,7 @@ summary(map2)
     ##  Mean   :23.91                                                   
     ##  3rd Qu.:27.15                                                   
     ##  Max.   :58.60                                                   
-    ##  NA's   :1                                                       
+    ##  NAs    :1                                                       
     ##  kunnan_yleinen_pienituloisuusaste lapsiperheet_percent_perheista
     ##  Min.   : 5.00                     Min.   : 9.50                 
     ##  1st Qu.:11.30                     1st Qu.:29.07                 
@@ -348,7 +348,7 @@ summary(map2)
     ##  Mean   :14.25                     Mean   :33.83                 
     ##  3rd Qu.:17.20                     3rd Qu.:38.33                 
     ##  Max.   :24.10                     Max.   :61.40                 
-    ##  NA's   :4                         NA's   :1                     
+    ##  NAs    :4                         NAs    :1                     
     ##  pitkaaikaistyottomat_percent_tyovoimasta
     ##  Min.   :0.000                           
     ##  1st Qu.:1.300                           
@@ -356,7 +356,7 @@ summary(map2)
     ##  Mean   :1.975                           
     ##  3rd Qu.:2.600                           
     ##  Max.   :4.300                           
-    ##  NA's   :13                              
+    ##  NAs    :13                              
     ##  ruotsinkielinen_vaesto_percent_vaestosta_31_12 taloudellinen_huoltosuhde
     ##  Min.   : 0.000                                 Min.   : 89.0            
     ##  1st Qu.: 0.200                                 1st Qu.:132.5            
@@ -364,7 +364,7 @@ summary(map2)
     ##  Mean   :11.724                                 Mean   :158.7            
     ##  3rd Qu.: 1.375                                 3rd Qu.:182.7            
     ##  Max.   :95.500                                 Max.   :244.5            
-    ##  NA's   :59                                     NA's   :1                
+    ##  NAs    :59                                     NAs    :1                
     ##  taytta_kansanelaketta_saaneet_65_vuotta_tayttaneet_percent_vastaavan_ikaisesta_vaestosta
     ##  Min.   :0.600                                                                           
     ##  1st Qu.:1.300                                                                           
@@ -372,7 +372,7 @@ summary(map2)
     ##  Mean   :1.796                                                                           
     ##  3rd Qu.:2.200                                                                           
     ##  Max.   :4.800                                                                           
-    ##  NA's   :13                                                                              
+    ##  NAs    :13                                                                              
     ##  toimeentulotukea_pitkaaikaisesti_saaneet_18_24_vuotiaat_percent_vastaavan_ikaisesta_vaestosta
     ##  Min.   :0.700                                                                                
     ##  1st Qu.:1.900                                                                                
@@ -380,7 +380,7 @@ summary(map2)
     ##  Mean   :2.669                                                                                
     ##  3rd Qu.:3.350                                                                                
     ##  Max.   :5.700                                                                                
-    ##  NA's   :166                                                                                  
+    ##  NAs    :166                                                                                  
     ##  toimeentulotukea_saaneet_25_64_vuotiaat_percent_vastaavan_ikaisesta_vaestosta
     ##  Min.   : 0.800                                                               
     ##  1st Qu.: 5.300                                                               
@@ -388,7 +388,7 @@ summary(map2)
     ##  Mean   : 6.821                                                               
     ##  3rd Qu.: 8.275                                                               
     ##  Max.   :13.900                                                               
-    ##  NA's   :7                                                                    
+    ##  NAs    :7                                                                    
     ##  toimeentulotuki_euroa_asukas tyottomat_percent_tyovoimasta
     ##  Min.   :  0.60               Min.   : 1.900               
     ##  1st Qu.: 52.50               1st Qu.: 6.600               
@@ -396,7 +396,7 @@ summary(map2)
     ##  Mean   : 78.93               Mean   : 8.525               
     ##  3rd Qu.: 93.20               3rd Qu.:10.300               
     ##  Max.   :239.40               Max.   :17.400               
-    ##  NA's   :4                    NA's   :6                    
+    ##  NAs    :4                    NAs    :6                    
     ##  yleista_asumistukea_saaneet_yhteensa_percent_asuntokunnista
     ##  Min.   : 1.400                                             
     ##  1st Qu.: 4.225                                             
@@ -404,7 +404,7 @@ summary(map2)
     ##  Mean   : 6.607                                             
     ##  3rd Qu.: 7.475                                             
     ##  Max.   :25.800                                             
-    ##  NA's   :7                                                  
+    ##  NAs    :7                                                  
     ##             geom    
     ##  MULTIPOLYGON :309  
     ##  epsg:3067    :  0  
