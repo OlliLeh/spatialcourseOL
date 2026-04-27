@@ -404,9 +404,6 @@ where \( w_i \) is the sum of the elements \( \sum_j w_{ij} \) in row *i* of the
 
 A **positive** value of \( I_i \) indicates spatial clustering of similar values between a region and its neighbours, whereas a **negative** value indicates spatial clustering of dissimilar values. An area is considered to exhibit spatial autocorrelation if the local indicators reveal statistically significant positive autocorrelation. For further details on LISA statistics, see Anselin (1995).
 
-## Sa
-
-
 ### 1Loading required packages
 
 We first load the packages needed for spatial data handling, spatial statistics, data manipulation, and visualisation.
