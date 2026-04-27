@@ -62,7 +62,9 @@ Imports:
     spdep,
     spatialreg,
     spgwr,
-    rgeoda
+    rgeoda,
+    tidyverse,
+    ggrepel
 Depends: 
     R (>= 2.10)
 LazyData: true
