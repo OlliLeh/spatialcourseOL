@@ -61,7 +61,8 @@ Imports:
     sfdep,
     spdep,
     spatialreg,
-    spgwr
+    spgwr,
+    rgeoda
 Depends: 
     R (>= 2.10)
 LazyData: true
