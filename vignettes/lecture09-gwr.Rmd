@@ -25,6 +25,7 @@ library(janitor)
 library(ggrepel)
 library(ggplot2)
 library(viridis)
+library(GWmodel)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```

@@ -65,7 +65,8 @@ Imports:
     rgeoda,
     tidyverse,
     ggrepel,
-    ggpubr
+    ggpubr,
+    GWmodel
 Depends: 
     R (>= 2.10)
 LazyData: true
