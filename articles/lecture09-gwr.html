@@ -340,12 +340,460 @@ magnitude and spatial extent.</p>
 </div>
 </div>
 <div class="section level2">
+<h2 id="example-from-a-report-itärata-accessibility-and-socioeconomic-development-in-eastern-finland">Example from a report: Itärata, accessibility, and socio‑economic
+development in Eastern Finland<a class="anchor" aria-label="anchor" href="#example-from-a-report-it%C3%A4rata-accessibility-and-socioeconomic-development-in-eastern-finland"></a>
+</h2>
+<p>In this example, we replicate an analysis from a research report that
+examined the relationship between accessibility and socio‑economic
+development in a situation where the implementation of the Eastern Rail
+Line (Itärata) has altered the accessibility of regions in Eastern
+Finland. The starting point of the study was to assess whether the
+development of this rail connection would improve the accessibility of
+Eastern Finnish regions and to examine how changes in accessibility
+would more broadly shape the region’s socio‑economic development. In
+this example, we reproduce the analysis from the report in which
+population change in postal code areas between 2015 and 2023 was
+explained by travel time to Helsinki‑Vantaa Airport. The report can be
+found here:</p>
+<p><a href="https://erepo.uef.fi/items/d186c78d-4aa9-4162-9590-1d89775bc595" class="external-link uri">https://erepo.uef.fi/items/d186c78d-4aa9-4162-9590-1d89775bc595</a></p>
+<p><img src="figures/itarata.png" class="r-plt" alt="" width="90%"></p>
+<div class="section level4">
+<h4 id="required-packages">Required packages<a class="anchor" aria-label="anchor" href="#required-packages"></a>
+</h4>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/" class="external-link">httr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/eblondel/ows4R" class="external-link">ows4R</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="data-management-and-description">Data management and description<a class="anchor" aria-label="anchor" href="#data-management-and-description"></a>
+</h3>
+<div class="section level4">
+<h4 id="reading-spatial-data-from-the-package-extdata">1. Reading spatial data from the package extdata<a class="anchor" aria-label="anchor" href="#reading-spatial-data-from-the-package-extdata"></a>
+</h4>
+<p>We begin by reading the GeoPackage file that is shipped with the
+spatialcourseOL R package. The file is located in the package’s
+inst/extdata/ directory, which makes it portable across systems.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">paavo_matkat</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"paavo_matkat_ajat.gpkg"</span>,</span>
+<span>              package <span class="op">=</span> <span class="st">"spatialcourseOL"</span><span class="op">)</span>,</span>
+<span>  layer <span class="op">=</span> <span class="st">"paavo_matkat"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Reading layer `paavo_matkat' from data source </span></span>
+<span><span class="co">##   `/home/runner/work/_temp/Library/spatialcourseOL/extdata/paavo_matkat_ajat.gpkg' </span></span>
+<span><span class="co">##   using driver `GPKG'</span></span>
+<span><span class="co">## Simple feature collection with 1305 features and 160 fields</span></span>
+<span><span class="co">## Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">## Dimension:     XY</span></span>
+<span><span class="co">## Bounding box:  xmin: 266300.6 ymin: 6632299 xmax: 732907.7 ymax: 7266655</span></span>
+<span><span class="co">## Projected CRS: ETRS89 / TM35FIN(E,N)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="create-a-working-copy-of-the-dataset">2. Create a working copy of the dataset<a class="anchor" aria-label="anchor" href="#create-a-working-copy-of-the-dataset"></a>
+</h4>
+<p>To keep the original object intact, we create a new working copy of
+the spatial data.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">paav3</span><span class="op">&lt;-</span><span class="va">paavo_matkat</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="subset-the-data">3. Subset the data<a class="anchor" aria-label="anchor" href="#subset-the-data"></a>
+</h4>
+<p>Next, we remove extreme population change values.</p>
+<p>Only postal code areas where population change between 2016–2024 is
+between −50% and +50% are retained.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">paav44</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/modeltools/man/ModelEnv-class.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">paav3</span>, <span class="va">muutos1624vaki</span><span class="op">&lt;</span><span class="fl">50</span> <span class="op">&amp;</span> <span class="va">muutos1624vaki</span><span class="op">&gt;</span><span class="op">-</span><span class="fl">50</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="correlation-analysis">4. Correlation analysis<a class="anchor" aria-label="anchor" href="#correlation-analysis"></a>
+</h4>
+<p>We examine the relationship between:</p>
+<ul>
+<li>population change (muutos1624vaki)</li>
+<li>travel time to Helsinki–Vantaa Airport (matka_aika_nyk)</li>
+</ul>
+<p>Pearson’s correlation coefficient is used.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">cor.test</a></span><span class="op">(</span><span class="va">paav44</span><span class="op">$</span><span class="va">muutos1624vaki</span>, <span class="va">paav44</span><span class="op">$</span><span class="va">matka_aika_nyk</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Pearson's product-moment correlation</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  paav44$muutos1624vaki and paav44$matka_aika_nyk</span></span>
+<span><span class="co">## t = -20.017, df = 1278, p-value &lt; 2.2e-16</span></span>
+<span><span class="co">## alternative hypothesis: true correlation is not equal to 0</span></span>
+<span><span class="co">## 95 percent confidence interval:</span></span>
+<span><span class="co">##  -0.5291909 -0.4457042</span></span>
+<span><span class="co">## sample estimates:</span></span>
+<span><span class="co">##       cor </span></span>
+<span><span class="co">## -0.488565</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="visualizing-the-relationship">5. Visualizing the relationship<a class="anchor" aria-label="anchor" href="#visualizing-the-relationship"></a>
+</h4>
+<p>Next we visualize the relationship between accessibility and
+population change using a scatter plot. The figure includes:</p>
+<ul>
+<li>Individual observations</li>
+<li>A LOESS smoother (non-linear trend)</li>
+<li>A linear regression line</li>
+<li>The Pearson correlation coefficient</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">paav44</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">matka_aika_nyk</span>, <span class="va">muutos1624vaki</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.7</span>, color <span class="op">=</span> <span class="st">"#2C7FB8"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"loess"</span>, se <span class="op">=</span> <span class="cn">TRUE</span>, color <span class="op">=</span> <span class="st">"gold2"</span>, size <span class="op">=</span> <span class="fl">1.3</span> , alpha<span class="op">=</span><span class="fl">0.15</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">F</span>, color <span class="op">=</span> <span class="st">"chocolate4"</span>, size <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span> <span class="co"># linear fit</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="st">"Travel time to airport (min)"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Population change  (%)"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Population change 2015-2023"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">50</span>, by <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_cor.html" class="external-link">stat_cor</a></span><span class="op">(</span></span>
+<span>    method <span class="op">=</span> <span class="st">"pearson"</span>,       <span class="co"># or "spearman"</span></span>
+<span>    label.x <span class="op">=</span> <span class="fl">0.05</span>,           <span class="co"># starting x for label</span></span>
+<span>    label.y <span class="op">=</span> <span class="cn">Inf</span>,            <span class="co"># place at top; you can use a numeric y</span></span>
+<span>    vjust <span class="op">=</span> <span class="fl">1.2</span>,              <span class="co"># tweak vertical positioning</span></span>
+<span>    size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>  <span class="co"># 0, 10, 20, ...</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span></span>
+<span><span class="co">## <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
+<span><span class="co">## <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">## <span style="color: #555555;">generated.</span></span></span></code></pre>
+<pre><code><span><span class="co">## `geom_smooth()` using formula = 'y ~ x'</span></span>
+<span><span class="co">## `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre>
+<p><img src="lecture09-gwr_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="geographically-weighted-regression-gwr-itärata-scenario">Geographically Weighted Regression (GWR): Itärata scenario<a class="anchor" aria-label="anchor" href="#geographically-weighted-regression-gwr-it%C3%A4rata-scenario"></a>
+</h3>
+<p>This section applies a Geographically Weighted Regression (GWR) model
+to analyse how accessibility (travel time) relates to population change,
+and how the Itärata scenario modifies this relationship at the national
+level.</p>
+<div class="section level4">
+<h4 id="data-preparation-and-sanity-checks">0. Data preparation and sanity checks<a class="anchor" aria-label="anchor" href="#data-preparation-and-sanity-checks"></a>
+</h4>
+<p>We begin by preparing the spatial dataset for GWR analysis.</p>
+<p>Only observations with valid values for:</p>
+<ul>
+<li>population change (muutos1624vaki)</li>
+<li>current travel time (matka_aika_nyk)</li>
+<li>Itärata travel time scenario (matka_aika_itarata)</li>
+</ul>
+<p>are retained.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">regions_clean</span> <span class="op">&lt;-</span> <span class="va">paav3</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html" class="external-link">is.finite</a></span><span class="op">(</span><span class="va">muutos1624vaki</span><span class="op">)</span>,                <span class="co"># outcome used in your GWR (jobs development)</span></span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/base/is.finite.html" class="external-link">is.finite</a></span><span class="op">(</span><span class="va">matka_aika_nyk</span><span class="op">)</span>,        <span class="co"># baseline accessibility</span></span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/base/is.finite.html" class="external-link">is.finite</a></span><span class="op">(</span><span class="va">matka_aika_itarata</span><span class="op">)</span><span class="op">)</span>  <span class="co"># Itärata scenario accessibility</span></span></code></pre></div>
+<p>To avoid potential spatial issues, geometry validity is ensured.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">regions_clean</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/valid.html" class="external-link">st_make_valid</a></span><span class="op">(</span><span class="va">regions_clean</span><span class="op">)</span></span></code></pre></div>
+<p>The GWmodel package requires data in Spatial format, so the object is
+converted accordingly.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">regions_sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">regions_clean</span>, <span class="st">"Spatial"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="fitting-a-gwr-model-baseline-accessibility">1. Fitting a GWR model (baseline accessibility)<a class="anchor" aria-label="anchor" href="#fitting-a-gwr-model-baseline-accessibility"></a>
+</h4>
+<p>Next, we fit a GWR model where population change is explained by
+baseline travel time to the airport.</p>
+<p>An adaptive bandwidth approach is used, meaning that each local
+regression uses a fixed number of nearest neighbours.</p>
+<p>Bandwidth selection (AICc)</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bw</span> <span class="op">&lt;-</span> <span class="fu">bw.gwr</span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">muutos1624vaki</span> <span class="op">~</span> <span class="va">matka_aika_nyk</span>,</span>
+<span>  data    <span class="op">=</span> <span class="va">regions_sp</span>,</span>
+<span>  approach<span class="op">=</span> <span class="st">"AICc"</span>,</span>
+<span>  kernel  <span class="op">=</span> <span class="st">"gaussian"</span>,</span>
+<span>  adaptive<span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 812 AICc value: 13077.16 </span></span>
+<span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 510 AICc value: 13065.23 </span></span>
+<span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 321 AICc value: 13060.06 </span></span>
+<span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 207 AICc value: 13057.99 </span></span>
+<span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 133 AICc value: 13053.22 </span></span>
+<span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 91 AICc value: 13046.9 </span></span>
+<span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 61 AICc value: 13035.18 </span></span>
+<span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 46 AICc value: 13030.11 </span></span>
+<span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 33 AICc value: 13025.47 </span></span>
+<span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 29 AICc value: 13027.77 </span></span>
+<span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 39 AICc value: 13024.77 </span></span>
+<span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 39 AICc value: 13024.77</span></span></code></pre>
+<p>Fit the GWR model</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gwr_model</span> <span class="op">&lt;-</span> <span class="fu">gwr.basic</span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">muutos1624vaki</span> <span class="op">~</span> <span class="va">matka_aika_nyk</span>,</span>
+<span>  data    <span class="op">=</span> <span class="va">regions_sp</span>,</span>
+<span>  bw      <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>  kernel  <span class="op">=</span> <span class="st">"gaussian"</span>,</span>
+<span>  adaptive<span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="extracting-local-regression-coefficients">2. Extracting local regression coefficients<a class="anchor" aria-label="anchor" href="#extracting-local-regression-coefficients"></a>
+</h4>
+<p>From the fitted GWR model, we extract the local intercepts and
+slopes. These represent spatially varying relationships between
+accessibility and population change.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">b0_local</span> <span class="op">&lt;-</span> <span class="va">gwr_model</span><span class="op">$</span><span class="va">SDF</span><span class="op">$</span><span class="va">Intercept</span></span>
+<span><span class="va">b1_local</span> <span class="op">&lt;-</span> <span class="va">gwr_model</span><span class="op">$</span><span class="va">SDF</span><span class="op">$</span><span class="va">matka_aika_nyk</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">b1_local</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. </span></span>
+<span><span class="co">## -0.207256 -0.073696 -0.034034  0.002327 -0.015446  2.013697</span></span></code></pre>
+<p>The extracted coefficients are attached back to the sf object,
+preserving row alignment.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">regions_clean</span> <span class="op">&lt;-</span> <span class="va">regions_clean</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    b0_local <span class="op">=</span> <span class="va">b0_local</span>,</span>
+<span>    b1_local <span class="op">=</span> <span class="va">b1_local</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="predictions-and-itärata-impact-assessment">3. Predictions and Itärata impact assessment<a class="anchor" aria-label="anchor" href="#predictions-and-it%C3%A4rata-impact-assessment"></a>
+</h4>
+<p>Using the local coefficients, we compute:</p>
+<ul>
+<li>predicted population change under the baseline situation</li>
+<li>predicted population change under the Itärata scenario</li>
+<li>the estimated impact of Itärata</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">regions_clean</span> <span class="op">&lt;-</span> <span class="va">regions_clean</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    x_base    <span class="op">=</span> <span class="va">matka_aika_nyk</span>,</span>
+<span>    x_itarata <span class="op">=</span> <span class="va">matka_aika_itarata</span>,</span>
+<span>    dx        <span class="op">=</span> <span class="va">x_itarata</span> <span class="op">-</span> <span class="va">x_base</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Predictions</span></span>
+<span>    yhat_base    <span class="op">=</span> <span class="va">b0_local</span> <span class="op">+</span> <span class="va">b1_local</span> <span class="op">*</span> <span class="va">x_base</span>,</span>
+<span>    yhat_itarata <span class="op">=</span> <span class="va">b0_local</span> <span class="op">+</span> <span class="va">b1_local</span> <span class="op">*</span> <span class="va">x_itarata</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Impact (Itärata - baseline) == slope * delta accessibility</span></span>
+<span>    impact_itarata <span class="op">=</span> <span class="va">yhat_itarata</span> <span class="op">-</span> <span class="va">yhat_base</span>,       <span class="co"># same as b1_local * dx</span></span>
+<span>    impact_component <span class="op">=</span> <span class="va">b1_local</span> <span class="op">*</span> <span class="va">dx</span>                  <span class="co"># explicitly show the contribution</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="quick-diagnostics">4. Quick diagnostics<a class="anchor" aria-label="anchor" href="#quick-diagnostics"></a>
+</h4>
+<p>To understand the distribution of estimated impacts, basic
+descriptive statistics are examined.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">regions_clean</span><span class="op">$</span><span class="va">impact_itarata</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">## -8.9274  0.1165  0.4171  0.6650  0.8556 17.3581</span></span></code></pre>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">regions_clean</span><span class="op">$</span><span class="va">impact_itarata</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.01</span>, <span class="fl">.05</span>, <span class="fl">.5</span>, <span class="fl">.95</span>, <span class="fl">.99</span>, <span class="fl">1</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##         0%         1%         5%        50%        95%        99%       100% </span></span>
+<span><span class="co">## -8.9273859 -4.6536131 -1.0479504  0.4170597  2.0815857  9.1142592 17.3580916</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="aggregation-to-regional-statistics-maakuntacounty-level">5. Aggregation to regional statistics (Maakunta/County level)<a class="anchor" aria-label="anchor" href="#aggregation-to-regional-statistics-maakuntacounty-level"></a>
+</h4>
+<p>Finally, population impacts are aggregated to the regional (Maakunta)
+level.</p>
+<p>We first compute population change including the Itärata impact.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">regions_clean</span><span class="op">$</span><span class="va">muutos1624v_imp</span><span class="op">&lt;-</span><span class="va">regions_clean</span><span class="op">$</span><span class="va">muutos1624vaki</span> <span class="op">+</span> <span class="va">regions_clean</span><span class="op">$</span><span class="va">impact_itarata</span></span></code></pre></div>
+<p>Absolute population change (with and without Itärata)</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">a</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html" class="external-link">tapply</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">regions_clean</span><span class="op">$</span><span class="va">muutos1624v_imp</span><span class="op">/</span><span class="fl">100</span><span class="op">)</span><span class="op">*</span><span class="va">regions_clean</span><span class="op">$</span><span class="va">vaki24</span><span class="op">)</span>, <span class="va">regions_clean</span><span class="op">$</span><span class="va">Maakunta</span>, <span class="va">sum</span><span class="op">)</span></span>
+<span><span class="va">b</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html" class="external-link">tapply</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">regions_clean</span><span class="op">$</span><span class="va">muutos1624vaki</span><span class="op">/</span><span class="fl">100</span><span class="op">)</span><span class="op">*</span><span class="va">regions_clean</span><span class="op">$</span><span class="va">vaki24</span><span class="op">)</span>, <span class="va">regions_clean</span><span class="op">$</span><span class="va">Maakunta</span>, <span class="va">sum</span><span class="op">)</span></span>
+<span><span class="va">c</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html" class="external-link">tapply</a></span><span class="op">(</span><span class="va">regions_clean</span><span class="op">$</span><span class="va">vaki24</span>, <span class="va">regions_clean</span><span class="op">$</span><span class="va">Maakunta</span>, <span class="va">sum</span><span class="op">)</span></span></code></pre></div>
+<p>Net impact of Itärata</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">as</span><span class="op">&lt;-</span><span class="va">a</span><span class="op">-</span><span class="va">b</span>;<span class="va">as</span></span></code></pre></div>
+<pre><code><span><span class="co">##   Etelä-Karjala      Etelä-Savo          Kainuu     Kymenlaakso     Päijät-Häme </span></span>
+<span><span class="co">##       1143.3694        449.6060        234.4531        186.9546      -1489.7752 </span></span>
+<span><span class="co">## Pohjois-Karjala    Pohjois-Savo         Uusimaa </span></span>
+<span><span class="co">##       2378.1333       3212.4264      -3509.5066</span></span></code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">a</span><span class="op">-</span><span class="va">b</span><span class="op">)</span> <span class="co"># erotus väestössä, n TAULUKKOON</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 2605.661</span></span></code></pre>
+<p>Relative impact (% of population)</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bs</span><span class="op">&lt;-</span><span class="op">(</span><span class="va">a</span><span class="op">-</span><span class="va">b</span><span class="op">)</span><span class="op">/</span><span class="va">c</span><span class="op">*</span><span class="fl">100</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">a</span><span class="op">-</span><span class="va">b</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">regions_clean</span><span class="op">$</span><span class="va">vaki24</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.09468731</span></span></code></pre>
+<p>Combined results table</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">abs</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">as</span>, <span class="va">bs</span><span class="op">)</span>; <span class="va">abs</span></span></code></pre></div>
+<pre><code><span><span class="co">##                         as         bs</span></span>
+<span><span class="co">## Etelä-Karjala    1143.3694  0.9199577</span></span>
+<span><span class="co">## Etelä-Savo        449.6060  0.3497600</span></span>
+<span><span class="co">## Kainuu            234.4531  0.3363023</span></span>
+<span><span class="co">## Kymenlaakso       186.9546  0.1181373</span></span>
+<span><span class="co">## Päijät-Häme     -1489.7752 -0.7366700</span></span>
+<span><span class="co">## Pohjois-Karjala  2378.1333  1.4804486</span></span>
+<span><span class="co">## Pohjois-Savo     3212.4264  1.3105098</span></span>
+<span><span class="co">## Uusimaa         -3509.5066 -0.2110264</span></span></code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="mapping-the-estimated-itärata-impact">Mapping the estimated Itärata impact<a class="anchor" aria-label="anchor" href="#mapping-the-estimated-it%C3%A4rata-impact"></a>
+</h3>
+<p>This map visualizes the predicted impact of the Itärata scenario on
+population change, based on the GWR results. The effect is shown as a
+continuous surface, overlaid with relevant infrastructure and reference
+layers</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">regions_clean</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">impact_itarata</span><span class="op">)</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span></span>
+<span>    option <span class="op">=</span> <span class="st">"mako"</span>,</span>
+<span>    direction <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    name <span class="op">=</span> <span class="st">"Impact to population \nchange (%)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Itärata (GWR)"</span>, subtitle <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>    panel.grid.major <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    panel.grid.minor <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span>, face <span class="op">=</span> <span class="st">'bold'</span><span class="op">)</span>,</span>
+<span>    legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.12</span>, <span class="fl">0.78</span><span class="op">)</span>,</span>
+<span>    legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span>,</span>
+<span>    legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture09-gwr_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" alt="" width="700"></p>
+<p>What this map shows</p>
+<ul>
+<li>Each area is coloured by the estimated impact of Itärata on
+population change</li>
+<li>Values are derived from local GWR coefficients</li>
+<li>Positive values indicate areas where the rail project is predicted
+to mitigate population decline or support growth</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="mapping-local-gwr-regression-coefficients">Mapping local GWR regression coefficients<a class="anchor" aria-label="anchor" href="#mapping-local-gwr-regression-coefficients"></a>
+</h3>
+<p>In addition to mapping predicted impacts, we can visualize the local
+regression coefficients estimated by the Geographically Weighted
+Regression (GWR) model. These coefficients describe how the relationship
+between accessibility (travel time) and population change varies across
+space.</p>
+<p>In this example, we focus only on negative coefficients, which
+indicate areas where longer travel times are locally associated with
+population decline. Positive coefficients are excluded from the map to
+highlight spatial vulnerability more clearly.</p>
+<div class="section level4">
+<h4 id="step-1-mask-positive-coefficients">Step 1: Mask positive coefficients<a class="anchor" aria-label="anchor" href="#step-1-mask-positive-coefficients"></a>
+</h4>
+<p>We create a new variable that keeps only negative local slope values
+(b1_local).</p>
+<p>Positive coefficients are set to NA, so they will not be coloured on
+the map.</p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">regions_clean</span><span class="op">$</span><span class="va">coef_neg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
+<span>  <span class="va">regions_clean</span><span class="op">$</span><span class="va">b1_local</span> <span class="op">&lt;</span> <span class="fl">0</span>,</span>
+<span>  <span class="va">regions_clean</span><span class="op">$</span><span class="va">b1_local</span>, <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
+<p>This approach:</p>
+<ul>
+<li>preserves all spatial units,</li>
+<li>avoids changing the map extent,</li>
+<li>makes excluded areas visually explicit.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="step-2-plot-the-local-coefficients">Step 2: Plot the local coefficients<a class="anchor" aria-label="anchor" href="#step-2-plot-the-local-coefficients"></a>
+</h4>
+<p>The map below shows the spatial distribution of negative GWR
+coefficients.</p>
+<p>Darker colours indicate stronger negative local relationships between
+travel time and population change.</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">regions_clean</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">coef_neg</span><span class="op">)</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_fill_gradient2</a></span><span class="op">(</span></span>
+<span>    low <span class="op">=</span> <span class="st">"steelblue4"</span>,</span>
+<span>    mid <span class="op">=</span> <span class="st">"white"</span>,</span>
+<span>    high <span class="op">=</span> <span class="st">"darkred"</span>,</span>
+<span>    midpoint <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>    na.value <span class="op">=</span> <span class="st">"grey90"</span>,</span>
+<span>    name <span class="op">=</span> <span class="st">"Negative GWR\ncoefficients"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Negative local effects of travel time"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Positive coefficients excluded"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture09-gwr_files/figure-html/unnamed-chunk-26-1.png" class="r-plt" alt="" width="700"></p>
+<p>Interpretation</p>
+<ul>
+<li>Darker blue areas indicate locations where increased travel time has
+a stronger negative association with population change.</li>
+<li>Grey areas represent locations where the coefficient is positive or
+close to zero and therefore excluded from the visualization.</li>
+<li>The spatial variation confirms non‑stationarity in the relationship
+between accessibility and demographic development, which is precisely
+what GWR is designed to reveal.</li>
+</ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="ordinary-least-squares-ols-benchmark-model">Ordinary Least Squares (OLS) benchmark model<a class="anchor" aria-label="anchor" href="#ordinary-least-squares-ols-benchmark-model"></a>
+</h3>
+<p>As a point of comparison, we first estimate a global Ordinary Least
+Squares (OLS) regression. Unlike GWR, OLS assumes that the relationship
+between accessibility and population change is spatially constant,
+meaning the same effect applies everywhere.</p>
+<p>In this baseline model, population change is explained by baseline
+travel time only, without any spatial weighting.</p>
+<p>Fitting the OLS model</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Global OLS model without spatial weighting</span></span>
+<span><span class="va">ols_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
+<span>  <span class="va">muutos1624vaki</span> <span class="op">~</span> <span class="va">x_base</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">regions_clean</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ols_model</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## lm(formula = muutos1624vaki ~ x_base, data = regions_clean)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residuals:</span></span>
+<span><span class="co">##     Min      1Q  Median      3Q     Max </span></span>
+<span><span class="co">## -103.83   -8.71   -3.12    3.48 1023.18 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">##              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept)  7.482255   1.847785   4.049 5.44e-05 ***</span></span>
+<span><span class="co">## x_base      -0.043145   0.005167  -8.350  &lt; 2e-16 ***</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Residual standard error: 36.65 on 1301 degrees of freedom</span></span>
+<span><span class="co">## Multiple R-squared:  0.05087,    Adjusted R-squared:  0.05014 </span></span>
+<span><span class="co">## F-statistic: 69.72 on 1 and 1301 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
+<p>Interpretation</p>
+<ul>
+<li>The estimated coefficient for x_base represents the average effect
+of travel time on population change across all regions.</li>
+<li>The model does not account for spatial heterogeneity or local
+variation in relationships.</li>
+<li>As such, it provides a useful benchmark against which the GWR
+results can be compared.</li>
+</ul>
+</div>
+</div>
+<div class="section level2">
 <h2 id="using-gwr-with-paavo-postal-code-area-data">Using GWR with PAAVO (postal code area) data<a class="anchor" aria-label="anchor" href="#using-gwr-with-paavo-postal-code-area-data"></a>
 </h2>
 <div class="section level3">
-<h3 id="required-packages">1. Required packages<a class="anchor" aria-label="anchor" href="#required-packages"></a>
+<h3 id="required-packages-1">1. Required packages<a class="anchor" aria-label="anchor" href="#required-packages-1"></a>
 </h3>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
@@ -356,7 +804,7 @@ magnitude and spatial extent.</p>
 <div class="section level3">
 <h3 id="downloading-spatial-data-from-statistics-finland-wfs">2. Downloading spatial data from Statistics Finland (WFS)<a class="anchor" aria-label="anchor" href="#downloading-spatial-data-from-statistics-finland-wfs"></a>
 </h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>hostname <span class="op">=</span><span class="st">"geo.stat.fi/geoserver/postialue/wfs"</span>,</span>
 <span>           scheme <span class="op">=</span><span class="st">"https"</span>,</span>
 <span>           query <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>service <span class="op">=</span><span class="st">"WFS"</span>,</span>
@@ -375,7 +823,7 @@ magnitude and spatial extent.</p>
 <span><span class="co">## Dimension:     XY</span></span>
 <span><span class="co">## Bounding box:  xmin: 83748.43 ymin: 6629044 xmax: 732907.7 ymax: 7776450</span></span>
 <span><span class="co">## Projected CRS: ETRS89 / TM35FIN(E,N)</span></span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>hostname <span class="op">=</span><span class="st">"geo.stat.fi/geoserver/postialue/wfs"</span>,</span>
 <span>           scheme <span class="op">=</span><span class="st">"https"</span>,</span>
 <span>           query <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>service <span class="op">=</span><span class="st">"WFS"</span>,</span>
@@ -398,7 +846,7 @@ magnitude and spatial extent.</p>
 <div class="section level3">
 <h3 id="data-preparation-and-merging">3. Data preparation and merging<a class="anchor" aria-label="anchor" href="#data-preparation-and-merging"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">p16</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   [1] "id"         "gid"        "posti_alue" "nimi"       "namn"      </span></span>
 <span><span class="co">##   [6] "euref_x"    "euref_y"    "pinta_ala"  "vuosi"      "kunta"     </span></span>
@@ -423,19 +871,19 @@ magnitude and spatial extent.</p>
 <span><span class="co">## [101] "tp_s_muup"  "tp_t_koti"  "tp_u_kans"  "tp_x_tunt"  "pt_vakiy"  </span></span>
 <span><span class="co">## [106] "pt_tyovy"   "pt_tyoll"   "pt_tyott"   "pt_tyovu"   "pt_0_14"   </span></span>
 <span><span class="co">## [111] "pt_opisk"   "pt_elakel"  "pt_muut"    "geometry"</span></span></code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p16data</span><span class="op">&lt;-</span><span class="va">p16</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">79</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">p16data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">p16data</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">p16data</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"posti_alue"</span>,<span class="st">"tyopy16"</span><span class="op">)</span></span>
 <span><span class="va">p16data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">p16data</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p25_data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">right_join</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">p16data</span>, y <span class="op">=</span> <span class="va">p25</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"posti_alue"</span> <span class="op">=</span> <span class="st">"postinumeroalue"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="creating-change-variables-and-indicators">4. Creating change variables and indicators<a class="anchor" aria-label="anchor" href="#creating-change-variables-and-indicators"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m22_16</span><span class="op">&lt;-</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">-</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span></span>
 <span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_m22_16p</span><span class="op">&lt;-</span><span class="op">(</span><span class="op">(</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tp_tyopy</span><span class="op">-</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span><span class="op">/</span><span class="va">p25_data</span><span class="op">$</span><span class="va">tyopy16</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span>
 <span></span>
@@ -448,7 +896,7 @@ magnitude and spatial extent.</p>
 <div class="section level3">
 <h3 id="data-cleaning">5. Data cleaning<a class="anchor" aria-label="anchor" href="#data-cleaning"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p25_data2</span><span class="op">&lt;-</span><span class="va">p25_data</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">14</span>,<span class="fl">67</span>,<span class="fl">78</span>,<span class="fl">118</span><span class="op">:</span><span class="fl">122</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># remove na and inf</span></span>
@@ -460,20 +908,20 @@ magnitude and spatial extent.</p>
 <div class="section level3">
 <h3 id="join-attribute-data-back-to-spatial-data">6. Join attribute data back to spatial data<a class="anchor" aria-label="anchor" href="#join-attribute-data-back-to-spatial-data"></a>
 </h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span><span class="op">&lt;-</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">p25</span>, y <span class="op">=</span> <span class="va">p25_data4</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"postinumeroalue"</span> <span class="op">=</span> <span class="st">"posti_alue"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">he_kika.y</span><span class="op">)</span>,<span class="op">]</span> <span class="co"># if we don't remove NAs, we cannot join results</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="spatial-weights-matrix-knearest-neighbours">7. Spatial weights matrix (k‑nearest neighbours)<a class="anchor" aria-label="anchor" href="#spatial-weights-matrix-knearest-neighbours"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/spdep/" class="external-link">spdep</a></span><span class="op">)</span></span>
 <span><span class="va">data.coords</span><span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_centroid</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span>, of_largest_polygon<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Extracts the coordinates of each postcode area</span></span>
 <span><span class="va">p25_kn6</span><span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/knn2nb.html" class="external-link">knn2nb</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/knearneigh.html" class="external-link">knearneigh</a></span><span class="op">(</span><span class="va">data.coords</span>,k<span class="op">=</span><span class="fl">6</span>,longlat <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span> <span class="co"># Returns a matrix with the indices of points belonging to the set of the k nearest neighbours of each other</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in knearneigh(data.coords, k = 6, longlat = F): dnearneigh: longlat</span></span>
 <span><span class="co">## argument overrides object</span></span></code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p25_kn6_w</span><span class="op">&lt;-</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/nb2listw.html" class="external-link">nb2listw</a></span><span class="op">(</span><span class="va">p25_kn6</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -486,7 +934,7 @@ R.</p>
 </h4>
 <p>We begin by loading the necessary R packages for spatial data
 handling, regression modeling, and visualization.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rsbivand/spgwr/" class="external-link">spgwr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
@@ -502,7 +950,7 @@ handling, regression modeling, and visualization.</p>
 <p>GWR requires spatial coordinates. We compute centroids for the
 spatial units and transform them to WGS84 (EPSG:4326). Variable names
 are standardized for consistency.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cntrd</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_centroid</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="fl">3067</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://sfirke.github.io/janitor/reference/clean_names.html" class="external-link">clean_names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -515,7 +963,7 @@ are standardized for consistency.</p>
 <p>As a baseline, we first fit a global ordinary least squares (OLS)
 model. This model assumes that relationships between variables are the
 same everywhere in the study area.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_lm</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">tyottom</span><span class="op">~</span> <span class="va">korkk</span><span class="op">+</span><span class="va">alkut</span><span class="op">+</span><span class="va">elak</span><span class="op">+</span><span class="va">as_tih</span><span class="op">+</span><span class="va">he_kika_x</span><span class="op">+</span><span class="va">ra_as_kpa_y</span>, data<span class="op">=</span><span class="va">cntrd</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model_lm</span><span class="op">)</span> <span class="co"># look the results of the model</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -574,10 +1022,10 @@ applying a Geographically Weighted Regression (GWR) model.</p>
 </h4>
 <p>To examine whether spatial patterns remain unexplained, we extract
 model residuals and visualize them on a map.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># save residuals for plotting</span></span>
 <span><span class="va">data2</span><span class="op">$</span><span class="va">resid</span><span class="op">&lt;-</span><span class="va">model_lm</span><span class="op">$</span><span class="va">residuals</span> <span class="co"># create a new variable resid</span></span></code></pre></div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create a map from the residuals</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">resid</span><span class="op">)</span>, color<span class="op">=</span><span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
@@ -585,7 +1033,7 @@ model residuals and visualize them on a map.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Residuals"</span>,</span>
 <span>       fill<span class="op">=</span><span class="st">"Value"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="lecture09-gwr_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture09-gwr_files/figure-html/unnamed-chunk-41-1.png" class="r-plt" alt="" width="700"></p>
 <p>Spatial clustering in residuals may indicate spatial nonstationarity,
 motivating the use of GWR.</p>
 </div>
@@ -595,7 +1043,7 @@ motivating the use of GWR.</p>
 </h3>
 <p>The spgwr package requires input data in the SpatialPointsDataFrame
 format. We therefore convert the centroid data accordingly.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cntrd.sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">cntrd</span>, <span class="st">"Spatial"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -604,7 +1052,7 @@ format. We therefore convert the centroid data accordingly.</p>
 <p>A crucial step in GWR is selecting an appropriate bandwidth, which
 determines how far spatial influence extends. The bandwidth is chosen
 using cross-validation.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Let's analyse bandwidht</span></span>
 <span><span class="op">?</span><span class="va">gwr.sel</span></span>
 <span><span class="va">cntrd.bw</span><span class="op">=</span><span class="fu"><a href="https://rsbivand.github.io/spgwr/reference/gwr.cv.html" class="external-link">gwr.sel</a></span><span class="op">(</span><span class="va">tyottom</span><span class="op">~</span> <span class="va">korkk</span><span class="op">+</span><span class="va">alkut</span><span class="op">+</span><span class="va">elak</span><span class="op">+</span><span class="va">as_tih</span><span class="op">+</span><span class="va">he_kika_x</span><span class="op">+</span><span class="va">ra_as_kpa_y</span>, data<span class="op">=</span><span class="va">cntrd.sp</span><span class="op">)</span></span></code></pre></div>
@@ -625,9 +1073,10 @@ using cross-validation.</p>
 <span><span class="co">## Bandwidth: 59024.96 CV score: 216871.5 </span></span>
 <span><span class="co">## Bandwidth: 59025.02 CV score: 216871.5 </span></span>
 <span><span class="co">## Bandwidth: 59025.02 CV score: 216871.5 </span></span>
+<span><span class="co">## Bandwidth: 59025.01 CV score: 216871.5 </span></span>
 <span><span class="co">## Bandwidth: 59025.02 CV score: 216871.5 </span></span>
 <span><span class="co">## Bandwidth: 59025.02 CV score: 216871.5</span></span></code></pre>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cntrd.bw</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 59025.02</span></span></code></pre>
 <p>The selected bandwidth defines the spatial scale at which local
@@ -655,7 +1104,7 @@ less.</p>
 <p>Using the selected bandwidth, we estimate the GWR model. Each
 observation receives its own set of locally weighted regression
 coefficients.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cntrd.gwr</span><span class="op">=</span><span class="fu"><a href="https://rsbivand.github.io/spgwr/reference/gwr.html" class="external-link">gwr</a></span><span class="op">(</span><span class="va">tyottom</span><span class="op">~</span> <span class="va">korkk</span><span class="op">+</span><span class="va">alkut</span><span class="op">+</span><span class="va">elak</span><span class="op">+</span><span class="va">as_tih</span><span class="op">+</span><span class="va">he_kika_x</span><span class="op">+</span><span class="va">ra_as_kpa_y</span>, data<span class="op">=</span><span class="va">cntrd.sp</span>, bandwidth<span class="op">=</span><span class="va">cntrd.bw</span>, hatmatrix<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">cntrd.gwr</span></span></code></pre></div>
 <pre><code><span><span class="co">## Call:</span></span>
@@ -731,12 +1180,12 @@ unemployment dynamics.</p>
 </h4>
 <p>We inspect the structure of the GWR result object and identify where
 local coefficients are stored.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Let's see the names of the model object</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cntrd.gwr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "SDF"       "lhat"      "lm"        "results"   "bandwidth" "adapt"    </span></span>
 <span><span class="co">##  [7] "hatmatrix" "gweight"   "gTSS"      "this.call" "fp.given"  "timings"</span></span></code></pre>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Here you can find the coefficients etc.</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cntrd.gwr</span><span class="op">$</span><span class="va">SDF</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "sum.w"              "(Intercept)"        "korkk"             </span></span>
@@ -750,11 +1199,11 @@ local coefficients are stored.</p>
 <span><span class="co">## [25] "he_kika_x_se_EDF"   "ra_as_kpa_y_se_EDF" "pred.se"</span></span></code></pre>
 </div>
 <div class="section level4">
-<h4 id="extracting-local-regression-coefficients">12.3 Extracting Local Regression Coefficients<a class="anchor" aria-label="anchor" href="#extracting-local-regression-coefficients"></a>
+<h4 id="extracting-local-regression-coefficients-1">12.3 Extracting Local Regression Coefficients<a class="anchor" aria-label="anchor" href="#extracting-local-regression-coefficients-1"></a>
 </h4>
 <p>We save selected local coefficients back into the original spatial
 dataset for mapping.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># save results to new variables</span></span>
 <span><span class="va">data2</span><span class="op">$</span><span class="va">coef_korkk</span><span class="op">&lt;-</span><span class="va">cntrd.gwr</span><span class="op">$</span><span class="va">SDF</span><span class="op">$</span><span class="va">korkk</span></span>
 <span><span class="va">data2</span><span class="op">$</span><span class="va">coef_alkut</span><span class="op">&lt;-</span><span class="va">cntrd.gwr</span><span class="op">$</span><span class="va">SDF</span><span class="op">$</span><span class="va">alkut</span></span></code></pre></div>
@@ -765,23 +1214,23 @@ dataset for mapping.</p>
 <p>The spatial variation of regression coefficients is visualized using
 thematic maps. These maps reveal how the strength of relationships
 changes across space.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">map1</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">coef_korkk</span><span class="op">)</span>, color<span class="op">=</span><span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_fill_viridis</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Coefficients for \n high education"</span>,</span>
 <span>       fill<span class="op">=</span><span class="st">"Value"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">map2</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">coef_alkut</span><span class="op">)</span>, color<span class="op">=</span><span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_fill_viridis</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Coefficients for \n primary industries "</span>,</span>
 <span>       fill<span class="op">=</span><span class="st">"Value"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">map1</span> <span class="op">+</span> <span class="va">map2</span></span></code></pre></div>
-<p><img src="lecture09-gwr_files/figure-html/unnamed-chunk-25-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="lecture09-gwr_files/figure-html/unnamed-chunk-50-1.png" class="r-plt" alt="" width="700"></p>
 <p>The maps show clear spatial variation in the effects of high
 education and primary industries on unemployment, confirming strong
 spatial nonstationarity. The effect of high education is positive in
@@ -804,7 +1253,7 @@ approach for analysing unemployment patterns.</p>
 <p>Finally, we test whether allowing coefficients to vary spatially
 significantly improves model fit compared to the global model using the
 LMZ F-test. <strong>This can take some time.</strong></p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># test model fit</span></span>
 <span><span class="op">?</span><span class="va">LMZ.F3GWR.test</span></span>
 <span><span class="fu"><a href="https://rsbivand.github.io/spgwr/reference/LMZ.F3GWR.test.html" class="external-link">LMZ.F3GWR.test</a></span><span class="op">(</span><span class="va">cntrd.gwr</span><span class="op">)</span></span></code></pre></div>

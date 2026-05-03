@@ -233,6 +233,543 @@ magnitude and spatial extent.
 
 Unable to execute JavaScript.
 
+## Example from a report: Itärata, accessibility, and socio‑economic development in Eastern Finland
+
+In this example, we replicate an analysis from a research report that
+examined the relationship between accessibility and socio‑economic
+development in a situation where the implementation of the Eastern Rail
+Line (Itärata) has altered the accessibility of regions in Eastern
+Finland. The starting point of the study was to assess whether the
+development of this rail connection would improve the accessibility of
+Eastern Finnish regions and to examine how changes in accessibility
+would more broadly shape the region’s socio‑economic development. In
+this example, we reproduce the analysis from the report in which
+population change in postal code areas between 2015 and 2023 was
+explained by travel time to Helsinki‑Vantaa Airport. The report can be
+found here:
+
+<https://erepo.uef.fi/items/d186c78d-4aa9-4162-9590-1d89775bc595>
+
+![](figures/itarata.png)
+
+#### Required packages
+
+``` r
+
+library(dplyr)
+library(purrr)
+library(sf)
+library(httr)
+library(data.table)
+library(ows4R)
+```
+
+### Data management and description
+
+#### 1. Reading spatial data from the package extdata
+
+We begin by reading the GeoPackage file that is shipped with the
+spatialcourseOL R package. The file is located in the package’s
+inst/extdata/ directory, which makes it portable across systems.
+
+``` r
+
+paavo_matkat <- sf::st_read(
+  system.file("extdata", "paavo_matkat_ajat.gpkg",
+              package = "spatialcourseOL"),
+  layer = "paavo_matkat")
+```
+
+    ## Reading layer `paavo_matkat' from data source 
+    ##   `/home/runner/work/_temp/Library/spatialcourseOL/extdata/paavo_matkat_ajat.gpkg' 
+    ##   using driver `GPKG'
+    ## Simple feature collection with 1305 features and 160 fields
+    ## Geometry type: MULTIPOLYGON
+    ## Dimension:     XY
+    ## Bounding box:  xmin: 266300.6 ymin: 6632299 xmax: 732907.7 ymax: 7266655
+    ## Projected CRS: ETRS89 / TM35FIN(E,N)
+
+#### 2. Create a working copy of the dataset
+
+To keep the original object intact, we create a new working copy of the
+spatial data.
+
+``` r
+
+paav3<-paavo_matkat
+```
+
+#### 3. Subset the data
+
+Next, we remove extreme population change values.
+
+Only postal code areas where population change between 2016–2024 is
+between −50% and +50% are retained.
+
+``` r
+
+paav44<-subset(paav3, muutos1624vaki<50 & muutos1624vaki>-50)
+```
+
+#### 4. Correlation analysis
+
+We examine the relationship between:
+
+- population change (muutos1624vaki)
+- travel time to Helsinki–Vantaa Airport (matka_aika_nyk)
+
+Pearson’s correlation coefficient is used.
+
+``` r
+
+cor.test(paav44$muutos1624vaki, paav44$matka_aika_nyk)
+```
+
+    ## 
+    ##  Pearson's product-moment correlation
+    ## 
+    ## data:  paav44$muutos1624vaki and paav44$matka_aika_nyk
+    ## t = -20.017, df = 1278, p-value < 2.2e-16
+    ## alternative hypothesis: true correlation is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.5291909 -0.4457042
+    ## sample estimates:
+    ##       cor 
+    ## -0.488565
+
+#### 5. Visualizing the relationship
+
+Next we visualize the relationship between accessibility and population
+change using a scatter plot. The figure includes:
+
+- Individual observations
+- A LOESS smoother (non-linear trend)
+- A linear regression line
+- The Pearson correlation coefficient
+
+``` r
+
+ggplot(paav44, aes(matka_aika_nyk, muutos1624vaki)) +
+  geom_point(alpha = 0.7, color = "#2C7FB8") +
+  geom_smooth(method = "loess", se = TRUE, color = "gold2", size = 1.3 , alpha=0.15) + 
+  geom_smooth(method = "lm", se = F, color = "chocolate4", size = 1.2) + # linear fit
+  labs(
+    x = "Travel time to airport (min)",
+    y = "Population change  (%)",
+    title = "Population change 2015-2023",
+    subtitle = "") +
+  theme_classic(base_size = 16) +
+  scale_x_continuous(breaks = seq(0, 1000, by = 100)) +
+  scale_y_continuous(breaks = seq(-50, 50, by = 10)) +
+  ggpubr::stat_cor(
+    method = "pearson",       # or "spearman"
+    label.x = 0.05,           # starting x for label
+    label.y = Inf,            # place at top; you can use a numeric y
+    vjust = 1.2,              # tweak vertical positioning
+    size = 6)  # 0, 10, 20, ...
+```
+
+    ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+    ## ℹ Please use `linewidth` instead.
+    ## This warning is displayed once per session.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](lecture09-gwr_files/figure-html/unnamed-chunk-9-1.png)
+
+### Geographically Weighted Regression (GWR): Itärata scenario
+
+This section applies a Geographically Weighted Regression (GWR) model to
+analyse how accessibility (travel time) relates to population change,
+and how the Itärata scenario modifies this relationship at the national
+level.
+
+#### 0. Data preparation and sanity checks
+
+We begin by preparing the spatial dataset for GWR analysis.
+
+Only observations with valid values for:
+
+- population change (muutos1624vaki)
+- current travel time (matka_aika_nyk)
+- Itärata travel time scenario (matka_aika_itarata)
+
+are retained.
+
+``` r
+
+regions_clean <- paav3 %>%
+  filter(is.finite(muutos1624vaki),                # outcome used in your GWR (jobs development)
+         is.finite(matka_aika_nyk),        # baseline accessibility
+         is.finite(matka_aika_itarata))  # Itärata scenario accessibility
+```
+
+To avoid potential spatial issues, geometry validity is ensured.
+
+``` r
+
+regions_clean <- sf::st_make_valid(regions_clean)
+```
+
+The GWmodel package requires data in Spatial format, so the object is
+converted accordingly.
+
+``` r
+
+regions_sp <- as(regions_clean, "Spatial")
+```
+
+#### 1. Fitting a GWR model (baseline accessibility)
+
+Next, we fit a GWR model where population change is explained by
+baseline travel time to the airport.
+
+An adaptive bandwidth approach is used, meaning that each local
+regression uses a fixed number of nearest neighbours.
+
+Bandwidth selection (AICc)
+
+``` r
+
+bw <- bw.gwr(
+  formula = muutos1624vaki ~ matka_aika_nyk,
+  data    = regions_sp,
+  approach= "AICc",
+  kernel  = "gaussian",
+  adaptive= TRUE)
+```
+
+    ## Adaptive bandwidth (number of nearest neighbours): 812 AICc value: 13077.16 
+    ## Adaptive bandwidth (number of nearest neighbours): 510 AICc value: 13065.23 
+    ## Adaptive bandwidth (number of nearest neighbours): 321 AICc value: 13060.06 
+    ## Adaptive bandwidth (number of nearest neighbours): 207 AICc value: 13057.99 
+    ## Adaptive bandwidth (number of nearest neighbours): 133 AICc value: 13053.22 
+    ## Adaptive bandwidth (number of nearest neighbours): 91 AICc value: 13046.9 
+    ## Adaptive bandwidth (number of nearest neighbours): 61 AICc value: 13035.18 
+    ## Adaptive bandwidth (number of nearest neighbours): 46 AICc value: 13030.11 
+    ## Adaptive bandwidth (number of nearest neighbours): 33 AICc value: 13025.47 
+    ## Adaptive bandwidth (number of nearest neighbours): 29 AICc value: 13027.77 
+    ## Adaptive bandwidth (number of nearest neighbours): 39 AICc value: 13024.77 
+    ## Adaptive bandwidth (number of nearest neighbours): 39 AICc value: 13024.77
+
+Fit the GWR model
+
+``` r
+
+gwr_model <- gwr.basic(
+  formula = muutos1624vaki ~ matka_aika_nyk,
+  data    = regions_sp,
+  bw      = bw,
+  kernel  = "gaussian",
+  adaptive= TRUE)
+```
+
+#### 2. Extracting local regression coefficients
+
+From the fitted GWR model, we extract the local intercepts and slopes.
+These represent spatially varying relationships between accessibility
+and population change.
+
+``` r
+
+b0_local <- gwr_model$SDF$Intercept
+b1_local <- gwr_model$SDF$matka_aika_nyk
+summary(b1_local)
+```
+
+    ##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+    ## -0.207256 -0.073696 -0.034034  0.002327 -0.015446  2.013697
+
+The extracted coefficients are attached back to the sf object,
+preserving row alignment.
+
+``` r
+
+regions_clean <- regions_clean %>%
+  mutate(
+    b0_local = b0_local,
+    b1_local = b1_local)
+```
+
+#### 3. Predictions and Itärata impact assessment
+
+Using the local coefficients, we compute:
+
+- predicted population change under the baseline situation
+- predicted population change under the Itärata scenario
+- the estimated impact of Itärata
+
+``` r
+
+regions_clean <- regions_clean %>%
+  mutate(
+    x_base    = matka_aika_nyk,
+    x_itarata = matka_aika_itarata,
+    dx        = x_itarata - x_base,
+    
+    # Predictions
+    yhat_base    = b0_local + b1_local * x_base,
+    yhat_itarata = b0_local + b1_local * x_itarata,
+    
+    # Impact (Itärata - baseline) == slope * delta accessibility
+    impact_itarata = yhat_itarata - yhat_base,       # same as b1_local * dx
+    impact_component = b1_local * dx                  # explicitly show the contribution
+  )
+```
+
+#### 4. Quick diagnostics
+
+To understand the distribution of estimated impacts, basic descriptive
+statistics are examined.
+
+``` r
+
+summary(regions_clean$impact_itarata)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ## -8.9274  0.1165  0.4171  0.6650  0.8556 17.3581
+
+``` r
+
+quantile(regions_clean$impact_itarata, probs = c(0, .01, .05, .5, .95, .99, 1), na.rm = TRUE)
+```
+
+    ##         0%         1%         5%        50%        95%        99%       100% 
+    ## -8.9273859 -4.6536131 -1.0479504  0.4170597  2.0815857  9.1142592 17.3580916
+
+#### 5. Aggregation to regional statistics (Maakunta/County level)
+
+Finally, population impacts are aggregated to the regional (Maakunta)
+level.
+
+We first compute population change including the Itärata impact.
+
+``` r
+
+regions_clean$muutos1624v_imp<-regions_clean$muutos1624vaki + regions_clean$impact_itarata
+```
+
+Absolute population change (with and without Itärata)
+
+``` r
+
+a<-tapply(((regions_clean$muutos1624v_imp/100)*regions_clean$vaki24), regions_clean$Maakunta, sum)
+b<-tapply(((regions_clean$muutos1624vaki/100)*regions_clean$vaki24), regions_clean$Maakunta, sum)
+c<-tapply(regions_clean$vaki24, regions_clean$Maakunta, sum)
+```
+
+Net impact of Itärata
+
+``` r
+
+as<-a-b;as
+```
+
+    ##   Etelä-Karjala      Etelä-Savo          Kainuu     Kymenlaakso     Päijät-Häme 
+    ##       1143.3694        449.6060        234.4531        186.9546      -1489.7752 
+    ## Pohjois-Karjala    Pohjois-Savo         Uusimaa 
+    ##       2378.1333       3212.4264      -3509.5066
+
+``` r
+
+sum(a-b) # erotus väestössä, n TAULUKKOON
+```
+
+    ## [1] 2605.661
+
+Relative impact (% of population)
+
+``` r
+
+bs<-(a-b)/c*100 
+sum(a-b)/sum(regions_clean$vaki24)*100
+```
+
+    ## [1] 0.09468731
+
+Combined results table
+
+``` r
+
+abs<-cbind(as, bs); abs
+```
+
+    ##                         as         bs
+    ## Etelä-Karjala    1143.3694  0.9199577
+    ## Etelä-Savo        449.6060  0.3497600
+    ## Kainuu            234.4531  0.3363023
+    ## Kymenlaakso       186.9546  0.1181373
+    ## Päijät-Häme     -1489.7752 -0.7366700
+    ## Pohjois-Karjala  2378.1333  1.4804486
+    ## Pohjois-Savo     3212.4264  1.3105098
+    ## Uusimaa         -3509.5066 -0.2110264
+
+### Mapping the estimated Itärata impact
+
+This map visualizes the predicted impact of the Itärata scenario on
+population change, based on the GWR results. The effect is shown as a
+continuous surface, overlaid with relevant infrastructure and reference
+layers
+
+``` r
+
+ggplot(regions_clean) +
+  geom_sf(aes(fill = impact_itarata), color = NA) +
+  scale_fill_viridis_c(
+    option = "mako",
+    direction = 1,
+    name = "Impact to population \nchange (%)") +
+  labs(title = "Itärata (GWR)", subtitle = "") +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    title = element_text(size = 16, face = 'bold'),
+    legend.position = c(0.12, 0.78),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12))
+```
+
+![](lecture09-gwr_files/figure-html/unnamed-chunk-24-1.png)
+
+What this map shows
+
+- Each area is coloured by the estimated impact of Itärata on population
+  change
+- Values are derived from local GWR coefficients
+- Positive values indicate areas where the rail project is predicted to
+  mitigate population decline or support growth
+
+### Mapping local GWR regression coefficients
+
+In addition to mapping predicted impacts, we can visualize the local
+regression coefficients estimated by the Geographically Weighted
+Regression (GWR) model. These coefficients describe how the relationship
+between accessibility (travel time) and population change varies across
+space.
+
+In this example, we focus only on negative coefficients, which indicate
+areas where longer travel times are locally associated with population
+decline. Positive coefficients are excluded from the map to highlight
+spatial vulnerability more clearly.
+
+#### Step 1: Mask positive coefficients
+
+We create a new variable that keeps only negative local slope values
+(b1_local).
+
+Positive coefficients are set to NA, so they will not be coloured on the
+map.
+
+``` r
+
+regions_clean$coef_neg <- ifelse(
+  regions_clean$b1_local < 0,
+  regions_clean$b1_local, NA)
+```
+
+This approach:
+
+- preserves all spatial units,
+- avoids changing the map extent,
+- makes excluded areas visually explicit.
+
+#### Step 2: Plot the local coefficients
+
+The map below shows the spatial distribution of negative GWR
+coefficients.
+
+Darker colours indicate stronger negative local relationships between
+travel time and population change.
+
+``` r
+
+ggplot(regions_clean) +
+  geom_sf(aes(fill = coef_neg), color = NA) +
+  scale_fill_gradient2(
+    low = "steelblue4",
+    mid = "white",
+    high = "darkred",
+    midpoint = 0,
+    na.value = "grey90",
+    name = "Negative GWR\ncoefficients"
+  ) +
+  labs(
+    title = "Negative local effects of travel time",
+    subtitle = "Positive coefficients excluded"
+  ) +
+  theme_minimal()
+```
+
+![](lecture09-gwr_files/figure-html/unnamed-chunk-26-1.png)
+
+Interpretation
+
+- Darker blue areas indicate locations where increased travel time has a
+  stronger negative association with population change.
+- Grey areas represent locations where the coefficient is positive or
+  close to zero and therefore excluded from the visualization.
+- The spatial variation confirms non‑stationarity in the relationship
+  between accessibility and demographic development, which is precisely
+  what GWR is designed to reveal.
+
+### Ordinary Least Squares (OLS) benchmark model
+
+As a point of comparison, we first estimate a global Ordinary Least
+Squares (OLS) regression. Unlike GWR, OLS assumes that the relationship
+between accessibility and population change is spatially constant,
+meaning the same effect applies everywhere.
+
+In this baseline model, population change is explained by baseline
+travel time only, without any spatial weighting.
+
+Fitting the OLS model
+
+``` r
+
+# Global OLS model without spatial weighting
+ols_model <- lm(
+  muutos1624vaki ~ x_base,
+  data = regions_clean
+)
+
+summary(ols_model)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = muutos1624vaki ~ x_base, data = regions_clean)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -103.83   -8.71   -3.12    3.48 1023.18 
+    ## 
+    ## Coefficients:
+    ##              Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)  7.482255   1.847785   4.049 5.44e-05 ***
+    ## x_base      -0.043145   0.005167  -8.350  < 2e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 36.65 on 1301 degrees of freedom
+    ## Multiple R-squared:  0.05087,    Adjusted R-squared:  0.05014 
+    ## F-statistic: 69.72 on 1 and 1301 DF,  p-value: < 2.2e-16
+
+Interpretation
+
+- The estimated coefficient for x_base represents the average effect of
+  travel time on population change across all regions.
+- The model does not account for spatial heterogeneity or local
+  variation in relationships.
+- As such, it provides a useful benchmark against which the GWR results
+  can be compared.
+
 ## Using GWR with PAAVO (postal code area) data
 
 ### 1. Required packages
@@ -515,7 +1052,7 @@ ggplot(data2) +
   theme(legend.position = "left")
 ```
 
-![](lecture09-gwr_files/figure-html/unnamed-chunk-16-1.png)
+![](lecture09-gwr_files/figure-html/unnamed-chunk-41-1.png)
 
 Spatial clustering in residuals may indicate spatial nonstationarity,
 motivating the use of GWR.
@@ -560,6 +1097,7 @@ cntrd.bw=gwr.sel(tyottom~ korkk+alkut+elak+as_tih+he_kika_x+ra_as_kpa_y, data=cn
     ## Bandwidth: 59024.96 CV score: 216871.5 
     ## Bandwidth: 59025.02 CV score: 216871.5 
     ## Bandwidth: 59025.02 CV score: 216871.5 
+    ## Bandwidth: 59025.01 CV score: 216871.5 
     ## Bandwidth: 59025.02 CV score: 216871.5 
     ## Bandwidth: 59025.02 CV score: 216871.5
 
@@ -759,7 +1297,7 @@ map2<-ggplot(data2) +
 map1 + map2
 ```
 
-![](lecture09-gwr_files/figure-html/unnamed-chunk-25-1.png)
+![](lecture09-gwr_files/figure-html/unnamed-chunk-50-1.png)
 
 The maps show clear spatial variation in the effects of high education
 and primary industries on unemployment, confirming strong spatial
