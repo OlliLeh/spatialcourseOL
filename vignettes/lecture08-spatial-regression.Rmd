@@ -26,11 +26,13 @@ knitr::opts_chunk$set(echo = TRUE)
 Spatial autocorrelation is one specific aspect in statistical modeling. These features of spatial data create needs for special analytical techniques and should be considered every time a project involving geography (i.e., location) is attempted. In geography, the use of geospatial analyze has had a minor role in the research of regional development in Finland. Partly, this is due to the fact that these methods have been available for geographers for a little time. Methods require specific software and programming skills that are designed for specialist statisticians. However, the use of geospatial methods is advantageous, because traditional models, such as ordinary least squares regression, might give biased or in-efficient estimators for regression coefficients if spatial autocorrelation is omitted . 
 
 When to use regression analysis:
+
 -	Prediction of future observations
 -	Assessment of the effect of, or relationship between, explanatory variables on the response.
 -	General description of data structure
 
 Assumptions to regression analysis:
+
 -	the ramdom error has mean zero
 -	the random error terms are uncorrelated and have a constant variance (homoskedastic)
 -	the random error term follows a normal distribution
