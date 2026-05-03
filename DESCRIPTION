@@ -64,7 +64,8 @@ Imports:
     spgwr,
     rgeoda,
     tidyverse,
-    ggrepel
+    ggrepel,
+    ggpubr
 Depends: 
     R (>= 2.10)
 LazyData: true
