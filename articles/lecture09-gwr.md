@@ -262,9 +262,10 @@ found here:
 library(dplyr)
 library(purrr)
 library(sf)
-library(httr)
-library(data.table)
-library(ows4R)
+library(GWmodel)
+library(spdep)
+library(ggplot2)
+library(ggpubr)
 ```
 
 ### Data management and description

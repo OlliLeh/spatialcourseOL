@@ -361,9 +361,10 @@ found here:</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/" class="external-link">httr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/eblondel/ows4R" class="external-link">ows4R</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://gwr.nuim.ie/" class="external-link">GWmodel</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/spdep/" class="external-link">spdep</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/" class="external-link">ggpubr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="data-management-and-description">Data management and description<a class="anchor" aria-label="anchor" href="#data-management-and-description"></a>
@@ -508,7 +509,7 @@ baseline travel time to the airport.</p>
 regression uses a fixed number of nearest neighbours.</p>
 <p>Bandwidth selection (AICc)</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bw</span> <span class="op">&lt;-</span> <span class="fu">bw.gwr</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">bw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GWmodel/man/bw.gwr.html" class="external-link">bw.gwr</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="va">muutos1624vaki</span> <span class="op">~</span> <span class="va">matka_aika_nyk</span>,</span>
 <span>  data    <span class="op">=</span> <span class="va">regions_sp</span>,</span>
 <span>  approach<span class="op">=</span> <span class="st">"AICc"</span>,</span>
@@ -528,7 +529,7 @@ regression uses a fixed number of nearest neighbours.</p>
 <span><span class="co">## Adaptive bandwidth (number of nearest neighbours): 39 AICc value: 13024.77</span></span></code></pre>
 <p>Fit the GWR model</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gwr_model</span> <span class="op">&lt;-</span> <span class="fu">gwr.basic</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">gwr_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GWmodel/man/gwr.basic.html" class="external-link">gwr.basic</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="va">muutos1624vaki</span> <span class="op">~</span> <span class="va">matka_aika_nyk</span>,</span>
 <span>  data    <span class="op">=</span> <span class="va">regions_sp</span>,</span>
 <span>  bw      <span class="op">=</span> <span class="va">bw</span>,</span>
