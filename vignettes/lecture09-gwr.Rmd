@@ -49,9 +49,9 @@ The core idea of the Geographically Weighted Regression (GWR) method is that geo
 The GWR model can be defined as follows (e.g., Brunsdon et al., 1998):
 
 $$
-y_i = \beta_0(u_i, v_i) + \sum_{k=1}^{p} \beta_k(u_i, v_i)x_{i,k} + \varepsilon_i
-\tag{2}
+y_i = \beta_0(u_i, v_i) + \sum_{k=1}^{p} \beta_k(u_i, v_i)\, x_{i,k} + \varepsilon_i
 $$
+
 
 where  
 
@@ -70,7 +70,6 @@ The estimation of the local regression coefficients is given by:
 $$
 \hat{\boldsymbol{\beta}}(u_i, v_i) =
 \left[X^T W(u_i, v_i) X \right]^{-1} X^T W(u_i, v_i) Y
-\tag{3}
 $$
 
 where $W(u_i, v_i)$ is an $n \times n$ spatial weighting matrix whose diagonal elements represent the geographical weights for observation $i$, and whose off-diagonal elements are zero. A separate weight matrix is computed for each observation $i$ at which local regression coefficients are estimated.
