@@ -4,7 +4,9 @@
 
 In general, nonparametric regression model is written as
 
-$$y_{i} = f\left( x_{i1},x_{i2},\ldots,x_{ik} \right) + e_{i}$$
+``` math
+y_i = f(x_{i1}, x_{i2}, \ldots, x_{ik}) + e_i
+```
 
 where the object is to estimate the regression function f( ) directly
 from the data, rather than to estimate parameters. The nonparametric
@@ -14,7 +16,9 @@ phenomena, and they do not violate the assumptions of iid.
 An important special case of the general model is nonparametric simple
 regression, where there is only one predictor:
 
-$$y_{i} = f\left( x_{i} \right) + \varepsilon_{i}$$
+``` math
+y_i = f(x_i) + \varepsilon_i
+```
 
 This nonparametric simple regression is often called as “scatterplot
 smoothing” because an important application is to tracing a smooth curve
@@ -26,13 +30,16 @@ display the fitted model when there are more than two or three
 predictors, more restrictive models have been developed. One such model
 is the additive regression model:
 
-$$\begin{aligned}
-y_{i} & {= \alpha + \sum\limits_{j = 1}^{n}f\left( x_{ij} \right) + \varepsilon_{i}} \\
- & {= \alpha + f\left( x_{i1} \right) + f\left( x_{i2} \right) + \cdots + f\left( x_{in} \right) + \varepsilon_{i}}
-\end{aligned}$$
+``` math
+\begin{aligned}
+y_i
+&= \alpha + \sum_{j=1}^{n} f(x_{ij}) + \varepsilon_i \\
+&= \alpha + f(x_{i1}) + f(x_{i2}) + \cdots + f(x_{in}) + \varepsilon_i
+\end{aligned}
+```
 
-where the partial-regression functions $f_{i}( \cdot )$ are assumed to
-be smooth, and are to be estimated from the data. This model is
+where the partial-regression functions $`f_i(\cdot)`$ are assumed to be
+smooth, and are to be estimated from the data. This model is
 substantially more restrictive than the general nonparametric regression
 model, but less restrictive than the linear regression model, which
 assumes that all of the partial-regression functions are linear.
@@ -40,13 +47,17 @@ assumes that all of the partial-regression functions are linear.
 Variations on the additive model regression model include semiparametric
 models, in which some of the predictors enter linearly, for example:
 
-$$y_{i} = \alpha + \beta_{1}x_{i1} + f\left( x_{i2} \right) + \cdots + f\left( x_{in} \right) + \varepsilon_{i}$$
+``` math
+y_i = \alpha + \beta_1 x_{i1} + f(x_{i2}) + \cdots + f(x_{in}) + \varepsilon_i
+```
 
 (which is particularly useful when some of the predictors are factors),
 and models in which some predictors enter into interactions, which
 appear as higher-dimension terms in the model, for example:
 
-$$y_{i} = \alpha + f_{12}\left( x_{i1},x_{i2} \right) + f_{3}\left( x_{i3} \right) + \cdots + f_{n}\left( x_{in} \right) + \varepsilon_{i}$$
+``` math
+y_i = \alpha + f_{12}(x_{i1}, x_{i2}) + f_3(x_{i3}) + \cdots + f_n(x_{in}) + \varepsilon_i
+```
 
 All these models extend to generalized nonparametric regression.
 
@@ -60,32 +71,43 @@ smoothing splines.
 
 Here we are looking to fit the model:
 
-$$y_{i} = f\left( x_{i} \right) + \varepsilon_{i}$$
+``` math
+y_i = f(x_i) + \varepsilon_i
+```
 
 Let focus on evaluating the regression function at a particular x-value,
 x0. We proceed to perform a pth-order weighted-leaset-squares polynomial
 regression of y on x,
 
-$$y_{i} = \alpha + b_{1}\left( x_{i} - x_{0} \right) + b_{2}\left( x_{i} - x_{0} \right)^{2} + \cdots + b_{p}\left( x_{i} - x_{0} \right)^{p} + \varepsilon_{i}$$
+``` math
+y_i
+= \alpha + b_1(x_i - x_0)
++ b_2(x_i - x_0)^2
++ \cdots
++ b_p(x_i - x_0)^p
++ \varepsilon_i
+```
 
 weighting the observation in relation to their proximity to the focal
 value x0; a common weight function to use is the tricube function:
 
-$$w(t) = \begin{cases}
-{\left( 1 - |t|^{3} \right)^{3},} & {{\text{for}\mspace{6mu}}|t| < 1,} \\
-{0,} & {{\text{for}\mspace{6mu}}|t| \geq 1}
-\end{cases}$$
+``` math
+w(t) =
+\begin{cases}
+(1 - |t|^3)^3, & \text{for } |t| < 1, \\
+0,             & \text{for } |t| \ge 1
+\end{cases}
+```
 
-where $t_{i} = \left( x_{i} - x_{0} \right)/h$. The h is the half-width
-of a window enclosing the observations for the local regression.
-Typically the h is adjusted so that each local regression includes a
-fixed proportion s of the data. Therefore, s is called the span of the
-local-regression smoother. The larger the span is, the smoother the
-results is, and conversely, the larger the order of the local
-regressions p is, the more flexible the smooth is. In this weighting
-function the observations which are located further than bandwidth (h),
-get a weighting value 0. This means that they don´t have impact for
-local estimation at point x0.
+where $`t_i = (x_i - x_0)/h`$. The h is the half-width of a window
+enclosing the observations for the local regression. Typically the h is
+adjusted so that each local regression includes a fixed proportion s of
+the data. Therefore, s is called the span of the local-regression
+smoother. The larger the span is, the smoother the results is, and
+conversely, the larger the order of the local regressions p is, the more
+flexible the smooth is. In this weighting function the observations
+which are located further than bandwidth (h), get a weighting value 0.
+This means that they don´t have impact for local estimation at point x0.
 
 ##### Example 1:
 
@@ -95,6 +117,7 @@ example. Here we examine the regression of prestige on income.
 See more about data:
 
 ``` r
+
 ?car
 ```
 
@@ -104,6 +127,7 @@ See more about data:
 A local regression is estimated with code below:
 
 ``` r
+
 library(car)
 data(Prestige)
 attach(Prestige)
@@ -114,6 +138,7 @@ attach(Prestige)
     ##     women
 
 ``` r
+
 plot(income, prestige, xlab="Average income", ylab="Prestige")
 lines(lowess(income, prestige, f=0.5, iter=0), lwd=2)
 ```
@@ -127,6 +152,7 @@ function. Let us regress prestige on both the income and education
 levels of the occupations:
 
 ``` r
+
 mod.lo <- loess(prestige ~ income + education, span=.5, degree=1)
 summary(mod.lo)
 ```
@@ -162,6 +188,7 @@ regression surface graphically. The illustration is produced by the
 following code:
 
 ``` r
+
 inc <- seq(min(income), max(income), len=25)
 ed <- seq(min(education), max(education), len=25)
 newdata <- expand.grid(income=inc,education=ed)
@@ -177,23 +204,27 @@ visualization of higher dimensions.
 #### Smoothing splines
 
 Smoothing splines arise as the solution of the following simple
-regression problem: find the function $\widehat{f}$ that minimizes the
+regression problem: find the function $`\hat f`$ that minimizes the
 penalized sum of squares:
 
-$${SS}(h) = \sum\limits_{i = 1}^{n}\lbrack y_{i} - f\left( x_{i} \right)\rbrack^{2} + h\int_{x_{\min}}^{x_{\max}}\lbrack f''(x)\rbrack^{2}\, dx$$
+``` math
+\mathrm{SS}(h)
+= \sum_{i=1}^{n} \bigl[y_i - f(x_i)\bigr]^2
++ h \int_{x_{\min}}^{x_{\max}} \bigl[f''(x)\bigr]^2 \, dx
+```
 
 where h is a smoothing parameter, analogous to the neighborhood-width of
 the local-polynomial estimator. First term in equation is the residual
 sum of squares. Second term is a roughness penalty, which is large when
 the integrated second derivative of the regression function
-$\widehat{f}''(x)$ is large.
+$`\hat f''(x)`$ is large.
 
-The function $\widehat{f}$ that minimizes above function is a natural
-cubic spline with knots at the distinct observed values of x. Although
-this result seems to imply that n parameters are required, the roughness
+The function $`\hat f`$ that minimizes above function is a natural cubic
+spline with knots at the distinct observed values of x. Although this
+result seems to imply that n parameters are required, the roughness
 penalty imposes additional constraints on the solution, typically
 reducing the equivalent number of parameters for the smoothing spline
-substantially, and preventing $\widehat{f}$ from interpolating the data.
+substantially, and preventing $`\hat f`$ from interpolating the data.
 Indeed, it is common to select the smoothing parameter h indirectly by
 setting the equivalent number of parameters for the smoother.
 
@@ -209,6 +240,7 @@ use smooth.spline function along with previous loess model to show
 alternative fits to the relationship of prestige to income:
 
 ``` r
+
 data(Prestige)
 attach(Prestige)
 ```
@@ -222,6 +254,7 @@ attach(Prestige)
     ##     women
 
 ``` r
+
 mod.lo.inc <- loess(prestige ~ income, span=.7, degree=1)
 plot(income, prestige)
 inc.100 <- seq(min(income), max(income), len=100) # 100 x-values
@@ -238,26 +271,37 @@ local-linear fit and the broken line is the smoothing spline.
 #### Kernel Estimators
 
 In its simplest form, this estimator reduces to a moving average. More
-generally, our estimate of the regression function $f$, denoted by
-${\widehat{f}}_{\lambda}(x)$, is given by
+generally, our estimate of the regression function $`f`$, denoted by
+$`\hat f_\lambda(x)`$, is given by
 
-$${\widehat{f}}_{\lambda}(x) = \frac{1}{n\lambda}\sum\limits_{j = 1}^{n}K\!\left( \frac{x - x_{j}}{\lambda} \right)Y_{j} = \frac{1}{n}\sum\limits_{j = 1}^{n}w_{j}Y_{j},$$
+``` math
+\hat f_\lambda(x)
+= \frac{1}{n\lambda} \sum_{j=1}^n
+K\!\left(\frac{x - x_j}{\lambda}\right) Y_j
+= \frac{1}{n} \sum_{j=1}^n w_j Y_j,
+```
 
 where the weights are defined as
 
-$$w_{j} = \frac{1}{\lambda}K\!\left( \frac{x - x_{j}}{\lambda} \right).$$
+``` math
+w_j = \frac{1}{\lambda}
+K\!\left(\frac{x - x_j}{\lambda}\right).
+```
 
-Here, $K$ is a kernel function satisfying the usual regularity
+Here, $`K`$ is a kernel function satisfying the usual regularity
 conditions. The moving‑average kernel is rectangular, but smoother
-kernels can often give better results. The parameter $\lambda$ is called
-the bandwidth, window width, or smoothing parameter, and it controls the
-smoothness of the fitted curve.
+kernels can often give better results. The parameter $`\lambda`$ is
+called the bandwidth, window width, or smoothing parameter, and it
+controls the smoothness of the fitted curve.
 
-If the predictor values $x_{j}$ are unevenly spaced, this estimator may
+If the predictor values $`x_j`$ are unevenly spaced, this estimator may
 perform poorly. This problem is partially alleviated by the
 Nadaraya–Watson estimator,
 
-$${\widehat{f}}_{\lambda}(x) = \frac{\sum\limits_{j = 1}^{n}w_{j}Y_{j}}{\sum\limits_{j = 1}^{n}w_{j}}.$$
+``` math
+\hat f_\lambda(x)
+= \frac{\sum_{j=1}^n w_j Y_j}{\sum_{j=1}^n w_j}.
+```
 
 This estimator modifies the moving‑average estimator so that it becomes
 a true weighted average, where the weights associated with the
@@ -285,6 +329,7 @@ function which is part of the R base package. The default uses a uniform
 kernel, which is somewhat rough. We changed it to the normal kernel:
 
 ``` r
+
 par(mfrow=c(1,3))
 plot(waiting~eruptions,faithful, main="Bandwidth=0.1",pch=".")
 lines(ksmooth(faithful$eruptions,faithful$waiting,"normal",0.1))
@@ -317,16 +362,21 @@ Cross-validation can be computationally intensive, and therefore
 approximations are often employed in practice. The cross‑validation
 criterion can be written as
 
-$${CV}(\lambda) = \frac{1}{n}\sum\limits_{j = 1}^{n}(y_{j} - {\widehat{f}}_{- \! j,\lambda}\left( x_{j} \right))^{2},$$
+``` math
+\mathrm{CV}(\lambda)
+= \frac{1}{n} \sum_{j=1}^n
+\bigl(y_j - \hat f_{-\!j,\lambda}(x_j)\bigr)^2,
+```
 
-where ${\widehat{f}}_{- \! j,\lambda}$ denotes the estimator obtained by
-leaving out observation $j$ when fitting the model. The value of
-$\lambda$ is chosen to minimize this criterion.
+where $`\hat f_{-\!j,\lambda}`$ denotes the estimator obtained by
+leaving out observation $`j`$ when fitting the model. The value of
+$`\lambda`$ is chosen to minimize this criterion.
 
 For example, we can find the CV choice of bandwidth for the Old Faithful
 data and plot the result:
 
 ``` r
+
 library(sm)
 hm <- hcv(faithful$eruptions, faithful$waiting, display="lines")
 ```
@@ -334,6 +384,7 @@ hm <- hcv(faithful$eruptions, faithful$waiting, display="lines")
 ![](lecture05-nonparametric-regression_files/figure-html/unnamed-chunk-7-1.png)
 
 ``` r
+
 sm.regression(faithful$eruptions, faithful$waiting, h=hm, xlab="eruptions", ylab="waiting")
 ```
 
@@ -353,6 +404,7 @@ relationship between the variables is inherently polynomial in nature.
 Let’s see how to fit a quadratic model in R
 
 ``` r
+
 library(car)
 fitlm=lm(prestige~income, data=Prestige)
 summary(fitlm)
@@ -380,12 +432,14 @@ summary(fitlm)
 Let’s create quadric variable:
 
 ``` r
+
 Prestige$income2 <- Prestige$income^2
 ```
 
 And then fit linear regression model with quadric variable
 
 ``` r
+
 quadratic.model <-lm(prestige ~ income + income2, data=Prestige)
 summary(quadratic.model)
 ```
@@ -418,6 +472,7 @@ additional 8% of the variance.
 Let’s draw a plot:
 
 ``` r
+
 summary(Prestige$income)
 ```
 
@@ -425,6 +480,7 @@ summary(Prestige$income)
     ##     611    4106    5930    6798    8187   25879
 
 ``` r
+
 incomevalues <- seq(0, 26000, 1000)
 # predicted values
 predictedcounts <- predict(quadratic.model,list(income=incomevalues, income2=incomevalues^2))
@@ -433,6 +489,7 @@ predictedcounts <- predict(quadratic.model,list(income=incomevalues, income2=inc
 and the plot:
 
 ``` r
+
 plot(Prestige$income, Prestige$prestige, pch=16, xlab = "Income ($)", ylab = "Prestige", cex.lab = 1.3, col = "blue")
 lines(incomevalues, predictedcounts, col = "darkgreen", lwd = 3)
 # add a normal regression line
@@ -467,6 +524,7 @@ The workflow combines spatial data handling, data merging, and basic
 statistical analysis with nonparametric regression.
 
 ``` r
+
 install.packages("purrr")
 install.packages("sf")
 install.packages("tmap")
@@ -489,6 +547,7 @@ We begin by downloading postcode area data using a Web Feature Service
 (WFS) query.
 
 ``` r
+
 url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
            scheme ="https",
            query =list(service ="WFS",
@@ -514,6 +573,7 @@ Next, we load average housing prices per square meter for each postal
 code area in Joensuu, based on housing advertisements.
 
 ``` r
+
 etuo <- read.csv(
   system.file("extdata", "keskineliohinta2014_2023.csv",
               package = "spatialcourseOL"), sep=",", check.names = FALSE)
@@ -526,6 +586,7 @@ define the coordinate reference system, and transform the data to WGS84
 coordinates (longitude–latitude).
 
 ``` r
+
 zip_centroids <- data.frame(p25[,c(2,5,6)])
 zip_centroids <- st_as_sf(zip_centroids)
 st_crs(zip_centroids) <- 3067
@@ -542,6 +603,7 @@ zip_centroids_pt <- st_point_on_surface(zip_centroids_ll)
     ## give correct results for longitude/latitude data
 
 ``` r
+
 coords_mat <- st_coordinates(zip_centroids_pt)
 ```
 
@@ -551,6 +613,7 @@ The reference point is the Joensuu Market Square, expressed in longitude
 and latitude (WGS84).
 
 ``` r
+
 ref_point <- matrix(
   c(29.7609, 62.6012),
   ncol = 2,
@@ -562,6 +625,7 @@ calculated using great‑circle (Haversine) distance and expressed in
 kilometers.
 
 ``` r
+
 zip_centroids_pt$distance_km <- distHaversine(
   coords_mat,
   ref_point) / 1000
@@ -570,6 +634,7 @@ zip_centroids_pt$distance_km <- distHaversine(
 #### 4. Merge datasets
 
 ``` r
+
 zip_centroids_merged <- merge(
   zip_centroids_pt,     # sf FIRST (important)
   etuo,                 # data.frame SECOND
@@ -586,6 +651,7 @@ TRUE, all postal code areas in the spatial dataset are retained, even if
 corresponding data are missing in etuo (left join).
 
 ``` r
+
 zip_centroids_final <- zip_centroids_merged %>%
   left_join(
     st_drop_geometry(p25),
@@ -604,6 +670,7 @@ The housing price variables are converted to numeric form, and the
 average price over the years 2020–2023 is calculated.
 
 ``` r
+
 zip_centroids_final <- zip_centroids_final %>%
   mutate(
     across(
@@ -622,6 +689,7 @@ We restrict the analysis to postal code areas with positive average
 prices.
 
 ``` r
+
 data<-subset(zip_centroids_final, avg_2020_2023>0)
 ```
 
@@ -641,6 +709,7 @@ Commuting cost: 0.25 € per km 240 commuting days per year Round trips
 (to work and back home)
 
 ``` r
+
 # commuting costs (commuting distance * €/km * number of commuting trips *2 (to work and back home))
 data$commuting_cost<-data$distance_km*2*0.25*240
 ```
@@ -649,12 +718,14 @@ House costs are estimated as the product of average housing price and
 average apartment size.
 
 ``` r
+
 data$house_cost<-data$avg_2020_2023*data$ra_as_kpa
 ```
 
 We assume a 10‑year loan with a fixed annual interest rate of 5%.
 
 ``` r
+
 interest_rate<-0.05 #interest rate
 n<-10 #years
 loan<-data$house_cost
@@ -664,6 +735,7 @@ data$payment_year <- loan*interest_rate/(1-(1+interest_rate)^(-n)) #annual payme
 Total annual costs consist of housing payments and commuting costs.
 
 ``` r
+
 data$total_cost<-data$payment_year+data$commuting_cost #current
 ```
 
@@ -673,6 +745,7 @@ Disposable income is defined as the income remaining available to a
 household after housing and commuting costs are deducted.
 
 ``` r
+
 data$disposable_income<-data$hr_mtu-data$total_cost
 
 # disposable income as a rate
@@ -685,6 +758,7 @@ We visualize the relationship between distance to the centre and
 disposable income using a nonparametric LOWESS smoother.
 
 ``` r
+
 par(mfrow=c(1,1))
 
 # define marginals for plot
@@ -712,6 +786,7 @@ Finally, we repeat the visualization using disposable income expressed
 as a percentage of household income.
 
 ``` r
+
 par(mfrow=c(1,1))
  # define marginals
 par(mar=c(8, 4, 3, 2.1), xpd=TRUE)
@@ -748,9 +823,17 @@ developed. One such a model is additive regression model,
 
 The additive nonparametric regression model is given by
 
-$$y_{i} = \alpha + f_{1}\left( x_{i1} \right) + f_{2}\left( x_{i2} \right) + \cdots + f_{n}\left( x_{in} \right) + \varepsilon_{i},$$
+``` math
+y_i
+= \alpha
++ f_1(x_{i1})
++ f_2(x_{i2})
++ \cdots
++ f_n(x_{in})
++ \varepsilon_i,
+```
 
-where the partial regression functions $f_{j}( \cdot )$ are estimated
+where the partial regression functions $`f_j(\cdot)`$ are estimated
 using simple regression smoothers, such as local polynomial regression
 or smoothing splines.
 
@@ -760,12 +843,13 @@ regression model, which assumes that all partial regression functions
 are linear. Generalized additive models (GAMs) are able to capture
 nonlinear relationships between the dependent and independent variables.
 These advantages are often reflected in empirical studies through higher
-$R^{2}$ values, indicating an improved fit to the data.
+$`R^2`$ values, indicating an improved fit to the data.
 
 Let’s illustrate for the regresson of prestige on income and education
 employing the gam function in the mgcv library.
 
 ``` r
+
 library(mgcv)
 library(car)
 data(Prestige)
@@ -795,6 +879,7 @@ the sum of these plus 1, for the regression constant. The additive
 regression surface is plotted in this plot:
 
 ``` r
+
 inc <- seq(min(Prestige$income), max(Prestige$income), len=25)
 ed <- seq(min(Prestige$education), max(Prestige$education), len=25)
 newdata <- expand.grid(income=inc,education=ed)
@@ -811,6 +896,7 @@ Perspective plots can also be made automatically using the persp.gam
 function. These graphs include a 95% confidence region:
 
 ``` r
+
 vis.gam(mod.gam,se=T,phi=30,theta=45)
 ```
 
@@ -819,6 +905,7 @@ vis.gam(mod.gam,se=T,phi=30,theta=45)
 We can also plot both of the variables separately:
 
 ``` r
+
 plot(mod.gam,pages=1)
 ```
 
@@ -850,6 +937,7 @@ function, and again it is important to note that the standard linear
 model can be seen as a special case of a GAM.
 
 ``` r
+
 library(car)
 library(mgcv)
 data(Prestige)
@@ -883,6 +971,7 @@ specify the type of smooth, though a default is available. Here we chose
 ’cr’, denoting cubic regression splines.
 
 ``` r
+
 mod.gam=gam(prestige~s(income, bs="cr"), data=Prestige)
 summary(mod.gam)
 ```
@@ -925,6 +1014,7 @@ One can get sense of the form of the fit by simply plotting the model
 object as follows:
 
 ``` r
+
 plot(mod.gam)
 ```
 
@@ -962,13 +1052,16 @@ he recursive partitioning regression algorithm proceeds as follows:
     variable within each resulting region. The quality of a partition is
     evaluated by the residual sum of squares (RSS),
 
-    $${RSS} = \sum\limits_{i = 1}^{n}(y_{i} - {\widehat{y}}_{i})^{2},$$
+    ``` math
+    \mathrm{RSS}
+    = \sum_{i=1}^{n} \bigl(y_i - \hat y_i\bigr)^2,
+    ```
 
-    where ${\widehat{y}}_{i}$ is the mean response in the region
-    containing observation $i$. The partition that minimizes the RSS is
-    selected. Although many possible partitions must be examined, the
-    calculations for each are simple, allowing the procedure to be
-    carried out efficiently.
+    where $`\hat y_i`$ is the mean response in the region containing
+    observation $`i`$. The partition that minimizes the RSS is selected.
+    Although many possible partitions must be examined, the calculations
+    for each are simple, allowing the procedure to be carried out
+    efficiently.
 
 3.  **Recursive partitioning**  
     The splitting process is then applied recursively within each of the
@@ -1016,6 +1109,7 @@ Let’s now do a conditional inference tree for Mileage and start
 investigating data:
 
 ``` r
+
 library(rpart)
 library(party)
 ?cu.summary
@@ -1024,6 +1118,7 @@ library(party)
 And then fit a model:
 
 ``` r
+
 fit2 <- ctree(Mileage~Price + Country + Reliability + Type,
     data=na.omit(cu.summary))
 plot(fit2)
@@ -1085,6 +1180,7 @@ Let’s first fit a GAM model and visualize its smooth terms. We begin by
 reading the input data that will be used in the analysis.
 
 ``` r
+
 x <- read.csv(
   system.file("extdata", "Data_regression_tree2.csv",
               package = "spatialcourseOL"),sep=";", check.names = FALSE)
@@ -1100,6 +1196,7 @@ variables. The estimated coefficients and smooth terms are summarized
 below.
 
 ``` r
+
 library(mgcv)
 library(party)
 y_gam=gam(LOG~s(DIS456)+s(DIS20)+s(DIS10)+s(DIS6),family=binomial,data=x)
@@ -1136,6 +1233,7 @@ predictor, illustrating their potentially nonlinear effects on the
 response variable.
 
 ``` r
+
 plot(y_gam,pages=1,ylim=c(-5,5))
 ```
 
@@ -1146,6 +1244,7 @@ variable in a regression tree. This allows us to explore how the
 predictors interact in explaining the GAM-based probabilities.
 
 ``` r
+
 ccont=ctree_control(maxdepth=3)
 fit2=ctree(y_gam$fit~x$DIS456+x$DIS20+x$DIS6,control=ccont)
 plot(fit2)

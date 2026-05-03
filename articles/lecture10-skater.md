@@ -34,7 +34,7 @@ may be spatially fragmented, which is often undesirable in geographic
 analysis.
 
 To address this issue, spatially constrained clustering methods have
-been developed. One such method is SKATER (Spatial ’K’luster Analysis by
+been developed. One such method is SKATER (Spatial ‘K’luster Analysis by
 Tree Edge Removal). When spatial constraints are imposed, a connectivity
 graph is first constructed to represent neighborhood relationships among
 spatial units. Based on this graph, a minimum spanning tree (MST) is
@@ -105,6 +105,7 @@ between the methods.
 First, let´s load needed packages:
 
 ``` r
+
 library(dplyr)
 library(sf)
 library(janitor)
@@ -128,6 +129,7 @@ purposes only** and is not executed when building the package
 documentation.
 
 ``` r
+
 # Load the sotkanet package
 library(sotkanet)
 
@@ -144,6 +146,7 @@ guarantee successful package building. The data are read from the
 package’s extdata directory as follows:
 
 ``` r
+
 data <- readRDS(
   system.file("extdata", "sotkanet_2019.rds",
               package = "spatialcourseOL"))
@@ -155,6 +158,7 @@ Next, we select only the relevant columns and reshape the data from long
 format to wide format so that each indicator becomes its own variable.
 
 ``` r
+
 data2<-data[,c(5,7,9)] #select only some columns from data
 table(data2$indicator.title.fi)
 ```
@@ -194,6 +198,7 @@ table(data2$indicator.title.fi)
 We use the reshape2 package to perform the transformation.
 
 ``` r
+
 ?reshape2::dcast
 dat <- reshape2::dcast(data2,  region.code ~ indicator.title.fi, value.var = "primary.value")
 dat$region.code<-as.numeric(dat$region.code) #change code to numeric
@@ -204,6 +209,7 @@ class(dat)
     ## [1] "data.frame"
 
 ``` r
+
 names(dat)
 ```
 
@@ -230,6 +236,7 @@ To make variable names easier to work with, we clean them and ensure
 that all variables are numeric.
 
 ``` r
+
 dat<-clean_names(dat) # clean column names of our dataframe
 names(dat)
 ```
@@ -252,6 +259,7 @@ names(dat)
     ## [16] "yleista_asumistukea_saaneet_yhteensa_percent_asuntokunnista"
 
 ``` r
+
 dat2<-data.frame(lapply(dat,as.numeric))
 
 dat2 <- dat2 %>%
@@ -265,6 +273,7 @@ To visualize the indicators spatially, we download municipality
 boundaries.
 
 ``` r
+
 municipalities23 <- geofi::get_municipalities(year = 2019)
 ```
 
@@ -286,12 +295,14 @@ left join. This keeps all spatial units even if some attribute values
 are missing.
 
 ``` r
+
 map <- left_join(municipalities23,dat2, by = c("kunta" = "region_code")) # why we use left_join?
 ```
 
 And then we select
 
 ``` r
+
 map_complete <- map[complete.cases(sf::st_drop_geometry(map)), ]
 ```
 
@@ -309,6 +320,7 @@ We therefore:
 - Standardise the data (mean = 0, sd = 1)
 
 ``` r
+
 X <- st_drop_geometry(map_complete)[, 71:84]
 X <- X[, sapply(X, function(x) is.numeric(x) && sd(x, na.rm = TRUE) != 0),
        drop = FALSE]
@@ -330,12 +342,14 @@ neighbourhood graph. We construct a k‑nearest neighbour (k‑NN) structure
 using polygon centroids.
 
 ``` r
+
 coords <- sf::st_coordinates(sf::st_centroid(map_complete))
 ```
 
     ## Warning: st_centroid assumes attributes are constant over geometries
 
 ``` r
+
 k <- 6
 knn <- knearneigh(coords, k = k)
 bh.nb <- knn2nb(knn)
@@ -352,6 +366,7 @@ Explanation
 SKATER uses attribute dissimilarity between neighbours as edge weights.
 
 ``` r
+
 lcosts=nbcosts(bh.nb, dpad)
 ```
 
@@ -366,6 +381,7 @@ The neighbourhood structure and costs are combined into a spatial
 weights list.
 
 ``` r
+
 nb.w=nb2listw(bh.nb,lcosts,style="B")
 ```
 
@@ -380,6 +396,7 @@ SKATER works by pruning a minimum spanning tree (MST) constructed from
 the spatial graph.
 
 ``` r
+
 mst.bh=mstree(nb.w,5)
 ```
 
@@ -391,12 +408,14 @@ Explanation
 #### 11. Visualising the MST
 
 ``` r
+
 coords <- sf::st_coordinates(sf::st_centroid(map_complete))
 ```
 
     ## Warning: st_centroid assumes attributes are constant over geometries
 
 ``` r
+
 par(mar = c(0,0,0,0))
 
 plot(mst.bh,
@@ -424,6 +443,7 @@ Explanation
 We now partition the MST into 10 spatially contiguous clusters.
 
 ``` r
+
 res1 <- skater(mst.bh[,1:2], dpad, 9)
 ```
 
@@ -436,6 +456,7 @@ Explanation
 #### 12. Cluster sizes
 
 ``` r
+
 table(res1$groups)
 ```
 
@@ -451,6 +472,7 @@ Explanation
 #### 13. Attaching SKATER results to the spatial data
 
 ``` r
+
 map_complete$group <- factor(res1$groups)
 ```
 
@@ -462,6 +484,7 @@ Explanation
 #### 14. Visualising SKATER regions with ggplot2
 
 ``` r
+
 ggplot(map_complete) +
   geom_sf(aes(fill = group), color = "grey60", linewidth = 0.2) +
   scale_fill_viridis_d(name = "SKATER group") +

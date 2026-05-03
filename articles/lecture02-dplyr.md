@@ -14,6 +14,7 @@ the most common spatial file formats.
 ##### Read a Shapefile (.shp):
 
 ``` r
+
 library(sf)
 shp <- st_read("data/admin_areas.shp")
 ```
@@ -21,24 +22,28 @@ shp <- st_read("data/admin_areas.shp")
 ##### Read a GeoPackage (.gpkg):
 
 ``` r
+
 library(sf)
 ```
 
 List layers
 
 ``` r
+
 st_layers("data/geodata.gpkg")
 ```
 
 Read a specific layer
 
 ``` r
+
 roads <- st_read("data/geodata.gpkg", layer = "roads")
 ```
 
 ##### Read GeoJSON
 
 ``` r
+
 library(sf)
 
 geojson <- st_read("data/borders.geojson")
@@ -47,6 +52,7 @@ geojson <- st_read("data/borders.geojson")
 ##### Read a Raster (GeoTIFF .tif)
 
 ``` r
+
 library(terra)
 
 r <- rast("data/elevation.tif")
@@ -55,12 +61,14 @@ r <- rast("data/elevation.tif")
 ##### Reproject Vector Data
 
 ``` r
+
 admin_utm <- st_transform(shp, 32635)
 ```
 
 ##### Reproject Raster Data
 
 ``` r
+
 r_utm <- project(r, "EPSG:32635")
 ```
 
@@ -99,6 +107,7 @@ visualization (ggplot2). The geofi package is also loaded to access
 official Finnish municipal boundary data.
 
 ``` r
+
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -147,6 +156,7 @@ which layers (e.g., grids, municipality borders, zip codes) can be
 accessed and what their names are.
 
 ``` r
+
 vayla <- "https://geo.stat.fi/geoserver/tilastointialueet/wfs"
 
 vayla_client <- WFSClient$new(
@@ -624,6 +634,7 @@ So, let´s construct a WFS request and load the data directly into an sf
 object.
 
 ``` r
+
 url_grid <- list(
   hostname = "geo.stat.fi/geoserver/tilastointialueet/wfs",
   scheme   = "https",
@@ -657,6 +668,7 @@ and structure of the grid, ensuring the data loaded correctly and looks
 as expected.
 
 ``` r
+
 ggplot(grid_5km) +
   geom_sf(aes(fill = id), color = NA) +
   labs(title = "Statistics Finland 5 km Grid")
@@ -728,6 +740,7 @@ carefully, as there will be an exercise based on it this week.
 Let´s now download data from the municipalities by using geofi-package
 
 ``` r
+
 municipalities <- geofi::get_municipalities(year = 2022) %>%
   select(kunta, kunta_name)
 #> Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2022
@@ -742,6 +755,7 @@ point located at its center. These centroid points can then be used for
 labeling, spatial analysis, or extracting values.
 
 ``` r
+
 grid_centroids <- st_centroid(grid_5km)
 #> Warning: st_centroid assumes attributes are constant over geometries
 ```
@@ -752,6 +766,7 @@ This extracts only the polygon representing the municipality Kotka from
 the full municipalities dataset.
 
 ``` r
+
 kotka <- subset(municipalities, kunta_name == "Kotka")
 ```
 
@@ -760,6 +775,7 @@ polygon and attaches Kotka’s attributes (such as kunta_name) to those
 points.
 
 ``` r
+
 grid_in_kotka <- st_join(grid_centroids, kotka)
 ```
 
@@ -767,12 +783,14 @@ And finally, this filters the joined data so that only the centroid
 points that actually belong to Kotka are kept.
 
 ``` r
+
 kotka_grid <- subset(grid_in_kotka, kunta_name == "Kotka")
 ```
 
 Let´s visualize the results
 
 ``` r
+
 ggplot(kotka_grid) +
   geom_sf(color = "red") +
   labs(title = "Statistics Finland 5 km Grid in Kotka")
@@ -788,6 +806,7 @@ this step useful for further spatial analysis, map production, or
 sharing results with others.
 
 ``` r
+
 st_write(kotka_grid,
          "define your path here/r1km_kotka.shp")
 ```
@@ -808,6 +827,7 @@ We begin by loading the packages needed for reading Excel files,
 cleaning column names, and handling Finnish geospatial data.
 
 ``` r
+
 library(readxl)
 library(janitor)
 #> 
@@ -831,6 +851,7 @@ saves the file there mode = “wb” ensures correct download of binary
 files (Excel)
 
 ``` r
+
 url <- "https://media.stat.fi/A7H6ohk0S8qafyCM4bfDaz/DICwBPn5Q8uifsM6dwow"
 
 tmp <- tempfile(fileext = ".xlsx")
@@ -844,6 +865,7 @@ skip it using skip = 1. We then convert the tibble to a standard data
 frame.
 
 ``` r
+
 df <- as.data.frame(read_excel(tmp, skip = 1)) # skip first line
 ```
 
@@ -854,6 +876,7 @@ characters. We use janitor::clean_names() to convert them into clean,
 machine‑friendly names (snake_case).
 
 ``` r
+
 df <- df |> clean_names()
 names(df)
 #>  [1] "kunta"                              "kunnan_numero"                     
@@ -882,6 +905,7 @@ The municipal code (kunnan_numero) should be numeric. We convert it to
 ensure it can be joined correctly with geofi data.
 
 ``` r
+
 df$kunnan_numero<-as.numeric(df$kunnan_numero)
 ```
 
@@ -891,6 +915,7 @@ Using geofi::get_municipalities(), we retrieve the 2025 municipal
 borders as an sf object. We then keep only the municipality ID and name.
 
 ``` r
+
 municipalities <- geofi::get_municipalities(year = 2024)
 #> Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2024
 #> Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
@@ -909,6 +934,7 @@ We use right_join() because:
   preserves class)
 
 ``` r
+
 municipalities2 <- dplyr::right_join(x = municipalities, y = df, by=c("kunta" = "kunnan_numero"))
 ```
 
@@ -917,6 +943,7 @@ municipalities2 <- dplyr::right_join(x = municipalities, y = df, by=c("kunta" = 
 These colors will represent different municipal groups.
 
 ``` r
+
 ccities<-"#FED789" #cities
 crural<-"#023743" #rural
 cdense<-"#72874E" #densely populated
@@ -929,6 +956,7 @@ scale_fill_manual() applies our custom color palette theme() adjusts
 legend position and appearance
 
 ``` r
+
 ggplot(municipalities2) +
   geom_sf(aes(fill=kuntaryhma),
           alpha=0.75,colour="white",lwd=0.1) +
@@ -1018,6 +1046,7 @@ theme(
 6.  Control number of legend rows
 
 ``` r
+
 guides(fill = guide_legend(title = "", nrow = 3))
 ```
 
@@ -1034,6 +1063,7 @@ These elements help readers interpret distances and direction directly
 on the map.
 
 ``` r
+
 library(ggspatial)
 
 ggplot(municipalities2) +
@@ -1080,6 +1110,7 @@ Key Features
 #### Example: Minimal code
 
 ``` r
+
 library(leaflet)
 
 leaflet() %>%
@@ -1090,6 +1121,7 @@ leaflet() %>%
 #### Example: Add more popups on map
 
 ``` r
+
 library(leaflet)
 
 leaflet() %>%
@@ -1104,6 +1136,7 @@ leaflet() %>%
 Create a data frame:
 
 ``` r
+
 cities <- data.frame(
   name = c("Joensuu", "Helsinki", "Oulu"),
   lat  = c(62.6010, 60.1921, 65.0121),
@@ -1113,6 +1146,7 @@ cities <- data.frame(
 Map it using addMarkers() or addCircleMarkers():
 
 ``` r
+
 leaflet(cities) %>%
   addTiles() %>%
   addCircleMarkers(
@@ -1129,6 +1163,7 @@ Using geofi::get_municipalities(), we retrieve the 2025 municipal
 borders as an sf object. We then keep only the municipality ID and name.
 
 ``` r
+
 municipalities <- geofi::get_municipalities(year = 2024)
 #> Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2024
 #> Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
@@ -1144,6 +1179,7 @@ Municipalities object is in the Finnish national grid ETRS89 / TM35FIN
 Transform municipalities to WGS84:
 
 ``` r
+
 library(sf)
 muni_wgs84 <- st_transform(municipalities, crs = 4326)
 ```
@@ -1151,6 +1187,7 @@ muni_wgs84 <- st_transform(municipalities, crs = 4326)
 Then, we can use it
 
 ``` r
+
 library(leaflet)
 
 leaflet() %>%
@@ -1167,16 +1204,19 @@ marker. When the marker is clicked, the video plays directly inside the
 map interface.
 
 ``` r
+
 library(leaflet)
 ```
 
 ``` r
+
 youtube_iframe <- '<iframe width="300" height="200"
 src="https://www.youtube.com/embed/JCizmc4tRxY"
 frameborder="0" allowfullscreen></iframe>'
 ```
 
 ``` r
+
 leaflet() %>% 
   addTiles() %>% 
   addMarkers(
@@ -1190,6 +1230,7 @@ we create a basic Leaflet map and store it in the object m. This map
 includes default OpenStreetMap tiles and a marker with a YouTube popup.
 
 ``` r
+
 m<-leaflet() %>% 
   addTiles() %>% 
   addMarkers(
@@ -1207,6 +1248,7 @@ Because we start from m and continue piping, these layers are added on
 top of the original map without recreating it.
 
 ``` r
+
 m %>%
   addProviderTiles(
     providers$Esri.WorldImagery,
@@ -1228,6 +1270,7 @@ This is the standard way because Leaflet is an interactive JavaScript
 map.
 
 ``` r
+
 library(htmlwidgets)
 
 saveWidget(
@@ -1285,6 +1328,7 @@ our case, it converts the municipal polygons from TM35FIN into WGS84
 (EPSG:4326), making them usable in leaflet.
 
 ``` r
+
 municipalities3 <- sf::st_transform(municipalities2, 4326)
 ```
 
@@ -1293,6 +1337,7 @@ map. The color palette for different municipality groups is reused from
 the ggplot example.
 
 ``` r
+
 library(leaflet)
 
 # Define a color palette function based on kuntaryhma values
@@ -1328,6 +1373,7 @@ leaflet_map <- leaflet(municipalities3) %>%
 ```
 
 ``` r
+
 leaflet_map
 ```
 
@@ -1381,6 +1427,7 @@ This is the core mapping step. Let’s break it down:
 3.1 Color each municipality using a palette
 
 ``` r
+
 fillColor = ~pal(kuntaryhma)
 ```
 
@@ -1392,6 +1439,7 @@ fillColor = ~pal(kuntaryhma)
 3.2 Set polygon styling
 
 ``` r
+
 fillOpacity = 0.8
 color = "white"
 weight = 1
@@ -1404,6 +1452,7 @@ weight = 1
 3.3 Add a popup for each municipality
 
 ``` r
+
 popup = ~paste0(
   "<strong>", kunta_name, "</strong><br>",
   "Group: ", kuntaryhma
@@ -1417,6 +1466,7 @@ popup = ~paste0(
 3.4 Add interactive highlight on mouse hover
 
 ``` r
+
 highlight = highlightOptions(
   weight = 2,
   color = "#444444",
@@ -1432,6 +1482,7 @@ When the user hovers over a polygon: - Border becomes thicker (weight =
 4.  Add a legend to explain the colors
 
 ``` r
+
 addLegend(
   pal = pal,
   values = ~kuntaryhma,

@@ -7,27 +7,31 @@ predictors; X1, X2 and X3. One general form for the model would be:
 
 The multiple linear regression model can be written as
 
-$$Y = \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \beta_{3}X_{3} + \varepsilon$$
+``` math
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \varepsilon
+```
 
 where  
-- $Y$ is the dependent variable  
-- $\beta_{0}$ is the intercept  
-- $\beta_{1},\beta_{2},\beta_{3}$ are regression coefficients  
-- $X_{1},X_{2},X_{3}$ are explanatory variables  
-- $\varepsilon$ is the error term
+- $`Y`$ is the dependent variable  
+- $`\beta_0`$ is the intercept  
+- $`\beta_1, \beta_2, \beta_3`$ are regression coefficients  
+- $`X_1, X_2, X_3`$ are explanatory variables  
+- $`\varepsilon`$ is the error term
 
 ### Estimation of the model
 
-The regression coefficients $\beta_{0},\beta_{1},\beta_{2},\beta_{3}$
-are usually estimated using ordinary least squares (OLS).
+The regression coefficients $`\beta_0, \beta_1, \beta_2, \beta_3`$ are
+usually estimated using ordinary least squares (OLS).
 
 The idea of OLS is to choose coefficient values that minimize the sum of
 squared residuals:
 
-$$\sum\limits_{i = 1}^{n}\left( Y_{i} - {\widehat{Y}}_{i} \right)^{2}$$
+``` math
+\sum_{i=1}^{n} (Y_i - \hat{Y}_i)^2
+```
 
-where ${\widehat{Y}}_{i}$ is the predicted value of $Y$ for observation
-$i$.
+where $`\hat{Y}_i`$ is the predicted value of $`Y`$ for observation
+$`i`$.
 
 Under standard assumptions, the OLS estimators are unbiased and
 efficient.
@@ -36,14 +40,14 @@ efficient.
 
 Each regression coefficient has a clear interpretation:
 
-- **$\beta_{0}$ (intercept):**  
-  The expected value of $Y$ when all predictors equal zero.
+- **$`\beta_0`$ (intercept):**  
+  The expected value of $`Y`$ when all predictors equal zero.
 
-- **$\beta_{1}$:** The expected change in $Y$ for a one‑unit increase in
-  $X_{1}$, holding $X_{2}$ and $X_{3}$ constant.
+- **$`\beta_1`$:** The expected change in $`Y`$ for a one‑unit increase
+  in $`X_1`$, holding $`X_2`$ and $`X_3`$ constant.
 
-- **$\beta_{2},\beta_{3}$:** Interpreted analogously for $X_{2}$ and
-  $X_{3}$.
+- **$`\beta_2, \beta_3`$:** Interpreted analogously for $`X_2`$ and
+  $`X_3`$.
 
 This *“all else equal”* interpretation is central to multiple regression
 analysis.
@@ -60,11 +64,11 @@ are commonly made:
     Observations are independent of each other.
 
 3.  **Homoscedasticity**  
-    The variance of the error term $\varepsilon$ is constant across
+    The variance of the error term $`\varepsilon`$ is constant across
     observations.
 
 4.  **Normality of errors**  
-    The error term $\varepsilon$ is normally distributed (mainly
+    The error term $`\varepsilon`$ is normally distributed (mainly
     important for inference).
 
 5.  **No perfect multicollinearity**  
@@ -77,22 +81,24 @@ inference.
 
 Two commonly used measures are:
 
-- **$R^{2}$**  
-  The proportion of variance in $Y$ explained by the model.
+- **$`R^2`$**  
+  The proportion of variance in $`Y`$ explained by the model.
 
-- **Adjusted $R^{2}$**  
-  Adjusts $R^{2}$ for the number of predictors and is preferred when
+- **Adjusted $`R^2`$**  
+  Adjusts $`R^2`$ for the number of predictors and is preferred when
   comparing models.
 
 The coefficient of determination is defined as
 
-$$R^{2} = 1 - \frac{\text{Residual Sum of Squares}}{\text{Total Sum of Squares}}$$
+``` math
+R^2 = 1 - \frac{\text{Residual Sum of Squares}}{\text{Total Sum of Squares}}
+```
 
 ##### Extensions
 
 Possible extensions of the basic linear regression framework include:
 
-- interaction effects (e.g. $X_{1} \times X_{2}$)
+- interaction effects (e.g. $`X_1 \times X_2`$)
 - nonlinear terms (e.g. polynomials)
 - generalized linear models
 - spatial regression models
@@ -109,8 +115,16 @@ types of regressio
 
 **Linear Regression in R, Step-by-Step**
 
+# An error occurred.
+
+Unable to execute JavaScript.
+
 **R programming for beginners – statistic with R (t-test and linear
 regression) and dplyr and ggplot**
+
+# An error occurred.
+
+Unable to execute JavaScript.
 
 ##### Faithfull data
 
@@ -121,12 +135,14 @@ eruption has been 80 minutes.
 Let’s check the dataset:
 
 ``` r
+
 ?faithful
 ```
 
 Then let’s estimate the regression model:
 
 ``` r
+
 eruption.lm = lm(eruptions ~ waiting, data=faithful) 
 ```
 
@@ -134,6 +150,7 @@ Then we extract the parameters of the estimated regression equation with
 the coefficients function.
 
 ``` r
+
 coeffs = coefficients(eruption.lm); coeffs 
 ```
 
@@ -144,6 +161,7 @@ We now fit the eruption duration using the estimated regression
 equation.
 
 ``` r
+
 waiting = 80           # the waiting time 
 duration = coeffs[1] + coeffs[2]*waiting 
 duration 
@@ -164,6 +182,7 @@ variables in the dataset. We start by reading the data in to R and
 examining it.
 
 ``` r
+
 library(faraway)
 
 data(gala)
@@ -205,6 +224,7 @@ gala
 Let’s see background of the data:
 
 ``` r
+
 ?gala
 ```
 
@@ -212,6 +232,7 @@ Fitting a linear model in R is done using the lm( ) command. Notice the
 syntax for specifying the predictors in the model. By typing,
 
 ``` r
+
 mdl <- lm(Species~Area + Elevation + Nearest + Scruz+ Adjacent, data=gala)
 summary(mdl)
 ```
@@ -248,12 +269,14 @@ quantities of interest.
 First we make the X-matrix:
 
 ``` r
+
 x <- model.matrix(~Area + Elevation + Nearest + Scruz + Adjacent, gala)
 ```
 
 and here is the response y:
 
 ``` r
+
 y <- gala$Species
 ```
 
@@ -261,12 +284,14 @@ Now let’s construct (XTX)-1. t ( ) does transpose and %\*% does matrix
 multiplication. solve (A) computes A-1 while solve(A,b) solves Ax=b:
 
 ``` r
+
 xtxi <- solve(t(x)%*%x)
 ```
 
 We can get B directly, using (XTX)-1XTy:
 
 ``` r
+
 xtxi%*%t(x)%*%y
 ```
 
@@ -283,6 +308,7 @@ very inaccurate when the predictors are strongly correlated. A better
 way is:
 
 ``` r
+
 solve(crossprod(x,x),crossprod(x,y))
 ```
 
@@ -303,6 +329,7 @@ gives the . You can also extract other needed quantities by examining
 the model object and its summary:
 
 ``` r
+
 names(mdl)
 ```
 
@@ -311,6 +338,7 @@ names(mdl)
     ##  [9] "xlevels"       "call"          "terms"         "model"
 
 ``` r
+
 mdls <- summary(mdl)
 names(mdls)
 ```
@@ -323,12 +351,14 @@ We can estimate using the formula , where n-p is the degrees of freedom.
 We can also extract it from the summary:
 
 ``` r
+
 sqrt(deviance(mdl)/df.residual(mdl))
 ```
 
     ## [1] 60.97519
 
 ``` r
+
 mdls$sigma
 ```
 
@@ -338,6 +368,7 @@ We can also extract (XTX)-1 and use it to compute the standard errors
 for the coefficients:
 
 ``` r
+
 xtxi <- mdls$cov.unscaled
 sqrt(diag(xtxi))*60.975
 ```
@@ -348,6 +379,7 @@ sqrt(diag(xtxi))*60.975
 or get them from the summary object:
 
 ``` r
+
 mdls$coef[,2]
 ```
 
@@ -357,12 +389,14 @@ mdls$coef[,2]
 Finally, we may compute or extract R2:
 
 ``` r
+
 1-deviance(mdl)/sum((y-mean(y))^2)
 ```
 
     ## [1] 0.7658469
 
 ``` r
+
 mdls$r.squared
 ```
 
@@ -386,6 +420,7 @@ We use the built-in `savings` dataset, which contains information on
 savings rates and several demographic and economic predictors.
 
 ``` r
+
 data(savings)
 ```
 
@@ -405,6 +440,7 @@ The Full Regression Model:
 We begin by fitting the full model, which includes all predictors.
 
 ``` r
+
 g <- lm(sr ~ pop15 + pop75 + dpi + ddpi, savings)
 summary(g)
 ```
@@ -441,6 +477,7 @@ Total Sum of Squares (TSS)
 The total variation in the response variable is given by:
 
 ``` r
+
 tss <- sum((savings$sr - mean(savings$sr))^2)
 tss
 ```
@@ -452,6 +489,7 @@ Residual Sum of Squares (RSS)
 The unexplained variation under the full model is:
 
 ``` r
+
 rss <- deviance(g)
 rss
 ```
@@ -461,6 +499,7 @@ rss
 Residual Degrees of Freedom
 
 ``` r
+
 df.residual(g)
 ```
 
@@ -471,6 +510,7 @@ Manual F-Statistic Calculation
 The F-statistic is computed as:
 
 ``` r
+
 fstat <- ((tss - rss) / 4) / (rss / df.residual(g))
 fstat
 ```
@@ -480,6 +520,7 @@ fstat
 P-value for the F-Test
 
 ``` r
+
 1 - pf(fstat, 4, df.residual(g))
 ```
 
@@ -496,12 +537,14 @@ two nested regression models.
 Restricted (Null) Model We remove pop15 from the full model:
 
 ``` r
+
 g2 <- lm(sr ~ pop75 + dpi + ddpi, savings)
 ```
 
 Residual Sum of Squares for the Restricted Model
 
 ``` r
+
 rss2 <- deviance(g2)
 rss2
 ```
@@ -511,6 +554,7 @@ rss2
 F-Statistic for Nested Models
 
 ``` r
+
 fstat <- (deviance(g2) - deviance(g)) / (deviance(g) / df.residual(g))
 fstat
 ```
@@ -520,6 +564,7 @@ fstat
 Corresponding P-value
 
 ``` r
+
 1 - pf(fstat, 1, df.residual(g))
 ```
 
@@ -530,6 +575,7 @@ Corresponding P-value
 A more convenient and standard approach is to use the anova() function.
 
 ``` r
+
 anova(g2, g)
 ```
 
@@ -553,12 +599,14 @@ We now test whether both pop75 and ddpi can be excluded from the model.
 Restricted Model
 
 ``` r
+
 g3 <- lm(sr ~ pop15 + dpi, savings)
 ```
 
 Model Comparison
 
 ``` r
+
 anova(g3, g)
 ```
 
@@ -603,6 +651,7 @@ First, we construct a data frame containing the variables of interest
 and fit a full regression model including all predictors.
 
 ``` r
+
 data(state)
 
 statedata <- data.frame(
@@ -619,6 +668,7 @@ The step() function performs stepwise model selection by sequentially
 adding or removing predictors based on the AIC value.
 
 ``` r
+
 step(g)
 ```
 
@@ -693,6 +743,7 @@ The MASS package provides the stepAIC() function, which allows explicit
 control over the direction of the search.
 
 ``` r
+
 library(MASS)
 ```
 
@@ -708,6 +759,7 @@ library(MASS)
     ##     select
 
 ``` r
+
 stepAIC(
   lm(Life.Exp ~ ., data = statedata),
   direction = "both")
@@ -789,6 +841,7 @@ evaluates combinations of predictors rather than following a stepwise
 path.
 
 ``` r
+
 library(leaps)
 
 x <- model.matrix(g)[, -1]
@@ -802,10 +855,11 @@ identify those with optimal performance according to specific criteria.
 
 **Model comparison using Mallows’ Cp**
 
-Mallows’ $C_{p}$ statistic is commonly used to assess model adequacy and
+Mallows’ $`C_p`$ statistic is commonly used to assess model adequacy and
 complexity.
 
 ``` r
+
 library(faraway)
 Cpplot(g_leaps)
 ```
@@ -814,8 +868,8 @@ Cpplot(g_leaps)
 
 Interpretation:
 
-- Models with low $C_{p}$ values are preferred.
-- A good model typically has $C_{p}$ close to the number of predictors
+- Models with low $`C_p`$ values are preferred.
+- A good model typically has $`C_p`$ close to the number of predictors
   plus the intercept.
 - This plot helps identify parsimonious models with strong explanatory
   power.
@@ -852,6 +906,7 @@ a multiple linear regression model and then inspect standard diagnostic
 plots.
 
 ``` r
+
 library(faraway)
 
 data(savings)
@@ -865,6 +920,7 @@ regression model using the plot() function. These plots help assess
 model assumptions and identify problematic observations.
 
 ``` r
+
 par(mfrow = c(2, 2))
 plot(g)
 ```
@@ -944,6 +1000,7 @@ The workflow combines spatial data handling, data merging, and basic
 regional analysis.
 
 ``` r
+
 install.packages("purrr")
 install.packages("sf")
 install.packages("tmap")
@@ -966,6 +1023,7 @@ We begin by downloading postcode area data using a Web Feature Service
 (WFS) query.
 
 ``` r
+
 url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
            scheme ="https",
            query =list(service ="WFS",
@@ -995,6 +1053,7 @@ associated attributes, including the number of jobs.
 We repeat the same procedure for the year 2016.
 
 ``` r
+
 url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
            scheme ="https",
            query =list(service ="WFS",
@@ -1021,6 +1080,7 @@ p16 <-st_read(request)
 To understand the available variables, we list the column names.
 
 ``` r
+
 names(p16)
 ```
 
@@ -1056,6 +1116,7 @@ We extract:
 - the total number of jobs in 2016
 
 ``` r
+
 p16data<-p16[,c(3,79)]
 p16data<-as.data.frame(p16data[,1:2])
 colnames(p16data)<-c("posti_alue","tyopy16") #postcode & total number of jobs
@@ -1072,11 +1133,13 @@ right join. Before doing so, we convert the ID variables
 require matching variable types.
 
 ``` r
+
 p25$postinumeroalue <- as.numeric(p25$postinumeroalue)
 p16data$posti_alue <- as.numeric(p16data$posti_alue)
 ```
 
 ``` r
+
 p25_data <- dplyr::right_join(x = p16data, y = p25, by=c("posti_alue" = "postinumeroalue"))
 ```
 
@@ -1091,6 +1154,7 @@ If a postcode area has no recorded jobs in 2016, we treat this as zero
 employment.
 
 ``` r
+
 p25_data$tyopy16[is.na(p25_data$tyopy16)] <- 0
 ```
 
@@ -1099,6 +1163,7 @@ p25_data$tyopy16[is.na(p25_data$tyopy16)] <- 0
 Absolute Change & Percentage Change
 
 ``` r
+
 p25_data$tp_m25_16<-(p25_data$tp_tyopy-p25_data$tyopy16)
 p25_data$tp_m25_16p<-((p25_data$tp_tyopy-p25_data$tyopy16)/p25_data$tyopy16)*100
 ```
@@ -1115,6 +1180,7 @@ growth.
 Any Positive Growth
 
 ``` r
+
 p25_data$kasvu<-ifelse(p25_data$tp_m25_16>0,1,0)
 table(p25_data$kasvu)
 ```
@@ -1126,6 +1192,7 @@ table(p25_data$kasvu)
 Weak Growth (More Than 10 Jobs)
 
 ``` r
+
 p25_data$kasvu_heikko<-ifelse(p25_data$tp_m25_16>10,1,0)
 table(p25_data$kasvu_heikko)
 ```
@@ -1137,6 +1204,7 @@ table(p25_data$kasvu_heikko)
 Moderate Growth (More Than 100 Jobs)
 
 ``` r
+
 p25_data$kasvu_kohtal<-ifelse(p25_data$tp_m25_16>100,1,0)
 table(p25_data$kasvu_kohtal)
 ```
@@ -1148,6 +1216,7 @@ table(p25_data$kasvu_kohtal)
 Strong Growth (More Than 500 Jobs)
 
 ``` r
+
 p25_data$kasvu_voima<-ifelse(p25_data$tp_m25_16>500,1,0)
 table(p25_data$kasvu_voima)
 ```
@@ -1162,6 +1231,7 @@ scenarios at the postcode level.
 Total Number of Jobs (2022)
 
 ``` r
+
 sum(p25_data$tp_tyopy) 
 ```
 
@@ -1174,24 +1244,28 @@ different growth intensities. The denominator 2,150,025 represents the
 total number of jobs nationally.
 
 ``` r
+
 t1<-subset(p25_data, kasvu_voima>0); sum(t1$tp_tyopy)/sum(p25_data$tp_tyopy) 
 ```
 
     ## [1] 0.3726055
 
 ``` r
+
 t2<-subset(p25_data, kasvu_kohtal>0); sum(t2$tp_tyopy)/sum(p25_data$tp_tyopy) 
 ```
 
     ## [1] 0.5158832
 
 ``` r
+
 t3<-subset(p25_data, kasvu_heikko>0); sum(t3$tp_tyopy)/sum(p25_data$tp_tyopy) 
 ```
 
     ## [1] 0.5937043
 
 ``` r
+
 t4<-subset(p25_data, kasvu>0); sum(t4$tp_tyopy)/sum(p25_data$tp_tyopy) 
 ```
 
@@ -1210,6 +1284,7 @@ We begin by constructing several percentage-based and density variables
 that will be used as regressors in the model.
 
 ``` r
+
 # Unemployment rate (%)
 p25_data$tyottom <- (p25_data$pt_tyott / p25_data$pt_tyoll) * 100
 
@@ -1233,6 +1308,7 @@ distribution and a logit link function. The dependent variable kasvu
 indicates whether job growth occurred.
 
 ``` r
+
 model1<-glm(kasvu~tyottom+korkk+alkut+elak+as_tih+he_kika+ra_as_kpa, data=p25_data, family="binomial",na.action = na.exclude)
 ```
 
@@ -1242,6 +1318,7 @@ The table below reports coefficient estimates, standard errors, and
 significance levels.
 
 ``` r
+
 summary(model1)
 ```
 
@@ -1282,6 +1359,7 @@ Using the estimated model, we calculate predicted probabilities of job
 growth for each observation.
 
 ``` r
+
 p25_data$model1_res<-predict(model1, type="response")
 ```
 
@@ -1290,6 +1368,7 @@ p25_data$model1_res<-predict(model1, type="response")
 Finally, we visualise the distribution of the predicted probabilities.
 
 ``` r
+
 hist(p25_data$model1_res)
 ```
 
@@ -1302,10 +1381,12 @@ concentration, in order to examine how the regression coefficients
 change.
 
 ``` r
+
 model2<-glm(kasvu_voima~tyottom+korkk+alkut+elak+as_tih+he_kika+ra_as_kpa, data=p25_data, family="binomial",na.action = na.exclude)
 ```
 
 ``` r
+
 summary(model2)
 ```
 
@@ -1409,6 +1490,7 @@ And then we can save the model2 results for a new variable called as
 model2_res:
 
 ``` r
+
 p25_data$model2_res<-predict(model2, type="response")
 ```
 
@@ -1434,6 +1516,7 @@ but it does rely on other important assumptions.
 1.  Residual deviance vs. null deviance From summary(model1):
 
 ``` r
+
 summary(model1)
 ```
 
@@ -1480,6 +1563,7 @@ If they are very similar, the predictors add little explanatory power.
     is better than the null model:
 
 ``` r
+
 anova(model1, test = "Chisq")
 ```
 
@@ -1513,6 +1597,7 @@ intercept‑only model.
     pseudo‑R² measures are useful:
 
 ``` r
+
 library(pscl)
 pR2(model1)
 ```
@@ -1530,6 +1615,7 @@ These are not directly comparable to linear regression R².
     binary (0/1):
 
 ``` r
+
 pred_class <- ifelse(p25_data$model1_res > 0.5, 1, 0)
 table(pred_class, p25_data$kasvu)
 ```
@@ -1547,6 +1633,7 @@ statistical diagnostics.
 1.  Deviance residuals Plot residuals against fitted values:
 
 ``` r
+
 res <- residuals(model1, type = "deviance")
 fit <- fitted(model1)
 
@@ -1572,6 +1659,7 @@ Problems:
 Example:
 
 ``` r
+
 plot(p25_data$tyottom, residuals(model1, type = "deviance"),
      xlab = "Unemployment rate",
      ylab = "Deviance residuals")
@@ -1588,6 +1676,7 @@ Some data points may have disproportionate influence on the results. (a)
 Cook’s distance
 
 ``` r
+
 plot(cooks.distance(model1),
      ylab = "Cook's distance")
 abline(h = 4 / nrow(p25_data), lty = 2)
@@ -1600,6 +1689,7 @@ Observations above the line deserve inspection.
 2.  Leverage and influence
 
 ``` r
+
 plot(hatvalues(model1),
      ylab = "Leverage")
 ```
@@ -1614,6 +1704,7 @@ understood substantively.
 Highly correlated predictors can inflate standard errors.
 
 ``` r
+
 library(car)
 vif(testia3)
 ```
@@ -1631,6 +1722,7 @@ related to the log‑odds, not to the outcome itself.
 Visual check (example)
 
 ``` r
+
 library(ggplot2)
 
 ggplot(p25_data, aes(tyottom, model1_res)) +
@@ -1674,6 +1766,7 @@ spatial packages in R.
 We begin by loading the required packages.
 
 ``` r
+
 library(geofi)
 library(sf)
 library(ggplot2)
@@ -1691,6 +1784,7 @@ Municipality boundaries are used for visualisation and spatial
 aggregation of results.
 
 ``` r
+
 municipalities <- geofi::get_municipalities(year = 2024)
 ```
 
@@ -1715,6 +1809,7 @@ p25_data already exists in the workspace.
 We keep only the variables needed for interpolation.
 
 ``` r
+
 # inspect variable names
 names(p25_data)
 ```
@@ -1747,6 +1842,7 @@ names(p25_data)
     ## [126] "elak"         "as_tih"       "model1_res"   "model2_res"
 
 ``` r
+
 # select relevant columns
 pdata3 <- p25_data[, c(1, 7, 8, 129)]
 summary(pdata3)
@@ -1764,6 +1860,7 @@ summary(pdata3)
 **Handling missing values**
 
 ``` r
+
 pdata4 <- na.omit(pdata3)
 ```
 
@@ -1773,6 +1870,7 @@ The point data are converted into an sf object using ETRS-TM35FIN
 (EPSG:3067).
 
 ``` r
+
 crs <- st_crs("EPSG:3067")
 
 int.sf <- st_as_sf(
@@ -1788,6 +1886,7 @@ To perform kriging, we define a regular prediction grid (pixels)
 covering Finland. Here we use a resolution of 10 km × 10 km.
 
 ``` r
+
 grd <- st_bbox(municipalities) %>%
   st_as_stars(dx = 10000) %>%
   st_crop(municipalities)
@@ -1819,7 +1918,9 @@ What a variogram shows
 For pairs of observations at distance hhh, the variogram measures the
 average squared difference:
 
-$$\gamma(h) = \frac{1}{2}\,{\mathbb{E}}\left\lbrack \left( Z(s) - Z(s + h) \right)^{2} \right\rbrack$$
+``` math
+\gamma(h) = \frac{1}{2}\,\mathbb{E}\left[(Z(s) - Z(s+h))^2\right]
+```
 
 Small distances → small differences (high similarity) Large distances →
 large differences (low similarity)
@@ -1851,6 +1952,7 @@ To apply geostatistical interpolation, we first model spatial dependence
 using a variogram.
 
 ``` r
+
 v <- variogram(model2_res ~ 1, int.sf)
 plot(v, plot.numbers = TRUE)
 ```
@@ -1867,6 +1969,7 @@ By default, the variogram function:
 These defaults can be modified if needed.
 
 ``` r
+
 v0 <- variogram(
   model2_res ~ 1, 
   int.sf, 
@@ -1888,17 +1991,11 @@ To enable kriging, we fit a theoretical variogram model to the empirical
 variogram. Here we use an exponential model.
 
 ``` r
+
 v.m <- fit.variogram(
   v, 
   vgm(psill = 1, model = "Exp", range = 5000, nugget = 1))
 ```
-
-    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
-    ## linear model has singular covariance matrix
-    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
-    ## linear model has singular covariance matrix
-    ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
-    ## linear model has singular covariance matrix
 
     ## Warning in fit.variogram(v, vgm(psill = 1, model = "Exp", range = 5000, :
     ## singular model in variogram fit
@@ -1908,6 +2005,7 @@ v.m <- fit.variogram(
     ## values?
 
 ``` r
+
 plot(v, v.m, plot.numbers = TRUE)
 ```
 
@@ -1940,6 +2038,7 @@ spatially continuous values of tulos3 and quantify uncertainty at each
 grid cell.
 
 ``` r
+
 k <- krige(
   model2_res ~ 1,
   int.sf,
@@ -1957,6 +2056,7 @@ kriging variance (var1.var).
 We overlay the kriging surface with municipality boundaries.
 
 ``` r
+
 ggplot(municipalities) +
   geom_stars(data = k, aes(fill = var1.pred, x = x, y = y)) +
   geom_sf(
@@ -2004,6 +2104,7 @@ ggplot(municipalities) +
 The kriging surface is saved as a GeoTIFF raster
 
 ``` r
+
 setwd("C:/Data kansio")
 write_stars(k, "interpolointipinta.tif")
 ```
@@ -2013,22 +2114,26 @@ write_stars(k, "interpolointipinta.tif")
 We compute the mean predicted value within each municipality.
 
 ``` r
+
 k2 <- aggregate(k, municipalities, FUN = mean) %>%
   st_as_sf()
 ```
 
 ``` r
+
 st_write(k2, "test_keh2.shp")
 ```
 
 **Joining results back to municipality data**
 
 ``` r
+
 t <- st_join(municipalities, k2, join = st_equals, left = TRUE)
 t2 <- t[, c(2, 3, 69, 70)]
 ```
 
 ``` r
+
 st_write(t2, "test_keh2.shp")
 ```
 

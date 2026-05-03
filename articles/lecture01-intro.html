@@ -85,7 +85,7 @@ packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Number of R Packages</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/available.packages.html" class="external-link">available.packages</a></span><span class="op">(</span>repos <span class="op">=</span> <span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 23731</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 23729</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="installing-r-and-rstudio-on-windows">Installing R and RStudio on Windows<a class="anchor" aria-label="anchor" href="#installing-r-and-rstudio-on-windows"></a>
@@ -848,23 +848,23 @@ beginning in one month’s time.</p>
 000€, so the dealer is really charging some interest rate i for option
 2. We can calculate this value using the formula for the present value
 of an annuity:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>19000</mn><mo>=</mo><mn>1000</mn><mo>⋅</mo><mfrac><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo>−</mo><mn>20</mn></mrow></msup></mrow><mi>i</mi></mfrac></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>19000</mn><mo>=</mo><mn>1000</mn><mo>⋅</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>i</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>20</mn></mrow></msup></mrow><mi>i</mi></mfrac></mrow><annotation encoding="application/x-tex">
 19000 = 1000 \cdot \frac{1 - (1 + i)^{-20}}{i}
 </annotation></semantics></math></p>
 <p>By multiplying both sides of this equation by i and dividing by
 19000, we get the form of a fixed-point problem</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo>−</mo><mn>20</mn></mrow></msup></mrow><mn>19</mn></mfrac></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>i</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>20</mn></mrow></msup></mrow><mn>19</mn></mfrac></mrow><annotation encoding="application/x-tex">
 i = \frac{1 - (1 + i)^{-20}}{19}
 </annotation></semantics></math></p>
 <p>By taking an initial guess for i and plugging it into the right-hand
 side of this equation, we can get an “updated” value for I on the left.
 For example, if we start with i=0.006, then our update is</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mn>0.006</mn><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo>−</mo><mn>20</mn></mrow></msup></mrow><mn>19</mn></mfrac><mo>=</mo><mn>0.00593</mn></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mn>0.006</mn><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>20</mn></mrow></msup></mrow><mn>19</mn></mfrac><mo>=</mo><mn>0.00593</mn></mrow><annotation encoding="application/x-tex">
 i = \frac{1 - (1 + 0.006)^{-20}}{19} = 0.00593
 </annotation></semantics></math></p>
 <p>By plugging this updated value into the right-hand side of the
 equation again, we get a new update:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mn>0.00593</mn><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo>−</mo><mn>20</mn></mrow></msup></mrow><mn>19</mn></mfrac><mo>=</mo><mn>0.00586</mn></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mn>0.00593</mn><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>20</mn></mrow></msup></mrow><mn>19</mn></mfrac><mo>=</mo><mn>0.00586</mn></mrow><annotation encoding="application/x-tex">
 i = \frac{1 - (1 + 0.00593)^{-20}}{19} = 0.00586
 </annotation></semantics></math></p>
 <p>This kind of fixed-point iteration usually requires many iterations

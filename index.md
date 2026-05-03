@@ -17,6 +17,7 @@ You can install the development version of **spatialcourseOL** from
 GitHub using:
 
 ``` r
+
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
@@ -26,6 +27,7 @@ devtools::install_github("Ollileh/spatialcourseOL")
 After installation, restart your R session and load the package:
 
 ``` r
+
 library(spatialcourseOL)
 ```
 

@@ -25,9 +25,10 @@ R is easily extensible through functions and extensions, and the R
 community is noted for its active contributions in terms of packages.
 
 ``` r
+
 # Number of R Packages
 length(available.packages(repos = "http://cran.us.r-project.org")[, 1])
-#> [1] 23731
+#> [1] 23729
 ```
 
 #### Installing R and RStudio on Windows
@@ -75,11 +76,13 @@ Run the following to install sf package on R. Also use the help function
 to get the details.
 
 ``` r
+
 # Install a package using RStudio Console
 install.packages("sf", dependencies = c("Depends", "Suggests"))
 ```
 
 ``` r
+
 install.packages(c("reshape2", "foreign", "ggplot2", "stargazer"), dependencies = TRUE)
 # to be updated
 ```
@@ -87,6 +90,7 @@ install.packages(c("reshape2", "foreign", "ggplot2", "stargazer"), dependencies 
 If you want to start a certain package, simply type
 
 ``` r
+
 library(sf)
 #> Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
 ```
@@ -102,6 +106,7 @@ can get is via the help() function. This function shows the help file
 for a function which has been created by package managers.
 
 ``` r
+
 help("function name")
 #> No documentation for 'function name' in specified packages and libraries:
 #> you could try '??function name'
@@ -125,6 +130,10 @@ for most of the topics.
 
 #### R programming for ABSOLUTE beginners
 
+# An error occurred.
+
+Unable to execute JavaScript.
+
 ## Basic features of R
 
 #### Calculating with R
@@ -135,6 +144,7 @@ The basic operations are + (add), - (subtract), \* (multiply), and /
 R can also compute powers with the ^ operator. For example,
 
 ``` r
+
 2^3
 #> [1] 8
 
@@ -153,12 +163,14 @@ object called interest.30 (value is an interest rate of 0.25% per year
 and a 30-year period).
 
 ``` r
+
 interest.30 <- 1.0025^30
 ```
 
 or equally
 
 ``` r
+
 interest.30 = 1.0025^30
 ```
 
@@ -173,6 +185,7 @@ We can see the results of this assignment by typing the name of our new
 object at the prompt:
 
 ``` r
+
 interest.30 
 #> [1] 1.077783
 ```
@@ -182,6 +195,7 @@ example, we can calculate the bank balance after 30 years at 0.25%
 annual interest if we start with an initial balance of 3000€.
 
 ``` r
+
 initial.balance <- 3000
 final.balance <- initial.balance*interest.30
 final.balance
@@ -191,6 +205,7 @@ final.balance
 which says that increase is
 
 ``` r
+
 final.balance - initial.balance
 #> [1] 233.3498
 ```
@@ -203,6 +218,7 @@ list of all objects in the current workspace can be printed to the
 screen using the objects ( ) function:
 
 ``` r
+
 objects()
 #> [1] "final.balance"   "initial.balance" "interest.30"
 ```
@@ -218,6 +234,7 @@ A numeric vector is a list of numbers. The c( ) function is used to
 collect things together into a vector. We can type
 
 ``` r
+
 c(0, 7, 8)
 #> [1] 0 7 8
 ```
@@ -225,12 +242,14 @@ c(0, 7, 8)
 Again, we assign this to a named object:
 
 ``` r
+
 x <- c(0, 7, 8)
 ```
 
 To see simply the contents of x, simply type
 
 ``` r
+
 x
 #> [1] 0 7 8
 ```
@@ -239,6 +258,7 @@ The : symbol can be used to create sequences of increasing (or
 decreasing) values. For example,
 
 ``` r
+
 numbers5to20 <- 5:20
 numbers5to20
 #>  [1]  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
@@ -248,6 +268,7 @@ Vectors can be joined together with the c function. For example, note
 what happens when we type
 
 ``` r
+
 c(numbers5to20,x)
 #>  [1]  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20  0  7  8
 ```
@@ -255,6 +276,7 @@ c(numbers5to20,x)
 Here is another example of the use of the function c ( ):
 
 ``` r
+
 some.numbers <- c(2,1,4,45,42,13,15,20,30,109,125,150,305,450,1,2,3,465,78)
 ```
 
@@ -262,6 +284,7 @@ We can append numbers5to20 to the end of some.numbers, and then append
 the decreasing sequence from 4 to 1:
 
 ``` r
+
 a.mess <- c(some.numbers, numbers5to20,4:1)
 a.mess
 #>  [1]   2   1   4  45  42  13  15  20  30 109 125 150 305 450   1   2   3 465  78
@@ -275,6 +298,7 @@ A nice way to display the 22 nd element of a.mess if to use square
 brackes to extract just that element:
 
 ``` r
+
 a.mess[22]
 #> [1] 7
 ```
@@ -282,6 +306,7 @@ a.mess[22]
 To print the second element of x, type
 
 ``` r
+
 x[2]
 #> [1] 7
 ```
@@ -289,6 +314,7 @@ x[2]
 We can extract more than one element at a time. For example,
 
 ``` r
+
 some.numbers[c(3,6,7)]
 #> [1]  4 13 15
 ```
@@ -297,6 +323,7 @@ Negative indices can be used to avoid certain elements. For example, we
 can select all but the second element of x as follows:
 
 ``` r
+
 x[-2]
 #> [1] 0 8
 ```
@@ -305,6 +332,7 @@ The third through eleventh elements of some.numbers can be avoided as
 follows:
 
 ``` r
+
 some.numbers[-(3:11)]
 #>  [1]   2   1 150 305 450   1   2   3 465  78
 ```
@@ -313,6 +341,7 @@ Using a zero index returns nothing. This is not something that one would
 usually type, but it may be useful in more complicate expressions.
 
 ``` r
+
 numbers5to20[c(0,3:7)]
 #> [1]  7  8  9 10 11
 ```
@@ -320,6 +349,7 @@ numbers5to20[c(0,3:7)]
 Let us see a concrete example:
 
 ``` r
+
 x<-c(0,-3,4,-1,45,90,-5)
 x>0
 #> [1] FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE
@@ -332,6 +362,7 @@ elements in x. If we use this vctor of logical values to index x, we get
 as a result the positions of x that correspond to the true values
 
 ``` r
+
 x[x>0]
 #> [1]  4 45 90
 ```
@@ -340,6 +371,7 @@ Taking advance of the logical operations available in R, you can use
 more complex logical index vectors, as for instance,
 
 ``` r
+
 x[x<=-2 | x>5]
 #> [1] -3 45 90 -5
 ```
@@ -350,6 +382,7 @@ Arithmetic can be done on R vectors. For example, we can multiply all
 elements of x by 3:
 
 ``` r
+
 x*3
 #> [1]   0  -9  12  -3 135 270 -15
 ```
@@ -359,6 +392,7 @@ subtraction and division by a constant have the same kind of effect. For
 example,
 
 ``` r
+
 y <- x-5
 y
 #> [1]  -5  -8  -1  -6  40  85 -10
@@ -368,6 +402,7 @@ For another example, consider taking the third power of the elements of
 x:
 
 ``` r
+
 x^3
 #> [1]      0    -27     64     -1  91125 729000   -125
 ```
@@ -380,6 +415,7 @@ as the rep ( ) function. For example, the sequence of odd numbers less
 than or equl to 21 can be obtained using
 
 ``` r
+
 seq(1,21,by=2)
 #>  [1]  1  3  5  7  9 11 13 15 17 19 21
 ```
@@ -389,6 +425,7 @@ Notice the use of by=2 here.
 You may also generate decreasing sequences such as the following
 
 ``` r
+
 5:0
 #> [1] 5 4 3 2 1 0
 ```
@@ -397,6 +434,7 @@ Note that information about function can be get by adding ? before seq
 function
 
 ``` r
+
 ?seq
 ```
 
@@ -404,21 +442,25 @@ Repeated patterns are obtained using rep ( ) function. Consider
 following examples:
 
 ``` r
+
 rep(3,12) # repeat the value 3, 12 times
 #>  [1] 3 3 3 3 3 3 3 3 3 3 3 3
 ```
 
 ``` r
+
 rep(seq(2,20,by=2),2) # repeat the pattern 2 4 ... 20, twice
 #>  [1]  2  4  6  8 10 12 14 16 18 20  2  4  6  8 10 12 14 16 18 20
 ```
 
 ``` r
+
 rep(c(1,4),c(3,2)) # repeat 1, 3 times and 4 twice 
 #> [1] 1 1 1 4 4
 ```
 
 ``` r
+
 rep(seq(2,20,2),rep(2,10)) # repeat each value twice
 #>  [1]  2  2  4  4  6  6  8  8 10 10 12 12 14 14 16 16 18 18 20 20
 ```
@@ -430,6 +472,7 @@ problem but they can also arise because of the way of calculations are
 performed.
 
 ``` r
+
 some.evens<-NULL
 some.evens[seq(2,20,2)] <- seq(2,20,2)
 some.evens
@@ -443,6 +486,7 @@ the value is unknown.
 Recall that x contains the values (0,7,8). Consider
 
 ``` r
+
 x/x
 #> [1] NaN   1   1   1   1   1   1
 ```
@@ -454,6 +498,7 @@ In other case, special values may be shown, or you may get an error or
 warning message:
 
 ``` r
+
 1/x
 #> [1]         Inf -0.33333333  0.25000000 -1.00000000  0.02222222  0.01111111
 #> [7] -0.20000000
@@ -467,6 +512,7 @@ Scalars and vectors can be made up of strings of characters instead of
 numbers. All elements of a vector must be of the same type. For example,
 
 ``` r
+
 colors <- c("red","yellow","blue")
 more.colors <- c(colors, "green","magenta","cyan") # this appended some new elements to colors
 z <- c("red","green",1) # an attempt to mix data types in a vector
@@ -475,6 +521,7 @@ z <- c("red","green",1) # an attempt to mix data types in a vector
 To see the content of more.colors and z, simply type
 
 ``` r
+
 more.colors
 #> [1] "red"     "yellow"  "blue"    "green"   "magenta" "cyan"
 z
@@ -488,6 +535,7 @@ start and stop say which characters to keep. For example, to print the
 first two letters of each color use
 
 ``` r
+
 substr(colors,1,2)
 #> [1] "re" "ye" "bl"
 ```
@@ -496,6 +544,7 @@ The other basic function is building up strings by concatenation. Use
 the paste ( ) function for this. For example,
 
 ``` r
+
 paste(colors, "flowers")
 #> [1] "red flowers"    "yellow flowers" "blue flowers"
 ```
@@ -527,6 +576,7 @@ For example, a factor with four elements and having the two levels,
 control and treatment can be created using:
 
 ``` r
+
 gpr <- c("control", "treatment","control","treatment")
 gpr
 #> [1] "control"   "treatment" "control"   "treatment"
@@ -535,6 +585,7 @@ gpr
 You can transform this vector into a factor by entering
 
 ``` r
+
 gpr <- factor(gpr)
 gpr
 #> [1] control   treatment control   treatment
@@ -547,6 +598,7 @@ repeats among the vector elements. To see what the codes are for our
 factor, we can type
 
 ``` r
+
 as.integer(gpr)
 #> [1] 1 2 1 2
 ```
@@ -555,6 +607,7 @@ The labels for the levels are only stored once each, rather than being
 repeated. The codes are indices into the vector of levels:
 
 ``` r
+
 levels(gpr)
 #> [1] "control"   "treatment"
 levels(gpr)[as.integer(gpr)]
@@ -565,6 +618,7 @@ One of the many things you can do with factors is to count the
 occurrence of each possible value. Let’s try this
 
 ``` r
+
 table(gpr)
 #> gpr
 #>   control treatment 
@@ -574,6 +628,7 @@ table(gpr)
 Let’s create another vector
 
 ``` r
+
 g<-factor(c("f","m","m","m"))
 g
 #> [1] f m m m
@@ -583,6 +638,7 @@ g
 Table-function can be used also for cross-tabulation of several factors.
 
 ``` r
+
 table(gpr,g)
 #>            g
 #> gpr         f m
@@ -600,6 +656,7 @@ single dimensions.
 To arrange values into matrix, we use the matrix ( ) function:
 
 ``` r
+
 m <- matrix(1:6, nrow=2,ncol=3)
 m
 #>      [,1] [,2] [,3]
@@ -611,6 +668,7 @@ We can then access element using two indices. For example, the value in
 the first row, second column is
 
 ``` r
+
 m[1,2]
 #> [1] 3
 ```
@@ -619,6 +677,7 @@ Whole rows or columns of matrices may be selected by leaving the
 corresponding index blank:
 
 ``` r
+
 m[1,]
 #> [1] 1 3 5
 
@@ -630,6 +689,7 @@ A more general way to store data is in an array. Arrays have multiple
 indices, and are created using the array function:
 
 ``` r
+
 a <- array(1:24, c(3,4,2))
 a
 #> , , 1
@@ -655,6 +715,7 @@ types from each other. Use the data.frame( ) function to construct data
 frames from vectors.
 
 ``` r
+
 colors <- c("red","yellow","blue")
 numbers <- c(1,2,3)
 colors.and.numbers <- data.frame(colors, numbers, more.numbers=c(4,5,6))
@@ -663,6 +724,7 @@ colors.and.numbers <- data.frame(colors, numbers, more.numbers=c(4,5,6))
 We can see the contents of a data frame:
 
 ``` r
+
 colors.and.numbers 
 #>   colors numbers more.numbers
 #> 1    red       1            4
@@ -673,6 +735,7 @@ colors.and.numbers
 Elements of data frame can be accessed like a matrix:
 
 ``` r
+
 colors.and.numbers[1,1]
 #> [1] "red"
 ```
@@ -681,6 +744,7 @@ Moreover, you can use the column names for accessing full columns of a
 data frame:
 
 ``` r
+
 colors.and.numbers$colors
 #> [1] "red"    "yellow" "blue"
 ```
@@ -688,11 +752,13 @@ colors.and.numbers$colors
 Remember how to subset data frame:
 
 ``` r
+
 colors.and.numbers$numbers>1
 #> [1] FALSE  TRUE  TRUE
 ```
 
 ``` r
+
 new.data<-colors.and.numbers[colors.and.numbers$numbers>1,]
 new.data
 #>   colors numbers more.numbers
@@ -703,6 +769,7 @@ new.data
 Here is also couple of examples:
 
 ``` r
+
 subset(colors.and.numbers,numbers >1)
 #>   colors numbers more.numbers
 #> 2 yellow       2            5
@@ -710,6 +777,7 @@ subset(colors.and.numbers,numbers >1)
 ```
 
 ``` r
+
 subset(colors.and.numbers,numbers==1, numbers:more.numbers)
 #>   numbers more.numbers
 #> 1       1            4
@@ -718,6 +786,7 @@ subset(colors.and.numbers,numbers==1, numbers:more.numbers)
 You can add new columns to a data frame in a following way:
 
 ``` r
+
 colors.and.numbers$new<-c(12,11,10)
 colors.and.numbers
 #>   colors numbers more.numbers new
@@ -747,6 +816,7 @@ so that you can define a function inside of another function.
 Let’s create a simple function:
 
 ``` r
+
 f<-function(x) {
  a=b*x^2
  return(a)
@@ -768,6 +838,7 @@ fahrenheit_to_celsius that converts temperatures from Fahrenheit to
 Celsius:
 
 ``` r
+
 fahrenheit_to_celsius <- function(temp_F) {
    temp_C <- (temp_F - 32) * 5 / 9
    return(temp_C)
@@ -787,6 +858,7 @@ function, we use a return statement to send a result back to whoever
 asked for it. You can test the function:
 
 ``` r
+
 fahrenheit_to_celsius(10)
 #> [1] -12.22222
 ```
@@ -803,6 +875,7 @@ Before proceeding to create the function we should check whether there
 is already a function with this name in R. Let’s type:
 
 ``` r
+
 se
 ```
 
@@ -810,6 +883,7 @@ The error printed by R indicates that we are safe to use that name.
 Following code is a possible way to create our function:
 
 ``` r
+
 se<- function(x){
  v <- var(x)
  z <- length(x)
@@ -820,6 +894,7 @@ se<- function(x){
 After creating this function, you can use it as follows:
 
 ``` r
+
 test<-c(2,4,3,6,4,9,11,3,7,6)
 se(test)
 #> [1] 0.9098229
@@ -832,6 +907,7 @@ that was evaluated within the function.
 #### Example 2: More advanced function of basic statistics
 
 ``` r
+
 basic.stats <- function(x, more=F) {
   stats <- list()
   clean.x <- x[!is.na(x)]
@@ -853,6 +929,7 @@ means that you can call this function with or without setting this
 parameter. Below are examples of these two alternatives:
 
 ``` r
+
 basic.stats(test)
 #>         n      nNAs      mean       std       med 
 #> 10.000000  0.000000  5.500000  2.877113  5.000000
@@ -868,18 +945,21 @@ If you know the name of the function that you need help with, the help (
 function, type
 
 ``` r
+
 ?q
 ```
 
 or
 
 ``` r
+
 help(q)
 ```
 
 Another commonly used function in R is mean ( ). Typing
 
 ``` r
+
 help(mean)
 ```
 
@@ -901,6 +981,7 @@ Another function that is used is help.search( ). For example, to see if
 there are any function that do optimization, type
 
 ``` r
+
 help.search("optimization")
 ```
 
@@ -916,6 +997,7 @@ help on R.
 Two basic plots are the histogram and the scatterplot. Consider
 
 ``` r
+
 x <- c(12,15,13,20,14,16,10,10,8,15)
 hist(x) 
 ```
@@ -925,6 +1007,7 @@ hist(x)
 and
 
 ``` r
+
 x <- seq(1,10)
 y <- x^2-10*x
 plot(x,y) 
@@ -939,6 +1022,7 @@ arguments. A simple example involves plotting the sine function on the
 interval \[0,6π\]:
 
 ``` r
+
 curve(expr=sin, from=0, to=6*pi) # Figure 5
 ```
 
@@ -981,6 +1065,7 @@ is 2, the fourth element is 3, the fifth element is 5, and so on.
 To obtain first 12 Fibonacci numbers in R, we can use
 
 ``` r
+
 Fibonacci <- numeric(12)
 Fibonacci[1] <- Fibonacci[2] <- 1
 for (i in 3:12) Fibonacci[i] <- Fibonacci[i-2]+Fibonacci[i-1]
@@ -999,6 +1084,7 @@ loop updates the third through 12th element of the sequence in this way.
 To see all types, type in
 
 ``` r
+
 Fibonacci
 #>  [1]   1   1   2   3   5   8  13  21  34  55  89 144
 ```
@@ -1014,23 +1100,31 @@ so the dealer is really charging some interest rate i for option 2. We
 can calculate this value using the formula for the present value of an
 annuity:
 
-$$19000 = 1000 \cdot \frac{1 - (1 + i)^{- 20}}{i}$$
+``` math
+19000 = 1000 \cdot \frac{1 - (1 + i)^{-20}}{i}
+```
 
 By multiplying both sides of this equation by i and dividing by 19000,
 we get the form of a fixed-point problem
 
-$$i = \frac{1 - (1 + i)^{- 20}}{19}$$
+``` math
+i = \frac{1 - (1 + i)^{-20}}{19}
+```
 
 By taking an initial guess for i and plugging it into the right-hand
 side of this equation, we can get an “updated” value for I on the left.
 For example, if we start with i=0.006, then our update is
 
-$$i = \frac{1 - (1 + 0.006)^{- 20}}{19} = 0.00593$$
+``` math
+i = \frac{1 - (1 + 0.006)^{-20}}{19} = 0.00593
+```
 
 By plugging this updated value into the right-hand side of the equation
 again, we get a new update:
 
-$$i = \frac{1 - (1 + 0.00593)^{- 20}}{19} = 0.00586$$
+``` math
+i = \frac{1 - (1 + 0.00593)^{-20}}{19} = 0.00586
+```
 
 This kind of fixed-point iteration usually requires many iterations
 before we can be confident that we have the solution to the fixed-point
@@ -1038,6 +1132,7 @@ equation. Here is R code to work out the solution after 1 000
 iterations.
 
 ``` r
+
 i <- 0.006
 for (j in 1:1000){
  i <- (1-(1+i)^(-20))/19
@@ -1049,6 +1144,7 @@ i
 Example: Let’s create a vector containing number 1-10:
 
 ``` r
+
 samples <- c(rep(1:10))
 samples
 #>  [1]  1  2  3  4  5  6  7  8  9 10
@@ -1057,6 +1153,7 @@ samples
 Go through the samples one by one and print them out:
 
 ``` r
+
 for (thissample in samples)
  {
    print(thissample)
@@ -1076,6 +1173,7 @@ for (thissample in samples)
 Let’s do something inside the for loop:
 
 ``` r
+
 for (thissample in samples)
  {
     str <- paste(thissample,"is current sample",sep=" ")
@@ -1096,6 +1194,7 @@ for (thissample in samples)
 Let’s terminate the loop when the sample is 3:
 
 ``` r
+
 for (thissample in samples)
  {
     if (thissample == 3) break
@@ -1109,6 +1208,7 @@ for (thissample in samples)
 Let’s ignore when the sample number is even:
 
 ``` r
+
 for (thissample in samples)
  {
     if (thissample %% 2 == 0) next
@@ -1138,6 +1238,7 @@ FALSE.
 A simple example:
 
 ``` r
+
 x <- 3
 if (x > 2) y <- 2*x else y <- 3*x
 ```
@@ -1146,6 +1247,7 @@ Since x \> 2 is TRUE, y is assigned 2 \* 3 = 6. If it hadn´t been true,
 y would have been assigned the value of 3 \* x. We can confirm this:
 
 ``` r
+
 y
 #> [1] 6
 ```
@@ -1158,6 +1260,7 @@ calculated using the cor ( ) function. It is supposed to give a measure
 of linear association. We can add a scatter plot of data as follows:
 
 ``` r
+
 corplot <- function(x,y,plotit) {
  if (plotit == TRUE) plot(x,y)
  cor(x,y)
@@ -1165,6 +1268,7 @@ corplot <- function(x,y,plotit) {
 ```
 
 ``` r
+
 class(corplot)
 #> [1] "function"
 ```
@@ -1172,6 +1276,7 @@ class(corplot)
 We can apply this function to two vectors without plotting by typing
 
 ``` r
+
 corplot(c(2,5,7),c(5,6,8),FALSE)
 #> [1] 0.953821
 ```
@@ -1179,6 +1284,7 @@ corplot(c(2,5,7),c(5,6,8),FALSE)
 Or if we
 
 ``` r
+
 corplot(c(2,5,7),c(5,6,8),T)
 ```
 
@@ -1200,6 +1306,7 @@ leaving 5 as the next entry to work with after 3; all multiples of 5
 would be removed at the next step and so on.
 
 ``` r
+
 Eratosthenes <- function(n) {
   if (n >= 2) {
       sieve <- seq(2,n)
@@ -1220,6 +1327,7 @@ Eratosthenes <- function(n) {
 Here are a couple of examples of the use of this function:
 
 ``` r
+
 Eratosthenes(50)
 #>  [1]  2  3  5  7 11 13 17 19 23 29 31 37 41 43 47
 ```
@@ -1229,6 +1337,7 @@ prime numbers up to the given value n. The basic idea of the program is
 contained in the lines:
 
 ``` r
+
 sieve <- seq(2,n)
       primes <- c()
       for (i in seq(2,n)) {
@@ -1258,6 +1367,7 @@ these elements and save all other elements, we can negate this using !
 multiples of i from the sieve vector using
 
 ``` r
+
 sieve <- sieve[(sieve %% i) != 0]
 ```
 
@@ -1278,6 +1388,7 @@ is evaluated again, and the process is repeated.
 Example:
 
 ``` r
+
 z <- 0
  while(z < 5) { 
     z <- z + 2
@@ -1293,6 +1404,7 @@ don’t know beforehand how long this list is, so we wouldn’t know how to
 stop the for ( ) loop at the right time but a while ( ) loop is perfect:
 
 ``` r
+
 Fib1 <- 1
 Fib2 <- 1
 Fibonacci <- c(Fib1,Fib2)
@@ -1328,6 +1440,7 @@ they need to be assigned sensible starting values.
 To see the final result of the computation, type
 
 ``` r
+
 Fibonacci
 #>  [1]   1   1   1   2   3   5   8  13  21  34  55  89 144 233 377
 ```
@@ -1348,6 +1461,7 @@ loop to terminate immediately. break statements can also be used in for
 immediately to the top of the loop; it can also used in any loops.
 
 ``` r
+
 z <- 0
  repeat { 
     z <- z + 1
@@ -1501,6 +1615,7 @@ Let’s create a vector where elements \[1:5\] belong to group A and
 elements \[6:10\] belong to group B
 
 ``` r
+
 y2=c(9.65, 5.09, 8.80, 7.42, 6.68, 8.79, 9.36, 9.64, 9.02, 8.86)
 ```
 
@@ -1509,12 +1624,14 @@ Now let’s create permutation test:
 First calculate the observed difference in group averages
 
 ``` r
+
 obs.diff.means=mean(y2[1:5])-mean(y2[6:10])
 ```
 
 Do the test with 500 permutations
 
 ``` r
+
 diff.means=numeric()
 for (i in 1:500){
  perm=sample(y2,10,replace=F)
@@ -1525,6 +1642,7 @@ for (i in 1:500){
 Draw a histogram from sampled differences
 
 ``` r
+
 hist(diff.means)
 ```
 
@@ -1533,6 +1651,7 @@ hist(diff.means)
 Let’s calculate the p-value for observed difference:
 
 ``` r
+
 p2<-sum(abs(diff.means)>=abs(obs.diff.means))/500
 p2
 #> [1] 0.124
@@ -1546,6 +1665,7 @@ Let’s calculate the 95% confidence intervals for the p-value
 (approximation of the normal distribution):
 
 ``` r
+
 pm.part=1.96*sqrt(p2*(1-p2)/500)
 ucb=p2+pm.part
 lcb=p2-pm.part
@@ -1561,6 +1681,7 @@ between these approaches. Here we simply define a numeric vector y2
 containing ten observations.
 
 ``` r
+
 y2=c(9.65, 5.09, 8.80, 7.42, 6.68, 8.79, 9.36, 9.64, 9.02, 8.86)
 ```
 
@@ -1568,6 +1689,7 @@ We print out the values just to confirm that the vector was created
 correctly.
 
 ``` r
+
 y2
 #>  [1] 9.65 5.09 8.80 7.42 6.68 8.79 9.36 9.64 9.02 8.86
 ```
@@ -1576,6 +1698,7 @@ Preparing the data: Next, we create a grouping variable and combine it
 with the response values. This allows us to perform two‑sample tests.
 
 ``` r
+
 group<-c(1,1,1,1,1,2,2,2,2,2)
 ```
 
@@ -1588,6 +1711,7 @@ We now combine the response variable (y2) and the group indicator into a
 single object:
 
 ``` r
+
 data<-cbind(y2,group)
 class(data)
 #> [1] "matrix" "array"
@@ -1609,6 +1733,7 @@ notation:
 - data\$group is the grouping variable
 
 ``` r
+
 ?t.test
 
 t.test(data$y2~data$group)
@@ -1635,6 +1760,7 @@ t‑test. It does not assume normality and instead compares the
 distributions of the two groups.
 
 ``` r
+
 ?wilcox.test
 wilcox.test(data$y2~data$group)
 #> 
@@ -1699,12 +1825,14 @@ of myfiles on the C-drive, then it can be read into an R data frame.
 This can be accomplished by typing
 
 ``` r
+
 pretend.df <- read.table("c:/myfiles/pretend.dat",header=T)
 ```
 
 In a data frame, the columns are named. To see the x column, type
 
 ``` r
+
 pretend.df$x
 ```
 
@@ -1713,18 +1841,21 @@ pretend.df$x
 Import a CSV file:
 
 ``` r
+
 data_csv <- read.csv("data/mydata.csv")
 ```
 
 View first rows
 
 ``` r
+
 head(data_csv)
 ```
 
 Import a CSV file using readr (tidyverse)
 
 ``` r
+
 library(readr)
 data_csv2 <- read_csv("data/mydata.csv")
 head(data_csv2)
@@ -1733,6 +1864,7 @@ head(data_csv2)
 Import an Excel file
 
 ``` r
+
 library(readxl)
 
 # Read the first sheet
@@ -1745,6 +1877,7 @@ data_excel2 <- read_excel("data/mydata.xlsx", sheet = "Sheet2")
 Import a text file (tab‑delimited)
 
 ``` r
+
 data_txt <- read.table("data/mydata.txt",
                        header = TRUE, 
                        sep = "\t")
@@ -1755,6 +1888,7 @@ head(data_txt)
 Import an RDS file
 
 ``` r
+
 data_rds <- readRDS("data/mydata.rds")
 head(data_rds)
 ```
@@ -1762,6 +1896,7 @@ head(data_rds)
 Import a dataset from the web
 
 ``` r
+
 url <- "https://raw.githubusercontent.com/user/repo/main/data.csv"
 data_web <- read_csv(url)
 
@@ -1771,6 +1906,7 @@ head(data_web)
 Import data from a database (SQLite example)
 
 ``` r
+
 library(DBI)
 library(RSQLite)
 
@@ -1788,6 +1924,7 @@ dbDisconnect(con)
 Import SPSS, Stata, or SAS files (haven package)
 
 ``` r
+
 library(haven)
 data_spss  <- read_sav("data/mydata.sav")
 data_stata <- read_dta("data/mydata.dta")
@@ -1803,18 +1940,21 @@ Excel, you will need the xlsReadWrite package.
 To A Tab Delimited Text File:
 
 ``` r
+
 write.table(mydata, "c:/mydata.txt", sep="\t") 
 ```
 
 To A CSV File:
 
 ``` r
+
 write.csv(mydata, "c:/mydata.txt", sep=";")
 ```
 
 To an Excel Spreadsheet:
 
 ``` r
+
 library(xlsx)
 write.xlsx(mydata, "c:/mydata.xlsx") 
 ```
@@ -1822,6 +1962,7 @@ write.xlsx(mydata, "c:/mydata.xlsx")
 To SPSS: Write out text datafile and an SPSS program to read it
 
 ``` r
+
 library(foreign)
 write.foreign(mydata, "c:/mydata.txt", "c:/mydata.sps",   package="SPSS") 
 ```
@@ -1829,8 +1970,13 @@ write.foreign(mydata, "c:/mydata.txt", "c:/mydata.sps",   package="SPSS")
 To SAS: Write out text datafile and an SAS program to read it
 
 ``` r
+
 library(foreign)
 write.foreign(mydata, "c:/mydata.txt", "c:/mydata.sas",   package="SAS") 
 ```
 
 ## Time to Play the Game
+
+# An error occurred.
+
+Unable to execute JavaScript.

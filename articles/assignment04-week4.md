@@ -54,6 +54,7 @@ Construct the explanatory variables as relative proportions as
 demonstrated in the lecture notes:
 
 ``` r
+
 p25_data$tyottom <- (p25_data$pt_tyott / p25_data$pt_tyoll) * 100
 p25_data$korkk   <- (p25_data$ko_yl_kork / p25_data$ko_koul) * 100
 ```

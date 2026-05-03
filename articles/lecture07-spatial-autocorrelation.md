@@ -48,12 +48,19 @@ means that different values tend to be near each other.
 
 Moran’s I is calculated as:
 
-$$I = \frac{n\sum\limits_{i = 1}^{n}\sum\limits_{j = 1}^{n}w_{ij}\left( y_{i} - \bar{y} \right)\left( y_{j} - \bar{y} \right)}{\sum\limits_{i = 1}^{n}\left( y_{i} - \bar{y} \right)^{2}\;\;\sum\limits_{i = 1}^{n}\sum\limits_{j = 1}^{n}w_{ij}}$$
+``` math
+I = 
+\frac{
+n \sum_{i=1}^{n} \sum_{j=1}^{n} w_{ij} (y_i - \bar{y})(y_j - \bar{y})
+}{
+\sum_{i=1}^{n} (y_i - \bar{y})^2 \;\; \sum_{i=1}^{n} \sum_{j=1}^{n} w_{ij}
+}
+```
 
 where  
-- $y_{i}$ is the value of the variable in area *i*,  
-- $\bar{y}$ is the mean of the variable, and  
-- $w_{ij}$ is an element of the spatial weight matrix defining the
+- $`y_i`$ is the value of the variable in area *i*,  
+- $`\bar{y}`$ is the mean of the variable, and  
+- $`w_{ij}`$ is an element of the spatial weight matrix defining the
 spatial relationship between areas *i* and *j*.
 
 Global spatial autocorrelation can be measured using **Moran’s I**, a
@@ -65,9 +72,11 @@ strong positive spatial autocorrelation.
 
 The expected value of Moran’s I under spatial randomness is:
 
-$$E(I) = \frac{- 1}{m - 1}$$
+``` math
+E(I) = \frac{-1}{m - 1}
+```
 
-where $m$ is the number of spatial units (e.g. municipalities). Values
+where $`m`$ is the number of spatial units (e.g. municipalities). Values
 larger than the expected value indicate positive spatial
 autocorrelation, while values smaller than the expected value indicate
 negative spatial autocorrelation.
@@ -81,6 +90,7 @@ R. We use the *Columbus* dataset, which is included in the package.
 #### 1. Load required package and data
 
 ``` r
+
 # Install spdep if needed
 # install.packages("spdep")
 library(spdep)
@@ -114,6 +124,7 @@ columbus[1:5,]
 More information about the dataset can be found by typing:
 
 ``` r
+
 ?columbus
 ```
 
@@ -135,6 +146,7 @@ The Columbus dataset already includes a contiguity-based neighbours
 object (col.gal.nb).
 
 ``` r
+
 ?nb2listw
 colqueen <- nb2listw(col.gal.nb)
 class(colqueen)
@@ -145,6 +157,7 @@ class(colqueen)
 The weights are row-standardized, meaning that each row sums to one.
 
 ``` r
+
 colqueen$weights[1:3]
 ```
 
@@ -162,10 +175,12 @@ colqueen$weights[1:3]
 We first compute Moran’s I using a normal approximation for the p-value.
 
 ``` r
+
 ?moran.test
 ```
 
 ``` r
+
 moran.test(columbus$CRIME,colqueen,randomisation=FALSE, alternative="two.sided")
 ```
 
@@ -184,6 +199,7 @@ moran.test(columbus$CRIME,colqueen,randomisation=FALSE, alternative="two.sided")
 We can also calculate Moran´s I for income:
 
 ``` r
+
 moranINC <- moran.test(columbus$INC,colqueen,randomisation=FALSE,
 alternative="two.sided")
 
@@ -208,6 +224,7 @@ Permutation tests avoid distributional assumptions and are often
 preferred.
 
 ``` r
+
 morpermCRIME <- moran.mc(columbus$CRIME, colqueen, nsim = 99) # Moran's I with 99 permutations
 
 morpermCRIME
@@ -226,6 +243,7 @@ morpermCRIME
 The permutation distribution can be extracted from the results:
 
 ``` r
+
 morp <- morpermCRIME$res[-length(morpermCRIME$res)]
 ```
 
@@ -235,6 +253,7 @@ We visualize the permutation distribution using a density curve,
 histogram, and reference line for the observed Moran’s I.
 
 ``` r
+
 # Kernel density estimate
 zz <- density(morp)
 
@@ -283,6 +302,7 @@ The function system.file() ensures that the correct file path is found
 regardless of where the package is installed.
 
 ``` r
+
 csv_path <- system.file("extdata",
   "netmigration.csv",
   package = "spatialcourseOL")
@@ -303,6 +323,7 @@ This returns a spatial object (sf) that contains both geometry and
 attribute information for municipalities.
 
 ``` r
+
 municipalities25 <- geofi::get_municipalities(year = 2025)
 ```
 
@@ -323,6 +344,7 @@ This is important for spatial analysis, as removing spatial units would
 alter neighbourhood relationships.
 
 ``` r
+
 migra <- left_join(municipalities25,df, by = c("kunta" = "tunnus")) # why we use left_join?
 ```
 
@@ -334,6 +356,7 @@ coordinates of municipalities.
 These coordinates represent the centroids of each spatial unit.
 
 ``` r
+
 # create weights object
 #install.packages("sfdep")
 library(sfdep)
@@ -354,6 +377,7 @@ The neighbour structure is converted into a spatial weights object
 required for spatial autocorrelation analysis.
 
 ``` r
+
 # create spatial weigth matrices, 6 nearest neighbors 
 migra_kn6<-st_knn(sf::st_geometry(migra), k = 6)
 ```
@@ -361,6 +385,7 @@ migra_kn6<-st_knn(sf::st_geometry(migra), k = 6)
     ## ! Polygon provided. Using point on surface.
 
 ``` r
+
 migra_kn6_w<- nb2listw(migra_kn6)
 ```
 
@@ -376,6 +401,7 @@ A loop is used to compute Moran’s I separately for each year, and only
 the Moran’s I coefficient is stored.
 
 ``` r
+
 pros=migra[,73:107]
 pros<-as.data.frame(pros)
 moranit=numeric()
@@ -406,6 +432,7 @@ corresponding year variable.
 This structure is suitable for time‑series visualization.
 
 ``` r
+
 # let's create a dataframe from results
 morans_vuosi=as.data.frame(moranit)
 aika<- seq(1990, 2024, 1) # a new variable from years
@@ -421,6 +448,7 @@ The plot shows how Moran’s I for net migration evolves across years,
 including a smoothed trend line to highlight overall change.
 
 ``` r
+
 library(ggplot2)
 fig1<-ggplot(data=morans_vuosi, aes(x=Vuosi, y=moranit)) + geom_line(linewidth=1.5) + geom_point(size=3)+
   labs(title="Spatial autocorrelation of the netmigration", 
@@ -438,6 +466,7 @@ fig1<-ggplot(data=morans_vuosi, aes(x=Vuosi, y=moranit)) + geom_line(linewidth=1
 See the figure:
 
 ``` r
+
 fig1
 ```
 
@@ -461,6 +490,7 @@ The result is stored as an object that contains the autocorrelation
 coefficients at different time lags.
 
 ``` r
+
 c<-acf(morans_vuosi$moranit)
 ```
 
@@ -470,6 +500,7 @@ To facilitate plotting with ggplot2, we extract the lag values and
 autocorrelation coefficients into a data frame.
 
 ``` r
+
 cdf <- with(c, data.frame(lag, acf))
 ```
 
@@ -482,6 +513,7 @@ If an autocorrelation coefficient exceeds these limits, it can be
 considered statistically significant.
 
 ``` r
+
 ci=0.95
 
 ciline<-qnorm((1 + ci)/2)/sqrt(c$n.used)
@@ -495,6 +527,7 @@ The plot shows the ACF values as vertical segments, together with
 horizontal reference lines at zero and the confidence limits.
 
 ``` r
+
 kuva1_acf<- ggplot(data = cdf, mapping = aes(x = lag, y = acf)) +
   geom_line(lwd=1.4, color="black") +
   geom_hline(aes(yintercept = 0)) +
@@ -517,6 +550,7 @@ plot. This plot provides the same information but is generated
 automatically without manual control over graphical elements.
 
 ``` r
+
 k1<-plot(c, main="Autocorrelation of the netmigration",
          xlab="Lag (years)", ylab="ACF")
 ```
@@ -532,6 +566,7 @@ This allows us to display multiple visualisations side by side for
 comparison.
 
 ``` r
+
 library(patchwork)
 fig1 + kuva1_acf
 ```
@@ -564,13 +599,15 @@ us to identify *where* spatial autocorrelation exists in the dataset
 Under the randomization hypothesis, the expected value of the local
 Moran’s I for location *i* is
 
-$$E\left( I_{i} \right) = - \frac{w_{i}}{m - 1},$$
+``` math
+E(I_i) = -\frac{w_i}{m - 1},
+```
 
-where $w_{i}$ is the sum of the elements $\sum_{j}w_{ij}$ in row *i* of
-the spatial weight matrix $\mathbf{W}$, and $m$ is the number of spatial
-units.
+where $`w_i`$ is the sum of the elements $`\sum_j w_{ij}`$ in row *i* of
+the spatial weight matrix $`\mathbf{W}`$, and $`m`$ is the number of
+spatial units.
 
-A **positive** value of $I_{i}$ indicates spatial clustering of similar
+A **positive** value of $`I_i`$ indicates spatial clustering of similar
 values between a region and its neighbours, whereas a **negative** value
 indicates spatial clustering of dissimilar values. An area is considered
 to exhibit spatial autocorrelation if the local indicators reveal
@@ -583,6 +620,7 @@ We first load the packages needed for spatial data handling, spatial
 statistics, data manipulation, and visualisation.
 
 ``` r
+
 library(sf)
 library(rgeoda)
 library(ggplot2)
@@ -603,6 +641,7 @@ The function system.file() ensures that the correct file path is found
 regardless of where the package is installed.
 
 ``` r
+
 csv_path <- system.file("extdata",
   "netmigration.csv",
   package = "spatialcourseOL")
@@ -623,6 +662,7 @@ This returns a spatial object (sf) that contains both geometry and
 attribute information for municipalities.
 
 ``` r
+
 municipalities25 <- geofi::get_municipalities(year = 2025)
 ```
 
@@ -643,6 +683,7 @@ This is important for spatial analysis, as removing spatial units would
 alter neighbourhood relationships.
 
 ``` r
+
 migra <- left_join(municipalities25,df, by = c("kunta" = "tunnus")) # why we use left_join?
 ```
 
@@ -656,6 +697,7 @@ unit. This approach ensures that all spatial units receive an equal
 number of neighbours.
 
 ``` r
+
 # Create k-nearest neighbours (k = 6)
 migra_kn6 <- st_knn(st_geometry(migra), k = 6)
 ```
@@ -663,6 +705,7 @@ migra_kn6 <- st_knn(st_geometry(migra), k = 6)
     ## ! Polygon provided. Using point on surface.
 
 ``` r
+
 # Create spatial weights
 wt <- st_weights(migra_kn6)
 ```
@@ -676,6 +719,7 @@ The calculation is applied directly within a mutate() call, which stores
 the results as a list column.
 
 ``` r
+
 lisa <- migra %>%
   mutate(moran = local_moran(nm1990, migra_kn6, wt))
 ```
@@ -690,6 +734,7 @@ high‑low, low‑high), and only results with meaningful significance
 levels are shown.
 
 ``` r
+
 lisa %>%
   tidyr::unnest(moran) %>%
   mutate(pysal = ifelse(p_folded_sim <= 0.1,

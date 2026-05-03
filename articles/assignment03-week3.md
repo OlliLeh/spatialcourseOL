@@ -1,6 +1,7 @@
 # assignment03-data
 
 ``` r
+
 library(spatialcourseOL)
 ```
 
@@ -52,6 +53,7 @@ If you do not have own data, you could use, for instance, **Sotkanet**
 environment of population)
 
 ``` r
+
 # Load the sotkanet package
 library(sotkanet)
 
@@ -68,6 +70,7 @@ guarantee successful package building. The data are read from the
 package’s extdata directory as follows:
 
 ``` r
+
 data <- readRDS(
   system.file("extdata", "sotkanet_2019.rds",
               package = "spatialcourseOL"))
@@ -80,6 +83,7 @@ We begin by downloading postcode area data using a Web Feature Service
 (WFS) query.
 
 ``` r
+
 url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
            scheme ="https",
            query =list(service ="WFS",
@@ -98,6 +102,7 @@ databases and downloading data directly into R for reproducible
 analysis.
 
 ``` r
+
 library(pxweb)
 d <- pxweb_interactive("https://pxdata.stat.fi/PXWeb/api/v1/fi")
 ```

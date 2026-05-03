@@ -167,11 +167,11 @@ vector of regression coefficients.</p>
 indicates the presence of <strong>spatial spillovers</strong>, such as
 diffusion or copy‑cat effects.</p>
 <p>Predicted values are calculated as</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>y</mi><mo accent="true">̂</mo></mover><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>I</mi><mo>−</mo><mover><mi>ρ</mi><mo accent="true">̂</mo></mover><mi>W</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi>X</mi><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mo>,</mo></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>y</mi><mo accent="true">̂</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mover><mi>ρ</mi><mo accent="true">̂</mo></mover><mi>W</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>X</mi><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mo>,</mo></mrow><annotation encoding="application/x-tex">
 \hat{y} = (I - \hat{\rho} W)^{-1} X \hat{\boldsymbol{\beta}},
 </annotation></semantics></math></p>
 <p>and residuals as</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>I</mi><mo>−</mo><mover><mi>ρ</mi><mo accent="true">̂</mo></mover><mi>W</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>y</mi><mo>−</mo><mi>X</mi><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mover><mi>ρ</mi><mo accent="true">̂</mo></mover><mi>W</mi><mo stretchy="false" form="postfix">)</mo><mi>y</mi><mo>−</mo><mi>X</mi><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">
 (I - \hat{\rho} W)y - X \hat{\boldsymbol{\beta}}.
 </annotation></semantics></math></p>
 </div>
@@ -207,7 +207,7 @@ interaction.</p>
 \hat{y} = X \hat{\boldsymbol{\beta}},
 </annotation></semantics></math></p>
 <p>and residuals as</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>I</mi><mo>−</mo><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>W</mi><mo stretchy="true" form="postfix">)</mo></mrow><mover><mi>ε</mi><mo accent="true">̂</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>W</mi><mo stretchy="false" form="postfix">)</mo><mover><mi>ε</mi><mo accent="true">̂</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">
 (I - \hat{\lambda} W)\hat{\varepsilon}.
 </annotation></semantics></math></p>
 <p>With spatial error in OLS-regression, the assumption of uncorrelated
@@ -568,11 +568,11 @@ spatial error model may fit better to our data.</p>
 <span><span class="co">## Type: error </span></span>
 <span><span class="co">## Coefficients: (asymptotic standard errors) </span></span>
 <span><span class="co">##               Estimate Std. Error  z value  Pr(&gt;|z|)</span></span>
-<span><span class="co">## (Intercept) 57.0953845  1.9127290  29.8502 &lt; 2.2e-16</span></span>
+<span><span class="co">## (Intercept) 57.0953852  1.9127290  29.8502 &lt; 2.2e-16</span></span>
 <span><span class="co">## korkk        0.3388572  0.0172780  19.6121 &lt; 2.2e-16</span></span>
 <span><span class="co">## alkut       -0.0335142  0.0055793  -6.0069 1.892e-09</span></span>
 <span><span class="co">## elak         0.0480779  0.0125449   3.8325 0.0001269</span></span>
-<span><span class="co">## as_tih      -0.6700999  0.2249769  -2.9785 0.0028964</span></span>
+<span><span class="co">## as_tih      -0.6700998  0.2249769  -2.9785 0.0028964</span></span>
 <span><span class="co">## he_kika.x   -0.5075504  0.0308752 -16.4388 &lt; 2.2e-16</span></span>
 <span><span class="co">## ra_as_kpa.y -0.2500985  0.0105866 -23.6240 &lt; 2.2e-16</span></span>
 <span><span class="co">## </span></span>
@@ -640,7 +640,7 @@ spatial error model may fit better to our data.</p>
 <span><span class="co">## Type: lag </span></span>
 <span><span class="co">## Coefficients: (asymptotic standard errors) </span></span>
 <span><span class="co">##               Estimate Std. Error  z value  Pr(&gt;|z|)</span></span>
-<span><span class="co">## (Intercept) 36.5771818  1.9216355  19.0344 &lt; 2.2e-16</span></span>
+<span><span class="co">## (Intercept) 36.5771816  1.9216355  19.0344 &lt; 2.2e-16</span></span>
 <span><span class="co">## korkk        0.3938082  0.0178837  22.0205 &lt; 2.2e-16</span></span>
 <span><span class="co">## alkut       -0.0257826  0.0061369  -4.2012 2.655e-05</span></span>
 <span><span class="co">## elak         0.1049687  0.0142032   7.3905 1.463e-13</span></span>

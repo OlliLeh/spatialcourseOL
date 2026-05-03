@@ -42,35 +42,36 @@ regression coefficients.
 
 The GWR model can be defined as follows (e.g., Brunsdon et al., 1998):
 
-$$y_{i} = \beta_{0}\left( u_{i},v_{i} \right) + \sum\limits_{k = 1}^{p}\beta_{k}\left( u_{i},v_{i} \right)x_{i,k} + \varepsilon_{i}$$
+\$\$ y_i = \beta_0(u_i, v_i) + \sum\_{k=1}^{p} \beta_k(u_i,
+v_i)x\_{i,k} + \varepsilon_i \tag{2} \$\$
 
 where
 
-- $y_{i}$ is the observed value of the dependent variable at location
-  $i$,  
-- $x_{i,k}$ is the value of explanatory variable $k$ at location $i$,  
-- $\varepsilon_{i}$ is the random error term,  
-- $\left( u_{i},v_{i} \right)$ are the spatial coordinates of
-  observation $i$, and  
-- $\beta_{0}\left( u_{i},v_{i} \right)$ and
-  $\beta_{k}\left( u_{i},v_{i} \right)$ are the local regression
-  coefficients for the intercept and explanatory variable $k$ at
-  location $i$.
+- $`y_i`$ is the observed value of the dependent variable at location
+  $`i`$,  
+- $`x_{i,k}`$ is the value of explanatory variable $`k`$ at location
+  $`i`$,  
+- $`\varepsilon_i`$ is the random error term,  
+- $`(u_i, v_i)`$ are the spatial coordinates of observation $`i`$, and  
+- $`\beta_0(u_i, v_i)`$ and $`\beta_k(u_i, v_i)`$ are the local
+  regression coefficients for the intercept and explanatory variable
+  $`k`$ at location $`i`$.
 
 The GWR model is based on the assumption that observations closer to the
 target location exert a greater influence on the estimation of
-parameters $\beta$ than more distant observations.
+parameters $`\beta`$ than more distant observations.
 
 #### Estimation of Local Regression Coefficients
 
 The estimation of the local regression coefficients is given by:
 
-$$\widehat{\mathbf{β}}\left( u_{i},v_{i} \right) = \left\lbrack X^{T}W\left( u_{i},v_{i} \right)X \right\rbrack^{- 1}X^{T}W\left( u_{i},v_{i} \right)Y$$
+\$\$ \hat{\boldsymbol{\beta}}(u_i, v_i) = \left\[X^T W(u_i, v_i) X
+\right\]^{-1} X^T W(u_i, v_i) Y \tag{3} \$\$
 
-where $W\left( u_{i},v_{i} \right)$ is an $n \times n$ spatial weighting
-matrix whose diagonal elements represent the geographical weights for
-observation $i$, and whose off-diagonal elements are zero. A separate
-weight matrix is computed for each observation $i$ at which local
+where $`W(u_i, v_i)`$ is an $`n \times n`$ spatial weighting matrix
+whose diagonal elements represent the geographical weights for
+observation $`i`$, and whose off-diagonal elements are zero. A separate
+weight matrix is computed for each observation $`i`$ at which local
 regression coefficients are estimated.
 
 The observation weight matrix is constructed using a **kernel function**
@@ -84,42 +85,57 @@ generally classified as either **fixed** or **adaptive**.
 
 The elements of the weight matrix are defined as:
 
-$$w_{ik} = \begin{cases}
-{1,} & {{\text{if}\mspace{6mu}}d_{ik} < r} \\
-{0,} & \text{otherwise}
-\end{cases}$$
+``` math
+w_{ik} =
+\begin{cases}
+1, & \text{if } d_{ik} < r \\
+0, & \text{otherwise}
+\end{cases}
+\tag{4}
+```
 
 #### Gaussian Kernel Function
 
 A commonly used weighting scheme is the **Gaussian kernel**, which is
 defined as:
 
-$$w_{ij} = \exp\left( - \frac{d_{ij}^{2}}{2h^{2}} \right)$$
+``` math
+w_{ij} = \exp\left(-\frac{d_{ij}^2}{2h^2}\right)
+\tag{5}
+```
 
-where $d_{ij}$ is the distance between observation point $i$ and
-regression point $j$, and $h$ is the bandwidth parameter that defines
-the spatial extent within which points influence the estimation of
-regression coefficients.
+where $`d_{ij}`$ is the distance between observation point $`i`$ and
+regression point $`j`$, and $`h`$ is the bandwidth parameter that
+defines the spatial extent within which points influence the estimation
+of regression coefficients.
 
-When using point coordinates $(x,y)$, the distance between two points is
-computed as the **Euclidean distance**:
+When using point coordinates $`(x, y)`$, the distance between two points
+is computed as the **Euclidean distance**:
 
-$$d_{ij} = \sqrt{\left( x_{i} - x_{j} \right)^{2} + \left( y_{i} - y_{j} \right)^{2}}$$
+``` math
+d_{ij} = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2}
+\tag{6}
+```
 
 #### Bandwidth Selection via Cross-Validation
 
-The bandwidth parameter $h$ is estimated using **cross-validation** as
+The bandwidth parameter $`h`$ is estimated using **cross-validation** as
 follows:
 
-$$\Delta(h) = \sum\limits_{i = 1}^{n}\left( y_{i} - {\widehat{y}}_{(i)}(h) \right)^{2}$$
+``` math
+\Delta(h) = \sum_{i=1}^{n} \left(y_i - \hat{y}_{(i)}(h)\right)^2
+\tag{7}
+```
 
-where ${\widehat{y}}_{(i)}(h)$ is the fitted value at location
-$\left( u_{i},v_{i} \right)$ obtained by excluding observation $i$ from
-the estimation. The goal of cross-validation is to predict each
-observation using the remaining data and select the bandwidth $h$ such
-that:
+where $`\hat{y}_{(i)}(h)`$ is the fitted value at location
+$`(u_i, v_i)`$ obtained by excluding observation $`i`$ from the
+estimation. The goal of cross-validation is to predict each observation
+using the remaining data and select the bandwidth $`h`$ such that:
 
-$$\Delta(h) = \min\Delta(h)$$
+``` math
+\Delta(h) = \min \Delta(h)
+\tag{8}
+```
 
 #### Statistical Significance of Local Regression Coefficients
 
@@ -138,26 +154,32 @@ spatial variation.
 
 The t-statistic for a regression coefficient is calculated as:
 
-$$t_{i} = \frac{{\widehat{\beta}}_{k} - 0}{SE\left( {\widehat{\beta}}_{k} \right)}$$
+``` math
+t_i = \frac{\hat{\beta}_k - 0}{SE(\hat{\beta}_k)}
+\tag{9}
+```
 
-which follows a t-distribution with $n - 1$ degrees of freedom. This
+which follows a t-distribution with $`n - 1`$ degrees of freedom. This
 test evaluates whether the estimated regression coefficients differ
 significantly from zero.
 
 To determine the significance level of the t-test, Byrne et al. (2009,
 p. 4) propose the following adjustment:
 
-$$F_{0} = \frac{\alpha}{1 + p_{e} - \frac{p_{e}}{np}}$$
+``` math
+F_0 = \frac{\alpha}{1 + p_e - \frac{p_e}{n p}}
+\tag{10}
+```
 
 where
 
-- $p_{e}$ is the number of effective parameters,  
-- $p$ is the number of estimated parameters,  
-- $n$ is the number of observations, and  
-- $\alpha$ is the chosen significance level.
+- $`p_e`$ is the number of effective parameters,  
+- $`p`$ is the number of estimated parameters,  
+- $`n`$ is the number of observations, and  
+- $`\alpha`$ is the chosen significance level.
 
 You can choose the significance level based on your data. Normally, it
-is set to $\alpha = 0.05$ or $\alpha = 0.10$.
+is set to $`\alpha = 0.05`$ or $`\alpha = 0.10`$.
 
 ### Idea of Geographically Weighted Regression (GWR)
 
@@ -168,7 +190,9 @@ meaning that the relationship between the dependent and explanatory
 variables is constant throughout the entire study area. This assumption
 is illustrated by the stationary model
 
-$$y_{i} = \beta_{0} + \beta_{1}x_{1i},$$
+``` math
+y_i = \beta_0 + \beta_1 x_{1i},
+```
 
 where a single set of regression coefficients is applied uniformly to
 all locations.
@@ -180,10 +204,12 @@ relationships change from one location to another. This situation is
 illustrated in the nonstationary case, where regression parameters are
 allowed to vary across space:
 
-$$y_{i} = \beta_{0}\left( u_{i},v_{i} \right) + \beta_{1}\left( u_{i},v_{i} \right)x_{1i}.$$
+``` math
+y_i = \beta_0(u_i, v_i) + \beta_1(u_i, v_i)x_{1i}.
+```
 
-Here, $\left( u_{i},v_{i} \right)$ denote the spatial coordinates of
-observation $i$, and the regression coefficients are location-specific.
+Here, $`(u_i, v_i)`$ denote the spatial coordinates of observation
+$`i`$, and the regression coefficients are location-specific.
 
 GWR addresses spatial nonstationarity by estimating a **local regression
 model at each observation point** rather than fitting a single global
@@ -203,11 +229,16 @@ magnitude and spatial extent.
 
 #### Geographically Weighted Regression
 
+# An error occurred.
+
+Unable to execute JavaScript.
+
 ## Using GWR with PAAVO (postal code area) data
 
 ### 1. Required packages
 
 ``` r
+
 library(dplyr)
 library(purrr)
 library(sf)
@@ -219,6 +250,7 @@ library(ows4R)
 ### 2. Downloading spatial data from Statistics Finland (WFS)
 
 ``` r
+
 url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
            scheme ="https",
            query =list(service ="WFS",
@@ -241,6 +273,7 @@ p25 <-st_read(request)
     ## Projected CRS: ETRS89 / TM35FIN(E,N)
 
 ``` r
+
 url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
            scheme ="https",
            query =list(service ="WFS",
@@ -265,6 +298,7 @@ p16 <-st_read(request)
 ### 3. Data preparation and merging
 
 ``` r
+
 names(p16)
 ```
 
@@ -293,6 +327,7 @@ names(p16)
     ## [111] "pt_opisk"   "pt_elakel"  "pt_muut"    "geometry"
 
 ``` r
+
 p16data<-p16[,c(3,79)]
 p16data<-as.data.frame(p16data[,1:2])
 colnames(p16data)<-c("posti_alue","tyopy16")
@@ -300,6 +335,7 @@ p16data<-as.data.frame(p16data[,1:2])
 ```
 
 ``` r
+
 p25_data <- dplyr::right_join(x = p16data, y = p25, by=c("posti_alue" = "postinumeroalue"))
 p25_data$tyopy16[is.na(p25_data$tyopy16)] <- 0
 ```
@@ -307,6 +343,7 @@ p25_data$tyopy16[is.na(p25_data$tyopy16)] <- 0
 ### 4. Creating change variables and indicators
 
 ``` r
+
 p25_data$tp_m22_16<-(p25_data$tp_tyopy-p25_data$tyopy16)
 p25_data$tp_m22_16p<-((p25_data$tp_tyopy-p25_data$tyopy16)/p25_data$tyopy16)*100
 
@@ -320,6 +357,7 @@ p25_data$as_tih<-(p25_data$he_vakiy/(p25_data$pinta_ala/1000))
 ### 5. Data cleaning
 
 ``` r
+
 p25_data2<-p25_data[,c(1,14,67,78,118:122)]
 
 # remove na and inf
@@ -332,6 +370,7 @@ p25_data4<-p25_data3 %>%
 ### 6. Join attribute data back to spatial data
 
 ``` r
+
 data<-dplyr::left_join(x = p25, y = p25_data4, by=c("postinumeroalue" = "posti_alue"))
 data2 <- data[!is.na(data$he_kika.y),] # if we don't remove NAs, we cannot join results
 ```
@@ -339,6 +378,7 @@ data2 <- data[!is.na(data$he_kika.y),] # if we don't remove NAs, we cannot join 
 ### 7. Spatial weights matrix (k‑nearest neighbours)
 
 ``` r
+
 library(spdep)
 data.coords<-st_centroid(st_geometry(data2), of_largest_polygon=TRUE) # Extracts the coordinates of each postcode area
 p25_kn6<-knn2nb(knearneigh(data.coords,k=6,longlat = F)) # Returns a matrix with the indices of points belonging to the set of the k nearest neighbours of each other
@@ -348,6 +388,7 @@ p25_kn6<-knn2nb(knearneigh(data.coords,k=6,longlat = F)) # Returns a matrix with
     ## argument overrides object
 
 ``` r
+
 p25_kn6_w<-nb2listw(p25_kn6)
 ```
 
@@ -361,6 +402,7 @@ We begin by loading the necessary R packages for spatial data handling,
 regression modeling, and visualization.
 
 ``` r
+
 library(sf)
 library(spgwr)
 library(tidyverse)
@@ -378,6 +420,7 @@ units and transform them to WGS84 (EPSG:4326). Variable names are
 standardized for consistency.
 
 ``` r
+
 cntrd = st_centroid(data2)%>%
   st_transform(3067) %>%
   clean_names()
@@ -392,6 +435,7 @@ This model assumes that relationships between variables are the same
 everywhere in the study area.
 
 ``` r
+
 model_lm=lm(tyottom~ korkk+alkut+elak+as_tih+he_kika_x+ra_as_kpa_y, data=cntrd)
 summary(model_lm) # look the results of the model
 ```
@@ -455,11 +499,13 @@ To examine whether spatial patterns remain unexplained, we extract model
 residuals and visualize them on a map.
 
 ``` r
+
 # save residuals for plotting
 data2$resid<-model_lm$residuals # create a new variable resid
 ```
 
 ``` r
+
 # create a map from the residuals
 ggplot(data2) +
   geom_sf(aes(fill=resid), color=NA) +
@@ -480,6 +526,7 @@ The spgwr package requires input data in the SpatialPointsDataFrame
 format. We therefore convert the centroid data accordingly.
 
 ``` r
+
 cntrd.sp <- as(cntrd, "Spatial")
 ```
 
@@ -490,6 +537,7 @@ determines how far spatial influence extends. The bandwidth is chosen
 using cross-validation.
 
 ``` r
+
 # Let's analyse bandwidht
 ?gwr.sel
 cntrd.bw=gwr.sel(tyottom~ korkk+alkut+elak+as_tih+he_kika_x+ra_as_kpa_y, data=cntrd.sp)
@@ -512,11 +560,11 @@ cntrd.bw=gwr.sel(tyottom~ korkk+alkut+elak+as_tih+he_kika_x+ra_as_kpa_y, data=cn
     ## Bandwidth: 59024.96 CV score: 216871.5 
     ## Bandwidth: 59025.02 CV score: 216871.5 
     ## Bandwidth: 59025.02 CV score: 216871.5 
-    ## Bandwidth: 59025.01 CV score: 216871.5 
     ## Bandwidth: 59025.02 CV score: 216871.5 
     ## Bandwidth: 59025.02 CV score: 216871.5
 
 ``` r
+
 cntrd.bw
 ```
 
@@ -554,6 +602,7 @@ observation receives its own set of locally weighted regression
 coefficients.
 
 ``` r
+
 cntrd.gwr=gwr(tyottom~ korkk+alkut+elak+as_tih+he_kika_x+ra_as_kpa_y, data=cntrd.sp, bandwidth=cntrd.bw, hatmatrix=TRUE)
 cntrd.gwr
 ```
@@ -643,6 +692,7 @@ We inspect the structure of the GWR result object and identify where
 local coefficients are stored.
 
 ``` r
+
 # Let's see the names of the model object
 names(cntrd.gwr)
 ```
@@ -651,6 +701,7 @@ names(cntrd.gwr)
     ##  [7] "hatmatrix" "gweight"   "gTSS"      "this.call" "fp.given"  "timings"
 
 ``` r
+
 # Here you can find the coefficients etc.
 names(cntrd.gwr$SDF)
 ```
@@ -671,6 +722,7 @@ We save selected local coefficients back into the original spatial
 dataset for mapping.
 
 ``` r
+
 # save results to new variables
 data2$coef_korkk<-cntrd.gwr$SDF$korkk
 data2$coef_alkut<-cntrd.gwr$SDF$alkut
@@ -683,6 +735,7 @@ thematic maps. These maps reveal how the strength of relationships
 changes across space.
 
 ``` r
+
 map1<-ggplot(data2) +
   geom_sf(aes(fill=coef_korkk), color=NA) +
   scale_fill_viridis() +
@@ -692,6 +745,7 @@ map1<-ggplot(data2) +
 ```
 
 ``` r
+
 map2<-ggplot(data2) +
   geom_sf(aes(fill=coef_alkut), color=NA) +
   scale_fill_viridis()+
@@ -701,6 +755,7 @@ map2<-ggplot(data2) +
 ```
 
 ``` r
+
 map1 + map2
 ```
 
@@ -729,6 +784,7 @@ significantly improves model fit compared to the global model using the
 LMZ F-test. **This can take some time.**
 
 ``` r
+
 # test model fit
 ?LMZ.F3GWR.test
 LMZ.F3GWR.test(cntrd.gwr)

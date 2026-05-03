@@ -86,7 +86,9 @@ resulting principal components are uncorrelated with one another.
 In principal component analysis, the extracted components generally take
 the form
 
-$$PC^{(m)} = w_{1}^{(m)}X_{1} + w_{2}^{(m)}X_{2} + \ldots + w_{p}^{(m)}X_{p}$$
+``` math
+PC^{(m)} = w^{(m)}_1 X_1 + w^{(m)}_2 X_2 + \dots + w^{(m)}_p X_p
+```
 
 and they have the largest variance among those linear combinations that
 are uncorrelated with the previously extracted principal components. In
@@ -139,6 +141,7 @@ purposes only** and is not executed when building the package
 documentation.
 
 ``` r
+
 # Load the sotkanet package
 library(sotkanet)
 
@@ -155,6 +158,7 @@ guarantee successful package building. The data are read from the
 package’s extdata directory as follows:
 
 ``` r
+
 data <- readRDS(
   system.file("extdata", "sotkanet_2019.rds",
               package = "spatialcourseOL"))
@@ -166,6 +170,7 @@ Next, we select only the relevant columns and reshape the data from long
 format to wide format so that each indicator becomes its own variable.
 
 ``` r
+
 data2<-data[,c(5,7,9)] #select only some columns from data
 table(data2$indicator.title.fi)
 ```
@@ -205,6 +210,7 @@ table(data2$indicator.title.fi)
 We use the reshape2 package to perform the transformation.
 
 ``` r
+
 ?reshape2::dcast
 dat <- reshape2::dcast(data2,  region.code ~ indicator.title.fi, value.var = "primary.value")
 dat$region.code<-as.numeric(dat$region.code) #change code to numeric
@@ -215,6 +221,7 @@ class(dat)
     ## [1] "data.frame"
 
 ``` r
+
 names(dat)
 ```
 
@@ -241,6 +248,7 @@ To make variable names easier to work with, we clean them and ensure
 that all variables are numeric.
 
 ``` r
+
 dat<-clean_names(dat) # clean column names of our dataframe
 names(dat)
 ```
@@ -263,6 +271,7 @@ names(dat)
     ## [16] "yleista_asumistukea_saaneet_yhteensa_percent_asuntokunnista"
 
 ``` r
+
 dat2<-data.frame(lapply(dat,as.numeric))
 ```
 
@@ -272,6 +281,7 @@ To visualize the indicators spatially, we download municipality
 boundaries.
 
 ``` r
+
 municipalities23 <- geofi::get_municipalities(year = 2023)
 ```
 
@@ -288,6 +298,7 @@ left join. This keeps all spatial units even if some attribute values
 are missing.
 
 ``` r
+
 map <- left_join(municipalities23,dat2, by = c("kunta" = "region_code")) # why we use left_join?
 ```
 
@@ -296,12 +307,14 @@ map <- left_join(municipalities23,dat2, by = c("kunta" = "region_code")) # why w
 We can now visualize the spatial data using ggplot2 and simple maps.
 
 ``` r
+
 ggplot(map)+geom_sf()
 ```
 
 ![](lecture06-multivariate_files/figure-html/unnamed-chunk-11-1.png)
 
 ``` r
+
 ggplot(map, aes(fill = taloudellinen_huoltosuhde)) + geom_sf()
 ```
 
@@ -313,6 +326,7 @@ Before performing multivariate analysis, we select a subset of variables
 and inspect their distributions.
 
 ``` r
+
 map2<-data.frame(map[,c(3,73:87)])
 summary(map2)
 ```
@@ -421,6 +435,7 @@ between variables, which is a key step before applying methods such as
 principal component analysis or cluster analysis.
 
 ``` r
+
 map3<-map2[,c(1:10,14,15,16)]
 scatterplotMatrix(map3[,2:8])
 ```
@@ -443,6 +458,7 @@ We select the variables to be included in the PCA. The first column is
 an identifier, so it is excluded from the analysis.
 
 ``` r
+
 # Select variables for PCA
 data_pca <- map3[, 2:13]
 ```
@@ -452,6 +468,7 @@ missing values with the mean of each variable, which is a common and
 simple imputation approach for exploratory analysis.
 
 ``` r
+
 data_pca2<-data_pca%>%mutate_all(~ifelse(is.na(.x),mean(.x,na.rm=T),.x))
 data_pca2 <- data_pca2 %>% select(-geom)
 ```
@@ -463,6 +480,7 @@ standardized (scale = TRUE) so that they contribute equally to the
 analysis.
 
 ``` r
+
 sotkanet_pca <- prcomp(data_pca2, scale=T) 
 summary(sotkanet_pca)
 ```
@@ -478,6 +496,7 @@ summary(sotkanet_pca)
     ## Cumulative Proportion  0.97187 0.98831 0.99594 1.00000
 
 ``` r
+
 names(sotkanet_pca)
 ```
 
@@ -489,6 +508,7 @@ A scree plot helps determine how many components should be retained by
 visualizing the eigenvalues.
 
 ``` r
+
 screeplot(sotkanet_pca, type="lines")
 ```
 
@@ -503,6 +523,7 @@ Component loadings show how strongly each variable contributes to a
 principal component.
 
 ``` r
+
 sotkanet_pca$rotation[,1] # Socioeconomic wellbeing
 ```
 
@@ -530,6 +551,7 @@ sotkanet_pca$rotation[,1] # Socioeconomic wellbeing
     ##                                                                               0.07178681
 
 ``` r
+
 sotkanet_pca$rotation[,2] # Labour market disadvantage
 ```
 
@@ -557,6 +579,7 @@ sotkanet_pca$rotation[,2] # Labour market disadvantage
     ##                                                                              0.585939330
 
 ``` r
+
 sotkanet_pca$rotation[,3] # Inequality–language structure
 ```
 
@@ -611,6 +634,7 @@ Component scores describe how each municipality is positioned along the
 principal components.
 
 ``` r
+
 sotkanet_pca$x[,1]; hist(sotkanet_pca$x[,1])
 ```
 
@@ -686,6 +710,7 @@ spatial dataset. This allows the components to be visualized on maps or
 used in further spatial analysis.
 
 ``` r
+
 map3$pca1<-sotkanet_pca$x[,1]
 map3$pca2<-sotkanet_pca$x[,2]
 map3$pca3<-sotkanet_pca$x[,3]
@@ -746,6 +771,7 @@ We select the PCA scores that were previously added to the spatial data
 object.
 
 ``` r
+
 # Select PCA scores for clustering
 df <- map3[, 14:16]
 ```
@@ -757,6 +783,7 @@ clusters using the NbClust package. This package evaluates multiple
 statistical criteria to suggest an optimal number of clusters.
 
 ``` r
+
 #install.packages("NbClust") #factoextra
 library(NbClust)
 #set.seed(1234)
@@ -765,6 +792,7 @@ library(NbClust)
 We examine how often different cluster numbers are recommended.
 
 ``` r
+
 nc <- NbClust(df, min.nc=2, max.nc=15, method="kmeans")
 ```
 
@@ -803,6 +831,7 @@ nc <- NbClust(df, min.nc=2, max.nc=15, method="kmeans")
     ## *******************************************************************
 
 ``` r
+
 table(nc$Best.n[1,])
 ```
 
@@ -813,6 +842,7 @@ table(nc$Best.n[1,])
 The following bar plot summarizes the results across all criteria.
 
 ``` r
+
 barplot(table(nc$Best.n[1,]), xlab="Numer of Clusters", 
         ylab="Number of Criteria", main="Number of Clusters Chosen by 26 Criteria")
 ```
@@ -827,6 +857,7 @@ We apply k-means clustering with four clusters. Multiple random starts
 are used to improve solution stability.
 
 ``` r
+
 fit.km <- kmeans(df, 4, nstart=25)    
 names(fit.km)
 ```
@@ -838,12 +869,14 @@ Cluster sizes and cluster centers provide insight into the structure of
 the solution.
 
 ``` r
+
 fit.km$size
 ```
 
     ## [1]  25 124  73  87
 
 ``` r
+
 fit.km$centers   
 ```
 
@@ -856,6 +889,7 @@ fit.km$centers
 We can also compute the mean values of the input variables by cluster.
 
 ``` r
+
 aggregate(df, by=list(cluster=fit.km$cluster), mean)
 ```
 
@@ -971,6 +1005,7 @@ Next, we store the cluster membership for each municipality in the
 spatial dataset.
 
 ``` r
+
 cluster=as.vector(fit.km$clus)
 map$cluster<- cluster
 ```
@@ -984,10 +1019,12 @@ Finally, we visualize the spatial distribution of the clusters on a map.
 Clusters are categorical, so convert them to a factor.
 
 ``` r
+
 map$cluster <- factor(map$cluster)
 ```
 
 ``` r
+
 cluster_labels <- c(
   "1" = "Structurally strong,\nbut socially vulnerable",
   "2" = "Average municipalities",
@@ -1001,6 +1038,7 @@ cluster_labels <- c(
 Now use scale_fill_brewer() (or viridis, both are good for maps).
 
 ``` r
+
 ggplot(map) +
   geom_sf(aes(fill = cluster), colour = "white", linewidth = 0.1) +
   scale_fill_brewer(

@@ -30,21 +30,25 @@ relationship between a dependent variable and a set of explanatory
 variables. In its most common form, ordinary least squares (OLS)
 regression can be written as:
 
-$$y = {\mathbf{β}}X + \varepsilon,$$
+``` math
+y = \boldsymbol{\beta} X + \varepsilon,
+```
 
 or equivalently,
 
-$$y = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + \cdots + \beta_{n}x_{n} + \varepsilon,$$
+``` math
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_n x_n + \varepsilon,
+```
 
 where  
-- $y$ is the response variable,  
-- $X$ represents the predictor variable(s),  
-- $\mathbf{β}$ are the unknown regression parameters, and  
-- $\varepsilon$ is the error term.
+- $`y`$ is the response variable,  
+- $`X`$ represents the predictor variable(s),  
+- $`\boldsymbol{\beta}`$ are the unknown regression parameters, and  
+- $`\varepsilon`$ is the error term.
 
 #### Spatial dependence
 
-Spatial dependence exists when the value observed in a region $i$
+Spatial dependence exists when the value observed in a region $`i`$
 depends on values observed in neighbouring regions. Previously, spatial
 dependence was examined using spatial autocorrelation statistics. In
 regression modelling, spatial dependence may occur either in the
@@ -52,34 +56,41 @@ variables themselves or in the error terms.
 
 #### Spatial lag model
 
-In a **spatial lag model**, the dependent variable at location $i$ is
-influenced not only by the explanatory variables at $i$, but also by
-values of the dependent variable at neighbouring locations $j$. The
+In a **spatial lag model**, the dependent variable at location $`i`$ is
+influenced not only by the explanatory variables at $`i`$, but also by
+values of the dependent variable at neighbouring locations $`j`$. The
 spatial lag model is defined as:
 
-$$y = \rho Wy + X{\mathbf{β}} + \varepsilon,$$
+``` math
+y = \rho W y + X \boldsymbol{\beta} + \varepsilon,
+```
 
 where  
-- $y$ is an $N \times 1$ vector of observations of the dependent
+- $`y`$ is an $`N \times 1`$ vector of observations of the dependent
 variable,  
-- $Wy$ is the spatially lagged dependent variable based on the spatial
-weight matrix $W$,  
-- $X$ is an $N \times K$ matrix of explanatory variables,  
-- $\varepsilon$ is an $N \times 1$ vector of error terms,  
-- $\rho$ is the spatial autoregressive parameter, and  
-- $\mathbf{β}$ is a $K \times 1$ vector of regression coefficients.
+- $`W y`$ is the spatially lagged dependent variable based on the
+spatial weight matrix $`W`$,  
+- $`X`$ is an $`N \times K`$ matrix of explanatory variables,  
+- $`\varepsilon`$ is an $`N \times 1`$ vector of error terms,  
+- $`\rho`$ is the spatial autoregressive parameter, and  
+- $`\boldsymbol{\beta}`$ is a $`K \times 1`$ vector of regression
+coefficients.
 
-A statistically significant autoregressive coefficient $\rho$ indicates
-the presence of **spatial spillovers**, such as diffusion or copy‑cat
-effects.
+A statistically significant autoregressive coefficient $`\rho`$
+indicates the presence of **spatial spillovers**, such as diffusion or
+copy‑cat effects.
 
 Predicted values are calculated as
 
-$$\widehat{y} = \left( I - \widehat{\rho}W \right)^{- 1}X\widehat{\mathbf{β}},$$
+``` math
+\hat{y} = (I - \hat{\rho} W)^{-1} X \hat{\boldsymbol{\beta}},
+```
 
 and residuals as
 
-$$\left( I - \widehat{\rho}W \right)y - X\widehat{\mathbf{β}}.$$
+``` math
+(I - \hat{\rho} W)y - X \hat{\boldsymbol{\beta}}.
+```
 
 #### Spatial error model
 
@@ -87,17 +98,21 @@ In a **spatial error model**, spatial dependence exists in the error
 terms rather than directly in the dependent variable. The model is
 defined as:
 
-$$y = X{\mathbf{β}} + \varepsilon,$$
+``` math
+y = X \boldsymbol{\beta} + \varepsilon,
+```
 
 with
 
-$$\varepsilon = \lambda W\varepsilon + \xi,$$
+``` math
+\varepsilon = \lambda W \varepsilon + \xi,
+```
 
 where  
-- $\lambda$ is the spatial autoregressive coefficient for the error
+- $`\lambda`$ is the spatial autoregressive coefficient for the error
 term,  
-- $W\varepsilon$ is the spatially lagged error component, and  
-- $\xi$ is an uncorrelated and homoskedastic error term.
+- $`W \varepsilon`$ is the spatially lagged error component, and  
+- $`\xi`$ is an uncorrelated and homoskedastic error term.
 
 Spatial error dependence is often interpreted as a **nuisance process**,
 reflecting spatial autocorrelation in omitted variables or measurement
@@ -105,11 +120,15 @@ errors rather than substantive spatial interaction.
 
 In this model, predicted values are calculated as
 
-$$\widehat{y} = X\widehat{\mathbf{β}},$$
+``` math
+\hat{y} = X \hat{\boldsymbol{\beta}},
+```
 
 and residuals as
 
-$$\left( I - \widehat{\lambda}W \right)\widehat{\varepsilon}.$$
+``` math
+(I - \hat{\lambda} W)\hat{\varepsilon}.
+```
 
 With spatial error in OLS-regression, the assumption of uncorrelated
 error terms is violated. As a result, the estimates are inefficient.
@@ -118,11 +137,16 @@ error terms is violated. As a result, the estimates are inefficient.
 
 #### Spatial Regession in R 1: The Four Simplest Models
 
+# An error occurred.
+
+Unable to execute JavaScript.
+
 ## Exampe: Spatial Regression Analysis of Finnish Postal Code Areas
 
 ### 1. Required packages
 
 ``` r
+
 library(dplyr)
 library(purrr)
 library(sf)
@@ -134,6 +158,7 @@ library(ows4R)
 ### 2. Downloading spatial data from Statistics Finland (WFS)
 
 ``` r
+
 url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
            scheme ="https",
            query =list(service ="WFS",
@@ -156,6 +181,7 @@ p25 <-st_read(request)
     ## Projected CRS: ETRS89 / TM35FIN(E,N)
 
 ``` r
+
 url <-list(hostname ="geo.stat.fi/geoserver/postialue/wfs",
            scheme ="https",
            query =list(service ="WFS",
@@ -180,6 +206,7 @@ p16 <-st_read(request)
 ### 3. Data preparation and merging
 
 ``` r
+
 names(p16)
 ```
 
@@ -208,6 +235,7 @@ names(p16)
     ## [111] "pt_opisk"   "pt_elakel"  "pt_muut"    "geometry"
 
 ``` r
+
 p16data<-p16[,c(3,79)]
 p16data<-as.data.frame(p16data[,1:2])
 colnames(p16data)<-c("posti_alue","tyopy16")
@@ -221,6 +249,7 @@ p25_data$tyopy16[is.na(p25_data$tyopy16)] <- 0
 ### 4. Creating change variables and indicators
 
 ``` r
+
 # calculate changes
 p25_data$tp_m22_16<-(p25_data$tp_tyopy-p25_data$tyopy16)
 p25_data$tp_m22_16p<-((p25_data$tp_tyopy-p25_data$tyopy16)/p25_data$tyopy16)*100
@@ -236,6 +265,7 @@ p25_data$as_tih<-(p25_data$he_vakiy/(p25_data$pinta_ala/1000))
 ### 5. Data cleaning
 
 ``` r
+
 # create a new dataframe from part of the data
 p25_data2<-p25_data[,c(1,14,67,78,118:122)]
 
@@ -249,6 +279,7 @@ p25_data4<-p25_data3 %>%
 ### 6. Join attribute data back to spatial data
 
 ``` r
+
 data<-dplyr::left_join(x = p25, y = p25_data4, by=c("postinumeroalue" = "posti_alue"))
 data2 <- data[!is.na(data$he_kika.y),] # if we don't remove NAs, we cannot join results
 ```
@@ -256,6 +287,7 @@ data2 <- data[!is.na(data$he_kika.y),] # if we don't remove NAs, we cannot join 
 ### 7. Spatial weights matrix (k‑nearest neighbours)
 
 ``` r
+
 library(spdep)
 data.coords<-st_centroid(st_geometry(data2), of_largest_polygon=TRUE) # Extracts the coordinates of each postcode area
 p25_kn6<-knn2nb(knearneigh(data.coords,k=6,longlat = F)) # Returns a matrix with the indices of points belonging to the set of the k nearest neighbours of each other
@@ -265,12 +297,14 @@ p25_kn6<-knn2nb(knearneigh(data.coords,k=6,longlat = F)) # Returns a matrix with
     ## argument overrides object
 
 ``` r
+
 p25_kn6_w<-nb2listw(p25_kn6)
 ```
 
 Step 1: centroids
 
 ``` r
+
 st_centroid(st_geometry(data2))
 ```
 
@@ -282,6 +316,7 @@ Each postal code area:
 Step 2: k‑nearest neighbors
 
 ``` r
+
 knn2nb(knearneigh(..., k=6))
 ```
 
@@ -292,6 +327,7 @@ Each area:
 Step 3: weights list
 
 ``` r
+
 nb2listw(...)
 ```
 
@@ -306,6 +342,7 @@ Why k‑NN?
 ### 8. Ordinary Least Squares (baseline model)
 
 ``` r
+
 m_ols<-lm(tyottom~ korkk+alkut+elak+as_tih+he_kika.x+ra_as_kpa.y,
           data=data2)
 summary(m_ols)
@@ -354,6 +391,7 @@ Key idea:
 ### 9. Testing for spatial autocorrelation (Moran’s I)
 
 ``` r
+
 moran1<-lm.morantest(model=m_ols, p25_kn6_w)
 print(moran1)
 ```
@@ -391,6 +429,7 @@ Interpretation
 ### 10. Lagrange Multiplier (LM) tests
 
 ``` r
+
 #Next, we employ the LM tests for spatial lag (LMlag) and errors (LMerr)
 LMtest1<-lm.RStests(m_ols, p25_kn6_w, zero.policy = T, test=c("RSlag", "RSerr"))
 print(LMtest1)
@@ -419,6 +458,7 @@ print(LMtest1)
     ## RSerr = 600.46, df = 1, p-value < 2.2e-16
 
 ``` r
+
 #The LMlag statistic is 264.07, whilst the LMerr statistic is 555,77. Both have p-values under .001, indicating that
 #both the spatial lag and error models would be preferred over the OLS model.
 
@@ -449,6 +489,7 @@ print(LMtest2)
     ## adjRSerr = 405.71, df = 1, p-value < 2.2e-16
 
 ``` r
+
 # both test statistics are significant which indicates that both models could be used.
 ```
 
@@ -481,6 +522,7 @@ spatial error model may fit better to our data.
 ### 11. Spatial Error Model (SEM)
 
 ``` r
+
 library(spatialreg)
 m2e <-errorsarlm(tyottom~ korkk+alkut+elak+as_tih+he_kika.x+ra_as_kpa.y, data=data2, p25_kn6_w, tol.solve=1.0e-30)
 
@@ -500,11 +542,11 @@ summary(m2e)
     ## Type: error 
     ## Coefficients: (asymptotic standard errors) 
     ##               Estimate Std. Error  z value  Pr(>|z|)
-    ## (Intercept) 57.0953845  1.9127290  29.8502 < 2.2e-16
+    ## (Intercept) 57.0953852  1.9127290  29.8502 < 2.2e-16
     ## korkk        0.3388572  0.0172780  19.6121 < 2.2e-16
     ## alkut       -0.0335142  0.0055793  -6.0069 1.892e-09
     ## elak         0.0480779  0.0125449   3.8325 0.0001269
-    ## as_tih      -0.6700999  0.2249769  -2.9785 0.0028964
+    ## as_tih      -0.6700998  0.2249769  -2.9785 0.0028964
     ## he_kika.x   -0.5075504  0.0308752 -16.4388 < 2.2e-16
     ## ra_as_kpa.y -0.2500985  0.0105866 -23.6240 < 2.2e-16
     ## 
@@ -520,6 +562,7 @@ summary(m2e)
     ## AIC: 21071, (AIC for lm: 21734)
 
 ``` r
+
 hausman<-Hausman.test(m2e)
 print(hausman)
 ```
@@ -546,6 +589,7 @@ Why SEM often fits well
 Moran I test confirms this.
 
 ``` r
+
 data2$residuals <- residuals(m2e)
 moran.mc(data2$residuals, p25_kn6_w,999)
 ```
@@ -563,6 +607,7 @@ moran.mc(data2$residuals, p25_kn6_w,999)
 ### 12. Spatial Lag Model (SLM)
 
 ``` r
+
 m2lag <- lagsarlm(tyottom~ korkk+alkut+elak+as_tih+he_kika.x+ra_as_kpa.y, data=data2, p25_kn6_w, tol.solve=1.0e-30)
 
 # call a summary to see the results
@@ -581,7 +626,7 @@ summary(m2lag)
     ## Type: lag 
     ## Coefficients: (asymptotic standard errors) 
     ##               Estimate Std. Error  z value  Pr(>|z|)
-    ## (Intercept) 36.5771818  1.9216355  19.0344 < 2.2e-16
+    ## (Intercept) 36.5771816  1.9216355  19.0344 < 2.2e-16
     ## korkk        0.3938082  0.0178837  22.0205 < 2.2e-16
     ## alkut       -0.0257826  0.0061369  -4.2012 2.655e-05
     ## elak         0.1049687  0.0142032   7.3905 1.463e-13
@@ -603,6 +648,7 @@ summary(m2lag)
     ## test value: 230.78, p-value: < 2.22e-16
 
 ``` r
+
 data2$residuals_lag <- residuals(m2lag)
 moran.mc(data2$residuals_lag, p25_kn6_w,999)
 ```

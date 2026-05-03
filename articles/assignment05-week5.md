@@ -19,12 +19,14 @@ directory and then import the data into R. You can import the CSV table
 into R, for example, using the read.csv function:
 
 ``` r
+
 data_csv <- read.csv("data/mydata.csv")
 ```
 
 The municipality dataset can be downloaded in R as follows:
 
 ``` r
+
 municipalities25 <- geofi::get_municipalities(year = 2025)
 ```
 
@@ -32,6 +34,7 @@ After this, you can join the downloaded table to the municipality
 dataset (**remember change variables names to correspond your data**):
 
 ``` r
+
 map <- left_join(municipalities25, data_csv, by = c("kunta" = "region")) # why we use left_join?
 ```
 

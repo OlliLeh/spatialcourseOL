@@ -66,5 +66,6 @@ After you have created a solution for exercise, save them with code to
 your portfolio.
 
 ``` r
+
 library(spatialcourseOL)
 ```

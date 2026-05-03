@@ -55,6 +55,7 @@ Every ggplot2 plot has three key components:
   Layers are usually created with a geom function.
 
 ``` r
+
 library(ggplot2)
 ggplot(mtcars, aes(x = wt, y = mpg)) +
   geom_point()
@@ -86,6 +87,7 @@ example above:
 ### Adding more layers
 
 ``` r
+
 ggplot(mtcars, aes(wt, mpg)) +
   geom_point() +
   geom_smooth(method = "lm") +
@@ -121,6 +123,7 @@ Note that different geoms can use the same data and aesthetics! Multiple
 geoms can be layered like in this example:
 
 ``` r
+
 ggplot(mpg, aes(displ, hwy)) + 
   geom_point() + 
   geom_smooth()
@@ -130,6 +133,7 @@ ggplot(mpg, aes(displ, hwy)) +
 ![](lecture03-ggplot2_files/figure-html/unnamed-chunk-3-1.png)
 
 ``` r
+
 #> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 ```
 
@@ -147,6 +151,7 @@ to choose which type of model is used to fit the smooth curve:
   wiggly) to 1 (not so wiggly).
 
 ``` r
+
 ggplot(mpg, aes(displ, hwy)) + 
   geom_point() + 
   geom_smooth(span = 0.2)
@@ -156,10 +161,12 @@ ggplot(mpg, aes(displ, hwy)) +
 ![](lecture03-ggplot2_files/figure-html/unnamed-chunk-4-1.png)
 
 ``` r
+
 #> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 ```
 
 ``` r
+
 ggplot(mpg, aes(displ, hwy)) + 
   geom_point() + 
   geom_smooth(span = 1)
@@ -169,6 +176,7 @@ ggplot(mpg, aes(displ, hwy)) +
 ![](lecture03-ggplot2_files/figure-html/unnamed-chunk-5-1.png)
 
 ``` r
+
 #> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 ```
 
@@ -178,6 +186,7 @@ ggplot(mpg, aes(displ, hwy)) +
   ggplot2 uses when there are more than 1,000 points.
 
 ``` r
+
 library(mgcv)
 #> Loading required package: nlme
 #> 
@@ -214,18 +223,21 @@ variable and one continuous variable:
 These are illustrated below:
 
 ``` r
+
 ggplot(mpg, aes(drv, hwy)) + geom_jitter()
 ```
 
 ![](lecture03-ggplot2_files/figure-html/unnamed-chunk-7-1.png)
 
 ``` r
+
 ggplot(mpg, aes(drv, hwy)) + geom_boxplot()
 ```
 
 ![](lecture03-ggplot2_files/figure-html/unnamed-chunk-8-1.png)
 
 ``` r
+
 ggplot(mpg, aes(drv, hwy)) + geom_violin()
 ```
 
@@ -239,6 +251,7 @@ of a single group than boxplots do, at the expense of needing more
 space.
 
 ``` r
+
 ggplot(mpg, aes(hwy)) + geom_histogram()
 #> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 ```
@@ -246,10 +259,12 @@ ggplot(mpg, aes(hwy)) + geom_histogram()
 ![](lecture03-ggplot2_files/figure-html/unnamed-chunk-10-1.png)
 
 ``` r
+
 #> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 ```
 
 ``` r
+
 ggplot(mpg, aes(hwy)) + geom_freqpoly()
 #> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 ```
@@ -257,6 +272,7 @@ ggplot(mpg, aes(hwy)) + geom_freqpoly()
 ![](lecture03-ggplot2_files/figure-html/unnamed-chunk-11-1.png)
 
 ``` r
+
 #> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 ```
 
@@ -271,6 +287,7 @@ The discrete analogue of the histogram is the bar chart, geom_bar().
 It’s easy to use:
 
 ``` r
+
 ggplot(mpg, aes(manufacturer)) + 
   geom_bar()
 ```
@@ -299,6 +316,7 @@ peak, where the unemployment percentage is lower than it was in the
 preceding peaks, but the length of unemployment is high.
 
 ``` r
+
 ggplot(economics, aes(date, unemploy / pop)) +
   geom_line()
 ```
@@ -306,6 +324,7 @@ ggplot(economics, aes(date, unemploy / pop)) +
 ![](lecture03-ggplot2_files/figure-html/unnamed-chunk-13-1.png)
 
 ``` r
+
 ggplot(economics, aes(date, uempmed)) +
   geom_line()
 ```
@@ -329,6 +348,7 @@ ggplot2
 Base R:
 
 ``` r
+
 plot(mtcars$wt, mtcars$mpg)
 ```
 
@@ -337,6 +357,7 @@ plot(mtcars$wt, mtcars$mpg)
 ggplot2:
 
 ``` r
+
 ggplot(mtcars, aes(wt, mpg)) + geom_point()
 ```
 
@@ -359,6 +380,10 @@ ggplot2 logo
 
 ### An introduction to data visualization using R programming
 
+# An error occurred.
+
+Unable to execute JavaScript.
+
 ## Creating maps with ggplot2
 
 Recently, the package ggplot2 has allowed the use of simple features
@@ -371,6 +396,7 @@ Let´s start by loading the basic packages necessary for all maps,
 i.e. ggplot2 and sf.
 
 ``` r
+
 library("ggplot2")
 library("sf")
 #> Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
@@ -383,6 +409,7 @@ return sp classes (default) or directly sf classes, as defined in the
 argument return class:
 
 ``` r
+
 library("rnaturalearth")
 library("rnaturalearthdata")
 #> 
@@ -405,6 +432,7 @@ properly retrieved and converted into an sf object, and plot it with
 ggplot2:
 
 ``` r
+
 ggplot(data = world) +
     geom_sf()
 ```
@@ -429,6 +457,7 @@ changed to something more suitable (e.g. “Longitude” and “Latitude”),
 depending on the map:
 
 ``` r
+
 ggplot(data = world) +
     geom_sf() +
     xlab("Longitude") + ylab("Latitude") +
@@ -446,6 +475,7 @@ green color (argument fill), using black for the outline of the
 countries (argument color):
 
 ``` r
+
 ggplot(data = world) + 
     geom_sf(color = "black", fill = "lightgreen")
 ```
@@ -461,6 +491,7 @@ population (which is stored in the variable POP_EST of the world
 object):
 
 ``` r
+
 ggplot(data = world) +
     geom_sf(aes(fill = pop_est)) +
     scale_fill_viridis_c(option = "plasma", trans = "sqrt")
@@ -481,6 +512,7 @@ string (here, the European-centric ETRS89 Lambert Azimuthal Equal-Area
 projection):
 
 ``` r
+
 ggplot(data = world) +
     geom_sf() +
     coord_sf(crs = "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs ")
@@ -494,6 +526,7 @@ Scale bar and north arrow can be added on map with the package
 ggspatial, which provides easy-to-use functions for this purpose.
 
 ``` r
+
 library("ggspatial")
 ggplot(data = world) +
     geom_sf() +
@@ -582,6 +615,7 @@ For instance here, we save a PDF version of the map, which keeps the
 best quality, and a PNG version of it for web purposes:
 
 ``` r
+
 ggsave("map_web.png", width = 6, height = 6, dpi = "screen")
 ```
 
@@ -590,11 +624,13 @@ ggsave("map_web.png", width = 6, height = 6, dpi = "screen")
 Let´s load required packages:
 
 ``` r
+
 library(dplyr)
 library(countrycode)
 ```
 
 ``` r
+
 library(spatialcourseOL)
 data(HDI_data)
 
@@ -605,6 +641,7 @@ The ISO3C code is appended to the HDI_data2 dataset based on the country
 name. (note that we create here a new dataset HDI_data2)
 
 ``` r
+
 HDI_data2 <- HDI_data %>%
   mutate(iso3 = countrycode(Country, "country.name", "iso3c"))
 #> Warning: There was 1 warning in `mutate()`.
@@ -618,6 +655,7 @@ Next, the world and hdi_country2 datasets are merged by using
 left_join() function:
 
 ``` r
+
 joined <- world %>%
   left_join(
     HDI_data2,
@@ -632,6 +670,7 @@ joined <- world %>%
 Let´s then make a new map:
 
 ``` r
+
 ggplot() +
   geom_sf(
     data = joined,
@@ -652,10 +691,12 @@ ggplot() +
 Remove Antarctica and make a new map:
 
 ``` r
+
 joined2<-joined |> dplyr::filter(continent != "Antarctica")
 ```
 
 ``` r
+
 ggplot() +
   geom_sf(
     data = joined2,
@@ -677,6 +718,7 @@ The coordinate reference system is improved by adding coord_sf(crs =
 “+proj=robin”).
 
 ``` r
+
 ggplot() +
   geom_sf(
     data = joined,
@@ -693,6 +735,7 @@ ggplot() +
 You can also add title and caption:
 
 ``` r
+
 ggplot() +
   geom_sf(
     data = joined2,
@@ -717,6 +760,7 @@ describing population development across different municipality
 categories in Finland.
 
 ``` r
+
 data(pop_category)
 ```
 
@@ -737,6 +781,7 @@ This dataset is in long-format and will be the foundation for the
 visualization.
 
 ``` r
+
 group.labs <- c("Sparsely populate", "Urban", "Rural close to urban", "Core rural")
 names(group.labs) <- c("Harvaan asuttu maaseutu","Kaupungit","Kaupunkien läh. maaseutu", "Ydinmaaseutu")
 ```
@@ -755,6 +800,7 @@ Next, we will draw a plot visualising population development in Finnish
 municipality categories.
 
 ``` r
+
 plot1<-ggplot(pop_category, aes(Year, weight=value, fill=Variable))+ 
   geom_bar(binwidth=1, color="gray", size=0.25) + 
   facet_wrap(~Category, scales = "free_y", ncol = 2, labeller = labeller(Category=group.labs)) +
@@ -780,6 +826,7 @@ plot1<-ggplot(pop_category, aes(Year, weight=value, fill=Variable))+
 Let’s call plot1 object to see the plot we just created:
 
 ``` r
+
 plot1
 ```
 
@@ -916,6 +963,7 @@ Explanation:
 Load packages used in this example:
 
 ``` r
+
 library(ggplot2)
 library(geofi)
 library(dplyr)
@@ -924,6 +972,7 @@ library(dplyr)
 Let’s load data from different regional divisions.
 
 ``` r
+
 data(aluejaot2)
 names(aluejaot2)
 ```
@@ -931,6 +980,7 @@ names(aluejaot2)
 Let’s download a municipality data set with geofi package:
 
 ``` r
+
 municipalities <- geofi::get_municipalities(year = 2021)
 #> Requesting response from: https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=getFeature&typename=tilastointialueet%3Akunta4500k_2021
 #> Warning: Coercing CRS to epsg:3067 (ETRS89 / TM35FIN)
@@ -947,12 +997,14 @@ Next we will join data sets with function right_join because it
 maintains the class of municipality as sf.
 
 ``` r
+
 muni <- dplyr::right_join(x = municipalities, y = aluejaot2, by=c("kunta" = "tunnus"))
 ```
 
 Let’s define colors for plots:
 
 ``` r
+
 red<-"#F8766D"
 green <- "#00BA38"
 blue <- "#619CFF"
@@ -965,6 +1017,7 @@ light_gray <- "#f9f9fd"
 and set some global theme defaults
 
 ``` r
+
 theme_set(theme_minimal())
 theme_update(text = element_text(family = "sans", color = "#464a62"))
 theme_update(plot.title = element_text(hjust = 0.5, face = "bold"))
@@ -974,6 +1027,7 @@ theme_update(plot.subtitle = element_text(hjust = 0.5))
 Finally we are able to draw a map by using ggplot:
 
 ``` r
+
 map<-ggplot(muni) +
   geom_sf(aes(fill = Alueluokka_eng), color = light_gray, lwd = 0.08) +
   scale_fill_manual(values = c(red, green, blue, purple), name = "", guide = guide_legend(direction = "horizontal", label.position = "top", keywidth = 3, keyheight = 0.5)) +
@@ -991,6 +1045,7 @@ map<-ggplot(muni) +
 ### Combining a map and a graph
 
 ``` r
+
 map + plot1
 ```
 
@@ -1009,6 +1064,7 @@ minimal; most real data analysis uses packages.
 Loading commonly used packages
 
 ``` r
+
 library(forecast)
 #> 
 #> Attaching package: 'forecast'
@@ -1032,10 +1088,12 @@ library(ggthemes)
 Installing and loading additional packages
 
 ``` r
+
 install.packages("geofacet")
 ```
 
 ``` r
+
 library(geofacet)
 ```
 
@@ -1051,10 +1109,12 @@ Explanation:
 Installing a package from GitHub
 
 ``` r
+
 remotes::install_github("ropengov/geofi")
 ```
 
 ``` r
+
 library(geofi)
 ```
 
@@ -1069,12 +1129,14 @@ Note! This requires the remotes package to be installed.
 ### 2. Reading data into R
 
 ``` r
+
 library(spatialcourseOL)
 ```
 
 Reading datasets:
 
 ``` r
+
 data(aluejaot2)
 head(aluejaot2)
 ```
@@ -1091,6 +1153,7 @@ Explanation:
 Reading a second dataset
 
 ``` r
+
 data(data_vakie3)
 head(data_vakie3)
 ```
@@ -1098,6 +1161,7 @@ head(data_vakie3)
 ### 3. Merging datasets
 
 ``` r
+
 x2 <- merge(data_vakie3, aluejaot2, by.x="tunnus", by.y="tunnus",all.x=T)
 ```
 
@@ -1111,6 +1175,7 @@ Explanation:
 ### 4. Reshaping the data (wide → long)
 
 ``` r
+
 data2 <- melt(data = x2, id.vars = c("tunnus", "nimi","Maakunta"), measure.vars = c(3:43))
 ```
 
@@ -1128,6 +1193,7 @@ As a results, data2 is suitable for ggplot2 and time‑series analysis.
 ### 5. Creating a time variable
 
 ``` r
+
 aika <- seq(2000,2040,1)
 aika
 #>  [1] 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014
@@ -1150,6 +1216,7 @@ This vector can be used as:
 ### 6. Creating a repeated time variable
 
 ``` r
+
 b <- rep(aika,310)
 ```
 
@@ -1173,6 +1240,7 @@ Conceptually:
 ### 7. Sorting the data by region name
 
 ``` r
+
 data3 <- data2[order(data2$nimi),]
 ```
 
@@ -1192,6 +1260,7 @@ This step is crucial for correct time–region alignment.
 ### 8. Adding the time variable to the data
 
 ``` r
+
 data4 <- cbind(data3,b)
 names(data4)
 #> [1] "tunnus"   "nimi"     "Maakunta" "variable" "value"    "b"
@@ -1206,6 +1275,7 @@ Explanation:
 ### 9. Converting values to numeric
 
 ``` r
+
 data4$value <- as.numeric(data4$value)
 ```
 
@@ -1222,6 +1292,7 @@ Why this is important?
 ### 10. Aggregating data by year, region, and province
 
 ``` r
+
 data5 <- aggregate(data4$value, by=list(data4$b,data4$nimi, data4$Maakunta),FUN=sum)
 ```
 
@@ -1255,6 +1326,7 @@ The output columns will be named:
 ### 11. Checking dataset dimensions
 
 ``` r
+
 dim(data5)
 #> [1] 12669     4
 ```
@@ -1274,6 +1346,7 @@ Why this matters?
 ### 12. Subsetting one province
 
 ``` r
+
 vs <- subset(data5, Group.3=="Pohjois-Karjala")
 ```
 
@@ -1324,6 +1397,7 @@ showing a subset of the data, but:
 - the same aesthetics
 
 ``` r
+
 ggplot(vs, aes(x=Group.1, y=x))+
   geom_line(linewidth=1) +
   theme(axis.text.x=element_text(angle=90, vjust=0.5,hjust=1)) +
@@ -1441,6 +1515,7 @@ A geographic grid: A lookup table with:
 Example of a grid (simplified):
 
 ``` r
+
 grid_finland <- data.frame(
   municipality = c("Helsinki", "Turku", "Oulu"),
   row = c(3, 4, 1),
@@ -1455,6 +1530,7 @@ Predefined grids for Finland are available in the geofi package:
 <https://ropengov.github.io/geofi/articles/geofi_datasets.html>
 
 ``` r
+
 d <- data(package = "geofi")
 as_tibble(d$results) |> 
   select(Item,Title) |> 
@@ -1527,12 +1603,14 @@ If you do not see your figure correctly, install older version of the
 ggplot2 by following code:
 
 ``` r
+
 devtools::install_version(package = "ggplot2", version = "3.5.2", repos = "http://cran.us.r-project.org")
 ```
 
 The complete plotting code
 
 ``` r
+
 ggplot(vs, aes(x=Group.1, y=x, group=Group.2))+
   geom_line(size=1) +
   theme(axis.text.x=element_text(angle=90, vjust=0.5,hjust=1)) +
